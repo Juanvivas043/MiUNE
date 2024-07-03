@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ocupacionaulamasivo" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9303c655-7ac5-48ca-b286-98daf332cf51">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/var/www/MiUNE2/application/modules/reports/templates/Ocupacionaula/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="estructura" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select DISTINCT $P{periodo} as periodo, d.id as dia, h.pk_horario as horainicio, sed.pk_estructura as estructura, h.horainicio as hora
+from vw_dias d
+cross join tbl_horarios h
+cross join tbl_estructuras sal
+join tbl_estructuras edf on edf.pk_estructura = sal.fk_estructura
+join tbl_estructuras sed on sed.pk_estructura = edf.fk_estructura
+WHERE d.id not in (6,7)
+AND h.pk_horario not in (11,9)
+and sed.pk_estructura = 7
+order by 2,5]]>
+	</queryString>
+	<field name="periodo" class="java.lang.String"/>
+	<field name="dia" class="java.lang.Integer"/>
+	<field name="horainicio" class="java.lang.Integer"/>
+	<field name="estructura" class="java.lang.Integer"/>
+	<field name="hora" class="java.sql.Time"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="752" splitType="Stretch">
+			<subreport>
+				<reportElement uuid="1b3e35ea-3ba1-4c80-a3b5-bc3f28cc6e4c" x="0" y="0" width="612" height="752"/>
+				<subreportParameter name="periodo">
+					<subreportParameterExpression><![CDATA[$F{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="dia">
+					<subreportParameterExpression><![CDATA[$F{dia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="horario">
+					<subreportParameterExpression><![CDATA[$F{horainicio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="estructura">
+					<subreportParameterExpression><![CDATA[$F{estructura}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ocupacionaula.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

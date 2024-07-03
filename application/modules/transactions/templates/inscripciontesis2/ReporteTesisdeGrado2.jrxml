@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteTesisdeGrado" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="42ab5995-7bce-4c0e-8686-66353d021b0b">
+	<property name="ireport.zoom" value="1.0980750000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="268"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="HorariosTesis" uuid="8646ad16-fa28-4f52-a4ca-08ba02e0cb7b">
+		<queryString>
+			<![CDATA[SELECT atri.valor,horainicio,horafin ,u.nombre,u.apellido
+FROM tbl_asignaciones a, tbl_asignaturas  asi, tbl_horarios h , tbl_usuariosgrupos ug , tbl_usuarios u ,tbl_atributos atri
+WHERE pk_asignatura = fk_asignatura AND pk_asignatura = 14092 AND fk_periodo = 128 AND fk_seccion = 871 AND a.fk_horario = h.pk_horario
+AND a.fk_usuariogrupo = ug.pk_usuariogrupo AND u.pk_usuario = ug.fk_usuario AND atri.pk_atributo = a.fk_dia
+ORDER BY fk_dia,horainicio]]>
+		</queryString>
+		<field name="valor" class="java.lang.String"/>
+		<field name="horainicio" class="java.sql.Time"/>
+		<field name="horafin" class="java.sql.Time"/>
+		<field name="nombre" class="java.lang.String"/>
+		<field name="apellido" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="BuscarModalidad" uuid="1eca0dc5-cd67-4893-a3e4-eac9ca6cb78d">
+		<parameter name="cedula" class="java.lang.Integer"/>
+		<queryString>
+			<![CDATA[SELECT DISTINCT
+                CASE
+                    WHEN ati.valor LIKE '%P%' THEN 'Pasantia'
+                    ELSE 'Tesis'
+                END AS Tipo
+                FROM tbl_usuarios u
+                JOIN tbl_usuariosgrupos ug ON u.pk_usuario = ug.fk_usuario
+                JOIN tbl_inscripciones i ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+                JOIN tbl_recordsacademicos re ON i.pk_inscripcion = re.fk_inscripcion
+                JOIN tbl_asignaturas asi ON re.fk_asignatura = asi.pk_asignatura
+                JOIN tbl_asignaciones a ON re.fk_asignacion = a.pk_asignacion
+                JOIN tbl_atributos ati ON a.fk_seccion = ati.pk_atributo
+                WHERE (asi.fk_materia = 9723 OR asi.fk_materia = 830) and u.pk_usuario = $P{cedula}]]>
+		</queryString>
+		<field name="tipo" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="asignatura" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="periodo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cedula" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/var/www/html/MiUNE2/application/modules/transactions/templates/inscripciontesis2/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT es.escuela ,u.nombre , u.apellido, u.pk_usuario as cedula, i.pk_inscripcion,i.numeropago ,i.fechahora as finscripcion, e.nombre as sede ,m.materia, pe.nombre as pensum, es.escuela as escuela,a1.unidadcredito as unidad
+FROM tbl_inscripciones i
+JOIN tbl_recordsacademicos ra ON ra.fk_inscripcion = i.pk_inscripcion AND i.fk_periodo =$P{periodo}  AND ra.fk_asignatura = $P{asignatura}
+JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo AND ug.fk_usuario = $P{cedula}
+
+JOIN tbl_estructuras e ON e.pk_estructura = i.fk_estructura
+JOIN vw_escuelas es ON es.pk_atributo = i.fk_atributo
+JOIN tbl_usuarios u ON u.pk_usuario = ug.fk_usuario
+
+JOIN tbl_asignaturas a1 ON a1.pk_asignatura = ra.fk_asignatura
+JOIN vw_materias m ON m.pk_atributo = a1.fk_materia
+JOIN tbl_pensums pe ON pe.pk_pensum = i.fk_pensum]]>
+	</queryString>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="pk_inscripcion" class="java.lang.Integer"/>
+	<field name="numeropago" class="java.lang.Integer"/>
+	<field name="finscripcion" class="java.sql.Timestamp"/>
+	<field name="sede" class="java.lang.String"/>
+	<field name="materia" class="java.lang.String"/>
+	<field name="pensum" class="java.lang.String"/>
+	<field name="unidad" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="572" splitType="Stretch">
+			<staticText>
+				<reportElement x="150" y="431" width="79" height="20" uuid="f5b226f0-745d-48dc-a99a-585fba42055f"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Materia :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="366" y="107" width="109" height="20" uuid="65ca82bf-747d-4d64-8233-6fe852fb8606"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Periodo léctivo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="475" y="107" width="100" height="20" uuid="d6caeecb-0302-4a0c-8301-06cd4c857ae6"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="391" width="203" height="20" uuid="3565cf3f-58dc-4e9c-b917-416c08c2b801"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}+" "+$F{apellido}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="149" y="391" width="100" height="20" uuid="866d5933-e47e-4000-80ff-8b34cdfbbf05"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estudiante :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="431" width="224" height="20" uuid="c1809fe4-cc97-4ac6-ab49-968ca91a10cb"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{materia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="58" y="107" width="100" height="20" uuid="2a646313-9e1e-45d9-bb28-ddfcc0d56cfb"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sede}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="371" width="182" height="20" uuid="4616caf2-da31-4d71-96b9-13976223af25"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pk_inscripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="331" width="183" height="20" uuid="c25db904-eaa0-4fcc-9cfc-6c5d72fb7a38"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeropago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="311" width="183" height="20" uuid="c48f629a-803e-4022-bfed-f3c0240c0d4c"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{finscripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="351" width="293" height="20" uuid="d6827051-05e0-4eef-8d23-2d92effbdbb9"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{escuela}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="150" y="371" width="120" height="20" uuid="113bbdad-d084-435a-afd5-f6fc487c2688"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro Inscripción : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="331" width="79" height="20" uuid="ccdf11d1-86e6-4f66-86be-c2dd4a51bd06"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro Pago :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="351" width="78" height="20" uuid="7d22c56c-145f-4967-bb8b-b597d9b41e21"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Escuela :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="107" width="40" height="20" uuid="ca49c9a0-8361-4a41-9cae-28e24f726079"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sede]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="311" width="130" height="20" uuid="56d7d81e-fd70-4a51-8910-0b409c2cd437"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Inscripción: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="57" y="160" width="491" height="20" uuid="7322050a-0fcc-402a-b33d-471e02847174"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MIUNE 2.0 Inscripcion de  "+$F{materia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="134" y="180" width="337" height="20" uuid="34964ab6-e26a-4b77-a520-3643c09ef01b"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pensum :   "+$F{pensum}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="537" width="280" height="14" uuid="edcebe34-ca23-4fb9-83f0-98e109731d99"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma del Director de Escuela]]></text>
+			</staticText>
+			<line>
+				<reportElement x="65" y="536" width="159" height="1" uuid="47fa5f34-92de-48ed-9328-50825cb7640f"/>
+			</line>
+			<staticText>
+				<reportElement x="285" y="537" width="273" height="14" uuid="16e154ac-2ecd-4988-8f5e-03f6b40803ae"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma del Alumno]]></text>
+			</staticText>
+			<line>
+				<reportElement x="340" y="535" width="159" height="1" uuid="90dd75fb-d278-4340-a85b-03d78721bf4d"/>
+			</line>
+			<textField>
+				<reportElement x="280" y="471" width="100" height="20" uuid="3effd06c-d92c-43fe-8eef-8b5f94914194"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unidad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="149" y="471" width="100" height="20" uuid="e535eac0-aeaf-4c0a-8d1b-5969d7fe8b31"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[uc :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="149" y="411" width="100" height="20" uuid="4c894b5a-43ea-41cc-99fc-5e442ab72d3d"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cédula :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="411" width="202" height="20" uuid="bb3b3913-694c-484f-8687-1bfbe57a8082"/>
+				<textFieldExpression><![CDATA[$P{cedula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="150" y="451" width="100" height="20" uuid="3edd39fe-73ac-43f1-bac4-208410103eca"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modalidad :]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="279" y="452" width="100" height="39" uuid="6aab6fda-b962-41a0-a06d-515fede7ef14"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="BuscarModalidad" uuid="1ce34d7d-6afa-427c-8b2b-601df1cd5375">
+						<datasetParameter name="cedula">
+							<datasetParameterExpression><![CDATA[$P{cedula}]]></datasetParameterExpression>
+						</datasetParameter>
+					</datasetRun>
+					<jr:listContents height="39" width="100">
+						<textField>
+							<reportElement x="0" y="0" width="100" height="20" uuid="63d66b38-6f03-4ff1-acc5-4471193fbfb3"/>
+							<textElement>
+								<font fontName="DejaVu Sans"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</title>
+</jasperReport>

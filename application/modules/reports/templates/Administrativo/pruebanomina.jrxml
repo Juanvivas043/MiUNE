@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pruebanomina" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="New Dataset 1" resourceBundle="$P{prueba}">
+		<queryString language="xpath2">
+			<![CDATA[/RecibosEspecifico]]>
+		</queryString>
+		<field name="cod_emp" class="java.lang.String">
+			<fieldDescription><![CDATA[Table/cod_emp]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="prueba" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/pocho/Sites/MiUNE2-utimo/application/../public/tempxml/18313328.xml "]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *
+from tbl_usuarios
+where pk_usuario = 18313328]]>
+	</queryString>
+	<field name="pk_usuario" class="java.lang.Long"/>
+	<field name="status" class="java.lang.Integer"/>
+	<field name="nacionalidad" class="java.lang.Boolean"/>
+	<field name="sexo" class="java.lang.Boolean"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="fechanacimiento" class="java.sql.Date"/>
+	<field name="correo" class="java.lang.String"/>
+	<field name="passwordhash" class="java.lang.String"/>
+	<field name="deleted" class="java.lang.Boolean"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="foto" class="java.lang.Object"/>
+	<field name="telefono_movil" class="java.lang.String"/>
+	<field name="passwordoehash" class="java.lang.String"/>
+	<field name="primer_nombre" class="java.lang.String"/>
+	<field name="segundo_nombre" class="java.lang.String"/>
+	<field name="primer_apellido" class="java.lang.String"/>
+	<field name="segundo_apellido" class="java.lang.String"/>
+	<field name="actualizado" class="java.lang.Boolean"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="95" splitType="Stretch">
+			<textField>
+				<reportElement x="42" y="46" width="498" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{prueba}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="195" y="75" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cod_emp}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

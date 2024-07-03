@@ -1,0 +1,11 @@
+.titulo{
+	margin-top: 10px;
+	font-size: 18px;
+}
+table {
+	margin-top: 15px;
+}
+canvas{
+	width: 400px;
+	height: 400px;
+}

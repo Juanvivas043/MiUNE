@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="renunciatutor" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7b3aa267-5241-46e1-a04b-0f12fbc222b7">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="288"/>
+	<parameter name="id" class="java.lang.String"/>
+	<parameter name="cedula" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select sqt.pk_datotesis,sqt.titulo, btrim(sqt.cedula_autor::varchar,'{}') as cedula_autor, btrim(sqt.autor::varchar,'{}') as autor, sqt.estado
+              , (case
+                when sqt.tutor <> '' then sqt.tutor
+                else 'Ninguno'
+                end) as tutor,
+                btrim(sqt.escuela::varchar,'{}') as escuela,
+                current_date,
+                sqt.cedula_tutor,
+                sqt.telefono,
+                sqt.correo,
+                sqt.direccion
+                from (
+
+                  select  dt.pk_datotesis,
+                          dt.titulo,
+                          (select array_agg(sqt_sub.pk_usuario)
+                          from(
+                          select u_sub.pk_usuario
+                          from tbl_usuariosgrupos ug_sub
+                          join tbl_autorestesis at_sub  on  at_sub.fk_usuariogrupo = ug_sub.pk_usuariogrupo and at_sub.renuncia = false
+                          join tbl_usuarios u_sub on  u_sub.pk_usuario = ug_sub.fk_usuario
+                          where at_sub.fk_datotesis = dt.pk_datotesis
+                          order by 1 asc)as sqt_sub) as cedula_autor,
+                          (select array_agg(sqt_sub.nombre)
+                          from(
+                          select u_sub.pk_usuario,(u_sub.primer_apellido ||' '||u_sub.primer_nombre) as nombre
+                          from tbl_usuariosgrupos ug_sub
+                          join tbl_autorestesis at_sub  on  at_sub.fk_usuariogrupo = ug_sub.pk_usuariogrupo and at_sub.renuncia = false
+                          join tbl_usuarios u_sub on  u_sub.pk_usuario = ug_sub.fk_usuario
+                          where at_sub.fk_datotesis = dt.pk_datotesis
+                          order by 1 asc)as sqt_sub) as autor,
+                          atri.valor as estado,
+                          (u_t.primer_apellido ||' '||u_t.primer_nombre)as tutor,
+                          (select array_agg(sqt_sub.escuela)
+                          from(
+                          select distinct u_sub.pk_usuario,ve.escuela
+                          from tbl_usuariosgrupos ug_sub
+                          join tbl_autorestesis at_sub  on  at_sub.fk_usuariogrupo = ug_sub.pk_usuariogrupo and at_sub.renuncia = false
+                          join tbl_usuarios u_sub on  u_sub.pk_usuario = ug_sub.fk_usuario
+                          join tbl_inscripciones    i_sub   on	i_sub.fk_usuariogrupo = ug_sub.pk_usuariogrupo
+                          join vw_escuelas	ve	on	ve.pk_atributo = i_sub.fk_atributo
+                          where at_sub.fk_datotesis = dt.pk_datotesis
+                          order by 1 asc)as sqt_sub) as escuela,
+                          u_t.pk_usuario as cedula_tutor,
+                          u_t.telefono_movil,
+                          u_t.telefono,
+                          u_t.correo,
+                          u_t.direccion
+                  from tbl_datostesis                 dt
+                  join tbl_lineastemastesis           ltt   on  ltt.pk_lineatematesis   = dt.fk_lineatematesis
+                  join tbl_autorestesis               at    on  at.fk_datotesis         =   dt.pk_datotesis and at.renuncia = false
+                  full outer join tbl_tutorestesis    tt    on  tt.fk_datotesis         =   dt.pk_datotesis
+and tt.renuncia = false
+                  join tbl_usuariosgrupos             ug_a  on  ug_a.pk_usuariogrupo    = at.fk_usuariogrupo
+                  join tbl_usuarios                   u_a   on  u_a.pk_usuario          = ug_a.fk_usuario
+                  full outer join tbl_usuariosgrupos  ug_t  on  ug_t.pk_usuariogrupo    = tt.fk_usuariogrupo
+                  full outer join tbl_usuarios        u_t   on  u_t.pk_usuario          = ug_t.fk_usuario
+                  join tbl_atributos                  atri  on  atri.pk_atributo        =  dt.fk_estado
+                  where dt.pk_datotesis = $P{id}::integer
+                  and u_t.pk_usuario = $P{cedula}::integer
+                  group by 1,2,5,6,8,9,10,11,12
+
+                ) as sqt]]>
+	</queryString>
+	<field name="pk_datotesis" class="java.lang.Long"/>
+	<field name="titulo" class="java.lang.String"/>
+	<field name="cedula_autor" class="java.lang.String"/>
+	<field name="autor" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="tutor" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="date" class="java.sql.Date"/>
+	<field name="cedula_tutor" class="java.lang.Long"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="correo" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="752">
+			<textField>
+				<reportElement x="17" y="163" width="536" height="210" uuid="4bf98c86-bc9c-485d-a6a8-87e191799c26"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Caracas, " +$F{date} +
+"<br>" +
+"Ciudadano.- " +
+"<br>" +
+"Coordinación de Trabajo de Grado" +
+"<br>" +
+"<br><br>" +
+"Quien suscribe, " + $F{tutor} + " , C.I. N° " + $F{cedula_tutor} + ", autorizo al los alumnos " +$F{autor}+ ", para inscribir y defender su Trabajo de Grado titulado <b>" +$F{titulo}+ "</b>, para optar al Titulo otorgado por la Universidad Nueva Esparta en su(s) respectiva(s) carrera(s)."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="17" y="90" width="536" height="39" uuid="c5514abd-ef0c-420a-b470-52361fcfc60d"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTORIZACION DEL TUTOR PARA  DEFENSA DEL TRABAJO DE GRADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="404" width="536" height="55" uuid="52948bfd-dbfe-4120-b9f6-d9411ef87e42"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[___________________________
+Firma]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="17" y="459" width="536" height="113" uuid="deb249be-c3c4-433b-b747-a3b6242ea3d9"/>
+				<textElement markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Telfono: " + $F{telefono} +
+"<br>" +
+"E-mail: " +$F{correo}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="17" y="10" width="100" height="68" uuid="9c437938-3d60-4b46-95ba-99c247f0b24b"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="nominareporte" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4cbca82a-8284-4c6e-b08f-eb47a1decf6a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha_ini" class="java.lang.String"/>
+	<parameter name="fecha_fin" class="java.lang.String"/>
+	<parameter name="Estado" class="java.lang.String"/>
+	<parameter name="Banco" class="java.lang.String"/>
+	<parameter name="Contrato" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select current_date as fecha, cedula, nombre, cuenta, monto
+from tbl_tmp_nominareportes]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="cedula" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="cuenta" class="java.lang.String"/>
+	<field name="monto" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="64" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="24df1ad9-cc19-4dfd-816f-9635cdf099a1" x="0" y="0" width="190" height="21"/>
+				<textElement/>
+				<text><![CDATA[Profit Plus Nómina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d27d64ca-6d0a-4cb0-adc9-4313b193ee43" x="0" y="21" width="190" height="20"/>
+				<textElement/>
+				<text><![CDATA[UNIVERSIDAD NUEVA ESPARTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b89207e0-d13e-4d26-8480-dc7cad2d0b60" x="0" y="41" width="190" height="20"/>
+				<textElement/>
+				<text><![CDATA[RESUMEN DE NÓMINA AL BANCO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="105" splitType="Stretch">
+			<textField>
+				<reportElement uuid="34f8f81f-3dbe-4792-995a-899a5943603a" x="0" y="21" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Banco:"+$P{Banco}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9946eb79-88e8-48ee-a3ef-e0f634b316cf" x="1" y="61" width="190" height="21"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Contrato:"+$P{Contrato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="40856069-2ca0-4f80-a139-18dfcbe55ae0" x="1" y="82" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Estado:"+$P{Estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d852bab7-cfe6-49c2-b1b4-c87350bd5397" x="0" y="1" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Rangos Desde: "+$P{fecha_ini}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="833fc3d7-0e65-4f60-9d16-9b04de95d13a" x="191" y="1" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Hasta: "+$P{fecha_fin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6ea720da-35e9-4f7f-b886-0d04994b8c32" x="1" y="41" width="189" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Genarado: "+$F{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c7119527-9709-4113-957f-ccc11b05d06b" x="1" y="0" width="190" height="20"/>
+				<textElement/>
+				<text><![CDATA[CUENTA BANCARIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0411a5c8-ab77-472f-ac68-e04328f578ea" x="191" y="0" width="190" height="20"/>
+				<textElement/>
+				<text><![CDATA[TRABAJADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d07ce5d4-00c2-471f-bb3c-7fd8b38129cf" x="381" y="0" width="190" height="20"/>
+				<textElement/>
+				<text><![CDATA[CÉDULA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2bc5ee8f-0842-4c4c-8f46-d7e5b3b9d44d" x="571" y="0" width="181" height="20"/>
+				<textElement/>
+				<text><![CDATA[MONTO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="0283f1b9-11d8-4ba2-b82c-b6ab3e04122d" x="1" y="0" width="189" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f22feae6-b840-4cdc-8694-163dfa5a6414" x="191" y="0" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="545f8dff-8be4-407a-ae40-df687b4535de" x="381" y="0" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c48d82ea-940d-449c-8eba-2b6769e937dd" x="571" y="0" width="181" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="3" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="16" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="5" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,98 @@
+<?php
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/chartjs/Chart.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');    
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/chartjs/Chart.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+?>
+
+<h2>
+<?php  echo $this->title; ?>  
+</h2>
+
+<div align="center" id="infoProf">
+    <div id="fotoDiv" align="center"><input id="foto" width="120" type="image" height="161" disabled="disabled" alt="Foto:" name="foto" style="-moz-box-shadow: 0 0 10px black;"></div>
+<br>
+    <table class="inforProf">
+        <tr>
+            <td>
+                <p>C.I.:</p>
+            </td>
+            <td>
+                <span id="cedula"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Nombre:</p>
+            </td>
+            <td>
+                <span id="nombre">
+            </td>
+        </tr>
+    </table>
+
+</div>
+<br>
+<div align="center" id="tableTotal">
+   <!-- <canvas id="chart" class="chart"></canvas>-->
+</div>
+<br>
+<div align="center" id="tableData">
+   <!-- <canvas id="chart" class="chart"></canvas>-->
+</div>
+<div align="center" id="tableCanvas">
+   <canvas id="chart" class="chart"></canvas>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+            echo $this->filters->getJavaScript('tableData');
+        ?>
+
+        $.getJSON(urlAjax + "tabla", function(data){
+            executeCmdsFromJSON(data)
+        });
+
+
+/*
+
+    new Chart(document.getElementById("chart"), {
+    type: 'radar',
+    data: {
+      labels: ["Desempeño Pedagógico", "Conocimiento", "Relaciones Interpersonales", "Valores"],
+      datasets: [{
+        label: "Resultados",
+        backgroundColor: ["rgba(119,44,70,0.8)"],
+        data: [3.4,4,3.6,3.1],
+
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Resultados'
+      },
+      scale: {
+          ticks: {
+            beginAtZero: true
+          }
+        },
+    }
+});
+
+*/
+    });
+
+
+</script>

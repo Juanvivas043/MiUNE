@@ -1,0 +1,1189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ListadoEstudiantes" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="980" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14">
+	<property name="ireport.zoom" value="1.100000000000005"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="24"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<style name="CeldaBordeContinuo_xxxB" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="1.0" lineStyle="Dotted"/>
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<pen lineWidth="0.0" lineStyle="Solid"/>
+			<topPen lineWidth="0.0" lineStyle="Dotted"/>
+			<leftPen lineWidth="0.0" lineStyle="Dotted"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+			<rightPen lineWidth="0.0" lineStyle="Dotted"/>
+		</box>
+	</style>
+	<style name="CeldaBordePunteado_IDSx" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="1.0" lineStyle="Dotted"/>
+		<box topPadding="0" leftPadding="1" bottomPadding="0" rightPadding="1">
+			<pen lineWidth="0.5" lineStyle="Solid"/>
+			<topPen lineWidth="0.5" lineStyle="Dotted"/>
+			<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+			<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+		</box>
+	</style>
+	<style name="CeldaBordePunteado_IDxB" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="1.0" lineStyle="Dotted"/>
+		<box topPadding="0" leftPadding="1" bottomPadding="0" rightPadding="1">
+			<pen lineWidth="0.5" lineStyle="Solid"/>
+			<topPen lineWidth="0.0" lineStyle="Dotted"/>
+			<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+			<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+			<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+		</box>
+	</style>
+	<style name="CeldaBordePunteadoContinuo_IDSx" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="1.0" lineStyle="Dotted"/>
+		<box topPadding="0" leftPadding="1" bottomPadding="0" rightPadding="1">
+			<pen lineWidth="0.0" lineStyle="Solid"/>
+			<topPen lineWidth="1.0" lineStyle="Solid"/>
+			<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+			<bottomPen lineWidth="0.0" lineStyle="Solid"/>
+			<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+		</box>
+	</style>
+	<style name="CeldaBordePunteadoContinuo_IDxB" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="1.0" lineStyle="Dotted"/>
+		<box topPadding="0" leftPadding="1" bottomPadding="0" rightPadding="1">
+			<pen lineWidth="0.5" lineStyle="Solid"/>
+			<topPen lineWidth="0.0" lineStyle="Dotted"/>
+			<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+			<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+		</box>
+	</style>
+	<style name="CeldaConBorde" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="1.0" lineStyle="Solid"/>
+		<box leftPadding="0">
+			<pen lineWidth="0.5" lineStyle="Solid"/>
+			<topPen lineWidth="0.5" lineStyle="Solid"/>
+			<leftPen lineWidth="0.5" lineStyle="Solid"/>
+			<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+			<rightPen lineWidth="0.5" lineStyle="Solid"/>
+		</box>
+	</style>
+	<style name="CeldaConBordeSubrayadoIzquierda" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="0.0" lineStyle="Solid"/>
+		<box leftPadding="0">
+			<pen lineWidth="0.5" lineStyle="Solid"/>
+			<topPen lineWidth="0.5" lineStyle="Solid"/>
+			<leftPen lineWidth="1.0" lineStyle="Solid"/>
+			<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+			<rightPen lineWidth="0.5" lineStyle="Solid"/>
+		</box>
+	</style>
+	<style name="CeldaConBordeSubrayadoDerecha" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="0.0" lineStyle="Solid"/>
+		<box leftPadding="0">
+			<pen lineWidth="0.5" lineStyle="Solid"/>
+			<topPen lineWidth="0.5" lineStyle="Solid"/>
+			<leftPen lineWidth="0.5" lineStyle="Solid"/>
+			<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid"/>
+		</box>
+	</style>
+	<style name="CeldaConBordeSubrayadoDerechaIzquierdo" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="0.0" lineStyle="Solid"/>
+		<box leftPadding="0">
+			<pen lineWidth="0.5" lineStyle="Solid"/>
+			<topPen lineWidth="0.5" lineStyle="Solid"/>
+			<leftPen lineWidth="1.0" lineStyle="Solid"/>
+			<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid"/>
+		</box>
+	</style>
+	<style name="CeldaConBordeSubrayadoBajo" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="0.0" lineStyle="Solid"/>
+		<box leftPadding="0">
+			<pen lineWidth="0.5" lineStyle="Solid"/>
+			<topPen lineWidth="0.5" lineStyle="Solid"/>
+			<leftPen lineWidth="0.5" lineStyle="Solid"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+			<rightPen lineWidth="0.5" lineStyle="Solid"/>
+		</box>
+	</style>
+	<style name="CeldaConBordeSubrayadoBajoDerecha" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="0.0" lineStyle="Solid"/>
+		<box leftPadding="0">
+			<pen lineWidth="0.5" lineStyle="Solid"/>
+			<topPen lineWidth="0.5" lineStyle="Solid"/>
+			<leftPen lineWidth="0.5" lineStyle="Solid"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid"/>
+		</box>
+	</style>
+	<style name="CeldaConBordeSubrayadoBajoIzquierda" mode="Opaque" fill="Solid" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false">
+		<pen lineWidth="0.0" lineStyle="Solid"/>
+		<box leftPadding="0">
+			<pen lineWidth="0.5" lineStyle="Solid"/>
+			<topPen lineWidth="0.5" lineStyle="Solid"/>
+			<leftPen lineWidth="1.0" lineStyle="Solid"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+			<rightPen lineWidth="0.5" lineStyle="Solid"/>
+		</box>
+	</style>
+	<style name="CeldaSinBordeSubrayadoBajo">
+		<pen lineWidth="0.0"/>
+		<box>
+			<pen lineWidth="1.25"/>
+			<topPen lineWidth="0.0" lineStyle="Solid"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+			<rightPen lineWidth="0.0" lineStyle="Double"/>
+		</box>
+	</style>
+	<style name="CeldaSinBordeSubrayadoBajoDerecha">
+		<pen lineWidth="0.0"/>
+		<box>
+			<pen lineWidth="1.25"/>
+			<topPen lineWidth="0.0" lineStyle="Solid"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid"/>
+		</box>
+	</style>
+	<style name="CeldaSinBordeSubrayadoSimpleBajo">
+		<pen lineWidth="0.0"/>
+		<box>
+			<pen lineWidth="1.25"/>
+			<topPen lineWidth="0.0" lineStyle="Solid"/>
+			<leftPen lineWidth="0.0" lineStyle="Solid"/>
+			<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+			<rightPen lineWidth="0.0" lineStyle="Double"/>
+		</box>
+	</style>
+	<parameter name="Escuela" class="java.lang.String">
+		<defaultValueExpression><![CDATA[11]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Materia" class="java.lang.String">
+		<defaultValueExpression><![CDATA[481]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Semestre" class="java.lang.String">
+		<defaultValueExpression><![CDATA[873]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Sede" class="java.lang.String">
+		<defaultValueExpression><![CDATA[7]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Periodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[121]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CIs" class="java.lang.String">
+		<defaultValueExpression><![CDATA["19933394,  19583316, 22908362, 15337036, 21290809, 21291143, 20211897, 21291299, 19022695, 19242198, 19500876, 22388227, 18707795, 19505768, 18029709, 20798961, 21133369, 19468268, 21080166, 20783383, 19378365, 20185818, 18587980, 21291277, 19994779, 18809565, 20780567, 19720395, 19993052, 21413606, 20228851, 20803655, 18443823, 20229055, 20711460, 19500644, 20654384, 19583020, 20229615"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *, $P!{Sede} as sede
+FROM fn_xrxx_listado_estudiantesseccionnew3($P!{Periodo}, $P!{Materia}, $P!{Escuela}, $P!{Semestre}, $P!{Sede})
+AS (ordinal integer,
+    cedula bigint,
+    nombre text,
+    turno smallint,
+    semestre text,
+    escuela text,
+    asignatura varchar,
+    profesor text,
+    refmateria text,
+    periodo text,
+    seccion varchar)
+    WHERE cedula IN ($P!{CIs});]]>
+	</queryString>
+	<field name="ordinal" class="java.lang.Integer"/>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="turno" class="java.lang.Integer"/>
+	<field name="semestre" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="asignatura" class="java.lang.String"/>
+	<field name="profesor" class="java.lang.String"/>
+	<field name="refmateria" class="java.lang.String"/>
+	<field name="periodo" class="java.lang.String"/>
+	<field name="seccion" class="java.lang.String"/>
+	<field name="sede" class="java.lang.Integer"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="77">
+			<textField>
+				<reportElement x="3" y="52" width="235" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["SEMESTRE:" + $F{semestre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="370" y="28" width="84" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[PROFESOR: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="3" y="16" width="367" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["ESCUELA: " + $F{escuela}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="2" width="235" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NUEVA ESPARTA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="454" y="16" width="120" height="12"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{periodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="40" width="235" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["SEDE:" + $F{sede}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="454" y="28" width="312" height="12"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{profesor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="370" y="16" width="84" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[PERÍODO:   ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="3" y="28" width="367" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["ASIGNATURA: " + $F{asignatura}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="454" y="52" width="204" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="52" width="84" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[FIRMA: ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="85">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}>1]]></printWhenExpression>
+			<staticText>
+				<reportElement x="367" y="60" width="84" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[FIRMA: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="451" y="36" width="312" height="12"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{profesor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="367" y="36" width="84" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[PROFESOR: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="36" width="367" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["ASIGNATURA: " + $F{asignatura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="60" width="235" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["SEMESTRE:" + $F{semestre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="24" width="367" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["ESCUELA: " + $F{escuela}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="367" y="24" width="84" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[PERÍODO: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="10" width="235" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NUEVA ESPARTA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="451" y="24" width="120" height="12"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{periodo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="451" y="60" width="204" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[________________________________]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="48" width="235" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["SEDE:" + $F{sede}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="24">
+			<staticText>
+				<reportElement style="CeldaSinBordeSubrayadoBajo" mode="Transparent" x="0" y="0" width="16" height="24" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoIzquierda" mode="Transparent" x="16" y="0" width="50" height="24" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CÉDULA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="866" y="12" width="19" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajoDerecha" mode="Opaque" x="953" y="12" width="24" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[L]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajoIzquierda" mode="Opaque" x="809" y="12" width="19" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="847" y="12" width="19" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBorde" mode="Opaque" x="977" y="12" width="24" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[DEF.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoDerechaIzquierdo" mode="Opaque" x="809" y="0" width="168" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EVALUACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="905" y="12" width="24" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="828" y="12" width="19" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="929" y="12" width="24" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[P.L.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajoDerecha" mode="Opaque" x="593" y="12" width="24" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[L]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="506" y="12" width="19" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="545" y="12" width="24" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="569" y="12" width="24" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[P.L.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajoIzquierda" mode="Opaque" x="449" y="12" width="19" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoDerechaIzquierdo" mode="Opaque" x="449" y="0" width="168" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EVALUACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="468" y="12" width="19" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="487" y="12" width="19" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="545" y="12" width="24" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[E.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="905" y="12" width="24" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[E.C.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="525" y="12" width="19" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoBajo" mode="Opaque" x="885" y="12" width="19" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoDerecha" x="234" y="0" width="23" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoDerechaIzquierdo" x="66" y="0" width="169" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[APELLIDOS Y NOMBRES]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12">
+			<rectangle>
+				<reportElement x="389" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoIzquierda" mode="Transparent" x="617" y="0" width="12" height="12" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="377" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="725" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="653" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="353" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoDerecha" mode="Transparent" x="437" y="0" width="12" height="12" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="629" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="713" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="701" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement style="CeldaConBordeSubrayadoIzquierda" x="16" y="0" width="50" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="785" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="773" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="737" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="293" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="677" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="365" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoDerecha" mode="Transparent" x="797" y="0" width="12" height="12" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="269" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="665" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="401" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="761" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="281" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="641" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="749" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="305" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="689" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="413" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="341" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="329" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<rectangle>
+				<reportElement x="425" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" mode="Opaque" x="977" y="0" width="24" height="12" backcolor="#CCCCCC">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=SUM(INDIRECT(\"AJ\"&ROW())+INDIRECT(\"BK\"&ROW()))"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CeldaConBordeSubrayadoDerechaIzquierdo" stretchType="RelativeToTallestObject" x="66" y="0" width="169" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="317" y="0" width="12" height="12"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="CeldaConBordeSubrayadoIzquierda" mode="Transparent" x="257" y="0" width="12" height="12" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="449" y="0" width="19" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="CeldaSinBordeSubrayadoSimpleBajo" x="0" y="0" width="16" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ordinal}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="468" y="0" width="19" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="506" y="0" width="19" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="487" y="0" width="19" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="545" y="0" width="24" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=SUM(INDIRECT(\"Z\"&ROW()):INDIRECT(\"AG\"&ROW()))"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="569" y="0" width="24" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="593" y="0" width="24" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=SUM(INDIRECT(\"AH\"&ROW()):INDIRECT(\"AI\"&ROW()))"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="809" y="0" width="19" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="828" y="0" width="19" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="847" y="0" width="19" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="866" y="0" width="19" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="905" y="0" width="24" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=SUM(INDIRECT(\"BA\"&ROW()):INDIRECT(\"BH\"&ROW()))"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="929" y="0" width="24" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="953" y="0" width="24" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=SUM(INDIRECT(\"BI\"&ROW()):INDIRECT(\"BJ\"&ROW()))"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="525" y="0" width="19" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="885" y="0" width="19" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+			</textField>
+			<textField>
+				<reportElement style="CeldaSinBordeSubrayadoSimpleBajo" x="235" y="0" width="22" height="12"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{seccion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="40">
+			<staticText>
+				<reportElement x="0" y="8" width="90" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[FECHA Y HORA: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="427" y="20" width="168" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[___________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="20" width="192" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[__________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="595" y="20" width="192" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[__________________________]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="102" y="20" width="133" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="787" y="32" width="168" height="8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[FECHA (DD/MM/YYYY)]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="90" y="8" width="145" height="12"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="235" y="32" width="192" height="8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[FIRMA DEL DELEGADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="595" y="32" width="192" height="8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[FIRMA DEL DELEGADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="427" y="32" width="168" height="8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[FECHA (DD/MM/YYYY)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="20" width="12" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="90" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[PÁGINA: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="787" y="20" width="168" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[___________________]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="100">
+			<staticText>
+				<reportElement style="CeldaConBorde" x="379" y="31" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rep.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="307" y="31" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rep.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="631" y="31" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Aprob.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="667" y="43" width="36" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=COUNTIF(BD19:BD1000,\"<10\")"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="703" y="31" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Aprob.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="739" y="43" width="36" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=(COUNTIF(BD19:BD1000,\"<10\")*100)/" + $V{REPORT_COUNT}]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="235" y="19" width="108" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. de Estudiantes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="595" y="19" width="108" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. de Estudiantes]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="703" y="43" width="36" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=(COUNTIF(BD19:BD1000,\">=10\")*100)/" + $V{REPORT_COUNT}]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement style="CeldaConBorde" mode="Opaque" x="415" y="19" width="36" height="24" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Calf. Prom.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="631" y="43" width="36" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=COUNTIF(BD19:BD1000,\">=10\")"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement style="CeldaConBorde" mode="Opaque" x="235" y="7" width="216" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRIMER CORTE]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="775" y="43" width="36" height="12" backcolor="#CCCCCC">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=AVERAGE(BD19:BD1000)"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="70" width="979" height="10"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nota: Entregue la hoja de Control de Estudios totalmente llena. Evite enmiendas. Los datos deben coincidir con los de esta planilla, que anexará.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="979" height="10"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTA LISTA ES PROVISIONAL, PODRÁ ESTAR SUJETA A CAMBIOS, CONFIRME CON LA LISTA QUE EMITIÓ CONTROL DE ESTUDIOS.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="979" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Para descargar entre a la dirección WEB: http://omicron.une.edu.ve y escoja la opción "Listado de Estudiantes"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="235" y="31" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Insc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="595" y="31" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Insc.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="343" y="43" width="36" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=(COUNTIF(AF19:AF1000,\">=5\")*100)/" + $V{REPORT_COUNT}]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="271" y="31" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Aprob.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="343" y="31" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Aprob.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBorde" mode="Opaque" x="775" y="19" width="36" height="24" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Calf. Prom.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="307" y="43" width="36" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["COUNTIF(AF19:AF1000,\"<5\")"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="415" y="43" width="36" height="12" backcolor="#CCCCCC">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=AVERAGE(AF19:AF1000)"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement style="CeldaConBorde" mode="Opaque" x="595" y="7" width="216" height="12" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEFINITIVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="979" height="10"/>
+				<textElement>
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[LEYENDA: "+" Asistencia, "-" Inasistencia, "(-)" Retardo o Justificación, "P.L." Prueba de Lapso, "L" Definitiva del lapso.]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="CeldaConBorde" x="235" y="43" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="343" y="19" width="72" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[% de Est.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="703" y="19" width="72" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[% de Est.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="667" y="31" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rep.]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="CeldaConBorde" x="595" y="43" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="379" y="43" width="36" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=(COUNTIF(AF19:AF1000,\"<5\")*100)/" + $V{REPORT_COUNT}]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="CeldaConBorde" x="271" y="43" width="36" height="12">
+					<propertyExpression name="net.sf.jasperreports.export.xls.formula"><![CDATA["=COUNTIF(AF19:AF1000,\">=10\")"]]></propertyExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement style="CeldaConBorde" x="739" y="31" width="36" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rep.]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

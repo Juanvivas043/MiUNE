@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ConstanciaActuacionEstudiantil" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d2b3e0e0-57ee-4082-a080-3306a7ae8501">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT e.pk_atributo    as "pk_escuela",
+       UPPER(sem.valor) as "semestre",
+       CASE to_char(per.inicioclases, 'TMMonth')
+           WHEN 'May' THEN to_char(per.inicioclases, '"Mayo" YYYY')
+           ELSE initcap(to_char(per.inicioclases, 'TMMonth YYYY'))
+           END as "fia",
+       CASE to_char(per.fechafin, 'TMMonth')
+           WHEN 'May' THEN to_char(per.fechafin, '"Mayo" YYYY')
+           ELSE initcap(to_char(per.fechafin, 'TMMonth YYYY'))
+       END as "ffa",
+       e.escuela as "escuela",
+       i.fk_estructura,
+       to_char(usu.pk_usuario, '09"."999"."999') as "Ci",
+       TRIM(usu.nombre) as "nombre",
+       TRIM(usu.apellido) as "apellido",
+       atri.valor as "facultad",
+       to_char(current_date, 'DD')::INT as "dia",
+       CASE to_char(current_date, 'TMMONTH')
+           WHEN 'MAY' THEN 'Mayo'
+           ELSE initcap(to_char(current_date, 'TMMONTH'))
+           END as "mes",
+                     to_char(current_date, 'YYYY') as "año",
+                     CASE to_char(current_date, 'DD')
+                      WHEN '01' THEN 'primer'
+                      WHEN '02' THEN 'dos'
+                      WHEN '03' THEN 'tres'
+                      WHEN '04' THEN 'cuatro'
+                      WHEN '05' THEN 'cinco'
+                      WHEN '06' THEN 'seis'
+                      WHEN '07' THEN 'siete'
+                      WHEN '08' THEN 'ocho'
+                      WHEN '09' THEN 'nueve'
+                      WHEN '10' THEN 'diez'
+                      WHEN '11' THEN 'once'
+                      WHEN '12' THEN 'doce'
+                      WHEN '13' THEN 'trece'
+                      WHEN '14' THEN 'catorce'
+                      WHEN '15' THEN 'quince'
+                      WHEN '16' THEN 'dieciseis'
+                      WHEN '17' THEN 'diecisiete'
+                      WHEN '18' THEN 'dieciocho'
+                      WHEN '19' THEN 'diecinueve'
+                      WHEN '20' THEN 'veinte'
+                      WHEN '21' THEN 'veintiun'
+                      WHEN '22' THEN 'veintidos'
+                      WHEN '23' THEN 'veintitres'
+                      WHEN '24' THEN 'veinticuatro'
+                      WHEN '25' THEN 'veinticinco'
+                      WHEN '26' THEN 'veintiseis'
+                      WHEN '27' THEN 'veintisiete'
+                      WHEN '28' THEN 'veintiocho'
+                      WHEN '29' THEN 'veintinueve'
+                      WHEN '30' THEN 'treinta'
+                      WHEN '31' THEN 'trentiun'
+			ELSE to_char(current_date, 'DD')
+		     END AS "diatxt"
+                    FROM tbl_inscripciones i
+                   JOIN tbl_usuariosgrupos  ug    ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+                   JOIN tbl_usuarios        usu   ON usu.pk_usuario     = ug.fk_usuario
+                   JOIN tbl_estructuras     es    ON es.pk_estructura   = i.fk_estructura
+                   JOIN vw_escuelas         e     ON e.pk_atributo      = i.fk_atributo
+                   JOIN tbl_pensums         pen   ON pen.fk_escuela     = i.fk_atributo
+                   JOIN tbl_atributos       atri  ON atri.pk_atributo   = pen.fk_facultad
+                   JOIN vw_semestres        sem	 ON i.fk_semestre      = sem.pk_atributo
+                   JOIN tbl_periodos	   per	 ON i.fk_periodo       = per.pk_periodo
+                    WHERE ug.fk_usuario = 14689385
+                    AND i.fk_atributo = 12
+                    ORDER BY i.fk_periodo DESC
+                    LIMIT 1;]]>
+	</queryString>
+	<field name="pk_escuela" class="java.lang.Long"/>
+	<field name="semestre" class="java.lang.String"/>
+	<field name="fia" class="java.lang.String"/>
+	<field name="ffa" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="fk_estructura" class="java.lang.Integer"/>
+	<field name="Ci" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="facultad" class="java.lang.String"/>
+	<field name="dia" class="java.lang.Integer"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="año" class="java.lang.String"/>
+	<field name="diatxt" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="399" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="cad030aa-f78a-4e9a-9602-df5c18767d3c" x="47" y="124" width="479" height="109"/>
+				<textElement textAlignment="Justified">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[La suscrita, Lic. Haydeé Irausquín Aldama, Secretaria de la Universidad Nueva Esparta hace constar que en el expediente correspondiente al (a la) ciudadano (a) Bachiller: Pepito, Perez, con Cédula de identidad N°: 12.345.678 quien ha sido estudiante de la Escuela de: Pedofilia en la Facultad de: Medicina, de esta Universidad, no figuran registradas sanciones académicas ni disciplinarias hasta la presente fecha.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cb4e25f8-4fa8-4a59-a92f-6b809fa818f3" x="0" y="0" width="136" height="14"/>
+				<textElement/>
+				<text><![CDATA[Universidad Nueva Esparta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fa4ac539-4348-4497-ad9c-c5986af4b4ad" x="0" y="14" width="136" height="14"/>
+				<textElement/>
+				<text><![CDATA[CARACAS - VENEZUELA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8ab7d4d9-13c9-41ea-b79f-0113bf4d50b7" x="0" y="28" width="47" height="14"/>
+				<textElement/>
+				<text><![CDATA[Facultad: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e36a94bb-2582-4821-874c-f1acd01b4553" x="0" y="76" width="572" height="14"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONSTANCIA]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1eb08bb6-f8c4-4472-8547-0a1f70ac4437" x="256" y="261" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Ci}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><?php echo $this->escape($this->title); ?></title>
+	<?php
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/pagination.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/bootstrap.min.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/docs.min.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/font-awesome.css');
+	?>
+	<style>
+		.tdDatos{
+			margin: auto;
+			padding-top: 10px;
+		}
+		.datos{
+			width: 100%;
+			height: 100%;
+			display: block;
+		}
+		h1{
+			font-size: 100px;
+		}
+		.uc{
+			width: 300px;
+			float: left;
+		}
+		.uc h1{
+			height: 85px;
+		}
+		.uc div{
+			display: inline;
+		}
+		.cant_materias{
+			width: 300px;
+			float: left;
+		}
+		.semestre{
+			width: 300px;
+			float:left;
+		}
+		#btnContinuar{
+			width: 	33%;
+			margin: 10px auto;
+			display: block;
+		}
+		#btnContinuar span{
+            font-size: 15px;
+            text-align: center;
+		}
+select.list1 option.option2
+{
+    background-color: #007700;
+}
+
+select option {
+    margin:40px;
+    background: rgba(0,0,0,0.3);
+    color:#fff;
+    text-shadow:0 1px 0 rgba(0,0,0,0.4);
+}
+select option[val="1"]{
+    background: rgba(100,100,100,0.3);
+}
+
+
+
+
+/* Use a wide full screen for small screens like tablets. */
+@media (min-width: 768px) and (max-width:992px) {
+    .container {
+		width: initial;
+        padding-left: 2em;
+        padding-right: 2em;
+	}
+}
+
+/* --- Plans ---------------------------- */
+
+.my_planHeader {
+    text-align: center;
+    color: white;
+    padding-top:0.2em;
+    padding-bottom:0.2em;
+}
+.my_planTitle {
+    font-size:1.6em;
+    font-weight: bold;
+}
+.my_planPrice {
+    font-size:1.4em;
+    font-weight: bold;
+}
+.my_planDuration {
+    margin-top: -0.6em;
+}
+
+@media (max-width: 768px) {
+    .my_planTitle {
+        font-size:small;
+    }
+}
+
+/* --- Features ------------------------- */
+
+.my_feature {
+    line-height:2.0em;
+}
+
+@media (max-width: 768px) {
+    .my_feature {
+        text-align: center
+    }
+ }
+
+.my_featureRow {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    border: 0.0em solid rgb(163, 163, 163);
+}
+
+/* --- Plan 0 --------------------------- */
+.my_plan0 {
+    background:rgb(173,173,173);
+}
+.my_planHeader.my_plan0 a {
+    background: rgb(173,173,173);
+    color:white;
+}
+.my_planHeader.my_plan0 {
+    background: rgb(209,209,182<D-2>);
+    border-bottom: black;
+}
+
+/* --- Plan 1 --------------------------- */
+.my_plan1 {
+    background: rgb(224,234,242);
+}
+.my_planHeader.my_plan1 a {
+    background: rgb(72, 109, 139);
+    color:white;
+}
+.my_planHeader.my_plan1 {
+    background: rgb(105, 153, 193);
+    border-bottom: thick solid rgb(72, 109, 139);
+}
+.my_planHeader.my_plan1.xpecial {
+    background: rgb(105, 153, 193);
+    border-bottom: 2px solid rgb(72, 109, 139);
+}
+
+/* --- Plan 2 --------------------------- */
+.my_plan2 {
+    background: rgb(230,235,218);
+}
+.my_planHeader.my_plan2 a {
+    background: rgb(108, 131, 62);
+    color:white;
+}
+.my_planHeader.my_plan2 {
+    background: rgb(134, 162, 77);
+    border-bottom: thick solid rgb(108, 131, 62);
+}
+
+/* --- Plan 3 --------------------------- */
+.my_plan3 {
+    background: rgb(254,235,212);
+}
+.my_planHeader.my_plan3 a {
+    background: rgb(199, 127, 40);
+    color:white;
+}
+.my_planHeader.my_plan3 {
+    background: rgb(253, 161, 49);
+    border-bottom: thick solid rgb(199, 127, 40);
+}
+/* --- Plan 4 --------------------------- */
+.my_plan4 {
+    background: rgb(254,235,212);
+    background: rgb(194, 177, 177);
+}
+.my_planHeader.my_plan4 a {
+    background: rgb(199, 127, 40);
+    color:white;
+}
+.my_planHeader.my_plan4 {
+    background: rgb(112, 64, 64);
+    border-bottom: thick solid rgb(69, 39, 39);
+}
+.my_planHeader.my_plan4 input{
+    margin-bottom: 4px;
+}
+.my_planFeature.my_plan4 input{
+    padding-bottom: 3px;
+}
+.my_planFeature {
+    text-align: center;
+    font-size: 1.5em;
+}
+.my_planFeature input.seleccion_cuotas 
+{
+    margin-bottom: 3px;
+}
+.my_planFeature i.my_check {
+    color: green;
+    padding-bottom: 3px;
+}
+.got{
+    padding-bottom: 7px;
+}
+
+.words{
+    text-align:left;
+}
+.numbers{
+    text-align:right;
+}
+.off{
+    text-decoration: line-through;
+    color: rgb(86,86,86);
+}
+.Xpecial{
+    background: white;
+    color; black;
+    border-bottom: black;
+}
+.containerXpecial{
+    border-radius:25px;
+    -webkit-border-radius:25px; /* Safari y Chrome */
+    -moz-border-radius:25px; /* Firefox */
+    -webkit-box-shadow: 0px 0px 13px 0px rgba(38, 50, 50, 0.71);
+    -moz-box-shadow:    0px 0px 13px 0px rgba(38, 50, 50, 0.71);
+    box-shadow:         0px 0px 13px 0px rgba(38, 50, 50, 0.71);
+}
+.cancelado{
+    margin-left:-5px;
+    padding: .0em .6em .3em;
+}
+
+	</style>
+</head>
+<body>
+	<br><br><br>
+	
+    <?php if($this->noAutorizado): ?>
+<div class"container">
+    <div class="col-xs-8 col-md-offset-2 col-sm-8 containerXpecial" style="background:white;">
+        <br>
+        <div class="row">
+            <div class="col-xs-10 col-md-offset-1 col-sm-10"  >
+                <div class="row">
+                    <div class="col-md-offset-1 col-xs-4 col-sm-4 my_planHeader my_plan1 xpecial" style="background:white;color:black;">
+                        <div class="my_planPrice">Nombre:</div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 my_planHeader my_plan1 xpecial" style="background:white;color:black;">
+                        <div class="my_planPrice"><?php echo $this->datos["nombre"] ?></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-1 col-xs-4 col-sm-4 my_planHeader my_plan1 xpecial" style="background:white;color:black;">
+                        <div class="my_planPrice">Apellidos:</div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 my_planHeader my_plan1 xpecial" style="background:white;color:black;">
+                        <div class="my_planPrice"><?php echo $this->datos["apellido"] ?></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-1 col-xs-4 col-sm-4 my_planHeader my_plan1 xpecial" style="background:white;color:black;">
+                        <div class="my_planPrice">C.I:</div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 my_planHeader my_plan1 xpecial"  style="background:white;color:black;">
+                        <div class="my_planPrice"><?php echo $this->datos["pk_usuario"] ?></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-offset-1 col-xs-4 col-sm-4 my_planHeader my_plan1 xpecial" style="background:white;color:black;">
+                        <div class="my_planPrice">Periodo Lectivo:</div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 my_planHeader my_plan1 xpecial" style="background:white;color:black;">
+                        <div class="my_planPrice"><?php echo $this->datos["fk_periodo"] ?></div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <br>
+        <br>
+    <div class="row">
+        <div class="col-xs-10 col-md-offset-1 col-sm-10" >
+            <div class="row">
+                <div class="col-xs-4 col-sm-4 my_planHeader my_plan1">
+                    <div class="my_planTitle">Cuota</div>
+                </div>
+                <div class="col-xs-3 col-sm-3 my_planHeader my_plan2">
+                    <div class="my_planTitle">Por pagar</div>
+                </div>
+                <div class="col-xs-3 col-sm-3 my_planHeader my_plan3">
+                    <div class="my_planTitle">Cancelado</div>
+                </div>
+                <div class="col-xs-2 col-sm-2 my_planHeader my_plan4">
+                    <div class="my_planTitle"><input type="checkbox" id="checkall"> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ <div class="row my_featureRow">
+        <div class="col-xs-10 col-md-offset-1   col-sm-10">
+    <?php
+        foreach ($this->datos["Cuotas"] as $cuota){
+?>
+            <div class="row">
+            <div class="col-xs-4 col-sm-4 my_planFeature my_plan1 words <?php if ($cuota["pagado"]){ echo "off";} ?>">
+            <?php echo $cuota["nombre"]; ?>  <?php if($cuota["vencida"]) echo "<span class='label label-danger' style='font-size:55%;padding-bottom:1px'>Vencida</span>"; ?>
+                </div>
+                <div class="col-xs-3 col-sm-3 my_planFeature my_plan2 <?php if ($cuota["pagado"]){ echo "off";} ?> ">
+                    <?php echo number_format($cuota["porpagar"],2)?>
+                </div>
+                <div class="col-xs-3 col-sm-3 my_planFeature my_plan3 numbers <?php if ($cuota["pagado"]){ echo "off";} ?>">
+                    <?php  echo number_format($cuota["bspagado"],2) ?>
+                </div>
+                <div class="col-xs-2 col-sm-2 numbers my_planFeature my_plan4 <?php if($cuota["pagado"]) echo "got";?>" style="text-align:center">
+                    <?php
+                    if ($cuota["pagado"]){
+                        echo "<span class='label label-default cancelado' text-lign='left'>Cancelado</span>";
+                    }else{
+                        echo "<input type='checkbox' class='seleccion_cuotas'>";
+                    }
+                    ?>
+                </div>
+            </div>
+    <?php } ?>
+            <div class="row">
+                <div class="col-xs-4 col-sm-4 my_planHeader my_plan1">
+                    <div class="my_planTitle">Totales</div>
+                </div>
+                <div class="col-xs-3 col-sm-3 my_planHeader my_plan2">
+                    <div class="my_planTitle"><?php  echo number_format($this->datos["saldo_actual"],2) ?></div>
+                </div>
+                <div class="col-xs-3 col-sm-3 my_planHeader my_plan3">
+                    <div class="my_planTitle numbers"><?php  echo number_format($this->datos["saldo_cancelado"],2) ?></div>
+                </div>
+                <div class="col-xs-2 col-sm-2 my_planHeader my_plan4 ">
+                    <div class="my_planTitle">Bs</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="col-xs-8 col-md-offset-2 col-sm-8">
+        <div class="row">
+            <div class="col-xs-8 col-sm-8 col-sm-offset-2 my_planHeader my_plan1 Xpecial" style="background:white;color:black;" >
+                <div class="my_planTitle"> <div id="text_total">0</div>Bs</div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-sm-offset-  ">
+                <button id="btnContinuar" name="btnContinuar" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only" role="button" aria-disabled="false" style="display: block;">
+        	        <span class="ui-button-text">Continuar</span>
+                </button>
+            </div>
+        </div>   <br>
+        <?php else: ?>
+            <div class="row">
+            <div class="col-xs-8 col-sm-8 col-sm-offset-2  ">
+              <div class="alert" style="text-align:center;width:800px">Usted por los momentos no tiene disponible esta opcion.</div>
+                </button>
+            </div>
+        </div>   <br>
+
+    </div>
+<?php      endif; ?>
+
+</div>
+<br>    </div>
+</div>
+    <div id="frmDialog" title="">
+        <p></p>
+    </div>
+<form name="form" id="form" method="POST" action="http://omicron.une.edu.ve/MiUNE2/transactions/pagocuotas/do " >
+<!-- <form name="form" id="form" method="POST" action="http://localhost/MiUNE22/transactions/pagocuotas/do " > -->
+	<input type="hidden" value="" name="numerocontrol" id="numerocontrol">
+</form>
+
+
+<?php                   
+                        $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.min.js');
+                        $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+                            $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+                            $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+
+?>
+                            <script type='text/javascript'>
+                                var Materias = [];
+                                $(document).ready(function(){
+                                	
+        <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+        ?>
+
+      
+        $('.seleccion_cuotas').attr("disabled",true);
+
+        $('.seleccion_cuotas:disabled:first').removeAttr("disabled");
+            consultarCalculo();
+            if( <?php echo $this->datos["saldo_actual"] ?> <= 0){
+                $('#btnContinuar').addClass('ui-state-disabled');
+                $('input:radio').attr('disabled','disabled');
+
+            }
+
+            if( <?php echo $this->datos["cuotas_no_pagadas"] ?> == 0){
+                $('select').attr('disabled','disabled');
+            }
+
+            $(".tipo_pago").change(function() {
+                console.log('se cambio el ratio');
+                if($('.tipo_pago:checked').val() == "1"){
+                     consultarCalculo($('#selectNumCuotas').val());
+                }else if($('.tipo_pago:checked').val() == "2"){
+                    consultarCalculo('<?php echo $this->datos["cuotas_por_pagar"]?>');
+                 }else if($('.tipo_pago:checked').val() == "3"){
+                     consultarCalculo(-1);
+                }
+            });
+            $("#btnContinuar").click(function(){
+                if($('.seleccion_cuotas:checked').length > 0){
+                    $.get(urlAjax + "getnumero", {"cuotas_seleccionadas":$('.seleccion_cuotas:checked').length}, function(data){
+                        if(data.conection){
+                            $("#numerocontrol").val( data.numerocontrol );
+                            $("#form").submit();
+                        }else {
+                            OpenDialog(data.title,data.message);
+                        }
+                    },"json");
+                }
+                else {
+                    OpenDialog("Seleccione la(s) cutoas","Debe seleccionar al menos una cuota")
+                }
+            });
+                                    function OpenDialog(title,message){
+                                        $('#frmDialog').dialog({
+                                            modal: true,
+                                            title: title,
+                                            open: function () {
+                                                var markup = message;
+                                                $(this).html(markup);
+                                            },
+                                            buttons: {
+                                                Ok: function () {
+                                                    $(this).dialog("close");
+                                                }
+                                            }
+                                        });
+                                    };
+
+
+    $('#checkall').click(function (){
+        if ( $(this).attr("checked") ){
+            $('.seleccion_cuotas:disabled').removeAttr("disabled");
+            $('.seleccion_cuotas').attr("checked",true);
+        }else{
+            $('.seleccion_cuotas').attr("checked",false);
+            $('.seleccion_cuotas').attr("disabled",true);
+            $('.seleccion_cuotas:disabled:first').removeAttr("disabled");
+        }
+        consultarCalculo($('.seleccion_cuotas:checked').length);
+    });
+    $('.seleccion_cuotas').click(function (){
+        $(this).parent().parent().nextAll().find(".seleccion_cuotas:checked").attr("checked",false);
+        if (($('.seleccion_cuotas:not(:disabled):not(:checked)').length > 1)){
+            $(this).parent().parent().nextAll().find(".seleccion_cuotas").attr("disabled",true);
+            $('.seleccion_cuotas:not(:disabled):last').attr("disabled",true);
+        }
+        $('.seleccion_cuotas:disabled:checked').attr("checked",false);
+        if (  $('.seleccion_cuotas:checked:not(:disabled)').length ==  $('.seleccion_cuotas:not(":disabled")').length){
+            $('.seleccion_cuotas:disabled:first').removeAttr("disabled");
+        }else{
+            $('.seleccion_cuotas:first').parent().parent().next().find(".seleccion_cuotas").removeAttr("disabled");
+        }
+        $('.seleccion_cuotas:disabled:checked').attr("checked",false);
+        if (($('.seleccion_cuotas:not(:disabled):not(:checked)').length > 1)){
+            $('.seleccion_cuotas:not(:disabled):last').attr("disabled",true);
+        }
+        $('.seleccion_cuotas:disabled:checked').attr("checked",false);
+        if ($('.seleccion_cuotas:checked').length == $('.seleccion_cuotas').length){
+            $('#checkall').attr("checked",true);
+        }else{
+            $('#checkall').attr("checked",false);
+        }
+        consultarCalculo($('.seleccion_cuotas:checked').length);
+    });
+		
+    });
+
+    function consultarCalculo(cuotas){
+        $.post(urlAjax + "calcularCuotas", {'cuotas': cuotas}, function(response) {
+                      $('#text_total').text(response.pago_total);
+                      $('#text_cantidad').text(response.cantidad);
+                      $('#area_fact').html(response.table_body);
+
+        },'json');
+        if(($('.tipo_pago:checked').val() == "1") && ($('#selectNumCuotas').val() < <?php echo $this->datos["cuotas_por_pagar"] ?> )) {
+            $('#alerta_falta_cuota').slideDown("slow");
+       }else{
+            $('#alerta_falta_cuota').slideUp("slow");
+       }
+    };
+   
+</script>
+</body>
+</html>
+
+

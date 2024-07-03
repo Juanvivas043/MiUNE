@@ -1,0 +1,86 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="1000px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <table id="tblFiltros">
+                <tr>
+                    <td style="font-weight:bolder; text-align: right;">Período: </td>
+                    <td><select id="selPeriodo" style="width:200;" name="selPeriodo"></td>
+                </tr>
+                <tr> 
+                    <td style="font-weight:bolder; text-align: right;">Sede: </td>
+                    <td><select id="selSede" style="width:200;" name="selSede"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bolder; text-align: right;">Escuela: </td>
+                    <td><select id="selEscuela" style="width:200;" name="selEscuela"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bolder; text-align: right;">Pensum: </td>
+                    <td><select id="selPensum" style="width:200;" name="selPensum"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bolder; text-align: right;">Semestre: </td>
+                    <td><select id="selSemestre" style="width:200;" name="selSemestre"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bolder; text-align: right;">Materia: </td>
+                    <td><select id="selMateria" style="width:200;" name="selMateria"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bolder; text-align: right;">Turno: </td>
+                    <td><select id="selTurno" style="width:200;" name="selTurno"></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:bolder; text-align: right;">Sección: </td>
+                    <td><select id="selSeccion" style="width:200;" name="selSeccion"></td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <button id="btnGenerar" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only" name="btnGenerar" role="button" aria-disabled="false">
+                            <span class="ui-button-text">Generar</span>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<br>
+<div id="tableData" align="center"></div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type='text/javascript'>
+    $(document).ready(function(){
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+	echo $this->filters->getJavaScript('tableData');
+?>
+    $('#btnGenerar').click(function(){
+        $.getJSON(urlAjax + "buscar/filters/"+escape($('#tblFiltros').find(':input').serialize())+"", function(d){executeCmdsFromJSON(d)});
+        newwindow=window.open("<?=$this->baseUrl();?>/reports/recursos/generar",'_newtab_','scrollbars=1,toolbar=0,status=0,fullscreen=yes');
+        if (window.focus) {newwindow.focus()}
+        return false;
+    });
+
+    });
+</script>

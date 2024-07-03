@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pensums_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="2.3579476910000055"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="escuela1" class="java.lang.String"/>
+	<parameter name="periodo1" class="java.lang.String"/>
+	<parameter name="pensum1" class="java.lang.String"/>
+	<parameter name="sede1" class="java.lang.String"/>
+	<parameter name="semestre1" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Library/WebServer/Documents/MiUNE2/application/modules/reports/templates/Pensums/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT      tblA.codigopropietario,
+                                vwM.materia::VARCHAR(45),
+                                tblA.unidadcredito,
+                                CASE WHEN tblP1.unidadescredito <> 0 THEN tblP1.unidadescredito ||' U/C Aprob.' ELSE
+                                CASE WHEN (SELECT * FROM fn_xrxx_pensum_prelaciones(tblA.pk_asignatura)) = '' THEN '  -------'::VARCHAR(45) ELSE
+				 CASE WHEN (substring((SELECT * FROM fn_xrxx_pensum_prelaciones(tblA.pk_asignatura)) from 0 for char_length((SELECT * FROM fn_xrxx_pensum_prelaciones(tblA.pk_asignatura)))-2)::varchar(45) ) ilike '%0000%' THEN 'Hasta '||vwS1.id || '' ||substr(replace(vwS1.valor, 'Semestre',''),length(replace(vwS1.valor, 'Semestre',''))-2,length(replace(vwS1.valor, 'Semestre','')))||'aprob.'
+				 else substring((SELECT * FROM fn_xrxx_pensum_prelaciones(tblA.pk_asignatura)) from 0 for char_length((SELECT * FROM fn_xrxx_pensum_prelaciones(tblA.pk_asignatura)))-2)::varchar(45)  end END END,
+                                tblA.pk_asignatura,
+                                vwS1.id || ' ' ||vwS1.valor,
+                                tblP1.unidadescredito
+		FROM tbl_asignaturas tblA
+		JOIN vw_materias vwM ON vwM.pk_atributo = tblA.fk_materia
+		JOIN tbl_pensums tblP ON tblP.pk_pensum = tblA.fk_pensum
+		JOIN vw_escuelas vwE ON vwE.pk_atributo  = tblP.fk_escuela
+		JOIN vw_semestres vwS ON vwS.pk_atributo = tblA.fk_semestre
+	        FULL OUTER JOIN tbl_prelaciones tblP1 ON tblP1.fk_asignatura = tblA.pk_asignatura
+	        FULL OUTER JOIN vw_semestres     vwS1 ON vwS1.pk_atributo    = tblP1.fk_atributo
+                WHERE vwE.pk_atributo 		 =  $P!{escuela1}  AND
+		      tblP.pk_pensum             =  $P!{pensum1}   AND
+		      vwS.id 			  = $P!{semestre1} AND
+		      tblA.fk_materia            <> 1701 AND
+		      tblA.codigopropietario NOT IN ('07150907','07250909','07300908','07251005','07151007','07301007','07150908',
+						     '07100906','07300909','07050907','07250908','07101006','07151008','07051008',
+						     '07301008','07251006','07051007','07101005','07201009','07200809','07050001',
+						     '07100001','07150001','07200001','07250001','07300001') AND
+                      tblA.fk_tiporeinscripcion  = 915
+                ORDER BY tblA.codigopropietario ASC]]>
+	</queryString>
+	<field name="codigopropietario" class="java.lang.String"/>
+	<field name="materia" class="java.lang.String"/>
+	<field name="unidadcredito" class="java.lang.Integer"/>
+	<field name="substring" class="java.lang.String"/>
+	<field name="pk_asignatura" class="java.lang.Integer"/>
+	<field name="?column?" class="java.lang.String"/>
+	<field name="unidadescredito" class="java.lang.Integer"/>
+	<variable name="unidadcredito_1" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{unidadcredito}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="1" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="1" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="11" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="150" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ASIGNATURA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="0" width="18" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[U.C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="208" y="0" width="60" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[REQUISITOS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="9" width="275" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="10"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigopropietario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="0" width="150" height="10" isPrintWhenDetailOverflows="true"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{materia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="190" y="0" width="18" height="10"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unidadcredito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="208" y="0" width="60" height="10"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{substring}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="1" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="11" splitType="Stretch">
+			<textField>
+				<reportElement x="190" y="1" width="18" height="10"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{unidadcredito_1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="190" y="0" width="18" height="1"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

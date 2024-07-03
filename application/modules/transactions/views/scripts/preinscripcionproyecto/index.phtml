@@ -1,0 +1,224 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.grupos');
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br><br>
+<table align="center">
+<div id="fotoDiv" align="center"><input id="foto" width="120" type="image" height="161" disabled="disabled" alt="Foto:" name="foto" style="-moz-box-shadow: 0 0 10px black;"></div>
+</table>
+        <div id="estudiante" align="center">
+            <table id="tblestudiante" align="center" >
+                 <tr>
+                    <td>
+                        <p id="cedula_estudiante">C.I. :</p>
+                    </td>
+                    <td>
+                        <p id="c_estudiantetxt"></p>
+                    </td>
+                </tr>
+                   <tr>
+                    <td>
+                        <p id="nombre_estudiante">Nombre :</p>
+                    </td>
+                    <td>
+                        <p id="n_estudiantetxt"></p>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <p id="apellido_estudiante">Apellido :</p>
+                    </td>
+                    <td>
+                        <p id="a_estudiantetxt"></p>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <p id="escuela_estudiante">Escuela :</p>
+                    </td>
+                    <td>
+                        <p id="e_estudiantetxt"></p>
+                    </td>
+                </tr>  
+            </table>
+            <table id="imprimir_table">
+                <br>
+                
+                <tr>
+                    <td align="center">
+                         <button type="button"  id="imprimir" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">Planilla Preinscripción</span></button>
+                          <button type="button"  id="cartaex" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">Carta Exoneración</span></button>
+                           <button type="button"  id="cartacom" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">Carta Compromiso</span></button>
+                    </td>
+                </tr>
+                
+            
+                
+           
+            
+            <tr>
+                <div id="mensaje" align="center" style=" "border="0" cellpadding="0" cellspacing="0" class="list">
+                    <H1 style="color: red">
+                        Usted aprobó el Taller en un periodo anterior al actual.  
+                    </H1>
+                    <br>
+                </div>
+                
+            </tr>
+
+            <tr>
+                <div id="sinservicio" align="center" style=" "border="0" cellpadding="0" cellspacing="0" class="list">
+                    <H1 style="color: red">
+                        No ha cursado la materia: TALLER DE SERVICIO COMUNITARIO o SERVICIO COMUNITARIO I  
+                    </H1>
+                    <br>
+                </div>
+                
+            </tr>
+
+            <tr>
+                <div id="listo" align="center" style=" "border="0" cellpadding="0" cellspacing="0" class="list">
+                    <H1 style="color: green">
+                       Usted ya culmino con el requisito de SERVICIO COMUNITARIO 
+                    </H1>
+                    <br>
+                </div>                
+            </tr>
+
+             <tr>
+                <div id="inscrito" align="center" style=" "border="0" cellpadding="0" cellspacing="0" class="list">
+                    <H1 style="color: green; font-size: 14px">
+                       Usted inscribio el proyecto:  
+                    </H1>
+                    <H1 style="color: green; font-size: 14px" id="e_proyectotxt"></H1>
+                    <br>
+                </div>                
+            </tr>
+             <tr>
+                <div id="leyenda" align="center" style=" "border="0" cellpadding="0" cellspacing="0" class="list">
+                    <p style='font-size: 14px'>
+                        Recuerde imprimir la Planilla de Preinscripción,la Carta de Exoneración y la Carta de Compromiso y llevarlas a la dirección de SERVICIO COMUNITARIO
+                    </p>
+                    <br>
+                </div>
+                <div id="periodo128" align="center" style=" "border="0" cellpadding="0" cellspacing="0" class="list">
+                    <p style='font-size: 16px; color: red'>
+                        Usted curso y aprobo el SERVICIO COMUNITARIO I en el periodo 128
+                    </p>
+                    <br>
+                    <p style='font-size: 16px; color: red'>
+                        Diríjase a la dirección de SERVICIO COMUNITARIO para inscribir el proyecto
+                    </p>
+                    <br>
+                </div>
+            </tr>
+            <tr>
+                <div id="fin" align="center" style=" "border="0" cellpadding="0" cellspacing="0" class="list">
+                    <H1 style="color: red">
+                       Ya paso la fecha para la preinscripción del proyecto 
+                    </H1>
+                    <br>
+                </div>                
+            </tr>
+
+            
+                <div id="rangofecha"  style=" "border="0" cellpadding="0" cellspacing="0" class="list">
+                    <H1 id="e_fechatxt"></H1> 
+                    <br>
+                </div>                
+           
+
+            </table>    
+            <table id="info">
+               <tr>
+                <td align="center">
+                    <div id="info"><?php echo $this->info; ?></div>
+                    <?php include_once('filtros.phtml'); ?>
+               </tr>
+            </table>
+            
+               
+
+<div id="tableData" align="center"></div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type='text/javascript'>
+    
+    $(document).ready(function(){
+    $('#info').hide();
+    $('#imprimir').hide();
+    $('#cartaex').hide();
+    $('#cartacom').hide();
+    $('#leyenda').hide();
+    $('#mensaje').hide();
+    $('#sinservicio').hide();
+    $('#listo').hide();
+    $('#inscrito').hide();
+    $('#fin').hide();
+    $('#rangofecha').hide();
+    $('#periodo128').hide();
+    $('#tableData').hide();
+
+ <?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+    echo $this->filters->getJavaScript('tableData');
+    echo $this->trigger;
+    
+?>
+         $('#imprimir').click(function(){
+            window.location.href = urlAjax + "imprimir/ci/"+$("#c_estudiantetxt").val();
+        });
+        
+        $('#cartaex').click(function(){
+            window.location.href = urlAjax + "cartaex/ci/"+$("#c_estudiantetxt").val();
+        });
+
+        $('#cartacom').click(function(){
+            window.location.href = urlAjax + "cartacom/ci/"+$("#c_estudiantetxt").val();
+        });
+        
+        $(window).load(function(){
+           $.getJSON(urlAjax + "estudiante", function(data){executeCmdsFromJSON(data)});
+        });
+
+        $(window).load(function(){
+                $.getJSON(urlAjax + "tabla", function(data){executeCmdsFromJSON(data)});
+             });
+        
+
+  
+    });
+     function inscribir(id){
+        $.getJSON(urlAjax + "inscribir/id/" + id, function(data){executeCmdsFromJSON(data);
+            
+        
+       $('.ui-dialog-buttonset button span:contains(\"Si\")').parent().unbind().bind('click', function confirm(){ 
+        $.getJSON(urlAjax + "confirm/" , function(data){
+            executeCmdsFromJSON(data);
+        });
+
+        
+
+        });
+
+        //$('.ui-dialog-buttonset button span:contains(\"Ok\")').clone().appendTo('.ui-dialog-buttonpane');
+
+        });
+        
+        
+    }
+
+      
+</script>

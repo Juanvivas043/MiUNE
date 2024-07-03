@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pirareinscritos" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table 12">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12_TH" mode="Opaque" backcolor="#FEFEFE">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12_CH" mode="Opaque" backcolor="#C1C1C1">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="New Dataset 1">
+		<parameter name="periodo" class="java.lang.String">
+			<defaultValueExpression><![CDATA[122]]></defaultValueExpression>
+		</parameter>
+		<parameter name="sede" class="java.lang.String">
+			<defaultValueExpression><![CDATA[7]]></defaultValueExpression>
+		</parameter>
+		<parameter name="escuela" class="java.lang.String">
+			<defaultValueExpression><![CDATA[11]]></defaultValueExpression>
+		</parameter>
+		<parameter name="cedulas" class="java.lang.String">
+			<defaultValueExpression><![CDATA["20798961"]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT u.pk_usuario, 
+       (LTRIM(TO_CHAR(pk_usuario, '99\".\"999\".\"999')::varchar, '0. '))as ci,
+       u.apellido,
+       u.nombre,
+       es.escuela,
+       se.id AS sem,
+ fn_xrxx_estudiante_iap_escuela(u.pk_usuario, i.fk_periodo, i.fk_atributo) AS iap,
+ fn_xrxx_estudiante_iia_escuela_periodo(u.pk_usuario, i.fk_atributo, i.fk_periodo) AS iaa,
+       i.fk_periodo,
+       sed.nombre as sede
+FROM tbl_inscripciones i
+JOIN tbl_usuariosgrupos 	ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+JOIN tbl_usuarios 	   	u  ON u.pk_usuario 	 = ug.fk_usuario
+JOIN tbl_recordsacademicos	ra ON ra.fk_inscripcion  = i.pk_inscripcion
+JOIN tbl_asignaturas           ag ON ag.pk_asignatura   = ra.fk_asignatura
+JOIN vw_escuelas		es ON es.pk_atributo	 = i.fk_atributo
+JOIN vw_semestres 		se ON se.pk_atributo	 = i.fk_semestre
+JOIN vw_sedes		       sed ON sed.pk_estructura  = i.fk_estructura
+WHERE i.fk_periodo = $P!{periodo}
+  AND ag.fk_materia = 1701
+  AND i.fk_estructura = $P!{sede}
+  AND i.fk_atributo = $P!{escuela}
+  AND u.pk_usuario IN (SELECT ug3.fk_usuario
+                         FROM tbl_inscripciones i3
+    JOIN tbl_usuariosgrupos 	ug3 ON ug3.pk_usuariogrupo = i3.fk_usuariogrupo
+    JOIN tbl_recordsacademicos	ra3 ON ra3.fk_inscripcion  = i3.pk_inscripcion
+                        WHERE i3.fk_periodo = $P!{periodo} + 1 
+                     GROUP BY 1)   		   			 
+AND fn_xrxx_estudiante_iap_escuela(u.pk_usuario, i.fk_periodo, i.fk_atributo) >= 0	 
+AND u.pk_usuario IN ($P!{cedulas})
+ORDER BY 7 DESC, 8 DESC;]]>
+		</queryString>
+		<field name="pk_usuario" class="java.lang.Long"/>
+		<field name="ci" class="java.lang.String"/>
+		<field name="apellido" class="java.lang.String"/>
+		<field name="nombre" class="java.lang.String"/>
+		<field name="escuela" class="java.lang.String"/>
+		<field name="sem" class="java.lang.Integer"/>
+		<field name="iap" class="java.lang.Float"/>
+		<field name="iaa" class="java.lang.Float"/>
+		<field name="fk_periodo" class="java.lang.Long"/>
+		<field name="sede" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="periodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[122]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sede" class="java.lang.String">
+		<defaultValueExpression><![CDATA[7]]></defaultValueExpression>
+	</parameter>
+	<parameter name="escuela" class="java.lang.String">
+		<defaultValueExpression><![CDATA[11]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CIs" class="java.lang.String">
+		<defaultValueExpression><![CDATA["20798961"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT es.escuela,
+       i.fk_periodo,
+       sed.nombre as sede
+FROM tbl_inscripciones i
+JOIN tbl_usuariosgrupos 	ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+JOIN tbl_usuarios 	   	u  ON u.pk_usuario 	 = ug.fk_usuario
+JOIN tbl_recordsacademicos	ra ON ra.fk_inscripcion  = i.pk_inscripcion
+JOIN tbl_asignaturas           ag ON ag.pk_asignatura   = ra.fk_asignatura
+JOIN vw_escuelas		es ON es.pk_atributo	 = i.fk_atributo
+JOIN vw_semestres 		se ON se.pk_atributo	 = i.fk_semestre
+JOIN vw_sedes		       sed ON sed.pk_estructura  = i.fk_estructura
+WHERE i.fk_periodo = ($P{periodo})::integer
+  AND ag.fk_materia = 1701
+  AND i.fk_estructura = ($P{sede})::integer
+  AND i.fk_atributo = ($P{escuela})::integer
+  AND u.pk_usuario IN (SELECT ug3.fk_usuario
+                         FROM tbl_inscripciones i3
+    JOIN tbl_usuariosgrupos 	ug3 ON ug3.pk_usuariogrupo = i3.fk_usuariogrupo
+    JOIN tbl_recordsacademicos	ra3 ON ra3.fk_inscripcion  = i3.pk_inscripcion
+                        WHERE i3.fk_periodo = ($P{periodo})::integer + 1 
+                     GROUP BY 1)   		   			 AND fn_xrxx_estudiante_iap_escuela(u.pk_usuario, i.fk_periodo, i.fk_atributo) >= 0	 
+GROUP BY 1,2,3;]]>
+	</queryString>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="fk_periodo" class="java.lang.Long"/>
+	<field name="sede" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="119" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="441" y="0" width="131" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="112" height="49"/>
+				<imageExpression><![CDATA["/var/www/default/http/MiUNE2gitINTER/public/images/logo_UNE_color.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="61" width="367" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["PERÍODO: " + $F{fk_periodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="73" width="367" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["ESCUELA: " + $F{escuela}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="49" width="367" height="12"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["SEDE: " + $F{sede}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="93" width="572" height="26"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Listado de Estudiantes en P.I.R.A Reinscritos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="27" splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="195" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table 12" style="table 12" x="0" y="0" width="572" height="195"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="New Dataset 1">
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="sede">
+							<datasetParameterExpression><![CDATA[$P{sede}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="escuela">
+							<datasetParameterExpression><![CDATA[$P{escuela}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="cedulas">
+							<datasetParameterExpression><![CDATA[$P{CIs}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="63">
+						<jr:columnHeader style="table 12_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="63" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[C.I.]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 12_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="63" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{ci}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="161">
+						<jr:columnHeader style="table 12_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="161" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Apellido]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 12_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="161" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="150">
+						<jr:columnHeader style="table 12_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="150" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Nombre]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 12_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="150" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="38">
+						<jr:columnHeader style="table 12_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="38" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[Sem]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 12_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="38" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{sem}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="61">
+						<jr:columnHeader style="table 12_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="61" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[I. Período]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 12_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="61" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{iap}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="52">
+						<jr:columnHeader style="table 12_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="52" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[I. Acum]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 12_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="52" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{iaa}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="63" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="44" width="572" height="19"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Universidad Nueva Esparta - Dirección de Desarrollo Tecnológico Institucional (D.D.T.I.)]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

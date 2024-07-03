@@ -1,0 +1,103 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="1000px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+        <td>
+            <div id="puestoscant"></div>
+<!--            <div style="border: 1px solid black;width:100px;height:100px;background-color:white;text-align:center;font-size:40px;">
+                <span style="display:table-cell; vertical-align:middle; text-align:center; font-size:18px">Disponibles:</span>
+                100
+                <span align="center" style="float:left; margin-left:20px; display:table-cell; vertical-align:middle; text-align:center; font-size:18px">Puestos</span>
+            </div>-->
+        </td>
+    </tr>
+</table>
+<br>
+<div id="tableData" align="center"></div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type='text/javascript'>
+    $(document).ready(function(){
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+    echo $this->filters->getJavaScript('tableData');
+    echo $this->trigger;
+    echo $this->SwapBytes_Jquery->fillSelect('selEstado', 'estado');
+    //$function = $this->SwapBytes_Jquery->getJSON('cambiar', null, array('data' => $this->SwapBytes_Jquery->serializeForm()));
+    $function = $this->SwapBytes_Jquery->getJSON('cambiar', null, array('data' => 'escape($(\'#tableData\').children().children().children().find(\'td\').find(\'#chkRecordAcademico\').not(\':disabled\').serialize())',
+                                                                        'filter' => 'escape($(\'#tblFiltros :input\').serialize())'));
+    echo $this->SwapBytes_Jquery->setChange('selEstado', $function);
+
+?>
+
+    $('#btnReturn').click(function (){
+           $.getJSON(urlAjax+"regreso/", function(data){executeCmdsFromJSON(data)})
+        });
+
+    $('#btnImp').click(function (){
+           window.location.href = urlAjax + "imprimirliata/turno/" + $('#filtro').find(':input').val();
+           //$.getJSON(urlAjax+"imprimirliata/turno/" + $('#filtro').find(':input').val(), function(data){executeCmdsFromJSON(data)})
+        });
+
+    $('#btnImpS').click(function (){
+           window.location.href = urlAjax + "imprimirselected/turno/" + $('#filtro').find(':input').val();
+           //$.getJSON(urlAjax+"imprimirliata/turno/" + $('#filtro').find(':input').val(), function(data){executeCmdsFromJSON(data)})
+        });
+
+    $("#selEstado option:eq(0)").before("<option value='0'>Estado</option>");
+    $("#selEstado option:first").css('text-align:center;font-weight:bolder;');
+    $("#selEstado option:first").attr('selected','selected');
+    
+            $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+
+    });
+
+
+  function listado(){
+      window.location.href = urlAjax + "imprimir/pk/" + id;
+  }
+
+  function activar(pk, that){
+	that.parent().siblings('').eq(10).html('Activado!');
+        $.getJSON(urlAjax+"activar/pk/" + pk, function(data){
+		executeCmdsFromJSON(data)});
+	return false;
+  }
+  function desactivar(pk, that){
+	that.parent().siblings('').eq(10).html('Desactivado!');
+        $.getJSON(urlAjax+"desactivar/pk/" + pk, function(data){
+		executeCmdsFromJSON(data)});
+	return false;
+  }
+
+var timer_print = 0;
+  function emitir(id){
+
+    timer_print = 0;
+    window.location.href = urlAjax + "imprimir/pk/" + id;
+    window.setInterval(yourfunction, 5000);
+
+    }
+   function yourfunction() { 
+    if(timer_print === 0){
+        $('#btnList').click();
+        timer_print++;
+    }
+}
+</script>

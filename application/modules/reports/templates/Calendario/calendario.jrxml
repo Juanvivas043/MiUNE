@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="calendario" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eee604c2-ef12-4cf7-804d-6386ca75145d">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="153"/>
+	<property name="ireport.y" value="191"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF7FF"/>
+		</conditionalStyle>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF7FF"/>
+		</conditionalStyle>
+	</style>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 6_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 7_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 8_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#EFF7FF"/>
+		</conditionalStyle>
+	</style>
+	<style name="table 9">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 9_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 10_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 11">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 11_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 11_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 11_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 12_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 13">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 13_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 13_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 13_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 14">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 14_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 14_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 14_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="negrita" mode="Opaque">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{destacar} == true]]></conditionExpression>
+			<style mode="Opaque"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="New Dataset 1" uuid="1d5eb433-72a7-46c4-92f3-ae3596d63723">
+		<parameter name="parameter1" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT consecutivo,subconsec,
+CASE WHEN subconsec is null THEN null ELSE actividad END as actividad,
+CASE WHEN subconsec is null THEN null ELSE fechainicio END as fechainicio,
+CASE WHEN subconsec is null THEN null ELSE fehafin END as fehafin
+FROM fn_xrxx_get_calendario(122) as (consecutivo varchar, subconsec varchar, actividad varchar, fechainicio date, fehafin date)
+where subconsec ilike 2 || '.%']]>
+		</queryString>
+		<field name="consecutivo" class="java.lang.String"/>
+		<field name="subconsec" class="java.lang.String"/>
+		<field name="actividad" class="java.lang.String"/>
+		<field name="fechainicio" class="java.sql.Date"/>
+		<field name="fehafin" class="java.sql.Date"/>
+	</subDataset>
+	<subDataset name="semanas" uuid="b3534b04-f337-4238-9709-fea55ab500f4">
+		<parameter name="sem_periodo" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT * FROM fn_xrxx_obtener_semanas(
+  (SELECT fechainicio::timestamp
+  FROM tbl_calendarios
+  where fk_actividad = 1641
+      and fk_periodo = $P!{sem_periodo}),
+  (SELECT fechainicio::timestamp
+  FROM tbl_calendarios
+  where fk_actividad =1679
+      and fk_periodo = $P!{sem_periodo})) as (a varchar,b integer)]]>
+		</queryString>
+		<field name="a" class="java.lang.String"/>
+		<field name="b" class="java.lang.Integer"/>
+		<variable name="total_semanas" class="java.lang.Integer" calculation="Sum">
+			<variableExpression><![CDATA[$F{b}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<subDataset name="dataset1" uuid="4809d7d1-5442-4281-8a6d-b599be8902cd"/>
+	<subDataset name="periodo" uuid="b01a4400-4659-4f39-9686-9fda001e0ae3">
+		<parameter name="periodo_periodo" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT to_char(inicioclases, 'TMMonth') || ' - ' || to_char(fechafin, 'TMMonth') || ' ' || extract(year from fechafin) as fechas
+FROM tbl_periodos
+WHERE pk_periodo = $P!{periodo_periodo}]]>
+		</queryString>
+		<field name="fechas" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/pocho/Sites/MiUNE2-interfaz/application/modules/reports/templates/Calendario/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="mi_consec" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Periodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[123]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ruta_imagen" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/pocho/Sites/MiUNE2-interfaz/public/images/logo_UNE_color.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cantidad_subs" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[$F{subcount}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT consecutivo,
+       actividad,
+       CASE WHEN fechainicio <> fehafin
+	  THEN CASE WHEN mesinicio <> mesfin
+                      THEN
+diainicio || ' de ' || mesinicio || ' al ' || diafin || ' de ' || mesfin
+		  ELSE diainicio || ' al ' || diafin || ' de ' || mesinicio END
+            ELSE diainicio || ' de ' || mesinicio END AS fecha,
+subcount,
+destacar
+
+FROM(
+SELECT consecutivo,
+actividad,
+to_char(fechainicio, 'DD') as diainicio,
+CASE to_char(fechainicio, 'TMMonth')
+WHEN 'May' THEN 'Mayo' ELSE to_char(fechainicio, 'TMMonth')
+END AS mesinicio,
+to_char(fehafin, 'DD') as diafin,
+CASE to_char(fehafin, 'TMMonth')
+WHEN 'May' THEN 'Mayo'ELSE to_char(fehafin, 'TMMonth')
+END AS mesfin,
+fechainicio,
+fehafin,
+subcount,
+destacar
+FROM fn_xrxx_get_calendario($P!{Periodo}) as (consecutivo varchar, subconsec varchar, actividad varchar, fechainicio date, fehafin date, subcount int,destacar boolean)
+where subconsec is null
+)as sqt]]>
+	</queryString>
+	<field name="consecutivo" class="java.lang.String"/>
+	<field name="actividad" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="subcount" class="java.lang.Integer"/>
+	<field name="destacar" class="java.lang.Boolean"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<staticText>
+				<reportElement x="175" y="0" width="205" height="13" uuid="b2014bd9-79de-4d7b-a839-da3f544f4686"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONSEJO UNIVERSITARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="13" width="205" height="13" uuid="e9a6a92f-7114-40cd-88a9-78488b7ef697"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CALENDARIO ACADEMICO]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="table 14" x="196" y="26" width="125" height="12" uuid="3c6ffc5b-48d0-4fb5-a9eb-9160ff9eabcc"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="periodo" uuid="178ea674-6009-40bd-a6e9-a5a9611a6b4f">
+						<datasetParameter name="periodo_periodo">
+							<datasetParameterExpression><![CDATA[$P{Periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="233" uuid="f485cc59-2199-4333-847b-099dd236401b">
+						<jr:detailCell height="20" rowSpan="1">
+							<textField>
+								<reportElement x="53" y="0" width="180" height="20" uuid="3161ac31-9364-4327-a187-1ae4675a3a5d"/>
+								<textElement verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{fechas}]]></textFieldExpression>
+							</textField>
+							<staticText>
+								<reportElement x="0" y="0" width="53" height="20" uuid="5f52a74e-ef50-4c7e-bf21-16c7516bbcab"/>
+								<textElement verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<text><![CDATA[PERIODO:]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<image>
+				<reportElement x="0" y="1" width="126" height="65" uuid="57a5aca4-9145-450a-8470-e8e07d0c1469"/>
+				<imageExpression><![CDATA[$P{ruta_imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="15" splitType="Prevent">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table" stretchType="RelativeToBandHeight" x="40" y="0" width="321" height="15" isPrintInFirstWholeBand="true" uuid="a4948e12-52fd-42b6-acc6-e5cd460ce8c5">
+					<printWhenExpression><![CDATA[($F{subcount} == 0 && $F{destacar} == false)]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="3">
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="40" height="15" isPrintInFirstWholeBand="true" uuid="2a867bc9-caa3-4a2d-8322-0be32b885507">
+					<printWhenExpression><![CDATA[$F{subcount} > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[( $F{subcount}==0 ? $F{consecutivo} : ' ' )]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="362" y="0" width="193" height="15" isPrintInFirstWholeBand="true" uuid="8c245516-27d9-4055-95b5-c3465ba5281e">
+					<printWhenExpression><![CDATA[($F{subcount} == 0 && $F{destacar} == false)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToTallestObject" x="361" y="0" width="1" height="15" isPrintInFirstWholeBand="true" uuid="355c83ed-d4f7-4624-8650-258fcaa47b58">
+					<printWhenExpression><![CDATA[$F{subcount} == 0]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="40" height="15" isPrintInFirstWholeBand="true" uuid="4728c1ab-2fbf-41c8-ab97-74d8aefc3177">
+					<printWhenExpression><![CDATA[$F{subcount} == 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[( $F{subcount}==0 ? $F{consecutivo} : ' ' )]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table" stretchType="RelativeToBandHeight" x="40" y="0" width="321" height="15" isPrintInFirstWholeBand="true" uuid="34fff943-1b14-41e4-9d03-a4120ab6bdc0">
+					<printWhenExpression><![CDATA[($F{subcount} > 0 && $F{destacar} == false)]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="3">
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="362" y="0" width="193" height="15" isPrintInFirstWholeBand="true" uuid="a9996148-2112-4f93-8b45-d181017f1d76">
+					<printWhenExpression><![CDATA[($F{subcount} > 0 && $F{destacar} == false)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table" stretchType="RelativeToBandHeight" x="40" y="0" width="321" height="15" isPrintInFirstWholeBand="true" uuid="e7b78c98-43d1-46b3-b105-78bb91ed500d">
+					<printWhenExpression><![CDATA[($F{subcount} == 0 && $F{destacar} == true)]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="3">
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="table" stretchType="RelativeToBandHeight" x="40" y="0" width="321" height="15" isPrintInFirstWholeBand="true" uuid="f256d772-cace-445f-9281-d1fd0d0f8dda">
+					<printWhenExpression><![CDATA[($F{subcount} > 0 && $F{destacar} == true)]]></printWhenExpression>
+				</reportElement>
+				<box leftPadding="3">
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="362" y="0" width="193" height="15" isPrintInFirstWholeBand="true" uuid="81f85e23-3137-490a-9d5d-cd3c9c08085b">
+					<printWhenExpression><![CDATA[($F{subcount} == 0 && $F{destacar} == true)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="362" y="0" width="193" height="15" isPrintInFirstWholeBand="true" uuid="10b47ef6-e7eb-4036-8e95-041763859839">
+					<printWhenExpression><![CDATA[($F{subcount} > 0 && $F{destacar} == true)]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="17">
+			<printWhenExpression><![CDATA[$F{subcount} > 0]]></printWhenExpression>
+			<subreport>
+				<reportElement style="table" stretchType="RelativeToTallestObject" x="0" y="0" width="555" height="17" isPrintInFirstWholeBand="true" uuid="d7e22d4f-ead6-46a9-961a-6c3393786755">
+					<printWhenExpression><![CDATA[$F{subcount} > 0]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="miperiodo">
+					<subreportParameterExpression><![CDATA[$P{Periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="subs">
+					<subreportParameterExpression><![CDATA[$F{subcount}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="MIO">
+					<subreportParameterExpression><![CDATA[$F{consecutivo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "calendario_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="40"/>
+	</pageFooter>
+	<summary>
+		<band height="232" splitType="Stretch">
+			<componentElement>
+				<reportElement key="table 11" style="table 11" x="15" y="38" width="134" height="50" uuid="5df171bc-d88f-4fba-acde-9fad8ac84fbd"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="semanas" uuid="76acd930-3df2-437e-8c80-829802d591cd">
+						<datasetParameter name="sem_periodo">
+							<datasetParameterExpression><![CDATA[$P{Periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="84" uuid="2ea7301e-cb9a-41ac-b78f-df18627c3b53">
+						<jr:columnFooter style="table 11_TD" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="84" height="30" uuid="7f550df7-bb11-4b57-8fe0-8ae771f372bd"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[TOTAL]]></text>
+							</staticText>
+						</jr:columnFooter>
+						<jr:detailCell style="table 11_TD" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="84" height="19" uuid="c3df7325-87d7-4ece-ac4c-3619fcb74985"/>
+								<box leftPadding="4"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{a}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="41" uuid="28714f17-8de6-4661-ad80-a32b45292a3e">
+						<jr:columnFooter style="table 11_TD" height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="41" height="30" uuid="39ff4e9a-fcd2-4de4-a8af-f3ecf9b12320"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{total_semanas}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell style="table 11_TD" height="19" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="41" height="19" uuid="c477e934-4393-4aba-be80-534c93195d6f"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{b}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="72" uuid="115c3b12-5285-4b5a-9e25-ea65a21bcba6">
+						<jr:columnFooter style="table 11_TD" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="72" height="30" uuid="f8f8f9b8-0c31-4f13-a428-aa9e78730588"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[SEMANAS]]></text>
+							</staticText>
+						</jr:columnFooter>
+						<jr:detailCell style="table 11_TD" height="19" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="72" height="19" uuid="2fd3c1e6-6188-4a24-ba67-2bb221579e5d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="false"/>
+								</textElement>
+								<text><![CDATA[SEMANAS]]></text>
+							</staticText>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement x="27" y="24" width="169" height="14" uuid="040a6c16-6061-4785-a5f3-c56fb53d8ce1"/>
+				<textElement>
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[RELACION DE SEMANAS HABILES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="185" width="516" height="12" uuid="e77c8ed1-7d31-4aa6-adaa-62457c3b6e93"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOTA: La rectificación de la reinscripción únicamente será posible cuando haya cambio de horarios por parte ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="197" width="516" height="12" uuid="f9e64ab7-cd00-4216-b8de-3d85043a525d"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[de la Universidad. En este caso el estudiante dispondrá de un plazo máximo de siete (7) días hábiles, contados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="19" y="209" width="516" height="12" uuid="076dfd2b-5be0-4bc1-a3ee-89eea6e92a88"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[a partir de la publicación en cartelera, para efectuar cualquier mdificación de su reinscripción.]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="306" y="38" width="229" height="20" uuid="701f4c08-312b-4699-be09-86726511c6a1"/>
+				<textFieldExpression><![CDATA["√ solo en casos estrictamente necesarios, el Director de Escuela podrá fijar Pruebas de Lapso fuera del Calendario establecido."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="306" y="68" width="229" height="20" uuid="270bf724-b6e4-4371-9293-fb901a02f300"/>
+				<textFieldExpression><![CDATA["√ Este Calendario puede estar sujeto a modificaciones por el Consejo Universitario."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="220" width="516" height="12" uuid="0155e6ed-730f-45d3-b65c-88b0b66ffd3a"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aprobado por el Consejo Universitario en la Sesión Ordinaria No 210 realizada el 13 de Abril de 2016.]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

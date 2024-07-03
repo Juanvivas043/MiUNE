@@ -1,0 +1,115 @@
+<?php
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/filtros.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/paginator.css');
+?>
+<h2><?php echo $this->titulo; ?></h2>
+<style>
+    textarea{
+        vertical-align: top;
+        height: 5em;
+    }    
+    .error{
+        display: none;
+        margin-left: 10px;
+    }       
+    .error_show{
+        color: red;
+        margin-left: 10px;
+    }
+    div.ui-dialog{
+        top: 50%;
+        left: 37%;
+    }
+    #tblFiltros tr#nombres td#customfiltername{
+        display: inline-block;
+        margin-left: 25px;
+    }
+    #tblFiltros tr#selects td {
+        display: inline-block;
+    }
+    .selDate {
+        margin-top: -40px;
+        margin-left: 240px;
+    }
+    .selDate div {
+        display: inline-block;
+        margin-left: 13.5px;
+        margin-bottom: 5px;
+    }
+    .selDate div label {
+        font-weight: bold;
+    }
+    .selDate div input {
+        font-weight: bold;
+        width: 90px;
+        padding-left: 5px;
+        float: right;
+        margin-top: -2.5px;
+    }
+</style>
+<div id="busqueda" align="center">
+    <table id="tblbusqueda" align="center">
+        <tr>
+            <td class='relative'>
+                <?php include_once('filtros.phtml'); ?>
+                <span></span>
+                <div class="selDate" id="selDate">
+                    <div class="selDesde">
+                       <label>Desde:</label>
+                       <input type="text" class="selDateDesde" name="selDateDesde"  placeholder="Fecha Desde" id="selDateDesde">
+                    </div>
+                    <div class="selHasta">
+                        <label>Hasta:</label>
+                        <input type="text" class="selDateHasta" name="selDateHasta" placeholder="Fecha Hasta" id="selDateHasta">
+                    </div>
+                </div>
+            </td>   
+       </tr>
+       <tr>
+           <td>&nbsp;</td>
+       </tr>      
+    </table> 
+</div>
+<div align="center">
+    <table>
+        <tr>
+            <td>
+                <div id="tableData">&nbsp;</div>
+            </td>
+        </tr>
+    </table>
+</div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        <?php 
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Form->getJavaScript();
+            echo $this->SwapBytes_Jquery->getLoading('loading'); 
+            echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+            echo $this->filters->getJavaScript('tableData');
+        ?>
+        $( "#selDateDesde" ).datepicker({dateFormat: 'yy-mm-dd'}).datepicker();
+        $( "#selDateHasta" ).datepicker({ dateFormat: 'yy-mm-dd'}).datepicker();
+        $("#btnList").unbind();
+        $("#btnList").click(function(){
+            list();
+        });
+        function list(){
+            $.getJSON(urlAjax + "list/filters/"+escape($('#tableData').find(':input').serialize()), { empresa: $("#selEmpresa").val(), vacante: $("#selVacante").val(),selDateDesde: $("#selDateDesde").val(), selDateHasta: $("#selDateHasta").val() }, function(d){executeCmdsFromJSON(d)});
+        }
+        $("#selDateDesde").change(function(){
+            list();
+        });
+        $("#selDateHasta").change(function(){
+            list();
+        });
+    });
+</script>

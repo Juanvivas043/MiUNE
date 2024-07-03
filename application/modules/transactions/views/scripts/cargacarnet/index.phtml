@@ -1,0 +1,82 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.grupos.css');
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/pagination.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+   
+<div id="gmarco">
+    
+    
+    <div id="busqueda" style="font-weight:bolder;text-align:center">
+        
+<!--        <table id="tblfiltros"  align="center" style="font-weight:bolder;margin: 0 auto;">
+            <tr>
+                <td style="font-weight:bolder;text-align:center">
+                    <label>Periodo</label>
+                </td>
+                <td style="font-weight:bolder;text-align:center">
+                    <label>Afinidad</label>
+                </td>
+            </tr>
+            <tr>
+                <td style="font-weight:bolder;text-align:center">
+		    <select name="selPeriodo" id="selPeriodo" style="width:140px;" disabled="true"></select>
+		</td>
+                <td style="font-weight:bolder;text-align:center">
+		    <select name="selAfinidad" id="selAfinidad" style="width:140px;" disabled="true" ></select>
+		</td>
+            </tr>
+        </table>-->
+        
+        <table id="tblbusqueda"  align="center">
+            <tr>
+                <td align="center">
+                    <?php include_once('filtros.phtml'); ?>
+                </td>
+                <td>
+                    <div id="contador" style="border:1px solid black; text-align: center;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="tableData">&nbsp;</div>
+                </td>
+            </tr>
+        </table> 
+    </div>
+</div>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        <?php
+        echo $this->SwapBytes_Jquery->getLoading('loading');
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        //echo $this->SwapBytes_Crud_Form->getJavaScript();
+        echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+        ?>              
+                
+        $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+        $('#marcos').hide();
+        $('#mensaje').hide();
+
+        $('#btnClear').click(function(){
+
+            $('#contador').hide();
+
+        });
+
+    });
+   
+</script>

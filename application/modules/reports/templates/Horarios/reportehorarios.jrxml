@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="horariosprueba2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="style1" pattern="">
+		<box leftPadding="1"/>
+	</style>
+	<subDataset name="New Dataset 1">
+		<queryString>
+			<![CDATA[SELECT DISTINCT *, nombre || ', ' || apellido as profesor FROM fn_xrxx_horarios_detalle_nuevo(120,
+	                7,
+	                9,
+	                '{{{1,0,1,0,9,873,865},{1,0,1,1,9,873,1630},{1,0,1,2,9,873,1631}}
+,{{1,0,2,0,9,873,866},{1,0,2,1,9,873,1632},{1,0,2,2,9,873,1633}}
+}'::int[][][])
+	                                                AS(posicion INTEGER,
+							   dia VARCHAR(45),
+							   				 pk_horario INTEGER,
+	                                                   horainicio TIME,
+	                                                   horafin TIME,
+	                                                   Materia VARCHAR(45),
+	                                                   Seccionmadre INTEGER,
+	                                                   Seccion VARCHAR(45),
+	                                                   Nombre VARCHAR(45),
+	                                                   Apellido VARCHAR(45),
+	                                                   Edificio VARCHAR(45),
+	                                                   Salon VARCHAR(45),
+	                                                   Nota VARCHAR(20),
+	                                                   Semestre INT2,
+	                                                   SeccionID INT8,
+	                                                   SemestreID INT8,
+							   TurnoID INT8,
+	                                                   SubColumna INT,
+	                                                   Columna INT,
+							   Grupo INT,
+						           pagina INT,
+	                                                   id INT2,
+                        pk_escuela INTEGER,
+							   escuela VARCHAR(45),
+							   turnoname VARCHAR(45),
+							   codsem VARCHAR(45), sede VARCHAR(45),periodo VARCHAR(45))
+	                                                ORDER BY pagina, grupo, columna, id, horainicio, semestre, seccionmadre, seccion, posicion;;
+]]>
+		</queryString>
+		<field name="posicion" class="java.lang.Integer"/>
+		<field name="dia" class="java.lang.String"/>
+		<field name="pk_horario" class="java.lang.Integer"/>
+		<field name="horainicio" class="java.sql.Time"/>
+		<field name="horafin" class="java.sql.Time"/>
+		<field name="materia" class="java.lang.String"/>
+		<field name="seccionmadre" class="java.lang.Integer"/>
+		<field name="seccion" class="java.lang.String"/>
+		<field name="nombre" class="java.lang.String"/>
+		<field name="apellido" class="java.lang.String"/>
+		<field name="edificio" class="java.lang.String"/>
+		<field name="salon" class="java.lang.String"/>
+		<field name="nota" class="java.lang.String"/>
+		<field name="semestre" class="java.lang.Integer"/>
+		<field name="seccionid" class="java.lang.Long"/>
+		<field name="semestreid" class="java.lang.Long"/>
+		<field name="turnoid" class="java.lang.Long"/>
+		<field name="subcolumna" class="java.lang.Integer"/>
+		<field name="columna" class="java.lang.Integer"/>
+		<field name="grupo" class="java.lang.Integer"/>
+		<field name="pagina" class="java.lang.Integer"/>
+		<field name="id" class="java.lang.Integer"/>
+		<field name="pk_escuela" class="java.lang.Integer"/>
+		<field name="escuela" class="java.lang.String"/>
+		<field name="turnoname" class="java.lang.String"/>
+		<field name="codsem" class="java.lang.String"/>
+		<field name="sede" class="java.lang.String"/>
+		<field name="periodo" class="java.lang.String"/>
+		<field name="profesor" class="java.lang.String"/>
+		<group name="pagina">
+			<groupExpression><![CDATA[$F{pagina}]]></groupExpression>
+		</group>
+		<group name="grupo">
+			<groupExpression><![CDATA[$F{grupo}]]></groupExpression>
+		</group>
+		<group name="columna">
+			<groupExpression><![CDATA[$F{columna}]]></groupExpression>
+		</group>
+		<group name="subcolumna">
+			<groupExpression><![CDATA[$F{subcolumna}]]></groupExpression>
+		</group>
+	</subDataset>
+	<queryString>
+		<![CDATA[SELECT DISTINCT *, nombre || ', ' || apellido as profesor FROM fn_xrxx_horarios_detalle_nuevo(120,
+	                7,
+	                9,
+	                '{{{1,0,1,0,9,873,865},{1,0,1,1,9,873,1630},{1,0,1,2,9,873,1631}}
+,{{1,0,2,0,9,873,866},{1,0,2,1,9,873,1632},{1,0,2,2,9,873,1633}}
+}'::int[][][])
+	                                                AS(posicion INTEGER,
+							   dia VARCHAR(45),
+							   				 pk_horario INTEGER,
+	                                                   horainicio TIME,
+	                                                   horafin TIME,
+	                                                   Materia VARCHAR(45),
+	                                                   Seccionmadre INTEGER,
+	                                                   Seccion VARCHAR(45),
+	                                                   Nombre VARCHAR(45),
+	                                                   Apellido VARCHAR(45),
+	                                                   Edificio VARCHAR(45),
+	                                                   Salon VARCHAR(45),
+	                                                   Nota VARCHAR(20),
+	                                                   Semestre INT2,
+	                                                   SeccionID INT8,
+	                                                   SemestreID INT8,
+							   TurnoID INT8,
+	                                                   SubColumna INT,
+	                                                   Columna INT,
+							   Grupo INT,
+						           pagina INT,
+	                                                   id INT2,
+                        pk_escuela INTEGER,
+							   escuela VARCHAR(45),
+							   turnoname VARCHAR(45),
+							   codsem VARCHAR(45), sede VARCHAR(45),periodo VARCHAR(45))
+	                                                ORDER BY pagina, grupo, columna, id, horainicio, semestre, seccionmadre, seccion, posicion;;
+]]>
+	</queryString>
+	<field name="posicion" class="java.lang.Integer"/>
+	<field name="dia" class="java.lang.String"/>
+	<field name="pk_horario" class="java.lang.Integer"/>
+	<field name="horainicio" class="java.sql.Time"/>
+	<field name="horafin" class="java.sql.Time"/>
+	<field name="materia" class="java.lang.String"/>
+	<field name="seccionmadre" class="java.lang.Integer"/>
+	<field name="seccion" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="edificio" class="java.lang.String"/>
+	<field name="salon" class="java.lang.String"/>
+	<field name="nota" class="java.lang.String"/>
+	<field name="semestre" class="java.lang.Integer"/>
+	<field name="seccionid" class="java.lang.Long"/>
+	<field name="semestreid" class="java.lang.Long"/>
+	<field name="turnoid" class="java.lang.Long"/>
+	<field name="subcolumna" class="java.lang.Integer"/>
+	<field name="columna" class="java.lang.Integer"/>
+	<field name="grupo" class="java.lang.Integer"/>
+	<field name="pagina" class="java.lang.Integer"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="pk_escuela" class="java.lang.Integer"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="turnoname" class="java.lang.String"/>
+	<field name="codsem" class="java.lang.String"/>
+	<field name="sede" class="java.lang.String"/>
+	<field name="periodo" class="java.lang.String"/>
+	<field name="profesor" class="java.lang.String"/>
+	<group name="paginas">
+		<groupExpression><![CDATA[$F{pagina}]]></groupExpression>
+		<groupHeader>
+			<band height="4"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<group name="grupo">
+		<groupExpression><![CDATA[$F{grupo}]]></groupExpression>
+		<groupHeader>
+			<band height="4"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="4" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="84" splitType="Stretch">
+			<textField>
+				<reportElement x="177" y="20" width="365" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Periodo: " + $F{periodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="35" width="365" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sede: " + $F{sede}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="177" y="0" width="365" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HORARIO DE CLASES ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="177" y="50" width="365" height="15" printWhenGroupChanges="paginas"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Escuela: " + $F{escuela}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="65" width="365" height="15" printWhenGroupChanges="grupo"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Turno: " + $F{turnoname}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<crosstab ignoreWidth="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="573" height="125"/>
+				<crosstabDataset>
+					<dataset>
+						<datasetRun subDataset="New Dataset 1">
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+					</dataset>
+				</crosstabDataset>
+				<rowGroup name="id" width="4">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{id}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents/>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="dia" width="16">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{dia}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="16" height="56"/>
+								<textElement verticalAlignment="Middle" rotation="Left">
+									<font size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{dia}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="horainicio" width="30">
+					<bucket class="java.sql.Time">
+						<bucketExpression><![CDATA[$F{horainicio}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="4" width="30" height="16"/>
+								<textElement>
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[new SimpleDateFormat("h:mm").format($V{horainicio})]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="horafin" width="2">
+					<bucket class="java.sql.Time">
+						<bucketExpression><![CDATA[$F{horafin}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="-30" y="46" width="30" height="16"/>
+								<textElement>
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[new SimpleDateFormat("h:mm").format($V{horafin})]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="columna" height="1">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{columna}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Opaque">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="posicion" height="0">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{posicion}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents/>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="codsem" height="16">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{codsem}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents>
+							<textField>
+								<reportElement style="style1" x="0" y="0" width="127" height="14"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{codsem}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="horafinMeasure" class="java.lang.String" calculation="First">
+					<measureExpression><![CDATA[$F{materia}]]></measureExpression>
+				</measure>
+				<measure name="profesorMeasure" class="java.lang.String" calculation="First">
+					<measureExpression><![CDATA[$F{profesor}]]></measureExpression>
+				</measure>
+				<measure name="observacion" class="java.lang.Object" calculation="First">
+					<measureExpression><![CDATA[$F{nota}]]></measureExpression>
+				</measure>
+				<measure name="edificio" class="java.lang.Object" calculation="First">
+					<measureExpression><![CDATA[$F{edificio}]]></measureExpression>
+				</measure>
+				<measure name="aula" class="java.lang.Object" calculation="First">
+					<measureExpression><![CDATA[$F{salon}]]></measureExpression>
+				</measure>
+				<measure name="secname" class="java.lang.Object" calculation="First">
+					<measureExpression><![CDATA[$F{seccion}]]></measureExpression>
+				</measure>
+				<crosstabCell width="127" height="66">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="108" height="20">
+								<printWhenExpression><![CDATA[$V{posicion} !="99"]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{horafinMeasure}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="1" y="33" width="108" height="20">
+								<printWhenExpression><![CDATA[$V{posicion} !="99"]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{profesorMeasure}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="20" width="108" height="10">
+								<printWhenExpression><![CDATA[$V{posicion} !="99"]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font size="8" isItalic="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{observacion}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="0" y="56" width="55" height="10">
+								<printWhenExpression><![CDATA[$V{posicion} !="99"]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{edificio}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" x="55" y="56" width="54" height="10">
+								<printWhenExpression><![CDATA[$V{aula} != null]]></printWhenExpression>
+							</reportElement>
+							<textElement>
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Aula:" + $V{aula}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement style="table_TH" x="109" y="0" width="18" height="66">
+								<printWhenExpression><![CDATA[$V{posicion} !="99"]]></printWhenExpression>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{secname}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="dia">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF"/>
+							<textElement/>
+							<textFieldExpression><![CDATA[$V{horafinMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="50" columnTotalGroup="columna">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression><![CDATA[$V{horafinMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="dia" columnTotalGroup="columna">
+					<cellContents backcolor="#005FB3" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25" forecolor="#FFFFFF"/>
+							<textElement/>
+							<textFieldExpression><![CDATA[$V{horafinMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell height="25" rowTotalGroup="horainicio">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression><![CDATA[$V{horafinMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="horainicio" columnTotalGroup="columna">
+					<cellContents backcolor="#BFE1FF" mode="Opaque">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField>
+							<reportElement style="Crosstab Data Text" x="0" y="0" width="50" height="25"/>
+							<textElement/>
+							<textFieldExpression><![CDATA[$V{horafinMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="id">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="id" columnTotalGroup="columna">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell columnTotalGroup="posicion">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="id" columnTotalGroup="posicion">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="dia" columnTotalGroup="posicion">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="horainicio" columnTotalGroup="posicion">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="horafin" columnTotalGroup="posicion">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell columnTotalGroup="codsem">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="id" columnTotalGroup="codsem">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="dia" columnTotalGroup="codsem">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="horainicio" columnTotalGroup="codsem">
+					<cellContents/>
+				</crosstabCell>
+				<crosstabCell rowTotalGroup="horafin" columnTotalGroup="codsem">
+					<cellContents/>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="5" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="6" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="5" splitType="Stretch"/>
+	</summary>
+</jasperReport>

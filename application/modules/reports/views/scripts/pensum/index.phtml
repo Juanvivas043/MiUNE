@@ -1,0 +1,122 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="650px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center" colspan="2">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr valign="top">
+        <td>
+            <b>Formatos para descargar:</b><br>
+            <input type="radio" id="rdbFormatNormal" name="rdbFormat" enabled>&nbsp;Normal<br>
+            <input type="radio" id="rdbFormatOEH" name="rdbFormat" enabled>&nbsp;Ofertado en Horario<br><br>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <center><button  type="button" name="btnImprimir" id="btnImprimir" >Imprimir</button></center>
+        </td>
+    </tr>
+</table>
+<script type='text/javascript'>
+$(document).ready(function(){
+    
+    $function = '';
+        <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        ?>
+    
+    $("#loading").ajaxStart(function(){
+       
+       $('#btnList').attr('disabled', true);
+       $("#btnImprimir").attr('disabled', true);
+       
+    });
+    
+    $("#loading").ajaxStop(function(){
+       
+       $('#btnList').attr('disabled', false);
+       
+    });
+    
+ 
+    $("#rdbFormatOEH").click(function(){
+        
+        if ($("#rdbFormatOEH:checked").val() == "on"){
+
+            $("#btnImprimir").attr('disabled', false);
+
+            <?php
+//                $function = "window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize()+'/tipo/rdbFormatOEH'";
+            ?>
+        }
+        
+    });
+    
+    $("#rdbFormatNormal").click(function(){
+
+        if ($("#rdbFormatNormal:checked").val() == "on"){
+
+            $("#btnImprimir").attr('disabled', false);
+                
+            <?php
+//                $function = "window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize()+'/tipo/rdbFormatNormal'";
+            ?>
+        }
+        
+    });
+    
+    $("#btnImprimir").click(function(){
+    
+        
+        $(':checked').each(function(){
+            
+            if($(this).attr('id') == 'rdbFormatNormal'){
+                
+                window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize()+'/tipo/rdbFormatNormal';
+
+            }else if($(this).attr('id') == 'rdbFormatOEH'){
+           
+                window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize()+'/tipo/rdbFormatOEH';
+                
+            }
+            
+        });
+        
+    });
+    
+    
+    
+
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');    
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+    echo $this->filters->getJavaScript('tblEstudiantes', "$('#btnImprimir').attr('disabled', true);$('#rdbFormatXLS').attr('disabled', true);$('#rdbFormatPDF').attr('disabled', true);");
+
+//	$function = "window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize();";
+    
+    echo $this->SwapBytes_Jquery->setClick('btnImprimir', $function);
+    
+    
+//    	$functionTur = "window.location.href = urlAjax + 'turno'";
+//    echo $this->SwapBytes_Jquery->setClick('ckbTurno', $functionTur);
+    
+?>
+    $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+    $('#tblFiltros').children().children(':eq(1)').hide(); //Oculta los botones (ACCION)
+});
+
+
+</script>

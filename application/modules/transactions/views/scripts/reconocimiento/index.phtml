@@ -1,0 +1,80 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table width="100%" cellpadding="0" border="0" align="center">
+    <tr>
+        <td width="100%" height="30" align="center">
+            <table>
+                <tr>
+                    <th>Sede</th>
+                    <th>Escuela</th>
+                    <th>Pensum</th>
+                    <th>C.I.</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <tr>
+                    <td><select id="selSede"    style="width:120px"></select></td>
+                    <td><select id="selEscuela" style="width:280px"></select></td>
+                    <td><select id="selPensum"  style="width:100px"></select></td>
+                    <td><input autocomplete="off" type="text" id="txtCI" size="10" maxlength="8" /></td>
+                    <td><input type="submit" id="btnGenerar" value="Generar"/></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td  align="center">
+            <div id="divLeyenda" style="display: none;width:1110px;">
+                <div style="float: left; padding-right: 5px; padding-bottom: 5px;"><b>Leyenda:</b></div>
+                <div style="border: 1px solid rgb(0, 0, 0); float: left; width: 20px; height: 12px;"></div>
+                <div style="float: left;">&nbsp;Disponible&nbsp;</div>
+                <div style="border: 1px solid rgb(0, 0, 0); background-color:#CCCCFF; float: left; width: 20px; height: 12px;"></div>
+                <div style="float: left;">&nbsp;Inscrita&nbsp;</div>
+                <div style="border: 1px solid rgb(0, 0, 0); background-color:#99FF99; float: left; width: 20px; height: 12px;"></div>
+                <div style="float: left;">&nbsp;Reconocida / Cursada y aprobada.&nbsp;</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center"><div id="tblRecordAcademico" style="width:1110px"></div></td>
+    </tr>
+</table>
+<script type='text/javascript'>
+    $(document).ready(function(){
+         <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        ?>
+        
+        $('#btnGenerar').click(function(){$.getJSON(urlAjax + "generar/ci/"+$("#txtCI").val() + "/sede/"+$("#selSede").val() + "/escuela/"+$("#selEscuela").val() + "/pensum/"+$("#selPensum").val(), function(data){executeCmdsFromJSON(data)});});
+
+        arraySelects = new Array("sede", "escuela", "pensum");
+        eval(fillSelectRecursive(urlAjax, arraySelects, 0));
+
+        $('#selSede').change(function(){eval(fillSelectRecursive(urlAjax, arraySelects, 1));$('#tblRecordAcademico').html('');$('#divLeyenda').hide()});
+        $('#selEscuela').change(function(){eval(fillSelectRecursive(urlAjax, arraySelects, 2));$('#tblRecordAcademico').html('');$('#divLeyenda').hide()});
+        $('#selPensum').change(function(){$('#tblRecordAcademico').html('');$('#divLeyenda').hide()});
+    });
+</script>
+<style>
+    .TextBoxNormal {
+        background-color: #FFFFFF;
+        border-left: 1px solid #999999;
+        border-top: 1px solid #999999;
+        border-right: 1px solid #cccccc;
+        border-bottom: 1px solid #cccccc;
+        text-align:center;
+    }
+
+    .TextBoxAlert {
+        background-color: #FF9999;
+        border-left: 1px solid #FF0000;
+        border-top: 1px solid #FF0000;
+        border-right: 1px solid #FF6666;
+        border-bottom: 1px solid #FF6666;
+        text-align:center;
+    }
+</style>

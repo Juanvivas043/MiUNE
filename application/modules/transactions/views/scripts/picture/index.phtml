@@ -1,0 +1,198 @@
+<?php
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/validator.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/dropzone/dropzone.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/paginator.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/js/dropzone/dropzone.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/validator.css');  
+
+?>
+<meta charset="utf-8">
+<style type="text/css">
+    #update {
+        width: 0px;
+        height: 0px;
+        background: transparent;
+        font-weight: bold;
+        color: #1C94C4;
+        margin-top: -55px;
+        margin-left: -5px;
+        border: none;
+        border-top: 17.5px solid transparent;
+        border-right: 17.5px solid transparent;
+        border-bottom: 17.5px solid #000;
+        border-left: 17.5px solid #000;
+        border-bottom-left-radius: 5px;
+        cursor: pointer;
+        -webkit-transition: 300ms all ease;
+        -o-transition: 300ms all ease;
+        transition: 300ms all ease;
+    }
+    #update:after {
+        width: 15px;
+        height: 15px;
+        background: url("<?php echo $this->baseUrl(); ?>/images/icons/plus.png");
+        content: " ";
+        display: block;
+        margin-left: -11px;
+        margin-top: -6px;
+    }
+    #file-dropzone {
+        display: none;
+        margin: 10px auto;
+        margin-left: -20px;
+        background: #FFF;
+        box-sizing: border-box;
+    }
+    #file-dropzone .dz-message {
+        margin: 2em 0px;
+        text-align: center;
+        font-weight: 400;
+        padding: 0px;
+        border: 0px none;
+        font: inherit;
+        vertical-align: baseline;
+    }
+    #file-dropzone .dz-message span {
+        padding: 10px;
+        vertical-align: middle;
+    }
+</style>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" style="padding: 0px 0px 0px 10px; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+
+            <?php include_once('filtros.phtml'); ?> 
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="tableData">&nbsp;</div>
+        </td>
+    </tr>
+</table>
+
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+<script type='text/javascript'>
+    var objectToValidations =   [   
+                                    {input: "primer_nombre",      type:   "alphabetic",   fn: function(){}},
+                                    {input: "segundo_nombre",     type:   "alphabetic",   fn: function(){}},
+                                    {input: "primer_apellido",    type:   "alphabetic",   fn: function(){}},
+                                    {input: "segundo_apellido",   type:   "alphabetic",   fn: function(){}}
+                                ];
+    //llamamos al validator 
+    validator.insertValidation(objectToValidations);
+    var pic = false, 
+        control = false;
+    function uploader(){
+        control = false;
+        var dropfile = new Dropzone("#file-dropzone", 
+                        { 
+                            url:  urlAjax + "upload",
+                            maxThumbnailFilesize: 1,
+                            paramName: "file",
+                            dictDefaultMessage:           "Selecciona la Foto del Usuario",
+                            dictFallbackMessage:          "Tu Explorador no soporta drag 'n' drop",
+                            dictFileTooBig:               "El Archivo es muy Pesado ({{filesize}}MiB). Tamaño Maximo: {{maxFilesize}}MiB.",
+                            dictInvalidFileType:          "No puedes subir archivos de este tipo.",
+                            dictResponseError:            "Server responded with {{statusCode}} code.",
+                            dictCancelUpload:             "Carga Cancelada",
+                            dictCancelUploadConfirmation: "Estas seguro que quieres cancelar la carga ?",
+                            dictRemoveFile:               "Quitar archivo",
+                            dictMaxFilesExceeded:         "No puedes subir mas archivos.",
+                            maxFilesize: 5,
+                            maxFiles: 1,
+                            uploadMultiple: false,
+                            addRemoveLinks: true,
+                            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
+                            clickable: true,
+                            init: function() {
+                              this.on('success', function(file, json) {
+                              });
+                              this.on('addedfile', function(file) {
+                              });
+                              this.on('error', function(file, response){
+                                this.removeFile(file);
+                                sweetAlert("Error", "Error al cargar el archivo :( " + response, "error");
+                              });
+                              this.on("sending", function(file, xhr, formData){
+                                $('.meter').show();
+                              });
+                              this.on("totaluploadprogress", function(progress){
+                                $('.roller').width(progress + '%');
+                              });
+                              this.on("queuecomplete", function(progress){
+                                $('.meter').delay(999).slideUp(999);
+                              });
+                              this.on('maxfilesexceeded', function(file){
+                                this.removeFile(file);
+                                sweetAlert("Error", "No puede subir mas de un archivo", "error");
+                              });
+                            },
+                            accept: function(file, done){
+                                sweetAlert(
+                                    {
+                                        title: "Actualizado", 
+                                        text: "El archivo " + file.name + " se cargo correctamente", 
+                                        type: "success",  
+                                        showCancelButton: false, 
+                                        confirmButtonColor: "#00787A", 
+                                        closeOnConfirm: true
+                                    },
+                                    function(){
+                                        //location.reload();
+                                    });
+                                done();
+                            }
+                        }
+                    );
+        $('#file-dropzone').hide();
+        pic = false;
+    }
+    function show(){
+        if(!control){
+            uploader();
+            control = !control;
+        }
+        if(pic){
+            $('#file-dropzone').fadeOut("slow");
+            pic = false;
+        }
+        else {
+            $('#file-dropzone').fadeIn("slow");
+            pic = true;
+        }
+    }
+    $(document).ready(function(){
+        <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Form->getJavaScript();
+            echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+            echo $this->filters->getJavaScript('tableData', $this->SwapBytes_Jquery_Ui_Form->buttonDisable('btnAdd', true));
+        ?>
+        $('#btnQuitar').hide();
+        $.getJSON(urlAjax + "filter", function(data){
+            executeCmdsFromJSON(data);
+             $('#Perfil').change(function(){
+                if ($('#Perfil').val() == 1745){
+                    $('#btnQuitar').show();
+                }else{
+                    $('#btnQuitar').hide();
+                }
+            });
+        });
+    });
+</script>

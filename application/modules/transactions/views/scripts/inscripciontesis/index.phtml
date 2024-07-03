@@ -1,0 +1,84 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br> 
+<div align="center">
+<table>
+    <tr>
+        <td>
+            <p id="cedula">Cédula</p>
+        </td>
+        <td>
+            <input id="cedulatxt" type="text">
+        </td>
+        <td>
+            <input id="botonview" type="button" value="ver">
+        </td>
+    </tr>
+</table> 
+</div>
+
+<div id="datosEstudiante" align="center"></div>
+<div id="divSolvencias" align="center"></div>
+<br>
+<div id="error" align="center"></div>
+<div id="mensaje" align="center"></div>
+
+<br>
+<div align="center" align="center">
+<button type="button" id="inscribir" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">Inscribir</span></button>
+<button type="button" id="imprimir" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">Imprimir</span></button>  
+</div>
+<style type="text/css">
+    .titulo{
+        text-align: center;
+        color: red;
+        font-size: 16px; 
+    }
+</style>
+<h1 id="materias" class="titulo"></h1>
+<br>
+<div id="tblmaterias" align="center">
+    
+</div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); //<!-- Declaracion del form-->?> 
+<script type='text/javascript'>
+$(document).ready(function(){
+$("#loading").ajaxStart(function(){$(this).show();});
+$("#loading").ajaxStop(function(){$(this).hide();});
+$('#inscribir').hide();
+$('#imprimir').hide(); 
+<?php
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    ?>
+
+    $('#botonview').click(function(){
+        console.log(urlAjax + "busqueda/ci/");
+        $.getJSON(urlAjax + "busqueda/ci/" + $('#cedulatxt').val(), function(data){
+            console.log(urlAjax + "busqueda/ci/");
+            executeCmdsFromJSON(data);
+        })
+    });
+    
+    $('#inscribir').click(function(){
+        
+        $.getJSON(urlAjax + "inscribir/ci/"+$("#cedulatxt").val(), function(data){
+                executeCmdsFromJSON(data);
+        });
+        $('#inscribir').hide();
+        $('#imprimir').show();
+    });
+     
+    $('#imprimir').click(function(){
+        window.location.assign(urlAjax + "descargar/ci/"+$("#cedulatxt").val());
+    });
+    
+});
+
+</script>

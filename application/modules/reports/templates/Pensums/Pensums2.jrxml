@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pensums" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4e6004ac-3e89-43cd-b3f3-8e5c21f99aca">
+	<property name="ireport.zoom" value="1.2100000000000037"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Library/WebServer/Documents/MiUNE2/application/modules/reports/templates/Pensums/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="escuela" class="java.lang.String"/>
+	<parameter name="pensum" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="sede" class="java.lang.String"/>
+	<parameter name="image" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Library/WebServer/Documents/MiUNE2/public/images/logo_UNE_color.jpg"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *
+FROM vw_semestres as sem
+WHERE sem.id <> 0
+AND sem.id <= 5]]>
+	</queryString>
+	<field name="pk_atributo" class="java.lang.Long"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="valor" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="65" splitType="Stretch">
+			<image>
+				<reportElement uuid="74eec0e2-6fe0-4ff9-8242-dabdf608dda2" x="1" y="3" width="127" height="50"/>
+				<imageExpression><![CDATA[$P{image}]]></imageExpression>
+			</image>
+			<subreport>
+				<reportElement uuid="381416bf-d5b2-4eae-be6c-14456b6afb51" x="131" y="5" width="305" height="52"/>
+				<subreportParameter name="periodo3">
+					<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pensum3">
+					<subreportParameterExpression><![CDATA[$P{pensum}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="sede3">
+					<subreportParameterExpression><![CDATA[$P{sede}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="escuela3">
+					<subreportParameterExpression><![CDATA[$P{escuela}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Pensums_subreport31.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement uuid="80d24c67-97b0-40d2-aef7-0b5ec0ce0d33" x="73" y="0" width="100" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement uuid="d81372d7-0645-4eab-afdd-b6e4f3c0d6d6" x="0" y="13" width="555" height="20"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pensum1">
+					<subreportParameterExpression><![CDATA[$P{pensum}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre1">
+					<subreportParameterExpression><![CDATA[$F{id}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="escuela1">
+					<subreportParameterExpression><![CDATA[$P{escuela}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="sede1">
+					<subreportParameterExpression><![CDATA[$P{sede}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periodo1">
+					<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Pensums_subreport12.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="bbc8d296-3d88-4a82-b1ab-b0611e68e045" x="0" y="13" width="555" height="20"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="sede2">
+					<subreportParameterExpression><![CDATA[$P{sede}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semestre2">
+					<subreportParameterExpression><![CDATA[($F{id}+5).toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periodo2">
+					<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pensum2">
+					<subreportParameterExpression><![CDATA[$P{pensum}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="escuela2">
+					<subreportParameterExpression><![CDATA[$P{escuela}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Pensums_subreport22.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement uuid="2084ec81-bc3c-4a45-9fd7-8a7283bba803" x="0" y="0" width="73" height="13"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEMESTRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ae3145a5-bb10-4b08-a1cb-e41b80c30544" x="265" y="0" width="71" height="13"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEMESTRE]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="c27ffec5-5cb4-4eb7-89fb-3753124da967" x="336" y="0" width="63" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{id}+5]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="1" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="1" splitType="Stretch"/>
+	</summary>
+</jasperReport>

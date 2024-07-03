@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pase_estacionamiento" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Periodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[122]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ci" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  distinct usr,
+                        esc as escuela,
+                        indicehastahoy as indice,
+                        indicepant as indiceant,
+                        semubic,
+                        placa,marca,modelo,
+                        name,mesinicio,mesfin,ano,turno
+
+                FROM(
+                SELECT
+                        distinct ug.fk_usuario as usr,
+                        u.primer_nombre || ', ' || u.primer_apellido as name,
+                        esc.escuela as esc,
+                        ins.fk_atributo as at,
+                        p.pk_periodo as per,
+
+                        (fn_xrxx_estudiante_iia_escuela_periodo(ug.fk_usuario, ins.fk_atributo, p.pk_periodo)) as indicehastahoy,
+
+                        fn_xrxx_estudiante_calcular_ucac_escuela( ug.fk_usuario, ins.fk_atributo::integer) as ucaune,
+
+                        fn_xrxx_estudiante_iap_sce(ug.fk_usuario, (p.pk_periodo-1), ins.fk_atributo) as indicepant,
+
+                        fn_xrxx_estudiante_sem_ubicacion_periodod(ug.fk_usuario, ins.fk_atributo, ins.fk_periodo) as semubic,
+                        v.placa,
+                        modelo.valor as modelo,
+                        marca.valor as marca,
+                        CASE to_char(p.fechainicio, 'TMMonth')
+                        WHEN 'May' THEN 'Mayo' ELSE to_char(fechainicio, 'TMMonth')
+                        END AS mesinicio,
+                        CASE to_char(p.fechafin, 'TMMonth')
+                        WHEN 'May' THEN 'Mayo' ELSE to_char(fechainicio, 'TMMonth')
+                        END AS mesfin,
+                        extract(year from p.fechafin) as ano,
+                        fn_xrxx_estudiante_turno(p.pk_periodo , ins.fk_estructura, ug.fk_usuario) as turno_p,
+                        t.valor  as turno
+
+
+
+
+                from tbl_usuariosgrupos ug
+                JOIN tbl_inscripciones ins ON ins.fk_usuariogrupo = ug.pk_usuariogrupo
+                JOIN vw_escuelas esc ON esc.pk_atributo = ins.fk_atributo
+                JOIN tbl_periodos p ON p.pk_periodo = ins.fk_periodo
+                JOIN tbl_usuariosvehiculos uv ON uv.fk_usuario = ug.fk_usuario
+                JOIN tbl_usuariosvehiculossorteo uvs ON uvs.fk_usuariovehiculo = uv.pk_usuariovehiculo
+                JOIN tbl_vehiculos v ON v.pk_vehiculo = uv.fk_vehiculo
+                JOIN tbl_atributos modelo ON modelo.pk_atributo = v.fk_modelo
+                JOIN tbl_atributos marca ON marca.pk_atributo = modelo.fk_atributo
+                JOIN tbl_usuarios u ON u.pk_usuario = ug.fk_usuario
+                JOIN vw_turnos t ON t.pk_atributo = fn_xrxx_estudiante_turno(p.pk_periodo , ins.fk_estructura, ug.fk_usuario)
+                WHERE p.pk_periodo = $P!{Periodo}
+                  AND ug.fk_usuario = $P!{ci}
+                )as sqt]]>
+	</queryString>
+	<field name="usr" class="java.lang.Long"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="indice" class="java.lang.Float"/>
+	<field name="indiceant" class="java.lang.Float"/>
+	<field name="semubic" class="java.lang.Integer"/>
+	<field name="placa" class="java.lang.String"/>
+	<field name="marca" class="java.lang.String"/>
+	<field name="modelo" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="mesinicio" class="java.lang.String"/>
+	<field name="mesfin" class="java.lang.String"/>
+	<field name="ano" class="java.lang.Double"/>
+	<field name="turno" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="55" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="307" splitType="Stretch">
+			<staticText>
+				<reportElement x="194" y="12" width="92" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="295" y="12" width="277" height="27"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="231" y="39" width="55" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C.I:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="295" y="39" width="277" height="27"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usr}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="231" y="66" width="55" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Placa:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="295" y="66" width="277" height="27"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{placa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="213" y="93" width="73" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Marca:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="295" y="93" width="277" height="27"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marca}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="186" y="120" width="100" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modelo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="295" y="120" width="277" height="27"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{modelo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="186" y="186" width="100" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Semestre:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="295" y="186" width="71" height="27"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{semubic}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="194" y="147" width="92" height="27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Escuela:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="295" y="147" width="277" height="27"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="18"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{escuela}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="372" y="177" width="354" height="44"/>
+				<textElement textAlignment="Left">
+					<font size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estudiante]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

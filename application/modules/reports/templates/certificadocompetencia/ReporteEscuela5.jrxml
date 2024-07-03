@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteEscuela5" language="groovy" pageWidth="752" pageHeight="572" orientation="Landscape" columnWidth="752" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="231eaf3a-f3eb-4074-902b-162cb3b560ad">
+	<property name="ireport.zoom" value="1.1000000000000014"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="731"/>
+	<parameter name="cedula" class="java.lang.String"/>
+	<parameter name="Imagen" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/var/www/MiUNE2/application/modules/reports/templates/certificadocompetencia/escuela5comp.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Imagen2" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/var/www/MiUNE2/application/modules/reports/templates/certificadocompetencia/ACTA"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[Select nombre,apellido,EXTRACT(DAY FROM current_date) as dia,EXTRACT(YEAR FROM current_date) as año,
+
+ CASE	 WHEN EXTRACT(MONTH FROM current_date) = 1 THEN 'Enero'
+		 WHEN EXTRACT(MONTH FROM current_date) = 2 THEN 'Febrero'
+		 WHEN EXTRACT(MONTH FROM current_date) = 3 THEN 'Marzo'
+		 WHEN EXTRACT(MONTH FROM current_date) = 4 THEN 'Abril'
+		 WHEN EXTRACT(MONTH FROM current_date) = 5 THEN 'Mayo'
+		 WHEN EXTRACT(MONTH FROM current_date) = 6 THEN 'Junio'
+		 WHEN EXTRACT(MONTH FROM current_date) = 7 THEN 'Julio'
+		 WHEN EXTRACT(MONTH FROM current_date) = 8 THEN 'Agosto'
+		 WHEN EXTRACT(MONTH FROM current_date) = 9 THEN 'Septiembre'
+		 WHEN EXTRACT(MONTH FROM current_date) = 10 THEN 'Octubre'
+		 WHEN EXTRACT(MONTH FROM current_date) = 11 THEN 'Noviembre'
+		 WHEN EXTRACT(MONTH FROM current_date) = 12 THEN 'Diciembre'
+END as mes
+FROm tbl_usuarios
+WHERE pk_usuario = $P{cedula}::integer]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="dia" class="java.lang.Integer"/>
+	<field name="año" class="java.lang.Integer"/>
+	<field name="mes" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="572">
+			<staticText>
+				<reportElement uuid="146cf995-4a87-4363-ac98-bb2d79e4b029" x="168" y="23" width="417" height="23"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima" size="18" isBold="false"/>
+				</textElement>
+				<text><![CDATA[REPÚBLICA BOLIVARIANA DE VENEZUELA]]></text>
+			</staticText>
+			<image scaleImage="FillFrame">
+				<reportElement uuid="78ecac54-2e70-421d-9b7a-2b532ffa4cb7" x="263" y="56" width="226" height="75"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="54b7b787-de17-4bcc-ba0a-87f6c473672c" x="181" y="142" width="391" height="24"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Facultad de Ciencias Administrativas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2e812e31-49f7-4317-96b8-351579011ae2" x="233" y="166" width="286" height="26"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Escuela de Administración]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e196e567-0044-4721-aff0-77b8f8883188" x="194" y="209" width="364" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima" size="14"/>
+				</textElement>
+				<text><![CDATA[Otorga el presente Certificado de Competencias a:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c03a63e5-3719-458d-8905-9d7bccfb2e4c" x="0" y="483" width="249" height="38"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima"/>
+				</textElement>
+				<text><![CDATA[ _____________________________
+Dr. Jesús Alberto Ramírez
+Rector  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b4b2d045-b619-4db4-a4d3-41f124f144a1" x="249" y="483" width="209" height="38"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima"/>
+				</textElement>
+				<text><![CDATA[_______________________
+   Lic. Haydeé Irausquín Aldama
+         Secretaria (E)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="96d7ffe8-089e-4403-8fea-82853117ca20" x="458" y="483" width="294" height="38"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima"/>
+				</textElement>
+				<text><![CDATA[__________________________
+  Luisa Elena Guerrero C
+Decana]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="89fd4b20-4e1a-4946-b568-03dffdab5bbd" x="0" y="531" width="752" height="32"/>
+				<imageExpression><![CDATA[$P{Imagen2}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="48a379f5-4020-4047-9655-cf8923bd632b" x="0" y="355" width="752" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima" size="12"/>
+				</textElement>
+				<text><![CDATA[Por haber aprobado satisfactoriamente todas las asignaturas del Primero hasta el Sexto Período Académico.
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="af65da32-4f7c-4853-9702-c697b4043a6d" x="33" y="245" width="687" height="42"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima" size="30" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}+" "+ $F{apellido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5603f4ea-46e6-4022-bdd2-5f45bcba147f" x="290" y="313" width="172" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["C.I. V- "+$P{cedula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1e7fa725-63be-4105-86fe-d6c320594520" x="90" y="376" width="572" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["En Caracas, a los " + $F{dia}+" días del mes de " + $F{mes}+" de "+ $F{año}+"."]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="572">
+			<staticText>
+				<reportElement uuid="5f01228e-08ed-414f-a69e-36df70f7e2e3" x="33" y="497" width="687" height="46"/>
+				<textElement textAlignment="Center">
+					<font fontName="Optima" size="11"/>
+				</textElement>
+				<text><![CDATA[______________________________
+       William Castillo Gutiérrez
+Director  Escuela de Administración]]></text>
+			</staticText>
+			<image scaleImage="FillFrame">
+				<reportElement uuid="9edf3d11-0711-4df0-8e49-c122d6a23de4" x="33" y="30" width="687" height="430"/>
+				<imageExpression><![CDATA[$P{Imagen}]]></imageExpression>
+			</image>
+		</band>
+	</summary>
+</jasperReport>

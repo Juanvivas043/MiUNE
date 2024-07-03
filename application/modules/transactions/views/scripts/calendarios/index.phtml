@@ -1,0 +1,81 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="1000px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center" colspan="1">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr valign="top">
+        <td>
+            <div id="tableData" align="center" width="580px"></div>
+        </td>
+        <td align="left">
+            <input type="radio" id="rdbFormatPDF" name="rdbFormat" value="PDF" disabled>&nbsp;PDF<br>
+            <div id="button_container"><button type="button" name="btnDescargar" id="btnDescargar" disabled>Descargar</button></div>
+        </td>
+    </tr>
+</table>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type='text/javascript'>
+    $(document).ready(function(){
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+    echo $this->filters->getJavaScript('tableData');
+    $function = "window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize();";
+            echo $this->SwapBytes_Jquery->setClick('btnDescargar', $function);
+?>
+
+
+        
+
+        $("input[name=titulo]").live("change",function(){
+            var titulo = $("input[name=titulo]:checked").val();
+             if (titulo == 't')   {
+              //alert('es titulo ');
+
+              $.getJSON(urlAjax + "hide", function(data){executeCmdsFromJSON(data)});
+
+              return true;
+             }
+             else{
+              //alert('no es titutlo');
+
+              $.getJSON(urlAjax + "hide/show/" + "true", function(data){executeCmdsFromJSON(data)});
+
+              return false;
+             }
+            });
+
+            $("input[name=chkClase]").live("change",function(){
+             $(this).each(function(){
+                    if ($(this).is(":checked")) {
+                       $.getJSON(urlAjax + "checkhijos/id/" + $(this).val() + "/periodo/" + $("#selPeriodo").val(), function(data){executeCmdsFromJSON(data)});
+                    }else{
+                       $.getJSON(urlAjax + "checkhijos/id/" + $(this).val() + "/periodo/" + $("#selPeriodo").val() + "/unchek/true", function(data){executeCmdsFromJSON(data)});
+                    }
+                });
+            });
+
+
+          
+    });
+
+    function subactividades(id){
+    $.getJSON(urlAjax + "subactividades/pk/" + id + "/periodo/" + $("#selPeriodo").val() , function(data){executeCmdsFromJSON(data)});
+    }
+</script>

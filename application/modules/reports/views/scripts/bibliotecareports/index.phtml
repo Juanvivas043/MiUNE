@@ -1,0 +1,78 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/pagination.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<meta charset="utf-8">
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" style="padding: 0px 0px 0px 10px; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    
+    <tr valign="top">
+        <td>
+            <div id="tableData">&nbsp;</div>
+        </td>
+        <td align="center" width="700px">
+            <div id="tblbiblioteca"></div>
+        </td>
+        <td align="left">
+            <b>Formatos para descargar:</b><br>
+            <input type="radio" id="rdbFormatXLS" name="rdbFormat" value="XLS" disabled>&nbsp;XLS<br>
+            <input type="radio" id="rdbFormatPDF" name="rdbFormat" value="PDF" disabled>&nbsp;PDF<br><br>
+            <button type="button" name="btnDescargar" id="btnDescargar" disabled>Descargar</button>
+        </td>
+    </tr>
+     
+</table>
+
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        
+          $("#loading").ajaxStart(function(){
+       
+       $('#btnList').attr('disabled', true);
+       
+    });
+    
+    $("#loading").ajaxStop(function(){
+       
+       $('#btnList').attr('disabled', false);
+       
+    });    
+        
+    
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+    echo $this->filters->getJavaScript('tableData', $this->SwapBytes_Jquery_Ui_Form->buttonDisable('btnAdd', true));
+    
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblbiblioteca');
+    echo $this->filters->getJavaScript('tblbiblioteca', "$('#btnDescargar').attr('disabled', true);$('#rdbFormatXLS').attr('disabled', true);$('#rdbFormatPDF').attr('disabled', true);");
+
+    $function = "window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize();";
+    echo $this->SwapBytes_Jquery->setClick('btnDescargar', $function);
+?>
+          $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+    });
+    
+   
+</script>

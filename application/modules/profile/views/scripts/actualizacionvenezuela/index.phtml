@@ -1,0 +1,194 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Daniel
+ * Date: 14/03/14
+ * Time: 11:41 AM
+ */
+?>
+
+<link rel="stylesheet" href= <?php echo $this->baseUrl() . '/css/form.css' ?>>
+<link rel="stylesheet" href= <?php echo $this->baseUrl() . '/css/jquery-ui/jquery-ui.css' ?>>
+<link rel="stylesheet" href= <?php echo $this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css' ?>>
+<link rel="stylesheet" href= <?php echo $this->baseUrl() . '/css/actualizacionvenezuela.css' ?>>
+<script src= <?php echo $this->baseUrl() . '/js/jquery-1.9.1.js' ?>></script>
+<script src= <?php echo $this->baseUrl() . '/js/jquery-ui.js' ?>></script>
+<script src= <?php echo $this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js' ?>></script>
+
+<h2> <?php echo $this->escape($this->title); ?> </h2>
+
+<div id="formulario2">
+    <form id="actualizacionvnzla" enctype="application/x-www-form-urlencoded" method="post" action="">
+        <?php
+
+        $this->form->_attribs;
+        $this->form->_decorators;
+        $this->form->HtmlTag;
+        $this->form->Form;
+        $this->form->_defaultDisplayGroupClass;
+        $this->form
+        ?>
+
+        <table id="tabla">
+            <tr id="row">
+                <td id="col1">
+                    <h1>Informacion personal</h1>
+                    <?php
+                    echo "<div>" . $this->form->pk_usuario . "</div>";
+                    echo "<div>" . $this->form->nombre . "</div>";
+                    echo "<div>" . $this->form->primer_apellido . "</div>";
+                    echo "<div>" . $this->form->segundo_apellido . "</div>";
+                    echo "<div>" . $this->form->fechanacimiento . "</div>";
+                    echo "<div>" . $this->form->correo . "</div>";
+                    echo "<div>" . $this->form->codigo_telefono . "</div>";
+                    echo "<div>" . $this->form->telefono . "</div>";
+                    echo "<div>" . $this->form->telefono_movil . "</div>";
+                    ?>
+                </td>
+                <td id="col2">
+                    <h1>Informacion de vivienda</h1>
+                    <?php
+                    echo "<div>" . $this->form->tipo_via . "</div>";
+                    echo "<div>" . $this->form->descripcion_via . "</div>";
+                    echo "<div>" . $this->form->tipo_vivienda . "</div>";
+                    echo "<div>" . $this->form->nombre_vivienda . "</div>";
+                    echo "<div>" . $this->form->punto_referencia . "</div>";
+                    echo "<div>" . $this->form->tipo_nucleo . "</div>";
+                    echo "<div>" . $this->form->descripcion_nucleo . "</div>";
+                    echo "<div>" . $this->form->estado . "</div>";
+                    echo "<div>" . $this->form->ciudad . "</div>";
+                    echo "<div>" . $this->form->municipio . "</div>";
+                    echo "<div>" . $this->form->zona_postal . "</div>";
+                    ?>
+                </td>
+                <td id="col3">
+                    <h1>Informacion de trabajo</h1>
+                    <?php
+                    echo "<div>" . $this->form->tipo_ocupacion . "</div>";
+                    echo "<div>" . $this->form->cargo_empresa . "</div>";
+                    echo "<div>" . $this->form->actividad_economica . "</div>";
+                    echo "<div>" . $this->form->tipo_empleado . "</div>";
+                    echo "<div>" . $this->form->codigo_area_telf_oficina . "</div>";
+                    echo "<div>" . $this->form->numero_oficina . "</div>";
+                    echo "<div>" . $this->form->codigo_fax . "</div>";
+                    echo "<div>" . $this->form->numero_fax . "</div>";
+                    echo "<div>" . $this->form->codigo_oficina_banco . "</div>";
+                    ?>
+                </td>
+            </tr>
+            <tr id="row2">
+                <td colspan="3">
+                    <?php echo $this->form->submitButton; ?>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="modal" hidden="hidden">
+    <p> ¿Esta seguro de enviar este formulario? </p>
+</div>
+<div id="gracias" hidden="hidden">
+    <p style="font-size: 30px"> Gracias </p>
+</div>
+<div id="act" hidden="hidden">
+    <p style="font-size: 20px"> Ya actualizaste. Desea volver a actualizar sus datos? </p>
+</div>
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $("button.ui-dialog-titlebar-close").hide();
+
+        function openDialog() {
+            $("#gracias").dialog({
+                autoOpen: true,
+                modal: true,
+                position: ['middle', 350],
+                closeOnEscape: false,
+                resizable: false
+            });
+        }
+
+        function redirect() {
+            setTimeout(function () {
+                $("#gracias").dialog('close');
+                location.href = "/MiUNE2/inicio";
+            }, 1000);
+
+        }
+
+        $(document).tooltip();
+        $('.formulario').each(function () {
+            var valor = $(this).data('help');
+
+            if (valor != null) {
+                $(this).before("<img id='ayuda' style='display: inline' src='<?php echo $this->baseUrl() ?>/images/icons/help.png'>");
+                $(this).parent().find('#ayuda').attr('title', valor);
+                $(this).parent().find('#ayuda').css({cursor: 'help'});
+            }
+
+        });
+
+        var url = <?php echo $this->SwapBytes_Ajax->getUrlAjaxJS(); ?>
+
+
+            $("#submitButton").click(function () {$("button.ui-dialog-titlebar-close").hide();});
+            $("#submitButton").click(function () {
+
+                $('.error').remove();
+                $.getJSON(url + "verificar", $("#actualizacionvnzla").serialize())
+                    .fail(function () {
+
+                        $("#modal").dialog({
+
+                            autoOpen: true,
+                            closeOnEscape: false,
+                            resizable: false,
+                            modal: true,
+                            position: ['middle', 350],
+                            buttons: {
+                                Aceptar: function () {
+                                    $.getJSON(url + "actualizar", $(".formulario").serialize(), function (data) {
+                                        openDialog();
+                                        executeCmdsFromJSON(data);
+                                        redirect();
+                                    })
+                                        .fail(function () {
+                                            alert("Fallo");
+
+                                        });
+
+                                },
+                                Cancelar: function () {
+                                    $(this).dialog('close');
+                                }
+
+                            }
+
+                        });
+
+                    })
+                    .done(function (data) {
+                        executeCmdsFromJSON(data);
+                    });
+
+            });
+
+        $("#fechanacimiento").datepicker({changeYear: true, changeMonth: true, dateFormat: 'dd/mm/yy' });
+
+        <?php
+            echo $this->SwapBytes_Jquery_Mask->shortPhone("numero_oficina") . ";";
+            echo $this->SwapBytes_Jquery_Mask->shortPhone("numero_fax") . ";";
+            echo $this->SwapBytes_Jquery_Mask->shortPhone("telefono") . ";";
+            echo $this->SwapBytes_Jquery_Mask->withoutZeroPhone("telefono_movil") . ";";
+            echo $this->SwapBytes_Jquery_Mask->date('fechanacimiento') . ";";
+        ?>
+
+    });
+
+</script>
+

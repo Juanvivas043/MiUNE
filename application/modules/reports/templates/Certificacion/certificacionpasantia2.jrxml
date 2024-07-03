@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificacionpasantia" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4770a057-4d84-4a14-813e-b3dd92209466">
+	<property name="ireport.zoom" value="1.1000000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="firma" class="java.lang.String"/>
+	<parameter name="codigo" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="pensum" class="java.lang.String"/>
+	<parameter name="escuela" class="java.lang.String"/>
+	<parameter name="sede" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select distinct u.pk_usuario as cedula, (u.primer_nombre ||' ' || (select substring(u.segundo_nombre from 1 for 1))) as nombre, (u.primer_apellido ||' ' ||(select substring (u.segundo_apellido from 1 for 1))) as apellido, ve.escuela, i.fk_periodo, (TO_CHAR(current_date,'dd-mm-yyyy')) as fechahoy,
+(case
+when pe.codigopropietario = 8 then '5'
+else '4' end) as credito,
+(case
+	when tcp.responsable != '' then tcp.responsable
+	else tcp.departamento
+end) as responsable, tcp.empresa
+from tmp_certificacionpasantia	tcp,
+tbl_usuarios		u
+join tbl_usuariosgrupos		ug	on	ug.fk_usuario = u.pk_usuario
+join tbl_inscripciones		i	on	i.fk_usuariogrupo = ug.pk_usuariogrupo
+join vw_escuelas		ve	on	ve.pk_atributo = i.fk_atributo
+join tbl_pensums			pe	on	pe.pk_pensum = i.fk_pensum
+where tcp.pk_certificacion = $P{codigo}::integer
+and u.pk_usuario = $P{usuario}::integer
+and i.fk_periodo = $P{periodo}::integer
+and pe.pk_pensum = $P{pensum}::integer
+and i.fk_atributo = $P{escuela}::integer
+and i.fk_estructura = $P{sede}::integer]]>
+	</queryString>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="fk_periodo" class="java.lang.Long"/>
+	<field name="fechahoy" class="java.lang.String"/>
+	<field name="credito" class="java.lang.String"/>
+	<field name="responsable" class="java.lang.String"/>
+	<field name="empresa" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="597" splitType="Stretch">
+			<textField>
+				<reportElement uuid="4217d42d-ecce-412d-925b-436818637e76" x="40" y="172" width="479" height="326"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tengo el agrado  de  dirigirme a ustedes en la oportunidad de presentarle al/la bachiller  "
++ "<b>" +$F{nombre}+ " " +$F{apellido} +". C.I. N° V.-" +$F{cedula} + " </b>" +" de la Escuela de: " + "<b>" +$F{escuela} + "</b>" + ", quien desea realizar su Pasantías Prácticas-Profesional en esa Empresa, la cual le representaran un total de ("+ $F{credito} +") unidades de crédito en su récord académico. Teniendo que cumplir en ella un periodo de doscientas cuarenta horas (240) en el periodo académico " + "<b>" +$F{fk_periodo} + " </b>" +  ". "+
+"<br><br>" +
+"El espíritu de esta pasantía es identificar al estudiante con los problemas del entorno donde se desarrolla y establecer un compromiso para participar en sus soluciones." +
+"<br><br>" +
+"Necesita para ello, su apoyo en la asignación de un tutor Empresarial, el cual conjuntamente con el Tutor Académico designado por la Universidad, supervisaran al pasante." +
+"<br><br>" +
+"En cuanto a la evaluación del pasante, haremos llegar al profesional designado por ustedes (Tutor Empresarial), el material respectivo. En la oportunidad correspondiente será devuelto a" + "<b>" + " DIRECCIÓN DE PRÁCTICAS PROFESIONALES " + "</b>" + "debidamente firmado y sellado." +
+"<br><br>" +
+"Agradezco de antemano sus mejores oficios para la realización de esta labor de interacción permanente y continua entre la Universidad y la Comunidad que ustedes representan." +
+"<br><br>" +
+"Dando así cumplimiento a lo establecido en el Reglamento Interno de Pasantías Laborales UNE y la Ley Orgánica de Trabajadores y Trabajadoras en los artículos comprendidos entre el 306 al 310." +
+"<br><br>" +
+"Sin otro particular a que hacer referencia, quedo de Usted."]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="9bb25559-5c93-4950-b5b7-55bf69f0b2aa" x="40" y="498" width="304" height="99"/>
+				<imageExpression><![CDATA[$P{firma}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="a81e83ed-48d8-41e3-9340-a728380368c6" x="40" y="79" width="178" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Caracas.- " + $F{fechahoy}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="579e8c24-5574-449e-8213-f7d6eb5318c1" x="40" y="99" width="178" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Señores.- "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0f5b5f99-bbed-41c9-8956-f295579bff8f" x="40" y="114" width="479" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{responsable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="64dd6332-13ad-4a69-8560-cc8994f4dcd9" x="40" y="131" width="479" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{empresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="882e14f9-d9ec-4e37-b8fa-4c80b228ea15" x="40" y="146" width="479" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Presente.- "]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

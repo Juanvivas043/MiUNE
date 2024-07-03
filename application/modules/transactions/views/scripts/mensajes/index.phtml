@@ -1,0 +1,430 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui-1.8.14.custom.min.js');
+//$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-autocomplete/jquery.autocomplete.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-autocomplete/lib/jquery.bgiframe.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-autocomplete/lib/jquery.ajaxQueue.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-autocomplete/lib/thickbox-compressed.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/transaction.mensajes.js');
+//$this->headScript()->appendFile($this->baseUrl() . '/js/video.js');
+//$this->headScript()->appendFile($this->baseUrl() . '/js/flowplayer-3.2.6.min.js');
+
+//$this->headLink()->appendStylesheet($this->baseUrl() . '/css/video-js.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/twitterlike.css');
+//$this->headLink()->appendStylesheet($this->baseUrl() . '/css/flowplayer.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/js/jquery-autocomplete/jquery.autocomplete.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="1000px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <?php //include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+       <td>
+           <table border="1">
+               <div id="twitter-container">
+                   <div id="tweetForm" action="submit.php" method="post">
+    
+                       <span class="counter">140</span>
+                       <label for="inputField">Que deseas anunciar? </label>
+    
+                       <textarea name="inputField" id="inputField" tabindex="1" rows="2" cols="40"></textarea>
+                       <input id="btnAnuncios" class="submitButton inact" name="submit" type="button" value="enviar" disabled="disabled" />
+    
+                       <span class="latest"><strong>Último: </strong><span id="lastTweet"><?= $lastTweet ?></span></span>
+    
+                       <div class="clear"></div>
+    
+                   </div>
+    
+                   <h3 id="refrescar" class="timeline refrescar" style="display: block;">Refrescar</h3>
+                   <h3 id="tituloan" class="timeline">Anuncios</h3>
+    
+                   <ul class="statuses" id="timeline"><?= $timeline ?></ul>
+               </div>
+          </table>
+       </td>
+   </tr>
+    <tr>
+        <td align="center">
+            <div id="tblFiltros">
+                <div id="menu" class="menu">
+                    <div class="msj_botones"id="botones">
+                        <button id="btnNuevo" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only" 
+                               name="btnNuevo" role="button" aria-disabled="false">Nuevo</button>
+                        <button id="btnMsjBorrar" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only" 
+                               name="btnMsjBorrar" role="button" aria-disabled="false">Borrar</button>
+                    </div>
+                    <div class="msj_filtro" id="msj_filtro">
+                        <label style="font-weight:bolder;">Ver: </label>
+                        <select id="selBandejas"  style="width:200;">
+                            <option selected value="1">Bandeja de Entrada</option>
+                            <option value="2">Enviados</option>
+                            <option value="3">Guardados</option>
+                        </select>
+                    </div>
+<!--                    <div class="msj_search">
+                        <input id="search_msj" type="text" onfocus="if(this.value == this.defaultValue) this.value = ''" value="Buscar..." 
+                    </div>-->
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="1000px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+   <tr>
+       <td><table border="1">
+         <div id="infoclase"></div>
+      </table></td>
+   </tr>
+</table>
+<br>
+<div id="tableData" align="center"></div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type='text/javascript'>
+    $(document).ready(function(){
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+	 echo $this->filters->getJavaScript('tableData');
+?>
+    $.getJSON(urlAjax + "checkpermisosanuncio", function(d){
+        executeCmdsFromJSON(d);
+    });
+    $.getJSON(urlAjax + "list/carpeta/"+escape($('#tblFiltros').find('#selBandejas').val())+"", function(d){
+        executeCmdsFromJSON(d);
+    });
+    
+    arraySelects = new Array('sede', 'escuela', 'semestre', 'materia', 'seccion');
+
+$('#tituloan').click(function(){
+    if($('#timeline').is(':visible')){
+        $('#timeline').hide('slow');
+    }else{
+        $('#timeline').show('slow');
+    }
+});
+$('#inputField').bind("blur focus keydown keypress keyup", function(){recount();});
+$('input.submitButton').attr('disabled','disabled');
+
+$("#btnTSiguiente").live('click', function (){ 
+                        $.getJSON(urlAjax + "addoreditload?" + ($('#frmModal').find(":input[value]").serialize()) + "", function(d){
+                            executeCmdsFromJSON(d)
+                        });            
+                    })
+                    
+$("#selTipoMsj").live('change', function(){
+    checkTmsj();
+});
+$("#selTEfecha").live('change', function(){
+    checkTmsj_entrega();
+});
+
+$("#selSede").live('change', function(){
+	eval(fillSelectRecursive(urlAjax, arraySelects, 1));
+});
+$("#selEscuela").live('change', function(){
+	eval(fillSelectRecursive(urlAjax, arraySelects, 2));
+});
+$("#selSemestre").live('change', function(){
+	eval(fillSelectRecursive(urlAjax, arraySelects, 3));
+});
+$("#selMateria").live('change', function(){
+	eval(fillSelectRecursive(urlAjax, arraySelects, 4));
+});
+
+
+$('#btnAnuncios').click(function(e){
+
+        tweet();
+        e.preventDefault();
+
+});
+    $('#refrescar').hide();
+    $('#refrescar').click(function(){
+        timerId = setInterval(timerMethod, 60000); 
+        runCount = 0
+        $('#refrescar').hide();
+        $.getJSON(urlAjax + "anuncio", function(d){
+            $('#timeline').html(d);
+        });
+    });
+    $.getJSON(urlAjax + "anuncio", function(d){
+        $('#timeline').html(d);
+    });
+
+$('#selBandejas').change(function (){
+    $.getJSON(urlAjax + "list/carpeta/"+escape($('#tblFiltros').find('#selBandejas').val())+"", function(d){
+        executeCmdsFromJSON(d);
+    });
+});
+
+$('#btnMsjBorrar').click(function(){$.getJSON(urlAjax + "deleteload/data/"+escape($('#tableData').find(':input').serialize())+"%26carpeta%3D"+$('#tblFiltros').find('#selBandejas').val()+"", function(d){executeCmdsFromJSON(d)});});
+
+$('#btnNuevo').click(function (){
+    $.getJSON(urlAjax + "tipomensaje", function(d){
+        executeCmdsFromJSON(d);
+
+    });    
+});
+//$.getJSON(urlAjax + "carpetas", function(d){
+//        executeCmdsFromJSON(d);
+//    });
+
+
+    });
+    
+function recount()
+{
+	var maxlen=140;
+	var current = maxlen-$('#inputField').val().length;
+	$('.counter').html(current);
+	
+		
+	if(current<0 || current==maxlen)
+	{
+		$('.counter').css('color','#D40D12');
+		$('input.submitButton').attr('disabled','disabled').addClass('inact');
+	}
+	else
+		$('input.submitButton').removeAttr('disabled').removeClass('inact');
+
+	
+	if(current<10)
+		$('.counter').css('color','#D40D12');
+	
+	else if(current<20)
+		$('.counter').css('color','#5C0002');
+
+	else
+		$('.counter').css('color','#cccccc');
+	
+}
+
+
+
+function tweet()
+{
+	var submitData = $('#tweetForm').find(":input").serialize();
+	
+	$('.counter').html('<img src="../images/ajax_load.gif" width="16" height="16" style="padding:12px" alt="loading" />');
+	
+	$.ajax({
+		type: "POST",
+		url: '<?= $this->baseUrl() ?>/transactions/mensajes/addanuncio/',
+		data: submitData,
+		dataType: "html",
+		success: function(msg){
+			
+			if(parseInt(msg)!=0)
+			{
+				$('ul.statuses li:first-child').before(msg);
+				$("ul.statuses:empty").append(msg);
+				
+				$('#lastTweet').html($('#inputField').val());
+				
+				$('#inputField').val('');
+				recount();
+			}
+		}
+		
+	});
+
+}
+
+function refreshtweet(){
+    $.getJSON(urlAjax + "anuncio", function(d){
+        $('#timeline').html(d);
+    });
+}
+
+var runCount = 0;    
+function timerMethod() {
+    refreshtweet();
+    runCount++;
+    if(runCount > 3){ 
+        clearInterval(timerId);
+        $("#refrescar").show('slow');
+    }
+
+    //...
+}
+
+var timerId = setInterval(timerMethod, 60000); 
+
+function startTinyMCE(){
+    tinyMCE.init({
+             mode : "exact"
+        ,elements : "contenido_html"
+,theme : 'advanced'
+,width : "580"
+,height: "300"
+,plugins : 'paste, table'
+,theme_advanced_resizing : true
+,theme_advanced_toolbar_location : "top"
+,theme_advanced_buttons1 : "link, bold, italic, underline, strikethrough, |, justifyleft, justifycenter, justifyright, justifyfull, |, bullist, numlist,|, undo, redo, cleanup, removeformat, pasteword, code "
+,theme_advanced_buttons2 : "link, unlink|, image, hr , sub, sup, charmap, |, forecolor, backcolor, |, tablecontrols"
+,theme_advanced_buttons3 : ""
+,theme_advanced_blockformats : "p,h1,h2,h3,blockquote,dt,dd"
+//         ,  setup : function(ed) {
+//      ed.onChange.add(function(ed, l) {
+//          $('#contenido_html').text(tinyMCE.get('contenido_html').getContent());
+//          console.log($('#contenido_html').text());
+//          chtml = $('#contenido_html').text();
+//          $.post('<?= $this->baseUrl() ?>/transactions/recursos/savecontenido/', {'chtml' : chtml});
+//          });
+//      ed.onKeyUp.add(function(ed, e) {
+//          $('#contenido_html').text(tinyMCE.get('contenido_html').getContent());
+//          console.log($('#contenido_html').text());
+//          chtml = $('#contenido_html').text();
+//          $.post('<?= $this->baseUrl() ?>/transactions/recursos/savecontenido/', {'chtml' : chtml});
+//      });
+//   }
+    });
+}
+
+function checkTmsj(){
+valor = $("#selTipoMsj").val();
+    if(valor == 1726){
+            $('#selTPsedeL').hide();
+            $('#selTPsedeI').hide();
+            $('#selTPescuelaL').hide();
+            $('#selTPescuelaI').hide();
+            $('#selTPsemestreL').hide();
+            $('#selTPsemestreI').hide();
+            $('#selTPmateriaL').hide();
+            $('#selTPmateriaI').hide();
+            $('#selTPseccionL').hide();
+            $('#selTPseccionI').hide();
+            $('#selTEfechaL').hide();
+            $('#selTEfechaI').hide();
+            $('#TEdiaL').hide();
+            $('#TEdiaI').hide();
+            $('#TErangoSL').hide();
+            $('#TErangoSI').hide();
+            $('#TErangoIL').hide();
+            $('#TErangoII').hide();
+    }else if(valor == 1729){
+        filter = $('#selSede').val();
+        if(!filter)
+        eval(fillSelectRecursive(urlAjax, arraySelects, 0));
+            $('#selTPsedeL').show();
+            $('#selTPsedeI').show();
+            $('#selTPescuelaL').show();
+            $('#selTPescuelaI').show();
+            $('#selTPsemestreL').show();
+            $('#selTPsemestreI').show();
+            $('#selTPmateriaL').show();
+            $('#selTPmateriaI').show();
+            $('#selTPseccionL').show();
+            $('#selTPseccionI').show();
+            $('#selTEfechaL').hide();
+            $('#selTEfechaI').hide();
+            $('#TEdiaL').hide();
+            $('#TEdiaI').hide();
+            $('#TErangoSL').hide();
+            $('#TErangoSI').hide();
+            $('#TErangoIL').hide();
+            $('#TErangoII').hide();     
+    }else if(valor == 1728){
+        filter = $('#selSede').val();
+        if(!filter)
+        eval(fillSelectRecursive(urlAjax, arraySelects, 0));
+            $('#selTPsedeL').show();
+            $('#selTPsedeI').show();
+            $('#selTPescuelaL').show();
+            $('#selTPescuelaI').show();
+            $('#selTPsemestreL').show();
+            $('#selTPsemestreI').show();
+            $('#selTPmateriaL').show();
+            $('#selTPmateriaI').show();
+            $('#selTPseccionL').show();
+            $('#selTPseccionI').show();
+            $('#selTEfechaL').show();
+            $('#selTEfechaI').show();
+            $('#TEdiaL').show();
+            $('#TEdiaI').show();
+            $('#TErangoSL').show();
+            $('#TErangoSI').show();
+            $('#TErangoIL').show();
+            $('#TErangoII').show();  
+            checkTmsj_entrega();
+    }
+}
+function checkTmsj_entrega(){
+valor = $("#selTEfecha").val();
+    if(valor == 1){
+            $('#TEdiaL').show();
+            $('#TEdiaI').show();
+            $('#TErangoSL').hide();
+            $('#TErangoSI').hide();
+            $('#TErangoIL').hide();
+            $('#TErangoII').hide();
+    }else if(valor == 2){
+            $('#TEdiaL').hide();
+            $('#TEdiaI').hide();
+            $('#TErangoSL').show();
+            $('#TErangoSI').show();
+            $('#TErangoIL').show();
+            $('#TErangoII').show();      
+    }
+}
+
+function fillmsjselects(){
+    arraySelects = new Array('sede', 'escuela', 'semestre', 'materia', 'seccion');
+eval(fillSelectRecursive(urlAjax, arraySelects, 0));
+$("#selSede").change(function () {
+	eval(fillSelectRecursive(urlAjax, arraySelects, 1));
+});
+$("#selEscuela").change(function () {
+	eval(fillSelectRecursive(urlAjax, arraySelects, 2));
+});
+$("#selSemestre").change(function () {
+	eval(fillSelectRecursive(urlAjax, arraySelects, 3));
+});
+$("#selMateria").change(function () {
+	eval(fillSelectRecursive(urlAjax, arraySelects, 4));
+});
+}
+
+
+
+function startFileUploader(){
+var uploader = new qq.FileUploader({
+//   multiple: false,
+    element: document.getElementById('file-uploader'),
+    allowedExtensions: ['jpg', 'jpeg', 'gif', 'png'],
+     action: '<?= $this->baseUrl() ?>/transactions/mensajes/upload/',
+      debug: false,
+   onSubmit: function(id, fileName){ 
+            nelement = $('ul.qq-upload-list').children().length;
+            if(nelement == 5){
+                alert('Solo puede subir hasta cinco(5) archivo a la vez');
+                return false;
+            }
+    },
+   onComplete: function(id, fileName, responseJSON){
+       Texto = $('#adjuntos').val();
+       Adjunto = ""+id+", "+fileName+", "+responseJSON['fileext']+"}";
+       if(Texto != ""){
+           $('#adjuntos').val(Texto+', '+Adjunto);
+       }else{
+           $('#adjuntos').val(Adjunto);
+       }
+       console.log(responseJSON);
+   }
+});
+};
+</script>

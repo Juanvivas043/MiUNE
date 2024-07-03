@@ -1,0 +1,456 @@
+/* 
+    Document   : inicio
+    Created on : Aug 26, 2011, 8:54:07 AM
+    Author     : pocho
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.perf {
+
+    display: block;
+    margin-left: auto;
+    margin-top: 8px;
+    margin-right: auto;
+    z-index: -1000;
+
+}
+
+.perfcont {
+
+    clear: both;
+    margin-bottom: 9px;
+    margin-left: 5px;
+    margin-top:  9px;
+    font: normal 11px verdana, arial, helvetica, sans-serif;
+
+}
+
+
+.perficon {
+
+    float: left;
+    padding: 1.5px;
+    height: 20px;
+
+}
+
+
+.subTit-y {
+
+    float: left;
+    text-align: center;
+    margin-left: 70px;
+    font: normal 13px verdana, arial, helvetica, sans-serif;
+    color: #000000;/*#f6f6f6;*/
+    font-weight: bold;
+    /*width: 290px;*/
+
+}
+
+.subTit {
+
+    float: left;
+    text-align: center;
+    margin-left: 70px;
+    font: normal 13px verdana, arial, helvetica, sans-serif;
+    color: white;/*#f6f6f6;*/
+    font-weight: bold;
+    /*width: 290px;*/
+
+}
+
+.subTitbg {
+
+    float: left;
+    background-color: #006778; /*-moz-linear-gradient(top,  #CCCCCC, #9FBAF5); /*#518B97; /*#CCCCCC*/
+    text-align: center;
+    margin-bottom: 12px;
+    margin-top: 12px;
+    font: normal 13px verdana, arial, helvetica, sans-serif;
+    color: white;/*#f6f6f6;*/
+    font-weight: bold;
+    width: 100%;
+
+}
+
+.subTitbg-y {
+
+    float: left;
+    background-color: #BBC21C; /*-moz-linear-gradient(top,  #CCCCCC, #9FBAF5); /*#518B97; /*#CCCCCC*/
+    text-align: center;
+    margin-bottom: 12px;
+    margin-top: 12px;
+    font: normal 13px verdana, arial, helvetica, sans-serif;
+    color: #000000;/*#f6f6f6;*/
+    font-weight: bold;
+    width: 100%;
+
+}
+
+#left #izq {
+
+    width: 280px;
+    float: left;
+    overflow: hidden;
+    height: inherit;
+    padding: 0.4em;
+    z-index: -1000;
+
+}
+
+#izq h3 {
+
+    margin: 0;
+    padding: 0.5em;
+    font: 16px verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+#rights .content {
+
+    overflow: hidden;
+    margin-top: 2px;
+    min-width: 770px;
+    padding: 0.2em;
+
+
+}
+
+.content h3 {
+
+    margin: 0;
+    padding: 0.5em;
+    font: 16px verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+/*    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 6px;*/
+    text-align: center;
+/*    cursor: move;*/
+}
+
+
+#content2 {
+
+    overflow: hidden;
+    min-width: 760px;
+    padding: 0.2em;
+    
+
+}
+
+#content2 h3{
+
+    margin: 0;
+    padding: 0.5em;
+    font: 16px verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+#content2 h3 .colapsado{
+
+   background:#1F75FE; /*url('collapse.png') no-repeat top rightright;*/
+
+}
+
+#rights #horario {
+    float: left;
+    margin: 0 0 0 7px;
+    padding: 0.4em;
+}
+
+#rights #calendario {
+    float: left;
+    margin: 5px 0px 0px 7px;
+    padding: 0.4em;
+}
+
+.horario {
+
+    text-align: center;
+/*    margin-left: 6px;
+    margin-top: 4px;
+margin-right: 6px;*/
+    margin: 1px auto;
+    font-size: 12px;
+    border-radius: 1em;
+    min-width: 125px;
+    overflow: hidden;
+
+    -moz-border-radius: 1em;
+    -webkit-border-radius: 1em;
+/*    padding: 0.5em;
+    border: 1px solid black;*/
+}
+
+.horario td {
+
+    border: 1px solid black;
+    border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+
+
+}
+
+.horario .stripe{
+
+    background-image: url("../images/stripe_une.png");
+
+}
+
+.horario .clases {
+
+
+    background: url("../images/materias.jpg");
+    min-width: 125px;
+/*    background-image: url("stripe2.png");*/
+
+}
+
+.horario .profesor{
+    background-color: rgb(95, 138, 144); 
+}
+
+.horario .coincidencias {
+
+
+    background: red;
+    min-width: 125px;
+/*    background-image: url("stripe2.png");*/
+
+}
+
+.horario .fucion {
+
+
+    background-color: #BBC21C;
+    min-width: 125px;
+/*    background-image: url("stripe2.png");*/
+
+}
+
+.horario .time {
+
+/*    background: #CCCCCC url(jquery-ui/images/ui-bg_highlight-soft_75_ffe45c_1x100.png) 50% 50% repeat-x;*/
+    background: #CCCCCC url(../images/horas.jpg) 50% 50% repeat-x;
+
+    text-align: center;
+    min-width: 46px;
+/*    background: #CCCCCC;*/
+
+}
+
+.horario th {
+
+    font-weight: bold;
+    text-align: center;
+    font-size: 12px;
+    border: 1px solid black;
+    border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+/*    background: #006778;*/
+    background: #CCCCCC url(../images/horas.jpg) 50% 50% repeat-x;
+/*    color:white;*/
+/*    background: #CCCCCC url(jquery-ui/images/smoothness/ui-bg_highlight-soft_75_cccccc_1x100.png) 50% 50% repeat-x;*/
+/*    background: #CCCCCC url(jquery-ui/images/ui-bg_highlight-soft_75_ffe45c_1x100.png) 50% 50% repeat-x;*/
+}
+
+.leyenda{
+  position: relative;
+  float: left;
+  padding: 5px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  margin: 0 2px;
+  font-weight: bold;
+  margin-top: 2px;
+}
+
+.leyenda.clases{
+    background: url("../images/materias.jpg");
+}
+
+.leyenda.profesor{
+    background-color: rgb(95, 138, 144); 
+}
+.botondescargar{
+    float: right;
+    font-weight: bold;
+    background-color: #BABF47;
+    padding: 5px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    margin-top: 2px;
+}
+.botondescargar:hover{
+    float: right;
+    font-weight: bold;
+    background-color: #BABF47;
+    padding: 5px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    margin-top: 2px;
+    color: black;
+    cursor: pointer;
+}
+#tasks {
+
+    float: left;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-left: 45px;;
+    margin-right:auto;
+    width: 464px;
+    min-height: 300px;
+
+}
+
+#tasks h2{
+
+    margin: 0;
+    padding: 0.2em;
+    font: 14px verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-align: center;
+
+}
+
+#tasks2 {
+
+    float: left;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-left: 45px;;
+    margin-right:auto;
+    width: 464px;
+    min-height: 100px;
+
+}
+
+#tasks2 h2{
+
+    margin: 0;
+    padding: 0.2em;
+    font: 14px verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-align: center;
+
+}
+
+#fechas {
+
+    float : left;
+    margin-top: 8px;
+    margin-left: 10px;
+    margin-bottom: 0px;
+
+
+}
+
+#act {
+  clear: both;
+  overflow: hidden;
+  width: 98%;
+  margin: 5px auto;
+  padding: 0.3em;
+  box-sizing: border-box;
+}
+
+#right-p {
+
+    margin-top: 5px;
+    float: left;
+    margin-left: 6px;
+    width: 200px;
+    overflow: hidden;
+}
+
+#right-p h2{
+
+    margin: 0;
+    padding: 0.2em;
+    font: 14px verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-align: center;
+}
+
+#right-p2 {
+
+    margin-top: 5px;
+    float: left;
+    margin-left: 6px;
+    width: 200px;
+    overflow: hidden;
+    min-height: 173px;
+}
+
+#right-p2 h2{
+
+    margin: 0;
+    padding: 0.2em;
+    font: 14px verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-align: center;
+
+}
+
+#right-p3 {
+
+    margin-top: 5px;
+    float: left;
+    margin-left: 6px;
+    width: 200px;
+    overflow: hidden;
+    min-height: 128px;
+}
+
+#right-p3 h2{
+
+    margin: 0;
+    padding: 0.2em;
+    font: 14px verdana, arial, helvetica, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.4px;
+    text-align: center;
+
+}
+
+#freecont {
+
+    float:left;
+    font-size: 14px;
+    margin-left: 5px;
+    margin-top: 5px;
+    padding: 0.3em;
+    margin-bottom: 3px;
+}
+
+.red{
+    background-color: #EB3229;
+    border-radius:3px;
+    padding: 2px;
+    font-size: 11px;
+}
+
+.green{
+    background-color: #BBC21C;
+    border-radius:3px;
+    padding: 2px;
+    font-size: 11px;
+}
+
+.cont {
+    padding: 3.5px 15px !important;
+}

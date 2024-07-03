@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><?php echo $this->escape($this->title); ?></title>
+	<?php
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/pagination.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+	?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml');  ?>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            <div id="tableData"></div>
+        </td>
+    </tr>
+</table>
+
+<?php
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+?>
+<script type='text/javascript'>
+    $(document).ready(function(){
+       $('#lnk21071').live('click', function(){$('#btnList').trigger('click');
+});
+    
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+	echo $this->SwapBytes_Crud_Action->getJavaScript();
+	echo $this->filters->getJavaScript();
+        
+?>
+
+    });
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,57 @@
+<?php
+/**
+ * Archivo: pagination.phtml
+ * Fuente: http://framework.zend.com/manual/en/zend.paginator.usage.html#zend.paginator.usage.rendering.example-controls
+ * Autor: Lic. Nicola Strappazzon C.
+ * Fecha: 10/08/2009
+ * Descripción: Crear el paginador de una lista determinada anteriormente, fue
+ *              adaptada de la version original para que funcione con AJAX del
+ *              jQuery, las modificaciones se realizaron unicamente para los
+ *              hipervinculos, se describe a continuación los cambios:
+ *
+ *              <a href="<?php echo $this->url(array('page' => $this->first)); ?>">Inicio</a>
+ *              por la siguiente estructura:
+ *              <a href="#" onclick="$.getJSON(\'<?php echo $this->url(array('page' => $this->first)); ?>\'); return false;">Inicio</a>
+ *
+ */
+if ($this->pageCount):
+    $onClick_first    = "$.getJSON(\'{$this->url(array('page' => $this->first))}\', function(data){executeCmdsFromJSON(data)}); return false;";
+    $onClick_previous = "$.getJSON(\'{$this->url(array('page' => $this->previous))}\', function(data){executeCmdsFromJSON(data)}); return false;";
+    $onClick_next     = "$.getJSON(\'{$this->url(array('page' => $this->next))}\', function(data){executeCmdsFromJSON(data)}); return false;";
+    $onClick_last     = "$.getJSON(\'{$this->url(array('page' => $this->last))}\', function(data){executeCmdsFromJSON(data)}); return false;";
+?>
+<div class="pagination">
+    <?php if (isset($this->previous)): ?>
+        <a href="#" onclick="<?php echo $onClick_first ?>">Inicio</a> |
+    <?php else: ?>
+        <span class="disabled">Inicio</span> |
+    <?php endif; ?>
+    <?php if (isset($this->previous)): ?>
+        <a href="#" onclick="<?php echo $onClick_previous ?>">&lt; Anterior</a> |
+    <?php else: ?>
+        <span class="disabled">&lt; Anterior</span> |
+    <?php endif; ?>
+    <?php foreach ($this->pagesInRange as $page): ?>
+        <?php
+            if ($page != $this->current):
+                $onClick_page = "$.getJSON(\'{$this->url(array('page' => $page))}\', function(data){executeCmdsFromJSON(data)}); return false;";
+        ?>
+            <a href="#" onclick="<?php echo $onClick_page ?>"><?php echo $page; ?></a>
+        <?php else: ?>
+            <span class="current"><?php echo $page; ?></span>
+            <input type="hidden" id="page" name="page" value="<?php echo $page; ?>"/>
+        <?php endif; ?>
+    <?php endforeach; ?>
+    <?php if (isset($this->next)): ?>
+        | <a href="#" onclick="<?php echo $onClick_next ?>">Siguiente &gt;</a> |
+    <?php else: ?>
+        | <span class="disabled">Siguiente &gt;</span> |
+    <?php endif; ?>
+    <?php if (isset($this->next)): ?>
+        <a href="#" onclick="<?php echo $onClick_last ?>">Fin</a>
+    <?php else: ?>
+        <span class="disabled">Fin</span>
+    <?php endif; ?>
+    &nbsp;Página <?php echo $this->current; ?> de <?php echo $this->last; ?>, Total: <?php echo $this->totalItemCount; ?>
+</div>
+<?php endif; ?>

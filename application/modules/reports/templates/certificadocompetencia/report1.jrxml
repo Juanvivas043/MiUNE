@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bd8da99d-20fd-466e-bcdf-3bc96d367dea">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Imagen" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/var/www/MiUNE2/application/modules/reports/templates/certificadocompetencia/logo.png"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cedula" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="numeropago" class="java.lang.String"/>
+	<parameter name="monto" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT *
+FROM(
+SELECT  EXTRACT(DAY FROM current_date) as dia,EXTRACT(YEAR FROM current_date) as año,
+
+ CASE	 WHEN EXTRACT(MONTH FROM current_date) = 1 THEN 'Enero'
+		 WHEN EXTRACT(MONTH FROM current_date) = 2 THEN 'Febrero'
+		 WHEN EXTRACT(MONTH FROM current_date) = 3 THEN 'Marzo'
+		 WHEN EXTRACT(MONTH FROM current_date) = 4 THEN 'Abril'
+		 WHEN EXTRACT(MONTH FROM current_date) = 5 THEN 'Mayo'
+		 WHEN EXTRACT(MONTH FROM current_date) = 6 THEN 'Junio'
+		 WHEN EXTRACT(MONTH FROM current_date) = 7 THEN 'Julio'
+		 WHEN EXTRACT(MONTH FROM current_date) = 8 THEN 'Agosto'
+		 WHEN EXTRACT(MONTH FROM current_date) = 9 THEN 'Septiembre'
+		 WHEN EXTRACT(MONTH FROM current_date) = 10 THEN 'Octubre'
+		 WHEN EXTRACT(MONTH FROM current_date) = 11 THEN 'Noviembre'
+		 WHEN EXTRACT(MONTH FROM current_date) = 12 THEN 'Diciembre'
+END as mes,
+sed.nombre as sede, esc.escuela as escuela, usr.pk_usuario as cedula,usr.nombre,usr.apellido,
+CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 1) THEN 'PRIMERO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 2) THEN 'SEGUNDO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 3) THEN 'TERCERO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 4) THEN 'CUARTO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 5) THEN 'QUINTO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 6) THEN 'SEXTO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 7) THEN 'SÉPTIMO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 8) THEN 'OCTAVO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 9) THEN 'NOVENO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 10) THEN 'DÉCIMO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 11) THEN 'DÉCIMO PRIMERO'
+ELSE CASE WHEN (fn_xrxx_estudiante_sem_ubicacion_periodod2(usr.pk_usuario,ins.fk_atributo,ins.fk_periodo,ins.fk_pensum ) = 12) THEN 'DÉCIMO SEGUNDO'
+END END END END END END END END END END END END  as periodo
+FROM  tbl_usuarios usr
+JOIN tbl_usuariosgrupos usu ON usu.fk_usuario = usr.pk_usuario
+JOIN tbl_inscripciones ins ON ins.fk_usuariogrupo = usu.pk_usuariogrupo
+JOIN vw_sedes sed ON sed.pk_estructura = ins.fk_estructura
+JOIN vw_escuelas esc ON esc.pk_atributo = ins.fk_atributo
+WHERE usr.pk_usuario = $P{cedula}
+ORDER BY ins.fk_periodo DESC) AS SQT
+WHERE SQT.periodo != ''
+
+limit 1;]]>
+	</queryString>
+	<field name="dia" class="java.lang.Integer"/>
+	<field name="año" class="java.lang.Integer"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="sede" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="periodo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="802">
+			<image>
+				<reportElement uuid="a05746b6-4985-48a7-ad86-eb6bf375ab09" x="3" y="0" width="191" height="78"/>
+				<imageExpression><![CDATA[$P{Imagen}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="c09ba38d-d640-41b5-942f-eef780f1d2e6" x="41" y="78" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sede}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="75937806-a249-4fc7-960f-735aad920d3f" x="10" y="78" width="31" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sede]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="77f486d8-e512-46d5-82ff-a7f1a6487efe" x="8" y="155" width="539" height="141"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font fontName="SansSerif" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["El suscrito, "+ "<b>"+$F{nombre}+" "+$F{apellido}+"</b>"+", portador de la Cédula de Identidad N° "+
+ "<b>"+$F{cedula}+"</b>"+", cursante actualmente del "+"<b>"+$F{periodo}+"</b>"+" PERÍODO ACADÉMICO  en la Escuela de "+
+"<b>"+$F{escuela}+"</b>"+", mediante la presente cumplo con participar que he cursado y aprobado todas las asignaturas  hasta el SEXTO PERÍODO ACADÉMICO de la carrera, incluyendo las asignaturas: Servicio Comunitario I,Servicio Comunitario II y Diseño de informes Técnicos, y de acuerdo con lo establecido en la Resolución para el Otorgamiento del Certificado de Competencias aprobada por el Consejo Universitario en la Sesión Ordinaria N° 155 realizada el 14/11/2012 y ratificada por el Consejo Superior en la Sesión Ordinaria N° 86 realizada el 24/01/2013, solicito se me otorgue el correspondiente CERTIFICADO DE COMPETENCIAS."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="552cd96e-27db-4ea7-ba8a-a91620738c4a" x="10" y="100" width="100" height="26"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SECRETARÍA
+SEC-005-2013]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bf482e5c-d9eb-49c5-9966-77e98ebabceb" x="194" y="407" width="230" height="31"/>
+				<textElement/>
+				<text><![CDATA[    Consejo Universitario (24/11/2012)
+    Consejo Superior (24/01/2013) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="940c5b1a-165e-4466-83ac-cc532c799dec" x="145" y="121" width="285" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD DE CERTIFICADO DE COMPETENCIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5d69d1be-09fd-4116-8746-978c20d57c60" x="194" y="374" width="208" height="29"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ ___________________________________
+       Firma del Solicitante
+
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="df957f5d-1591-4e15-90da-a1a8a98ec6e4" x="77" y="741" width="400" height="38"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[____________________________________          _______________________________
+Firma Director(a)  de Escuela                                  Sello]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="ce2eb530-f610-4476-9927-85c624206111" x="10" y="307" width="535" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" En Caracas, a los "+$F{dia}+" días del mes de "+$F{mes}+" de "+$F{año}+"."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e009f5a9-1188-4edc-a839-f71550471089" x="0" y="535" width="101" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comprobante N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="19844f3a-212e-4b00-af73-faaa09a4095c" x="0" y="570" width="63" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Bs. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="51c0fb21-d4e4-47e1-bab2-06d5eafd9836" x="0" y="503" width="298" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pago de Arancel para Certificado de Competencias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a2cf3cc5-347e-44a5-a78c-52340b6e8b2f" x="347" y="535" width="119" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[SOLVENTE CON BIBLIOTECA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3f25842e-c968-4776-8147-49da23363bd1" x="347" y="545" width="129" height="13"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[SOLVENTE ACADÉMICAMENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2284d5e0-d858-4d75-b495-8280c48a0f3b" x="347" y="558" width="149" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[SOLVENTE CON ADMINISTRACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="161abb0e-f9f2-4bd7-b0e8-75ca9cdf350f" x="347" y="568" width="161" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[SOLVENTE CON SERVICIO COMUNITARO]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="c012ba90-9d14-4ab3-bff9-3488a29bb437" x="101" y="535" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numeropago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1707eb7a-49fe-4e45-87de-90053566172c" x="63" y="570" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{monto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

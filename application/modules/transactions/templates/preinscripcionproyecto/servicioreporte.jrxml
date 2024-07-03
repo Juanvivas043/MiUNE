@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="servicioreporte" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="355"/>
+	<parameter name="ci" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select DISTINCT u.pk_usuario as cedula, u.apellido||','|| u.nombre as estudiante, u.direccion as direccionusuario, u.telefono as telefonousuario,
+u.telefono_movil as celular, u.correo as mail, es.escuela as escuela, p.nombre as proyecto,  ins.nombre as institucion, ins.direccion as direccionins, ins.telefono as telefonoinstitucion, per.fechainicio as fechainicio,per.fechafin as fechafin,
+fn_xrxx_estudiante_sem_ubicacion_periodod2(u.pk_usuario,pen.fk_escuela,ap.fk_periodo,pen.codigopropietario) as semestre, subj.fecha_taller as fecha_taller
+from tbl_inscripcionespasantias ip
+join tbl_recordsacademicos ra on ra.pk_recordacademico = ip.fk_recordacademico
+join tbl_asignacionesproyectos ap on ap.pk_asignacionproyecto = ip.fk_asignacionproyecto
+join tbl_inscripciones i on i.pk_inscripcion = ra.fk_inscripcion
+join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = i.fk_usuariogrupo
+join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
+join tbl_proyectos p on p.pk_proyecto = ap.fk_proyecto
+join tbl_instituciones ins on ins.pk_institucion = p.fk_institucion
+join tbl_asignaturas a on a.pk_asignatura = ra.fk_asignatura
+join tbl_pensums pen on pen.pk_pensum = a.fk_pensum
+join vw_escuelas es on es.pk_atributo = pen.fk_escuela
+join tbl_periodos per on per.pk_periodo = ap.fk_periodo
+join (select DISTINCT u.pk_usuario, p.fechainicio||'/'||p.fechafin as fecha_taller
+		from vw_materias m
+		join tbl_asignaturas a on a.fk_materia = m.pk_atributo
+		join tbl_recordsacademicos ra on ra.fk_asignatura = a.pk_asignatura
+		join tbl_inscripciones i on i.pk_inscripcion = ra.fk_inscripcion
+		join tbl_periodos p on p.pk_periodo = i.fk_periodo
+		join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = i.fk_usuariogrupo
+		join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
+		where a.fk_materia in (8219,9737)
+		and u.pk_usuario = $P{ci}::integer
+		and ra.fk_atributo = 862
+		and ra.calificacion > 10
+)as subj
+on subj.pk_usuario = u.pk_usuario
+
+where u.pk_usuario = $P{ci}::integer]]>
+	</queryString>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="estudiante" class="java.lang.String"/>
+	<field name="direccionusuario" class="java.lang.String"/>
+	<field name="telefonousuario" class="java.lang.String"/>
+	<field name="celular" class="java.lang.String"/>
+	<field name="mail" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="proyecto" class="java.lang.String"/>
+	<field name="institucion" class="java.lang.String"/>
+	<field name="direccionins" class="java.lang.String"/>
+	<field name="telefonoinstitucion" class="java.lang.String"/>
+	<field name="fechainicio" class="java.sql.Date"/>
+	<field name="fechafin" class="java.sql.Date"/>
+	<field name="semestre" class="java.lang.Integer"/>
+	<field name="fecha_taller" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="92" splitType="Stretch">
+			<staticText>
+				<reportElement x="125" y="30" width="244" height="20"/>
+				<textElement/>
+				<text><![CDATA[PRE-INSCRIPCIÓN DE SERVICIO COMUNITARIO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="124" y="50" width="316" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Periodo desde "+ $F{fechainicio}+ " hasta "+ $F{fechafin}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="439" splitType="Stretch">
+			<staticText>
+				<reportElement x="24" y="12" width="181" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL (LA) ESTUDIANTE :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="24" y="42" width="367" height="21"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Apellidos y Nombres: "+$F{estudiante}+"C.I:"+$F{cedula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="63" width="58" height="20"/>
+				<textElement/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="82" y="63" width="309" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{direccionusuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="83" width="488" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Telf.Celular: "+$F{celular}+" Telf. Ofic: "+$F{telefonousuario}+" Email: "+$F{mail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="103" width="488" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Escuela: "+$F{escuela}+" Semestre: "+$F{semestre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="122" width="488" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Fecha en la cual curso el Taller de Servicio Comunitario "+$F{fecha_taller}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="25" y="165" width="464" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["__________________________________________________________________________________________"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="143" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Observaciones :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="266" y="261" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Firma del Estudiante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="320" width="138" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL PROYECTO : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="24" y="351" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Título del Proyecto: " + $F{proyecto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="25" y="371" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Comunidad o Institución " + $F{institucion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="25" y="184" width="464" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["__________________________________________________________________________________________"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="25" y="203" width="464" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["__________________________________________________________________________________________"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="135" y="242" width="231" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["_________________________________________"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="25" y="391" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Dirección: " + $F{direccionins}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="26" y="411" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Telf: " + $F{telefonoinstitucion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

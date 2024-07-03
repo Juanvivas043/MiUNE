@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pensums" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.210000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Library/WebServer/Documents/MiUNE2/application/modules/reports/templates/Pensums/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="escuela" class="java.lang.String"/>
+	<parameter name="pensum" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="sede" class="java.lang.String"/>
+	<parameter name="image" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Library/WebServer/Documents/MiUNE2/public/images/logo_UNE_color.jpg"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT      tblA.codigopropietario,
+                                vwM.materia::VARCHAR(45),
+                                tblA.unidadcredito,
+                                CASE WHEN tblP1.unidadescredito <> 0 THEN tblP1.unidadescredito ||' U/C Aprob.' ELSE
+                                CASE WHEN (SELECT * FROM fn_xrxx_pensum_prelaciones(tblA.pk_asignatura)) = '' THEN '  -------'::VARCHAR(45) ELSE
+				 CASE WHEN (substring((SELECT * FROM fn_xrxx_pensum_prelaciones(tblA.pk_asignatura)) from 0 for char_length((SELECT * FROM fn_xrxx_pensum_prelaciones(tblA.pk_asignatura)))-2)::varchar(45) ) ilike '%0000%' THEN 'Hasta '||vwS1.id || '' ||substr(replace(vwS1.valor, 'Semestre',''),length(replace(vwS1.valor, 'Semestre',''))-2,length(replace(vwS1.valor, 'Semestre','')))||'aprob.'
+				 else substring((SELECT * FROM fn_xrxx_pensum_prelaciones(tblA.pk_asignatura)) from 0 for char_length((SELECT * FROM fn_xrxx_pensum_prelaciones(tblA.pk_asignatura)))-2)::varchar(45)  end END END,
+                                tblA.pk_asignatura,
+                                vwS1.id || ' ' ||vwS1.valor,
+                                tblP1.unidadescredito,
+                                tblAS.nota
+
+		FROM tbl_asignaturas tblA
+		JOIN vw_materias vwM ON vwM.pk_atributo = tblA.fk_materia
+		JOIN tbl_asignaciones tblAS ON tblA.pk_asignatura = tblAS.fk_asignatura
+		JOIN tbl_pensums tblP ON tblP.pk_pensum = tblA.fk_pensum
+		JOIN tbl_estructuras tblE1 ON tblE1.pk_estructura = tblAS.fk_estructura
+		JOIN tbl_estructuras tblE2 ON tblE2.pk_estructura = tblE1.fk_estructura
+		JOIN tbl_estructuras tblE3 ON tblE3.pk_estructura = tblE2.fk_estructura
+		JOIN vw_escuelas vwE ON vwE.pk_atributo  = tblP.fk_escuela
+		JOIN vw_semestres vwS ON vwS.pk_atributo = tblAS.fk_semestre
+	        FULL OUTER JOIN tbl_prelaciones tblP1 ON tblP1.fk_asignatura = tblA.pk_asignatura
+	        FULL OUTER JOIN vw_semestres     vwS1 ON vwS1.pk_atributo    = tblP1.fk_atributo
+                WHERE vwE.pk_atributo 		 =  $P!{escuela}  AND
+		      tblP.pk_pensum             =  $P!{pensum}   AND
+		      tblE3.pk_estructura        =  $P!{sede} 	AND
+		      tblAS.fk_periodo           =  $P!{periodo}	AND
+		      vwS.id 		=  0 AND
+		      tblA.fk_materia            <> 1701 AND
+		      tblA.codigopropietario NOT IN ('07150907','07250909','07300908','07251005','07151007','07301007','07150908',
+						     '07100906','07300909','07050907','07250908','07101006','07151008','07051008',
+						     '07301008','07251006','07051007','07101005','07201009','07200809','07050001',
+						     '07100001','07150001','07200001','07250001','07300001') AND
+                      tblA.fk_tiporeinscripcion  = 915 AND
+                      tblAS.pk_asignacion   = (SELECT asi.pk_asignacion
+						FROM tbl_asignaciones asi
+						WHERE asi.fk_asignatura = tblAS.fk_asignatura
+						  AND asi.fk_periodo = tblAS.fk_periodo
+						  AND asi.fk_semestre = tblAS.fk_semestre
+						ORDER BY 1 ASC
+						LIMIT 1)
+                ORDER BY tblA.codigopropietario ASC]]>
+	</queryString>
+	<field name="codigopropietario" class="java.lang.String"/>
+	<field name="materia" class="java.lang.String"/>
+	<field name="unidadcredito" class="java.lang.Integer"/>
+	<field name="substring" class="java.lang.String"/>
+	<field name="pk_asignatura" class="java.lang.Integer"/>
+	<field name="?column?" class="java.lang.String"/>
+	<field name="unidadescredito" class="java.lang.Integer"/>
+	<field name="nota" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="163" splitType="Stretch">
+			<image>
+				<reportElement x="1" y="3" width="127" height="50"/>
+				<imageExpression><![CDATA[$P{image}]]></imageExpression>
+			</image>
+			<subreport>
+				<reportElement x="131" y="5" width="305" height="52"/>
+				<subreportParameter name="periodo3">
+					<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pensum3">
+					<subreportParameterExpression><![CDATA[$P{pensum}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="sede3">
+					<subreportParameterExpression><![CDATA[$P{sede}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="escuela3">
+					<subreportParameterExpression><![CDATA[$P{escuela}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Pensums_subreport3.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="140" y="153" width="40" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="153" width="162" height="10"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ASIGNATURA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="342" y="153" width="18" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[U.C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="153" width="60" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[REQUISITOS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="140" y="162" width="280" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="87" width="554" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROGRAMA DE INICIACIÓN UNIVERSITARIA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="11" splitType="Stretch">
+			<textField>
+				<reportElement x="180" y="0" width="162" height="10" isPrintWhenDetailOverflows="true"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{materia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="0" width="60" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{substring}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="0" width="40" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigopropietario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="342" y="0" width="18" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unidadcredito}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="2" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="2" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="2" splitType="Stretch"/>
+	</summary>
+</jasperReport>

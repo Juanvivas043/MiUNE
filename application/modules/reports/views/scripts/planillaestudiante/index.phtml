@@ -1,0 +1,168 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.grupos');
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+   
+<div id="gmarco">
+    
+    
+    <div id="busqueda">
+        <table id="tblbusqueda"  align="center">
+            <tr>
+                <td style="font-weight:bolder;text-align:center">
+		    <select name="selPeriodo" id="selPeriodo" style="width:140px;" disabled="true"></select>
+		</td>
+                <td style="font-weight:bolder;text-align:center">
+		    <select name="selSede" id="selSede" style="width:140px;" disabled="true"></select>
+		</td>
+                <td style="font-weight:bolder;text-align:center">
+		    <select name="selEscuela" id="selEscuela" style="width:140px;" disabled="true"></select>
+		</td>
+		<td style="font-weight:bolder;text-align:center">
+		    <select name="selPensum" id="selPensum" style="width:140px;" disabled="true"></select>
+		</td>
+                <td>
+                    <input id="botomclik" type="button" value="ver" >
+                </td>
+                <td>
+<!--                    <input id="imprimir" type="button" value="Imprimir Planilla" >-->
+                    <button type="button" name="imprimir" id="imprimir" disabled>Imprimir Planilla</button>
+                </td>
+            </tr>
+        </table> 
+    </div>
+    <p id="mensaje" align="center" style="font-weight:bold">Cedula no encontrada</p>
+    
+    <br></br>
+    <div id ="marcos">
+        <div id="usuario">
+            <table id="tblusuario" align="center" >
+                <tr>
+                    <td>
+                        <p id="nombre_usuario">Nombre :</p>
+                    </td>
+                    <td>
+                        <p id="n_usuariotxt"></p>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <p id="apellido_usuario">Apellido :</p>
+                    </td>
+                    <td>
+                        <p id="a_usuariotxt"></p>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <p id="escuela_usuario">Escuela :</p>
+                    </td>
+                    <td>
+                        <p id="e_usuariotxt"></p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    
+    </div>
+</div>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        <?php
+           echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+           
+           echo $this->SwapBytes_Jquery->getLoading('loading');    
+           $function = "window.location.href = urlAjax + 'imprimir/pensum/' + $('#selPensum').val() + /escuela/ + $('#selEscuela').val()+ /periodo/ + $('#selPeriodo').val()+ /sede/ + $('#selSede').val()";
+           echo $this->SwapBytes_Jquery->setClick('imprimir', $function);
+           
+           
+        ?>              
+                
+
+     $('#marcos').hide();
+     $('#mensaje').hide();
+     $('#imprimir').attr('disabled',true);
+     
+     $('#botomclik').attr('hidden',true);
+     
+//     $('#botomclik').click(function(){
+     
+        $.getJSON(urlAjax+"busqueda/", function(data){executeCmdsFromJSON(data)
+        
+             $.getJSON(urlAjax + "periodo/", function(data){executeCmdsFromJSON(data)
+                 
+                 $.getJSON(urlAjax + "sede" + "/selPeriodo/" + $("#selPeriodo").val(), function(data){executeCmdsFromJSON(data)
+                     
+                     $.getJSON(urlAjax + "escuela" + "/selPeriodo/" + $("#selPeriodo").val() + "/selSede/" + $("#selSede").val() , function(data){executeCmdsFromJSON(data)
+
+                         $.getJSON(urlAjax + "pensum" + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val()+ "/selPeriodo/" + $("#selPeriodo").val() + "/selSede/" + $("#selSede").val(), function(data){
+                                executeCmdsFromJSON(data)
+
+                         });
+
+                     });
+                 });
+                 
+             });
+
+//        });
+        
+        //
+        
+        $('#selPeriodo').change(function(){
+           $.getJSON(urlAjax + "sede" + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val() + "/selPeriodo/" + $("#selPeriodo").val(), function(data){
+               $.getJSON(urlAjax + "escuela" + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val() + "/selPeriodo/" + $("#selPeriodo").val() + "/selSede/" + $("#selSede").val(), function(data){
+                  executeCmdsFromJSON(data)
+                  $.getJSON(urlAjax + "pensum"+ "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val() + "/selPeriodo/" + $("#selPeriodo").val() + "/selSede/" + $("#selSede").val(), function(data){
+                    executeCmdsFromJSON(data)
+                  });
+               });
+           });
+           
+        });
+        
+        $('#selSede').change(function(){
+           
+               $.getJSON(urlAjax + "escuela" + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val() + "/selPeriodo/" + $("#selPeriodo").val() + "/selSede/" + $("#selSede").val(), function(data){
+                  executeCmdsFromJSON(data)
+                  $.getJSON(urlAjax + "pensum" + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val() + "/selPeriodo/" + $("#selPeriodo").val() + "/selSede/" + $("#selSede").val(), function(data){
+                    executeCmdsFromJSON(data)
+                  });
+               });
+           
+        });
+        
+        $('#selEscuela').change(function(){
+           $.getJSON(urlAjax + "pensum" + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val() + "/selPeriodo/" + $("#selPeriodo").val() + "/selSede/" + $("#selSede").val(), function(data){
+              executeCmdsFromJSON(data)
+           });
+        });
+        
+        
+        
+     });
+    
+    
+    
+    
+//     $('#imprimir').click(function(){
+//            $.getJSON(urlAjax+"imprimir/ci/"+ $ci, function(data){executeCmdsFromJSON(data)})
+//            
+//    });    
+    
+    
+
+    });
+   
+</script>

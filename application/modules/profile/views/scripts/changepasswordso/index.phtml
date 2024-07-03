@@ -1,0 +1,103 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/simplePassMeter.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.simplePassMeter.min.js');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="600px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td colspan="2" align="left">
+            Para poder cambiar de contraseña, escriba primero su contraseña actual de inicio de sesión, y luego escriba una nueva contraseña de operaciones especiales usando como referencia el indicador para determinar su fortaleza, recuerde que la contraseña de inicio de sesión y la de operaciones especiales no deben ser iguales.
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center">
+            <?php
+            if (isset($this->message['Errors']['PasswordOld'])) {
+                $ErrorList = '<li>La contraseña de inicio se sesión es incorrecta.</li>';
+            }
+
+            if (isset($this->message['Errors']['PasswordSo'])) {
+                $ErrorList = '<li>La contraseña de inicio se sesión y la de operaciones especiales son iguales.</li>';
+            }
+
+            if (isset($this->message['Errors']['PasswordRep'])) {
+                $ErrorList .= '<li>La contraseña nueva y la repetida no son iguales.</li>';
+            }
+
+            if (isset($ErrorList)) {
+                echo "<div class='MessageErrors'><b>No se pudo cambiar la contraseña de operaciones especiales por los siguientes errores:</b><br><ul>{$ErrorList}</ul></div>";
+            }
+
+            if (isset($this->message['Alert']['ChangePassword'])) {
+                echo "<div class='MessageAlert'>Se pudo cambiar la contraseña de operaciones especiales satisfactoriamente.</div>";
+            }
+
+            echo $this->form;
+            ?>
+        </td>
+    </tr>
+</table>
+<script type='text/javascript'>
+$(document).ready(function() {
+    $('#passwordOld').focus();
+    $('#passwordRep').simplePassMeter({
+        'minLength': {'value': 6},
+        'requirements': {
+            'noMatchField': {
+            'value': '#passwordOld',
+            'message': 'La contraseña debe ser diferente a la vieja'
+            },
+            'matchField': {
+            'value': '#passwordNew',
+            'message': 'Las contraseñas no coinciden'
+            },
+            'noSpecialChars': {
+            'value': true,
+            'message': 'Solamente letras y numeros',
+            'regex': '^[a-zA-Z0-9]*$'
+            }
+        }
+    });
+});
+</script>
+<style>
+    .zend_form dt {
+        width: 260px;
+    }
+
+    .simplePassMeter {
+        margin-top: -4px;
+        margin-left: 11px;
+    }
+    
+    .MessageErrors{
+        border: 1px solid #d77;
+        background: #fcc;
+        color: #200;
+        text-align:left;
+        margin: 10px 10px 15px 10px;
+    }
+
+    .MessageErrors b{
+        padding: 0 0 0 10px;
+    }
+
+    .MessageErrors ul{
+        padding: 5px 0px 5px 25px;
+    }
+
+    .MessageAlert {
+        border: 1px solid #FCDE66;
+        background: #FDF7DD;
+        color: #000000;
+        text-align:left;
+        padding: 0px 10px 0px 10px;
+        margin: 10px 10px 15px 10px;
+    }
+</style>

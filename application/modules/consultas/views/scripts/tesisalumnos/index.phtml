@@ -1,0 +1,145 @@
+
+ <?php $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+  $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css'); 
+  $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+   $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js'); $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css'); 
+   ?> 
+           <style type="text/css"> 
+       .title{
+        padding: 5px; 
+        font-size: 120%;
+        font-weight: bold;
+        text-align: center; 
+        margin-bottom: 10px;
+        } 
+        #tableData tr td{
+        padding: 2px 2px;
+        text-align: center;
+
+        }
+        .tableData {
+        max-width: 1120px;
+        }
+        #tableData td:last-child{
+        border-left-style: none;
+        }
+        .px125{
+          width: 125px;
+        }
+        .px250{
+          width: 250px;
+        }
+        .px80{
+          width: 80px;
+        }
+        .px200{
+          width: 200px;
+        }
+        .px20{
+          width: 20px;
+        }
+        .px1120{
+          width: 1120px;
+        }
+      </style> 
+   <h2> <?php  echo $this->title; ?> </h2> 
+
+   <div align="center"> 
+      
+
+   		 <table  id="tblFiltro" align="center">
+          <tr> 
+              <td> 
+                  <?php include_once('filtros.phtml'); ?> 
+   		       </td> 
+          </tr> 
+   		 </table>
+       <table id = "totales" class="tableData" border="0" cellpadding="0" cellspacing="0" width="450px"   style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;
+   margin-bottom:1%; text-align:center; ">
+       <tr>
+         <th>Total Tesis Aprobadas</th>
+         <th>Total Tesis No Aprobadas</th>
+         <th>Total Tutores Aprobados</th>
+         <th>Total Tutores Por Aprobados</th>
+       </tr>
+       <tr>
+         <td><p id="totales1"> <?php $this->data2[0]["count"];?></p></td>
+         <td><p id="totales2"> <?php $this->data2[1]["count"];?></p></td>
+         <td><p id="totales3"> <?php $this->data2[2]["count"];?></p></td>
+         <td><p id="totales4"> <?php $this->data2[3]["count"];?></p></td>
+       </tr>
+      </table>
+
+   				 <table id="tableData" class="tableData" align="center" class="c2">
+            
+          </table> 
+   		</div> 
+      <table id="tblTotal" class="tableData" align="center" >
+        
+      </table>
+
+  <script type="text/javascript"> <?php 
+   		 	  echo $this->SwapBytes_Jquery->getLoading('loading');
+   		  	echo $this->SwapBytes_Ajax->getUrlAjaxJS(); echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+   		   	echo $this->filters->getJavaScript('tableData');
+   		    ?> 
+
+          $('#totales').hide();
+         
+
+   		    $(document).ready(function(){$("td[style=text-align:right;font-weight:bolder;]").hide(); function list(){
+            $.getJSON(urlAjax + "generar/filters"+escape($('#tblFiltros').find(':input').serialize())+"", 
+              function(d){executeCmdsFromJSON(d)}); };
+
+   		    $("#selSede").change(function(){list(); }); 
+
+			    $("#selPeriodo").change(function(){list(); });
+
+			    $("#selMateria").change(function(){list(); });
+
+          $("#btnList").click(function(){
+                  $('#totales').show();
+
+
+          });
+
+			
+			 var first_time = true; $("#selSede").ajaxStop(function()
+			 	{if(first_time){list(); } first_time = false; });
+			   $("#btnList").on( "click", function() {
+        
+             $.ajax({method: "POST",
+			       url: urlAjax + 'list', 
+			       data: {  periodo: $("#selPeriodo").val(),
+			  		          sede: $("#selSede").val(),
+			  		          escuela: $("#selEscuela").val(), materias: $("#selMateria").val()}, 
+                      dataType: "JSON"})
+                       .done(function(data)
+                        {executeCmdsFromJSON(data);
+                        });                  
+            }); 
+        
+      });
+
+      $("#btnValidar").click( function() {
+        var valtesis = [];
+              $("input:checkbox:checked").each(   
+                function() {
+                    if($(this).val() != 'on'){
+                      valtesis.push($(this).val());
+                    }
+              });
+          $.ajax({type:'POST',
+              dataType:'json',
+              url: urlAjax + 'guardar',
+              data: {
+                  valtesis  : valtesis
+              },
+              success: function(data){
+              executeCmdsFromJSON(data);
+              }
+          });
+          window.alert('Se han realizado los cambios, Presione Listar para visualizarlos');
+       }); 
+
+		 </script>

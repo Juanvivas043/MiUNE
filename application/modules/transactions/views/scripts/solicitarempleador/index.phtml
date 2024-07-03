@@ -1,0 +1,202 @@
+<?php
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<style>
+    .title {
+        font-size: 20px;
+        color: #000;
+        margin: 10px auto;
+        text-align: center;
+    }
+    .alert {
+        display: block;
+        width: 100%;
+        text-align: center;
+    } 
+    .error {
+        display: none;
+        margin-left: 10px;
+    }          
+    .error_show{
+        color: red;
+        margin-left: 10px;
+    }
+    div.ui-dialog{
+        top: 50%;
+        left: 37%;
+    }
+    #tipo_rif {
+        margin-top: -25px;
+    }
+    #registro_empresa {
+        width: 720px;
+    }
+    #registro_empresa dl dd {
+        margin: 2.5px 0px;
+    }
+    #registro_empresa dl dd input[type="text"]{
+        padding: 2.5px;
+        padding-left: 5px;
+        margin-top: -5px;
+        display: inline-block;
+    }
+    #rif-element:after {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-top: -5px;
+    }
+    .valid {
+        content: url(http://omicron.une.edu.ve/MiUNE2/images/icons/tick.png);
+    }
+    .invalid {
+        content: url(http://omicron.une.edu.ve/MiUNE2/images/icons/cross.png);
+    }
+    textarea {
+        width: 512.5px;
+        max-width: 512.5px;
+        min-width: 512.5px;
+    }
+    #solicitud {
+        display: block;
+        padding: 10px;
+        margin: 15px auto;
+        transition: 300ms all ease;
+    } 
+    #solicitud:hover {
+        box-shadow: 0.3px 0.3px 0.4px #666;
+    }
+    .tick, .cross {
+        display: inline-block;
+        text-align: left;
+        margin-left: 270px;
+        margin-top: 30px;
+        position: absolute;
+    }
+    div.ui-dialog{
+        top: 50%;
+        left: 37%;
+    }
+    #msg {
+        width: 100%;
+    }
+</style> 
+<h2> <?php echo $this->escape($this->title); ?></h2>
+<table border="0" cellpadding="0" cellspacing="0" width="500px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <h2 class="title">Registrate</h2>
+            <div class="alert" id="msg" style="text-align: center;">Para solicitar no debe dejar ningun espacio en blanco y los campos en rojo son incorrectos Por favor verificar.</div>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center"> 
+        <?php
+            $this->form->setAction($this->url(). '/');
+            echo $this->form;
+        ?>
+            <img class="tick" src="/MiUNE2/images/icons/tick.png" alt="Aceptado"> <img class="cross" src="/MiUNE2/images/icons/cross.png" alt="Negado">
+        </td>
+    </tr>
+</table>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type="text/javascript">
+     $(document).ready(function(){
+        <?php
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Form->getJavaScript();       
+            echo $this->SwapBytes_Jquery->getLoading('loading'); 
+        ?>
+        $(".tick").hide();
+        $(".cross").hide();
+        var available = false;
+        //AJAX Consulta RIF
+        $("body").delegate("#rif","change",function(){
+            if($("#rif").val().length > 4){
+                var rif = false;
+                var variable = $("#rif").val();
+                var tipo = $("#tipo_rif").val();
+                var longitud = 9 - variable.length;
+                var zero = "";
+                for(i = 0; i < longitud; i++){
+                    zero = zero + "0";
+                }
+                $("#rif").val(zero+$("#rif").val());
+                $.ajax({
+                    url: urlAjax + "getRif",
+                    data: {"rif":variable, "tipo_rif":tipo},
+                    dataType: "json",
+                    async: true,
+                    success: function(data) {
+                        if(data[0]){
+                            rif = true;
+                            $('.tick').show();
+                            $('.cross').hide();
+                            $("#rif").css("border","0.25px solid green");
+                            $("#rif").css("border-radius","5px");
+                            $("#razon_social").val(data[2]);
+                            available = true;
+                        }else {
+                            rif = false; 
+                            $('.tick').hide();
+                            $('.cross').show();
+                            $("#rif").css("border","0.25px solid red");
+                            $("#rif").css("border-radius","5px");
+                            $("#razon_social").val(""); 
+                            available = false;           
+                        }
+                    },
+                });
+            }
+        });
+        //Registro
+        $("#solicitud").click(function(){
+            if(available){
+                //Verifico el Rif
+                if($("#rif").val().length > 4){
+                    var rif = false;
+                    var variable = $("#rif").val();
+                    var tipo     = $("#tipo_rif").val();
+                    var longitud = 9 - variable.length;
+                    var zero = "";
+                    for(i = 0; i < longitud; i++){
+                        zero = zero + "0";
+                    }
+                    var variable = zero+variable;
+                    $("#rif").val(variable);    
+                    $.ajax({
+                        dataType: 'json',
+                        type: 'POST',
+                        url: urlAjax + 'agregar/',
+                        data: { 
+                            tipo_rif: $("#tipo_rif").val(),
+                            rif:      $("#rif").val()
+                        },
+                        success: function(data){
+                            executeCmdsFromJSON(data);
+                        }
+                    });
+                }
+                else {
+                    sweetAlert("Error", "El R.I.F. debe tener al menos un digito", "error");
+                }
+            }
+            else {
+                sweetAlert("Error", "Por favor ingrese un R.I.F.", "error");
+            }
+        });
+    });
+</script>

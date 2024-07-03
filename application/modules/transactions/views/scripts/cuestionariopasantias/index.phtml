@@ -1,0 +1,181 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.grupos');
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br><br>
+<table align="center">
+<div id="fotoDiv" align="center"><input id="foto" width="120" type="image" height="161" disabled="disabled" alt="Foto:" name="foto" style="-moz-box-shadow: 0 0 10px black;"></div>
+</table>
+
+<br>
+<div id="usuario" align="center">
+	<table id="tblusuario" align="center">
+		<tr>
+                    <td>
+                        <p>C.I. :</p>
+                    </td>
+                    <td>
+                        <p id="cedula"></p>
+                    </td>
+                </tr>
+                   <tr>
+                    <td>
+                        <p>Nombre :</p>
+                    </td>
+                    <td>
+                        <p id="nombre"></p>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <p >Apellido :</p>
+                    </td>
+                    <td>
+                        <p id="apellido"></p>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <p >Escuela :</p>
+                    </td>
+                    <td>
+                        <p id="escuela"></p>
+                    </td>
+                </tr>
+	</table>
+
+</div>
+<br>
+
+<div id="realizado" align="center">
+<p style='font-size: 16px'> 
+    Ya realizo el Cuestionario de pasantías 
+</p>
+
+<br>
+<table align="center" class="tableData">
+    <tr>
+        <td>
+            <p style='font-size: 14px'> Calificación Cuestionario</p>
+        </td>
+        <td>
+            <p id ="calificacion" style='font-size: 16px; color:green'></p>
+            
+        </td>
+        
+            
+        
+    </tr>
+    <tr>
+        <td>
+            <p style='font-size: 14px' >Calificación Empresarial</p>
+        </td>
+        <td>
+            <p id ="empresarial" style='font-size: 14px; color:green'></p>
+        </td>
+       
+    </tr>        
+    <tr>
+        <td>
+            <p style='font-size: 14px' >Calificación Académica</p>
+        </td>
+         <td>
+            <p id ="academica" style='font-size: 14px; color:green'></p>
+        </td>
+    </tr>    
+
+</table>
+</div>
+
+  
+
+</div>
+
+<div align="center" id="autoevaluacion">
+      <button type="button"  id="btnAuto" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">Autoevaluación</span></button>
+</div>
+
+
+
+<div id="sinpasantias" align="center">
+<p style='font-size: 16px; color: red'> 
+    NO TIENE INSCRITA LA MATERIA PRÁCTICA PROFESIONAL O PASANTÍA LABORAL 
+</p>
+</div>
+<div id="listo" align="center">
+<p style='font-size: 16px'> 
+    Usted culminó las Pasantías Laborales 
+</p>
+</div>
+
+<iframe id = "quizframe"src="#"  width="100%" height="800" align="center" style="margin: 0 auto;"></iframe>
+</div>
+<div id="tableData" align="center"></div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+   
+<script type='text/javascript'>
+
+
+//$('#quizframe').contents().find('input[value="Enviar todo y terminar"]').click(function(){window.location.reload()});
+$(document).ready(function(){
+            $("#quizframe").hide();
+            $('#sinpasantias').hide();
+            $('#listo').hide();
+            $('#cuestionario').hide();
+            $('#btnAuto').hide(); 
+            $('#realizado').hide()
+           
+
+            
+	<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+    echo $this->filters->getJavaScript('tableData');
+    echo $this->trigger;
+    
+?>
+
+$('#btnAuto').click(function (){
+           $('#moodle').hide();
+           $('#rec2').show();
+           $('#quizframe').show();
+           $('#btnAuto').hide();
+           $('#cuestionario').hide();
+
+           
+           $.getJSON(urlAjax+"cuestionario/", function(data){executeCmdsFromJSON(data);
+
+
+           });
+          /* $.getJSON(urlAjax+"esperar/", function(data){executeCmdsFromJSON(data);
+
+
+           })*/
+            $('#quizframe').load(function(){
+             $('#quizframe').contents().find('input[value="Enviar"]').hide();
+             $('#quizframe').contents().find('input[value="Enviar página"]').hide();
+             $('#quizframe').contents().find('input[value="Guardar sin enviar"]').hide();
+//		$('#quizframe').contents().delegate("input[value='Enviar todo y terminar'][type='button']","click",function(){window.location.reload()});
+           });
+
+           // $('#quizframe').contents().find('input[value="Enviar todo y terminar"]').click(function(){window.location.reload()});
+        });
+
+
+$(window).load(function(){
+    
+           $.getJSON(urlAjax + "estudiante", function(data){executeCmdsFromJSON(data)});
+        });
+
+});
+</script>

@@ -1,0 +1,213 @@
+<?php
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" style="padding: 0px 0px 0px 10px; margin-left:auto; margin-right:auto;">
+    <tr>
+            <div class="datosEstudiante" id="datosEstudiante">
+				<div>
+					Universidad Nueva Esparta
+				</div>
+				<div>
+					Caracas - Venezuela
+				</div>
+				<div>
+					Estudiante: <strong class="textGray strong" id="est_nombre"><?php echo $this->escape($this->nombre);?></strong>
+				</div>
+				<div>
+					C.I.: <strong class="textGray strong" id="est_ci"><?php echo $this->escape($this->ci); ?></strong>
+				</div>
+				<div class="strong">
+					Indice académico del último período: <span class="textBlue strong" id="est_iuc"><?php echo $this->escape($this->iuc); ?></span> 
+				</div>
+				<div class="strong">
+					Semestre de ubicación del último período cursado: <span class="textRed strong" id="est_usemubi"><?php echo $this->escape($this->usemubi ); ?></span> 
+				</div>
+				<div class="strong">
+					Total de asignaturas cursadas: <span class="textBlue strong" id="est_cursadas"><?php echo $this->escape($this->cursadas); ?></span> 
+				</div>
+				<div class="strong">
+					Total de asignaturas faltantes por cursar: <span class="textRed strong" id="est_porcursar"><?php echo $this->escape($this->porCursar); ?></span>
+				</div>
+				<div class="strong">
+					Total unidades de credito aprobadas: <span class="textBlue strong" id="est_uca"><?php echo $this->escape($this->uca); ?></span>
+				</div>
+				<div class="strong">
+					Pensum cursando: <span class="textBlue strong" id="est_pensumN"><?php echo $this->escape($this->pensumN); ?></span>
+				</div>
+				<div class="strong">
+					Ultima sede asociada: <span class="textGray" id="est_sede"><?php echo $this->escape($this->sedeN); ?></span>
+				</div>
+				<div class="strong">
+					Ultima escuela asociada: <span class="textGray" id="est_escuela"><?php echo $this->escape($this->ultimaEscuelaN); ?></span>
+				</div>
+				<div class="strong">
+					Estado: <span id="est_estado" class="<?php echo $this->escape($this->class); ?>"><?php echo $this->escape($this->Estado); ?></span>
+				</div>
+				<div class="strong">
+					Saldo: <span class="textRed strong" id="est_Saldo"><?php echo $this->escape($this->saldo); ?></span>
+				</div>
+				<br>
+            </div>
+        
+    </tr>
+    <tr>
+        <td>
+            <div id="tableData" class="tableData">&nbsp;</div>
+        </td>
+    </tr>
+</table>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<style type="text/css">
+	.datosEstudiante{
+		font-size: 13px;
+		margin-left: 21%;
+		top: 10px;
+		position: relative;
+		color: rgb(102,102,102);
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		text-align: justify;
+	}
+	table.tableData {
+		font-size: 13px;
+		border: 4px solid #006778;
+		border-collapse: collapse;
+		background: transparent;
+	}
+	table.tableData tr {
+		background: transparent;
+		transition: 500ms all ease;
+		-webkit-transition: 500ms all ease;
+		-moz-transition: 500ms all ease;
+	}
+	table.tableData tr td{
+		border: 3px solid #FFFFFF;
+		padding:4px;
+		background: #E0E0E0;
+	}
+	table.tableData tr:first-child{
+		border-bottom: 5px solid #006778;		
+	}
+	table.tableData tr th{
+		background: #006778;
+		border: 2px solid #006778;
+		color: #FFFFFF;
+	}
+	table.tableData tr.factura td{
+		background: rgba(8, 114, 136, 0.5);
+		color: #000000;
+		
+	}
+	table.tableData tr.cobro td{
+		background: rgba(53, 163, 179, 0.1);
+		color: #000000;
+
+	}
+	table.tableData tr:hover td {
+		background: rgba(0,103,120, 0.8);
+		color: #000000;
+	}
+	table.tableData tr:hover td:first-child {
+		background: rgba(0,103,120, 0.8);
+		color: #000000;
+	}
+	table.tableData tr:last-child td{
+		border: none;
+	}
+	table.tableData tr:last-child{
+		font-weight: bold;
+	}
+	table.tableData tr:last-child td:nth-child(3){
+		text-align-last: right;
+	}
+	table.tableData tr:last-child:hover td{
+		background: rgba(232, 232, 232, 0.9);
+		color: #000000;
+	}
+	table.tableData tr:last-child td:last-child{
+		background: rgba(255, 255, 51, 0.9);
+	}
+	.textBlue{
+		color: rgb(28,152,172);
+		font-size: 14px;
+	}
+	.textRed{
+		color: rgb(255,0,0);
+		font-size: 14px;
+	}
+	.textGray{
+		color: rgb(102,102,102);
+		font-size: 14px;
+	}
+	.textBlack{
+		color: rgb(68,68,68);
+		font-size: 14px;
+	}
+	.strong{
+		font-weight: bold;
+	}
+	.btn-orden{
+		margin-top: 5px;
+	}
+	.textAzul{
+		color: rgb(91, 117, 254);
+	}
+	.prueba{
+		color: rgb();
+	}
+
+</style>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	    <?php
+	    	echo $this->SwapBytes_Jquery->getLoading('loading');
+   			echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+   			echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');  
+	    ?>
+		//function clases(){
+		    $.getJSON(urlAjax+'tabla', function(d){
+		    	executeCmdsFromJSON(d);
+
+				switch(d[0]){
+					case 1:
+						$("#est_estado").removeClass('textRed');
+						$("#est_estado").removeClass('textAzul');
+						$("#est_estado").removeClass('textGray');
+						$("#est_estado").addClass('textBlue');
+						break;
+					case 2:
+						$("#est_estado").removeClass('textBlue');
+						$("#est_estado").removeClass('textAzul');
+						$("#est_estado").removeClass('textGray');
+						$("#est_estado").addClass('textRed');
+						break;
+					case 3:
+						$("#est_estado").removeClass('textRed');
+						$("#est_estado").removeClass('textBlue');
+						$("#est_estado").removeClass('textGray');
+						$("#est_estado").addClass('textAzul');
+						break;
+					case 4:
+						$("#est_estado").removeClass('textRed');
+						$("#est_estado").removeClass('textAzul');
+						$("#est_estado").removeClass('textBlue');
+						$("#est_estado").addClass('textGray');
+						break;
+				}
+		    	$(".tipo").each(function(){
+			    	if($(this).text() == 'FACTURA'){
+			    		$(this).parent().addClass("factura");
+			    	}
+			    	else if($(this).text() == 'COBRO'){
+			    		$(this).parent().addClass("cobro");
+			    	}
+			    });
+		    });
+		//}
+	});
+</script>

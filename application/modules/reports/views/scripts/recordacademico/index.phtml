@@ -1,0 +1,86 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table width="100%" cellpadding="0" border="0" align="center">
+    <tr>
+        <td align="center">
+			<table width="350" cellpadding="0" border="0" align="center">
+				<tr>
+					<td width="80" style="font-weight:bolder;text-align:center">C.I. del Alumno:&nbsp;</td>
+					<td width="200" style="font-weight:bolder;text-align:center">Escuela:&nbsp;</td>
+					<td width="200" style="font-weight:bolder;text-align:center">Pensum:&nbsp;</td>
+					<td width="70" style="font-weight:bolder;text-align:center">&nbsp;</td>
+				</tr>
+				<tr>
+					<td style="font-weight:bolder;text-align:center">
+						<input autocomplete="off" type="text" id="txtCI" size="14" maxlength="8" />
+					</td>
+					<td style="font-weight:bolder;text-align:center">
+						<select name="selEscuela" id="selEscuela" style="width:140px;" disabled="true"></select>
+					</td>
+					<td style="font-weight:bolder;text-align:center">
+						<select name="selPensum" id="selPensum" style="width:140px;" disabled="true"></select>
+					</td>
+					<td style="font-weight:bolder;text-align:center">
+						<input type="submit" id="btnGenerate" value="Buscar"/>
+					</td>
+				</tr>
+			</table>
+		</td>
+    </tr>
+    <tr>
+        <td align="center" colspan="3"><div id="tblMsg"></div></td>
+    </tr>
+    <tr>
+        <td align="center" colspan="3"><div id="tblLista"></div></td>
+    </tr>
+</table>
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#loading").ajaxStart(function(){$(this).show();$('#btnGenerate').attr('disabled', true);});
+        $("#loading").ajaxStop(function(){$(this).hide();$('#btnGenerate').attr('disabled', '');});
+
+        urlAjax = "<?php echo $this->baseUrl() . '/' . $this->module . '/' . $this->controller . '/' ?>";
+
+        console.log("hola ");
+        console.log(urlAjax);
+
+        $('#btnGenerate').click(function(){
+           $.getJSON(urlAjax + "generar/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val(), function(data){
+            console.log(data);
+              executeCmdsFromJSON(data)
+                 $.getJSON(urlAjax + "pensum/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val(), function(data){
+                    executeCmdsFromJSON(data)
+                    $.getJSON(urlAjax + "generar/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val()+"/nombre/"+$('#selPensum').children(':selected').text(), function(data){executeCmdsFromJSON(data)});
+                 });
+           });
+        });
+
+        $('#selEscuela').change(function(){
+           $.getJSON(urlAjax + "pensum/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val(), function(data){
+              executeCmdsFromJSON(data)
+            $.getJSON(urlAjax + "generar/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val()+"/nombre/"+$('#selPensum').children(':selected').text(), function(data){executeCmdsFromJSON(data)});
+           });
+        });
+
+        $('#selPensum').change(function(){
+            $.getJSON(urlAjax + "generar/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val()+"/nombre/"+$('#selPensum').children(':selected').text(), function(data){executeCmdsFromJSON(data)});
+        });
+
+        $('#txtCI').change(function(){
+           $.getJSON(urlAjax + "pensum/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val(), function(data){
+              executeCmdsFromJSON(data)
+              $.getJSON(urlAjax + "generar/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val(), function(data){
+                executeCmdsFromJSON(data)
+                   $.getJSON(urlAjax + "pensum/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val(), function(data){
+                      executeCmdsFromJSON(data)
+                      $.getJSON(urlAjax + "generar/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val()+ "/selPensum/" + $("#selPensum").val()+"/nombre/"+$('#selPensum').children(':selected').text(), function(data){executeCmdsFromJSON(data)});
+                   });
+              });
+           });           
+        });
+
+    });
+</script>

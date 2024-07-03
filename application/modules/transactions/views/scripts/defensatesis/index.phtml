@@ -1,0 +1,171 @@
+<?php
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/pagination.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<meta charset="utf-8">
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" style="padding: 0px 0px 0px 10px; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <div id="info"><?php echo $this->info; ?></div>
+            <?php include_once('filtros.phtml'); ?> 
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="cod" style="display:block">&nbsp;</div>
+            <div id="periodo" style="display:block">&nbsp;</div>
+            <div id="tableData">&nbsp;</div>
+        </td>
+    </tr>
+</table>
+
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+
+<script type='text/javascript'>
+    
+    $(document).ready(function(){
+        MyurlAjax = <?php echo "'".$_SERVER['REQUEST_URI']."'";?>;
+        
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+    echo $this->filters->getJavaScript('tableData', $this->SwapBytes_Jquery_Ui_Form->buttonDisable('btnAdd', true));
+    // echo $this->SwapBytes_Jquery->fillSelect('selEstado', 'estado');
+    $function = $this->SwapBytes_Jquery->getJSON('cambiar', null, array('data' => $this->SwapBytes_Jquery->serializeForm()));
+?>
+
+        $.getJSON(MyurlAjax + "/list", function(data){executeCmdsFromJSON(data)});
+
+        $( "#frmDialog" ).focus(function() {
+                cambia_fecha();
+            });
+
+
+   
+    });
+
+
+    function regresar(){
+        MyurlAjax = <?php echo "'".$_SERVER['REQUEST_URI']."'";?>;
+        $.getJSON(MyurlAjax + "/regreso", function(data){executeCmdsFromJSON(data)});
+    }
+
+    function reprogramar(){
+        MyurlAjax = <?php echo "'".$_SERVER['REQUEST_URI']."'";?>;
+        $.getJSON(MyurlAjax + "/reprogramar", function(data){executeCmdsFromJSON(data)});
+    }
+
+    function changeedificio(){
+        MyurlAjax = <?php echo "'".$_SERVER['REQUEST_URI']."'";?>;
+        $.getJSON(MyurlAjax + '/aula/edificio/' + $('#edificio').val()+'/fecha/'+$('#fecha').val()+'/horario/'+$('#pk_horario').val(), function(data){executeCmdsFromJSON(data)});
+    }
+
+
+    function cambiar_tipo(indice){
+        MyurlAjax = <?php echo "'".$_SERVER['REQUEST_URI']."'";?>;
+
+        var tipo = '#evaluador'+ indice ;
+
+        var evaluador = '#chkEvaluadorTesis' + indice;
+        
+        $.getJSON(MyurlAjax + "/cambiartipo/tipo/" + $(tipo).val() + "/evaluador/" + $(evaluador).val(), function(data){executeCmdsFromJSON(data)});
+    }
+
+
+    function horario(){
+        MyurlAjax = <?php echo "'".$_SERVER['REQUEST_URI']."'";?>;
+        
+        var evaluadores = '';
+        if($('input:checkbox:checked').length == 2){
+            for (var i = 0; i < $('input:checkbox:checked').length; i++) {
+                 if(i == 0){
+                    evaluadores = $('input:checkbox:checked')[i].value;
+                 }else{
+                    evaluadores = evaluadores + ', ' + $('input:checkbox:checked')[i].value;
+                 }
+            };
+
+            $.getJSON(MyurlAjax + "/addoreditload/evaluadores/" + evaluadores, function(data){executeCmdsFromJSON(data)});
+                   
+        }else{
+            alert("Se deben seleccionar 2 evaluadores");
+        }
+
+    }
+
+
+    function horario_confirm(horario,find){
+
+        MyurlAjax = <?php echo "'".$_SERVER['REQUEST_URI']."'";?>;
+
+
+        $("#pk_horario").val(horario);
+
+        var id = '#fechadeldia' + find;
+        var value = $(id).val();
+
+        for (var i = 0; i <=1; i++) {
+            value = value.replace("/","-");
+        };
+
+        var fecha = value;
+
+        $.getJSON(MyurlAjax + "/addoreditconfirm/pk_horario/" + $("#pk_horario").val() + "/evaluadores/" + $('#evaluadores').val() + "/fecha/" + fecha + "/estructura/" + $("#estructura").val(), function(data){executeCmdsFromJSON(data)});
+
+    }
+
+    function cambia_fecha() {
+
+         $('#fecha').val($('#posiblesfechas').val());
+    } 
+
+    function cambia_aula() {
+
+         $('#estructura').val($('#aula').val());
+    }    
+
+    function imprimir() {
+        MyurlAjax = <?php echo "'".$_SERVER['REQUEST_URI']."'";?>;
+
+        window.location.href = escape(MyurlAjax + '/imprimir/');
+    } 
+
+    function set_tipo(evaluador,indice){
+
+
+        var evaluador = '#chkEvaluadorTesis' + indice;
+        if($('input:checkbox:checked').length <= 2){
+            if($(evaluador).is(':checked')){
+
+                $.getJSON(MyurlAjax + "/cambiartipo/principal/1/evaluador/" + $(evaluador).val(), function(data){executeCmdsFromJSON(data)});
+
+            }else{
+                $.getJSON(MyurlAjax + "/cambiartipo/principal/0/evaluador/" + $(evaluador).val(), function(data){executeCmdsFromJSON(data)});
+            }
+        }else{
+            $(evaluador).attr('checked',false) ;
+        }
+
+
+    }    
+
+      
+    
+
+</script>

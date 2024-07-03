@@ -1,0 +1,83 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.grupos');
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+<br></br>
+<div id="gmarco" align="center">
+    
+    
+    <div id="busqueda">
+        <table id="tblbusqueda"  align="center">
+            <tr>
+                <td>
+                    <p id="cedula">Cédula : </p>
+                </td>
+                <td>
+                    <input id="cedulatxt" type="text" >
+                </td>
+                <td>
+                    <input id="btnVer" type="button" value="ver" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+                </td>
+            </tr>
+        </table> 
+    </div>
+   <!--  <p id="mensaje" align="center" style="font-weight:bold">Cedula no encontrada</p>
+    --> 
+    <br></br>
+<div id="mensaje2" align="center"><p>No hay alumno registrado</p></div>
+    <br></br>
+
+<table align="center">
+<div id="fotoDiv" align="center"><input id="foto" width="120" type="image" height="161" disabled="disabled" alt="Foto:" name="foto" style="-moz-box-shadow: 0 0 10px black;"></div>
+</table>
+    <br></br>
+
+<table id ="consulta" class="tableData" align="center" >      
+            <tr><td>Cédula</td><td id="id"></td></tr>
+            <tr><td>Estudiante</td><td id="estudiante"></td></tr>
+            <tr><td>Dirección</td><td id="direccion"></td></tr>
+            <tr><td>Teléfono Local</td><td id="telefono"></td></tr>
+            <tr><td>Célular</td><td id="celular"></td></tr>
+            <tr><td>Correo</td><td id="correo"></td></tr>
+            <tr><td>Escuela</td><td id="escuela"></td></tr>
+            <tr><td>Proyecto</td><td id="proyecto"></td></tr>
+            <tr><td>Institución</td><td id="institucion"></td></tr>
+            <tr><td>Dirección Institución</td><td id="dirinst"></td></tr>
+            <tr><td>Telefóno Institución</td><td id="telinst"></td></tr>
+            <tr><td>Periodo en el que cursó el taller</td><td id="periodo"></td></tr>
+            <tr><td colspan=2 align="center"><button type="button"  id="imprimir" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">Planilla Preinscripción</span></button></td></tr>
+            
+</table>
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $('#consulta').hide();
+        $('#mensaje2').hide();
+        $('#fotoDiv').hide();
+        $('#imprimir').click(function(){
+            window.location.href = urlAjax + "imprimir/ci/"+$("#cedulatxt").val();
+        });
+        
+        <?php
+           echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+           //
+           echo $this->SwapBytes_Jquery->getLoading('loading');   
+           echo $this->trigger;
+
+           ?>
+           $('#btnVer').click(function(){
+            $.getJSON(urlAjax+"buscar/ci/"+$("#cedulatxt").val(),function (data){executeCmdsFromJSON(data);
+            })
+           });
+       });
+
+
+</script>

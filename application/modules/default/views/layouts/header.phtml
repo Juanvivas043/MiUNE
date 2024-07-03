@@ -1,0 +1,90 @@
+<div id="body_header">
+  <?php
+   //$this->logger = Zend_Registry::get('logger');
+    if (Zend_Auth::getInstance()->hasIdentity()){
+        Zend_Loader::loadClass('Models_DbTable_Usuarios');
+        $AuthSpace = new Zend_Session_Namespace('Zend_Auth');
+        $Request = new Zend_Controller_Request_Http();
+        $Usuarios = new Models_DbTable_Usuarios();
+        $inicio = '<a href=' . $Request->getBaseUrl() . '/inicio>INICIO</a>' ;
+        $salir = '<a href=' . $Request->getBaseUrl() . '/login/logout>SALIR</a>' ;
+        $userName = $Usuarios->getRow($AuthSpace->userId);
+        //$this->logger->log($userName,ZEND_LOG::EMERG);
+        $userName = "{$userName['apellido']}, {$userName['nombre']}";
+
+  ?>
+
+<div id="dialog" style="display:none" title="Alerta de Sesión" class="ui-dialog ui-widget ui-widget-content ui-corner-all  ui-draggable">
+  <div id="EndSession"></div>   <br><div id="EndSessionCount"></div><br>
+	<button  id="KeepLogin" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" style="padding: 10px" aria-disabled="false">Mantenerse</button>    
+	<button id="ExitLogin" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"  style="padding: 10px" aria-disabled="false">Cerrar Sesión</button>
+</div>
+  <div id="body_username_bar" height="20px" width="100%">
+     <div id="user_name" style="width:30%;">
+                            <b>Usuario: <?php echo $userName; ?></b>
+     </div>
+     <div id="right_nav">
+                            <?php echo $inicio . ' | ' . $salir; ?>
+     </div>
+  </div>
+  <div id="logo_left"></div>
+  <div id="site_name">&nbsp;</div>
+  <div id="logo_right"></div>
+  <?php } else{?>
+  <div id="logo_left_login"></div>
+  <div id="site_name_login">&nbsp;</div>
+  <div id="logo_right_login"></div>
+  <?php }?>
+</div>
+<script type='text/javascript' >	
+	var idleTime = 0;
+	var faltante = 60;
+	var refreshTimer = false;
+	var Starts;
+	$(document).ready(function () {
+		$('#dialog').hide();		
+		var idleInterval = setInterval(timerIncrement, 7199940); // 
+		$(document).ajaxStart(function(){
+			idleTime = 0;
+        		$.getJSON("/MiUNE2/login/refresh", function(data){});	
+		});
+
+		$('#KeepLogin').click(function(){
+        		$.getJSON("/MiUNE2/login/index", function(data){});	
+			idleTime = 0;
+			faltante = 60;	
+			clearInterval(Starts);
+			$('#dialog').dialog("close");
+		});
+
+		$('#ExitLogin').click(function(){
+			window.location.href = "/MiUNE2/login/logout";
+		});
+
+		function timerIncrement() {
+		    idleTime = idleTime + 1;
+		    if (idleTime > 0) { 
+			$('#dialog').show();
+			$('#dialog').dialog();
+			if (faltante == 60){
+				$('#EndSession').html('Su sesión expirará en');
+				Starts = setInterval(CountingStars,1000);
+			}
+		}
+	}
+		function CountingStars(){
+			if (faltante <= 0){
+				$('#EndSession').html('Su Sesión se ha vencido!');	
+				$('#EndSessionCount').html('');
+				$('#KeepLogin').hide();
+				$(document).click(function(){
+					//window.location.reload();
+				});
+			}else{
+				faltante = faltante - 1;
+				$('#EndSessionCount').html(faltante + ' segundos.');
+			}
+		}
+});
+
+</script>

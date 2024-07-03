@@ -1,0 +1,67 @@
+#formulario {
+    margin: 10px 0 0 350px;
+}
+
+select {
+    width: 150px;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -o-box-sizing: content-box;
+    -ms-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.error {
+    color: #f00;
+}
+
+.modal {
+    color: darkblue;
+    font-weight: bold;
+}
+
+#tabla {
+    margin: 0 auto;
+}
+
+#col1, #col2, #col3 {
+    padding: 20px;
+    border: outset 3px #fff;
+    vertical-align: top;
+    width: 350px;
+}
+
+#col1, #col2, #col3 {
+    text-align: right;
+}
+
+#formulario2 {
+    margin: 50px 0 0 0;
+}
+
+#tabla h1 {
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.optional, .required {
+    float: left;
+    clear: right;
+    padding-left: 5px;
+    position: relative;
+}
+
+#submitButton {
+    top: 50%;
+    left: 40%;
+    font-size: 22px;
+    width: 150px;
+    height: auto;
+    padding:10px;
+    border: solid 1px;
+}
+
+#formulario2 div {
+    padding: 5px;
+}

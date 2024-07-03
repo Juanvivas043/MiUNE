@@ -1,0 +1,117 @@
+
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+
+?>
+
+<h2 id="title">
+<?php  echo $this->title; ?>    
+</h2>
+<style type="text/css">
+
+.container{    
+   display: none;
+}
+</style>
+<div align="center">
+    <table  id="tblFiltro" align="center" border="0" cellpadding="0" cellspacing="0" style="margin:auto;">
+        <tr>
+             <td align="center">
+                <?php include_once('filtros.phtml'); ?>
+             </td>
+        </tr>
+    </table> 
+</div>
+<br>
+<div id="tblContainer" class="container" align="center">
+    <div style="margin: 0px auto; margin-right: 30px; display: inline-block;">
+         <table class="tableData">
+            <tr align="center">
+                <th>Total Universidad</th>
+            </tr>
+            <tr>
+                <td>
+                    <div id="tblUniversidad" style="margin: 0px auto;"></div>
+                </td>
+            </tr>  
+            <tr>
+                <td>
+                    <table class="tableData" style="margin: 0 auto;margin-top: 2px; width:100%;">
+                        <tbody>
+                            <tr>
+                                <th>Inscritos</th>                                        
+                                <td id="ins_univ" style="text-align: center;">
+                                </td>                            
+                                <th>Promedio</th>
+                                <td id="prom_univ" style="text-align: center;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>                          
+        </table>
+    </div>
+    <div style="margin: 0px auto; margin-left: 30px; display: inline-block;">
+         <table class="tableData">
+            <tr align="center">
+                <th>Total Escuela</th>
+            </tr>
+            <tr>
+                <td>
+                    <div id="tblEscuela" style="margin: 0px auto;"></div>
+                </td>
+            </tr>  
+            <tr>
+                <td>
+                    <table class="tableData" style="margin: 0 auto;margin-top: 2px; width:100%;">
+                        <tbody>
+                            <tr>
+                                <th>Inscritos</th>                                        
+                                <td id="ins_esc" style="text-align: center;">
+                                </td>                            
+                                <th>Promedio</th>
+                                <td id="prom_esc" style="text-align: center;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>                          
+        </table>
+    </div>
+</div>
+<br>
+<br>
+<div id="tblEstudiantes" align="center" style="margin: 0px auto;">&nbsp;</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        <?php
+        echo $this->SwapBytes_Jquery->getLoading('loading');
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes','tblUniversidad','tblEscuela');
+        echo $this->filters->getJavaScript('tblEstudiantes','tblUniversidad','tblEscuela');
+        ?>
+
+        $('#btnClear').click(function(){
+            $('#tblContainer').addClass('container');
+        });
+        $('#selPeriodo').change(function(){
+            $('#tblContainer').addClass('container');
+        });
+        $('#selSede').change(function(){
+            $('#tblContainer').addClass('container');
+        });
+        $('#selEscuela').change(function(){
+            $('#tblContainer').addClass('container');
+        });
+    });
+
+</script>

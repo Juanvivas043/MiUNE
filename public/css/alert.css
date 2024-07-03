@@ -1,0 +1,21 @@
+@CHARSET "ISO-8859-1";
+
+div.alert {
+    width:80%;
+    padding: 15px;
+    margin: 0;
+    border: 1px solid #FCDE66;
+    border-radius: 5px;
+    background: #FDF7DD;
+    font: 14px Arial, sans-serif;
+    text-align:justify;
+    margin: 6px 0px;
+}
+
+div.message {
+    width:100%;
+    margin: 0px auto;
+    padding: 0;
+    margin: 0;
+    text-align:center;
+}

@@ -1,0 +1,8 @@
+@CHARSET "ISO-8859-1";
+
+.normal {
+    font: 12px Arial, sans-serif;
+    text-align: left;
+    background: #ffffff;
+    color: #000000;
+}

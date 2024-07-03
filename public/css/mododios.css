@@ -1,0 +1,148 @@
+/*.sec-1{
+	padding: 4%;
+}*/
+
+.float-1{
+  width: 40%;
+  margin: 10px auto;
+  display: block;
+}
+
+.float-2{
+  float: right;
+  width: 50%;
+}
+
+.col-inter{
+}
+
+.row-inter{
+  display: inline-block;
+}
+
+.first{
+  display: table-header-group;
+}
+
+.complete-row{
+  display: block;
+}
+#limite{
+  width: 40px !important;
+}
+.content{
+	/*background-color: #f0af12;
+	height: 120px;*/
+}
+
+.title{
+  padding: 8px;
+}
+
+.interruptor{
+  width: 65px;
+  padding: 5px;
+  display: block;
+  border-radius: 30px;
+  transition: all 1s;
+}
+
+.carry{
+  border-radius: 30px;
+  background: grey;
+  height: 8px;
+  margin: 0 auto;
+  transition: all 1s;
+}
+.periodotabla{
+  border-collapse: collapse;
+  background: white;
+  border: 1px rgba(128, 128, 128, 0.53) solid;
+}
+.periodotabla th, .periodotabla td{
+  padding: 3px;
+  width: 100px;
+  border: 1px rgba(128, 128, 128, 0.53) solid;
+}
+
+.input:checked ~ .off{
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  left: 0;
+  top: -3px;
+}
+.fechas{
+  width: 100px;
+  display: inline-block;
+  right: 1px;
+}
+.fechalabel{
+  display: inline-block;
+}
+
+.materialbutton{
+  margin-left:5px;
+  margin-bottom: 5px; 
+  background-color: #E0E0E0;
+  border:none;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.45);
+  width: 75px;
+  height: 30px;
+  transition: all 0.5s linear 0s;
+}
+.materialbutton:active{
+  box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.45);
+  background-color: #D6D6D6;
+
+} 
+input:checked ~ .off:before{
+  content: " ";
+  background: white;
+  color: color;
+  border-radius: 100%;
+  padding: 2px 10px;
+  transition: all 1s;
+}
+
+input:not(:checked) ~ .off{
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  left: 70%;
+  top: -2px;
+}
+
+input:not(:checked) ~ .off:before{
+  content: " ";
+  background:white;
+  color:black;
+  border-radius: 100%;
+  padding: 2px 10px;
+  transition: all 1s;
+}
+
+.switch{
+  transition: all 1s;
+  cursor: pointer;
+}
+
+.input {
+  position: absolute;
+  margin: 0 auto;
+  display: none;
+}
+
+span.ui-icon-closethick {
+  margin: -8 !important;
+}
+
+.label {
+  display: block;
+  text-align: center;
+}
+
+h3{
+  text-align: center;
+  font-size: 20px;
+}

@@ -1,0 +1,103 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.hotkeys.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="830px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table width="100%">
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="2" width="100%" align="center">
+                        <div id="tblEstudiantes">&nbsp;</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="75%" class="normal">&nbsp;</td>
+                    <td width="25%" align="center">&nbsp;
+                        <button type="button" id="btnValidar" style="display: none;">Validar</button>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="frmMessage"></div>
+<script type='text/javascript'>
+    $(document).ready(function(){
+        <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+//			echo $this->SwapBytes_Crud_Form->getJavaScript();
+			echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+            echo $this->filters->getJavaScript('tblEstudiantes', "$('#btnValidar').hide()", 'generar/data/');
+			echo $this->filters->getJavaScript('tblEstudiantes');
+        ?>
+
+        $('#btnValidar').click(function(){$.getJSON(urlAjax + "validar/data/" + encodeURIComponent($('#tblEstudiantes').find(':input').serialize()), function(data){executeCmdsFromJSON(data)});});
+
+        $("#frmMessage").dialog({
+            bgiframe: true,
+            autoOpen: false,
+            height: 350,
+            width: 600,
+            modal: true,
+            resizable: true,
+            buttons: {
+                // Indice 0
+                'Guardar': function() {
+                    $.getJSON(urlAjax + "guardar/data/" + $('#tblEstudiantes').find(':input').serialize(), function(data){executeCmdsFromJSON(data)});
+                },
+                // Indice 1
+                'Cancelar': function() {
+                    $(this).dialog('close');
+                }
+            },
+            close: function() {
+            }
+        });
+
+        $.fn.focusNextInputField = function() {
+            return this.each(function() {
+                var fields = $(this).parents('form:eq(0),body').find('input');
+                var index = fields.index( this );
+                if ( index > -1 && ( index + 1 ) < fields.length ) {
+                    fields.eq( index + 1 ).focus();
+                }
+                return false;
+            });
+        };
+    });
+</script>
+<style>
+    .TextBoxNormal {
+        background-color: #FFFFFF;
+        border-left: 1px solid #999999;
+        border-top: 1px solid #999999;
+        border-right: 1px solid #cccccc;
+        border-bottom: 1px solid #cccccc;
+        text-align:center;
+    }
+
+    .TextBoxAlert {
+        background-color: #FF9999;
+        border-left: 1px solid #FF0000;
+        border-top: 1px solid #FF0000;
+        border-right: 1px solid #FF6666;
+        border-bottom: 1px solid #FF6666;
+        text-align:center;
+    }
+</style>

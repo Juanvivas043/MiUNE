@@ -1,0 +1,315 @@
+<?php
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/bootstrap.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/validator.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/generics.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/validator.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/bootstrap.min.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<style>
+    h2 {
+        font-size: 16px;
+        margin-left: 10px;
+    }
+    .title {
+        font-size: 20px;
+        color: #000;
+        margin: 10px auto;
+        text-align: center;
+        font-weight: bold;
+    }
+    div.alert {
+        display: block;
+        width: 100%;
+    } 
+    .error {
+        display: none;
+        margin-left: 10px;
+    }          
+    .error_show{
+        color: red;
+        margin-left: 10px;
+    }
+    div.ui-dialog{
+        top: 50%;
+        left: 37%;
+    }
+    #tipo_rif {
+        margin-top: -25px;
+    }
+    #registro_empresa {
+        width: 720px;
+    }
+    #registro_empresa dl dd {
+        margin: 2.5px 0px;
+    }
+    #registro_empresa dl dd input[type="text"]{
+        padding: 2.5px;
+        padding-left: 5px;
+        margin-top: -5px;
+        display: inline-block;
+    }
+    #rif-element:after {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-top: -5px;
+    }
+    .valid {
+        content: url(http://omicron.une.edu.ve/MiUNE2/images/icons/tick.png);
+    }
+    .invalid {
+        content: url(http://omicron.une.edu.ve/MiUNE2/images/icons/cross.png);
+    }
+    textarea {
+        width: 512.5px;
+        max-width: 512.5px;
+        min-width: 512.5px;
+    }
+    #checkRif {
+        display: block;
+        padding: 10px;
+        margin: 15px auto;
+        transition: 300ms all ease;
+    } 
+    #checkRif:hover {
+        box-shadow: 0.3px 0.3px 0.4px #666;
+    }
+    .tick, .cross {
+        display: inline-block;
+        text-align: left;
+        margin-left: 270px;
+        margin-top: 20px;
+        position: absolute;
+    }
+    div.ui-dialog{
+        top: 50%;
+        left: 37%;
+    }
+    select {
+        color: #000;
+        font-weight: normal;
+    }
+</style> 
+<table border="0" cellpadding="0" cellspacing="0" width="500px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <h2 class="title">Registrate </h2>
+            <div class="alert"> Para registrase no se debe dejar ningun espacio en blanco y los campos en rojo son incorrectos Por favor verificar.</div>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center"> 
+        <?php
+            $this->form->setAction($this->url(). '/');
+            echo $this->form;
+        ?>
+            <img class="tick" src="/MiUNE2/images/icons/tick.png" alt="Aceptado"> <img class="cross" src="/MiUNE2/images/icons/cross.png" alt="Negado">
+        </td>
+    </tr>
+</table>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script src='https://www.google.com/recaptcha/api.js?hl=es'></script>
+<script type="text/javascript">
+     $(document).ready(function(){
+        <?php
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Form->getJavaScript();       
+            echo $this->SwapBytes_Jquery->getLoading('loading','Espere consultando al Seniat'); 
+        ?>
+        $(".tick").hide();
+        $(".cross").hide();
+        $(".wait_form").hide();
+        $("form dl dt:nth-child(n+7):nth-child(odd):nth-child(-n+28)").hide();
+        $("form dl dd:nth-child(20)").hide();
+        $("form dl dd:nth-child(22)").hide();
+        $("form dl dt:nth-child(29)").hide();
+        //Definimos Validaciones para los Inputs ( Importante antes del documente.ready )
+        var objectToValidations =   [   
+                                        {input: "pk_usuario",       type:   "numeric",      fn: function(){}},
+                                        {input: "primer_nombre",    type:   "alphabetic",   fn: function(){}},
+                                        {input: "segundo_nombre",   type:   "alphabetic",   fn: function(){}},
+                                        {input: "primer_apellido",  type:   "alphabetic",   fn: function(){}},
+                                        {input: "segundo_apellido", type:   "alphabetic",   fn: function(){}},
+                                        {input: "direccion",        type:   "empty",        fn: function(){}},
+                                        {input: "telefono",         type:   "phone",        fn: function(){}},
+                                        {input: "telefono_movil",   type:   "phone",        fn: function(){}},
+                                        {input: "correo",           type:   "mail",         fn: function(){}}
+                                    ];
+        var available = false;
+        var rif = null, tipo_rif = null;
+        $("#checkRif").click(function(){
+            if(!available){
+                //Verifico el Rif
+                if($("#rif").val().length > 4){
+                    var rif = false;
+                    var variable = $("#rif").val();
+                    var tipo     = $("#tipo_rif").val();
+                    var longitud = 9 - variable.length;
+                    var zero = "";
+                    for(i = 0; i < longitud; i++){
+                        zero = zero + "0";
+                    }
+                    var variable = zero+variable;
+                    $.get(urlAjax + "getRif", {"rif":variable, "tipo_rif":tipo}, function(data){
+                        if(data[0]){
+                           rif = true;
+                        }else {
+                           rif = false; 
+                           $("#razon_social").val(""); 
+                           $(".wait_form").hide();
+                        }
+                        if(rif){
+                            $('.tick').show();
+                            $('.cross').hide();
+                            setLoadingText("Verificando Cedula");
+                            $("#rif").val(zero+$("#rif").val());
+                            $("#rif").attr("disabled");
+                            $("#razon_social").val(data[2]);
+                            $("#pk_usuario").show();
+                            $("form dl dt:nth-child(7)").show();
+                            $("#fechanacimiento").datepicker({changeYear: true, changeMonth: true, dateFormat: 'yy-mm-dd' });
+                            $("#rif").css("border","0.5px solid #008000");
+                            $("#rif").css("border-radius","5px");
+                            $("#rif").css("box-shadow","0px 0px 1.5px #008000");
+                            $(".wait_form").removeAttr("disabled");
+                            rif = $("#rif").val();
+                            tipo_rif = $("#tipo_rif").val();
+                            $("#checkCI").show();
+                            $("#checkRif").html("Registrar Usuario");
+                            $("#checkRif").css("margin-top","90px");
+                            $('#checkRif').click(function(e) {
+                                        e.preventDefault();
+                                        setLoadingText("Registrando Usuario");
+                                        $.ajax({
+                                              dataType: 'json',
+                                              type: 'POST',
+                                              url: urlAjax + 'agregar/',
+                                              data: { 
+                                                tipo_rif:             tipo_rif,
+                                                rif:                  rif,
+                                                razon_social:         $("#razon_social").val(),
+                                                pk_usuario:           $("#pk_usuario").val(),
+                                                primer_nombre:        $("#primer_nombre").val(),
+                                                segundo_nombre:       $("#segundo_nombre").val(),
+                                                primer_apellido:      $("#primer_apellido").val(),
+                                                segundo_apellido:     $("#segundo_apellido").val(),
+                                                fechanacimiento:      $("#fechanacimiento").val(),
+                                                nacionalidad:         $("input[name=nacionalidad]:checked").val(),
+                                                sexo:                 $("input[name=sexo]:checked").val(),
+                                                direccion:            $("#direccion").val(),
+                                                telefono:             $("#telefono").val(),
+                                                telefono_movil:       $("#telefono_movil").val(),
+                                                correo:               $("#correo").val(),
+                                                recaptcha:            grecaptcha.getResponse()
+                                            },
+                                              success: function(data){executeCmdsFromJSON(data);}
+                                            });
+                                        });
+                            available = true;
+                            $("#checkRif").hide();
+                        }
+                        else {  
+                            $('.cross').show();
+                            $(".tick").hide();
+                            setLoadingText("Espere consultando al Seniat");
+                            $("#rif").css("border","0.5px solid #F00");
+                            $("#rif").css("border-radius","5px");
+                            $("#rif").css("box-shadow","0px 0px 1.5px #F00");
+                            sweetAlert("Error", "por favor intente mas tarde", "error");
+                        }
+                    },"json");
+                }
+                else {
+                    sweetAlert("Error ...", "El R.I.F. debe tener al menos un digito", "error");
+                }
+            }
+        });
+        $("body").delegate("#pk_usuario","change",function(){
+            if($("#pk_usuario").val().length > 4){
+                var pk_usuario = false;
+                var variable = $("#pk_usuario").val();
+                $.get(urlAjax + "getUser", {"pk_usuario":variable}, function(data){
+                    if(data[0]){
+                       pk_usuario = true;
+                    }else {
+                       pk_usuario = false; 
+                    }
+                    if(!pk_usuario){
+                        $(".wait_form").show();
+                        $("form dl dt:nth-child(n+7):nth-child(odd):nth-child(-n+28)").show();
+                        $("form dl dd:nth-child(20)").show();
+                        $("form dl dd:nth-child(22)").show();
+                        $("form dl dt:nth-child(29)").show();
+                        $("#checkCI").hide();
+                        $("#checkRif").show();
+                    }
+                    else {
+                        $(".wait_form").hide();
+                        $("#pk_usuario").show();
+                        $("form dl dt:nth-child(n+8):nth-child(odd):nth-child(-n+28)").hide();
+                        $("form dl dd:nth-child(20)").hide();
+                        $("form dl dd:nth-child(22)").hide();
+                        $("form dl dt:nth-child(29)").hide();
+                        $("#checkCI").show();
+                        $("#checkRif").hide();
+                        sweetAlert("Error ...", "El usuarios ya existe en el sistema por favor ingrese y solicite el perfil de empleador", "error");
+                    }
+                }, "json");
+            }
+        });
+        $("body").delegate("#checkCI","click",function(){
+            if($("#pk_usuario").val().length > 4){
+                var pk_usuario = false;
+                var variable = $("#pk_usuario").val();
+                $.get(urlAjax + "getUser", {"pk_usuario":variable}, function(data){
+                    if(data[0]){
+                       pk_usuario = true;
+                    }else {
+                       pk_usuario = false; 
+                    }
+                    if(!pk_usuario){
+                        $(".wait_form").show();
+                        $("form dl dt:nth-child(n+7):nth-child(odd):nth-child(-n+28)").show();
+                        $("form dl dd:nth-child(20)").show();
+                        $("form dl dd:nth-child(22)").show();
+                        $("form dl dt:nth-child(29)").show();
+                        $("#checkCI").hide();
+                        $("#checkRif").show();
+                    }
+                    else {
+                        $(".wait_form").hide();
+                        $("#pk_usuario").show();
+                        $("form dl dt:nth-child(n+8):nth-child(odd):nth-child(-n+28)").hide();
+                        $("form dl dd:nth-child(20)").hide();
+                        $("form dl dd:nth-child(22)").hide();
+                        $("form dl dt:nth-child(29)").hide();
+                        $("#checkCI").show();
+                        $("#checkRif").hide();
+                        sweetAlert("Error ...", "El usuarios ya existe en el sistema por favor ingrese y solicite el perfil de empleador", "error");
+                    }
+                }, "json");
+            }
+        });
+        //llamamos al validator 
+        validator.insertValidation(objectToValidations);
+        <?php
+            echo $this->SwapBytes_Jquery_Mask->phone("telefono") . ";";
+            echo $this->SwapBytes_Jquery_Mask->phone("telefono_movil") . ";";  
+        ?>
+    });
+</script>

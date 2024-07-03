@@ -1,0 +1,133 @@
+
+<?php
+/**  Añado Recursos Css y Js al Header */ 
+$this->headScript()->appendFile($this->baseUrl(). '/js/jquery-ui-1.8.14.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+?>
+
+<div class="container">
+    <h1><?php echo $this->escape($this->title); ?></h1>
+    <div class="filtros">
+            <?php include_once('filtros.phtml'); ?>
+            <div id="divLeyenda" style="display: none; width:750px;">
+                <div style="float: left; padding-right: 5px; padding-bottom: 5px;"><b>Leyenda:</b></div>
+                <div style="border: 1px solid rgb(0, 0, 0); float: left; width: 20px; height: 12px;"></div>
+                <span style="float: left;">&nbsp;Retirada&nbsp;</span>
+                <div style="border: 1px solid rgb(0, 0, 0); background-color:#FFFFFF; float: left; width: 20px; height: 12px;"></div>
+                <span style="float: left;">&nbsp;Inscrita&nbsp;</span>
+                <div style="border: 1px solid rgb(0, 0, 0); background-color:#99FF99; float: left; width: 20px; height: 12px;"></div>
+                <span style="float: left;">&nbsp;Cursada.&nbsp;</span>
+        <div id="extra">
+        <span style="float: left;">&nbsp;Clases.&nbsp;</span>
+        <div style="border: 1px solid rgb(0,0,0); background-color:#FFFFFF; float: left; width: 20px; height: 14px;"> 
+            <span id="clases" style="text-align:center;font-weight:bold;"></span>
+        </div>
+        <span style="float: left;">&nbsp;Inasistencias.&nbsp;</span>
+        <div style="border: 1px solid rgb(0,0,0); background-color:#FFFFFF; float: left; width: 20px; height: 14px;"> 
+        <span id="inasistencias" style="text-align:center;font-weight:bold;"></span>
+        </div>
+    </div>
+            </div>
+    </div>
+    <div class="inner">
+        <div id="tblEstudiantes"></div>
+    <div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready( function () {
+<?php
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+	echo $this->filters->getJavaScript('tblEstudiantes',"$('#divLeyenda').hide();");
+    echo $this->SwapBytes_Jquery->setClick('btnClear', "$('#divLeyenda').hide();");
+?>
+});
+</script>
+<style> 
+    input[type="text"][disabled] {
+        color: #000;
+    }
+	.TextBoxNormal {
+		background-color: #FFFFFF;
+		border-left: 1px solid #999999;
+		border-top: 1px solid #999999;
+		border-right: 1px solid #cccccc;
+		border-bottom: 1px solid #cccccc;
+		text-align:center; 
+		transition-delay: 0.5s;
+        font-color:#CCC !important;
+        width:4em;
+		-webkit-transition-delay: 0.5s;
+		-webkit-transition: background-color 500ms linear;
+		-moz-transition: background-color 500ms linear;
+		-o-transition: background-color 500ms linear;
+		-ms-transition: background-color 500ms linear;
+		transition: background-color 500ms linear;
+	}
+
+	.TextBoxAlert {
+		background-color: #FF8888;
+		border-left: 1px solid #FF0000;
+		border-top: 1px solid #FF0000;
+		border-right: 1px solid #FF6666;
+		border-bottom: 1px solid #FF6666;
+		text-align:center;
+		transition-delay: 0.5s;
+        width:4em;
+		-webkit-transition-delay: 0.5s;
+	 	-webkit-transition: background-color 500ms linear;
+		-moz-transition: background-color 500ms linear;
+		-o-transition: background-color 500ms linear;
+		-ms-transition: background-color 500ms linear;
+		transition: background-color 500ms linear;	
+	}
+    .container {
+        padding:20px;
+        margin: auto;  
+        position: relative;
+        left:100;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 1200px; 
+    }
+
+	#extra{
+		width: auto;
+		float: left;
+		display:block;
+        text-align:center;
+	}
+    
+    .filtros {
+        margin: 20px;
+    }
+
+    #selLapso {
+        margin-left: 10px;
+    }
+    .inner {
+        position: relative;
+    }
+
+	.retirado{
+        background-color:#E3E3E3 !important;
+        color:#666666;pointer-events:none;
+	}
+	
+	.retirado td {
+        background-color:#E3E3E3 !important;
+	}
+	.retirado td div{
+        background-color:#E3E3E3 !important;
+	}
+	
+	.retirado input {
+        background-color:#E3E3E3 !important;
+        color:#666666;pointer-events:none;
+	}
+</style/

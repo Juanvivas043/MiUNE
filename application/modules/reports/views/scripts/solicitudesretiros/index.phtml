@@ -1,0 +1,79 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+//$this->headScript()->appendFile("https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js");
+
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="1000px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+</table>
+<br>
+<div id="tableData" align="center"></div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type='text/javascript'>
+    $(document).ready(function(){
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+    echo $this->filters->getJavaScript('tableData');
+    echo $this->trigger;
+
+
+
+?>
+
+
+    
+            $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+
+    });
+    var la_data;
+    function imprimir(id){
+    
+        window.location.href = urlAjax + "imprimir/pk/" + id;
+
+    $.getJSON(urlAjax + "preprint/pk/" + id, function(data){
+                $(executeCmdsFromJSON(data));
+//                console.log('hola');
+                //reporte(id);
+});
+    //$("#loading").ajaxStop(function(){reporte(id)})});
+
+//            $.ajax({
+//          url: urlAjax + "preprint/pk/" + id,
+//          dataType: 'json',
+//          async: false,
+//          success: function(data) {
+//              la_data = data
+//            $(executeCmdsFromJSON(data)).delay(3000);
+//          },
+//          complete: function(){
+//            reporte(id);
+//          }
+//
+//        });
+
+
+    //window.location.href = urlAjax + "imprimir/pk/" + id;
+    //$('#btnList').trigger('click');
+//    $.getJSON(urlAjax + "imprimir/pk/" + id, function(data){executeCmdsFromJSON(data)});
+    }
+
+    function reporte(id){
+        window.location.href = urlAjax + "imprimir/pk/" + id;
+    }
+</script>

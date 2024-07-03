@@ -1,0 +1,174 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.grupos');
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br><br>
+<table align="center">
+<div id="fotoDiv" align="center"><input id="foto" width="120" type="image" height="161" disabled="disabled" alt="Foto:" name="foto" style="-moz-box-shadow: 0 0 10px black;"></div>
+</table>
+<br>
+
+
+
+<div id="usuario" align="center">
+	<table id="tblusuario" align="center">
+		<tr>
+                    <td>
+                        <p>C.I. :</p>
+                    </td>
+                    <td>
+                        <p id="cedula"></p>
+                    </td>
+                </tr>
+                   <tr>
+                    <td>
+                        <p>Nombre :</p>
+                    </td>
+                    <td>
+                        <p id="nombre"></p>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <p >Apellido :</p>
+                    </td>
+                    <td>
+                        <p id="apellido"></p>
+                    </td>
+                </tr>
+                
+	</table>
+    <br>
+
+    
+               
+
+</div>
+<br>
+<br>
+
+<div align="center">
+<table align="center">
+
+        <tr>
+                    <td>
+                        <p id="tutorA" style="font-size: 18px">Tutor Académico</p>
+                    </td>
+                    
+                </tr>
+ </table>
+ <br>               
+<div id="tableData" align="center"></div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<br>
+<table  align="center">
+      <tr>
+                    <td>
+                        <p id="tutorE" style="font-size: 18px">Tutor Empresarial</p>
+                    </td>
+                    
+                </tr>
+
+    </table>
+    <br>
+    <br>
+    <br>
+<div id="tableEmp" align="center"></div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+</div>
+<br>
+<div id="divEstudiante" align="center">
+<TABLE BORDER="5"    WIDTH="100%"   CELLPADDING="4" CELLSPACING="3" align="center">
+    <tr>
+        <th colspan = "2">
+            <b><p style="font-size: 14px">Evaluando al Estudiante</p></b>
+        </th>
+    </tr>    
+    <tr>
+        <th>
+           <p style="font-size: 14px" > Estudiante</p>
+        </th>
+        <th>
+            <p >Cédula</p>
+        </th>    
+    </tr>
+    <tr align="center">
+        <td>
+            <p style="font-size: 14px" id="estudiante"></p>
+        </td>
+        <td>
+            <p style="font-size: 14px" id ="cedulaEs"></p>
+        </td>
+    </tr>
+       
+</table>    
+
+</div>
+<div align="center">
+<iframe src="#" id="frame" width="100%" height="800" align ="center">
+</iframe>
+</div>
+<script type='text/javascript'>
+
+$(document).ready(function(){
+    $('#tutorA').hide();
+    $('#tutorE').hide();
+    $('#tableData').hide();
+    $('#tableEmp').hide();
+    $('#frame').hide();
+    $('#divEstudiante').hide();
+	<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+    echo $this->filters->getJavaScript('tableData');
+    echo $this->trigger;
+    
+?>
+
+$(window).load(function(){
+           $.getJSON(urlAjax + "usuario", function(data){executeCmdsFromJSON(data)});
+        });
+$(window).load(function(){
+                $.getJSON(urlAjax + "tablaacademico", function(data){executeCmdsFromJSON(data)});
+             });
+
+$(window).load(function(){
+                $.getJSON(urlAjax + "tablaempresarial", function(data){executeCmdsFromJSON(data)});
+             });
+
+
+});
+function evaluaciona(id){
+
+    $.getJSON(urlAjax + "evaluaciona/pk/" + id, function(data){executeCmdsFromJSON(data)});
+    $('#frame').show();
+    $('#frame').load(function(){
+	           $("#frame").contents().find(".content:first").contents().find("input").eq(1).val(id);
+	           $('#frame').contents().delegate("input[value='Enviar todo y terminar'][type='button']","click",function(){setTimeout(function(){window.location.reload()},8000)});
+    });
+	
+
+}
+function evaluacione(id){
+
+    $.getJSON(urlAjax + "evaluacione/pk/" + id, function(data){executeCmdsFromJSON(data)});
+    $('#frame').show();
+    $('#frame').load(function(){
+		
+           $("#frame").contents().find(".content:first").contents().find("input").eq(1).val(id);
+           $('#frame').contents().delegate("input[value='Enviar todo y terminar'][type='button']","click",function(){setTimeout(function(){window.location.reload()},8000)});
+    })
+	
+}
+
+</script>

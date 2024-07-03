@@ -1,0 +1,426 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+<style type="text/css">
+    #busqueda {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+    #tblFiltros {
+        position: relative;
+        display: block;
+    }
+    #nombres {
+        position: absolute;
+        right: 111%;
+        top: 11%;
+    }
+    #selPeriodo {
+        position: absolute;
+        top: 55%;
+        left: -48%;
+    }
+    #tblFiltros:first-of-type tr:nth-child(4) > td:last-child {
+        position: absolute;
+        top: 55%;
+        left: 23%;
+    }
+    #tblFiltros:first-of-type tr:nth-child(5) {
+        position: absolute;
+        top: 23%;
+        right: -9%;
+    }
+    #txtBuscar{
+
+        width: 60%;
+        margin-left: 22px;
+    }
+    .ui-button {
+        height: 100%;
+
+    }
+    @-moz-document url-prefix() {
+        .ui-button{
+            height: 69%;
+        }
+    }
+    #tblHorarios{
+        width: 80%;
+        margin: 0px auto;
+        position: relative;
+        top: -11%;
+        margin-top: 3%;
+    }
+    #tblHorarios .alert {
+        width: 100%;
+        margin-top: 5%;
+    }
+    #datosest{
+        padding-left: 90px;
+        font-weight: bold;
+        font-size: 15px;
+        visibility: hidden;
+    }
+    #tblHorarios td.stripe{
+        background-color: rgba(120,120,120,0.1); 
+    }
+    #tblHorarios .clases{
+        padding: 6px;
+        font-weight: bold;
+        background-color: white;
+        box-shadow: 0 0 8px -3px #000;
+    }
+    #tblHorarios table{
+        border-collapse: collapse;
+        text-align: Center;
+        background-color: #fff; 
+        margin: 0 auto;
+    }
+    #tblHorarios table tr:first-child{
+        background-color: rgb(171,188,14);
+        padding: 20px;
+        color: #222;
+        font-size: 20px;
+    }
+    #tblHorarios  table tr td.time{
+        background-color: rgb(214,231,55);
+        padding: 8px;
+        color: #222;
+        font-size: 15px;
+        max-width: 80px;
+    }
+    #tblHorarios tr:hover .time{
+        background-color: rgba(214,231,55, 0.45);
+    }
+
+    #tblHorarios  table tr td.coincidencias{
+        background-color: rgb(209,35,35);
+        padding: 8px;
+        color: #222;
+        font-size: 15px;
+        max-width: 80px;
+
+    }
+    #tblHorarios td{
+        border: 1px solid #534A4A1A;
+    }
+
+   
+    
+
+    #tblHorarios table tr td.coincidencias:hover{
+        background-color:rgba(255, 0, 0,0.49);
+        transition: 200ms all ease;
+        color: white;
+    }
+    #image{
+        visibility: hidden;
+    }
+    .clases .coincidencias{
+        font-size: 14px;
+    }
+    .group{
+        display: inline-block;
+        margin: 5px auto;
+    }
+    .ced {
+        width: 175px;
+        margin-left: 4px;
+    }
+    .left {
+        margin-left: 0px;
+    }
+    #cedula {
+        font-weight: bold;
+        font-size: 120%;
+    }
+    .horario{
+        padding-top: -100px;
+    }
+    .horas{
+        width: 10%;
+    }
+    #tblHorarios col:nth-child(3){
+        background-color: #000;
+    }
+
+    
+/*
+    #horas {
+        background-color: #FFF;
+    }
+    #horas  td,#horas th{
+        min-width: 75px;
+        padding: 6px;
+        text-align: center;
+    }
+    #horas {
+       position: relative;
+       
+    }
+    #tblhoras{
+        margin-top: 5%;
+    }
+    #horas, #horas td{
+        margin: auto;
+        border: 1px solid #534A4A1A;
+        border-collapse: collapse;
+    }
+    .shadowhora{
+        box-shadow: 0 0 8px -4.5px #000;
+        transition: 200ms all ease;
+        color: #222;
+        
+    }
+    .modalcon{
+        background-color: rgb(209,35,35);
+        font-weight: bold;
+    }
+    .modalcon:hover{
+        background-color: rgb(240,77,77);
+        font-weight: bold;
+        color:#FFFFFF;
+    }
+    .shadowth{
+        box-shadow:-1px 4px 4px -5.5px #000;
+    }
+    .shadowd{
+        box-shadow: 2px 3px 3px #534A4A1A;
+    }
+  .shadowhora:hover{
+        background-color: rgba(61, 176, 239,1);
+        color: #FFFFFF;
+    }
+
+   
+    #horas tr:hover .h{
+        background-color: rgba(214,231,55, 0.45);
+    }
+    
+    #horas tr:first-child{
+        background-color :rgb(171,188,14);
+    }
+    #horas .h{
+        background-color: rgb(214,231,55);
+    }
+    .ret{
+        background-color:#CA0E0E;
+    }
+    .tur{
+        width: 78px;
+    }*/
+/*REPARACION DE LA TABLA*/
+    @media print{
+        @page {
+            size: landscape;
+        }
+        body * {
+            visibility: hidden;
+        }
+        div#tblHorarios *{
+            visibility: visible;
+        }
+        #tblHorarios{
+            top: -180px;
+            display: inline;
+        }
+        #tblHorarios table tr td,
+        #tblHorariostable tr th{
+            /*top: -250px;*/
+            margin-top: -10px;
+            border: 1.5px solid #000;
+        }
+        #rtblHorarios table tr td{
+            font-size: 14px;
+        }
+        #rtblHorarios table tr:first-child{
+            padding: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 3px solid #000;
+        }
+        #rtblHorarios table td:first-child{
+            border-left: 3px solid #000;
+            border-right: 3px solid #000;
+        }
+        #rtblHorarios table tr th {
+            border: 3px solid #000;
+        }
+        #rtblHorarios table{
+            margin-top: -160px;
+        }
+            #rtblHorarios table tr:last-child{
+            border-bottom: 3px solid #000;
+        }
+        #tblHorarios table td:last-child{
+            border-right: 3px solid #000;
+        }
+        #tblHorarios table tr:nth-child(4), #tblHorarios table tr:nth-child(7){
+            border-bottom: 3px solid #000;
+        }
+        #image{
+            visibility: visible;
+            margin: -310px auto;
+            display: inline;
+            padding: 0px;
+        }
+        #datosest{
+            position: relative;
+            right: 154px;
+            top: -170px;
+            padding-left: 0px;
+            font-weight: bold;
+            display: inline-block;
+            }
+
+        
+        
+        #tblHorarios .clases{
+            box-shadow: 0px 0px 0px 0px #fff;
+        }
+        * {
+            color: black;
+        }
+        
+       
+
+
+    }
+</style>
+
+    <div id="busqueda" align="center">
+        <?php include_once('filtros.phtml'); ?>
+    </div>
+        
+           <!-- <div id="tblhoras" style="text-align:center;width:100%">
+             <table align="center" id="horas" class="shadowth">
+                 
+                  <div id="ths">
+                      <tr>
+                          <th class="">Horas</th>
+                          <th class="lunes shadowth">Lunes</th>
+                          <th class="martes shadowth">Martes</th>
+                          <th class="miercoles shadowth">Miercoles</th>
+                          <th class="jueves shadowth">Jueves</th>
+                          <th class="viernes shadowth">Viernes</th>
+                          <th class="sabado shadowth">Sabado</th>
+                      </tr>
+                 </div>
+                  <tr id="1">
+                    <td class="shadowd h">7:00 - 8:30</td>
+                    <td class="lunes"></td>
+                    <td class="martes"></td>
+                    <td class="miercoles"></td>
+                    <td class="jueves"></td>
+                    <td class="viernes"></td>
+                    <td class="sabado"></td>
+                  </tr>
+                  <tr id="2" >
+                    <td class="shadowd h">8:40 - 10:10</td>
+                    <td class="lunes"></td>
+                    <td class="martes"></td>
+                    <td class="miercoles"></td>
+                    <td class="jueves"></td>
+                    <td class="viernes"></td>
+                    <td class="sabado"></td>
+                  </tr>
+                  <tr id="3" >
+                    <td class="shadowd h">10:15 - 11:45</td>
+                    <td class="lunes"></td>
+                    <td class="martes"></td>
+                    <td class="miercoles"></td>
+                    <td class="jueves"></td>
+                    <td class="viernes"></td>
+                    <td class="sabado"></td>
+                  </tr>
+
+                  <tr id="4" >
+                    <td class="shadowd h">12:00 - 1:30</td>
+                    <td class="lunes"></td>
+                    <td class="martes"></td>
+                    <td class="miercoles"></td>
+                    <td class="jueves"></td>
+                    <td class="viernes"></td>
+                    <td class="sabado"></td>
+                  </tr>
+                  <tr id="5" >
+                    <td class="shadowd h">1:35 - 3:05</td>
+                    <td class="lunes"></td>
+                    <td class="martes"></td>
+                    <td class="miercoles"></td>
+                    <td class="jueves"></td>
+                    <td class="viernes"></td>
+                    <td class="sabado"></td>
+                  </tr>
+                  <tr id="6" >
+                    <td class="shadowd fc h">3:10 - 4:40</td>
+                    <td class="lunes"></td>
+                    <td class="martes"></td>
+                    <td class="miercoles"></td>
+                    <td class="jueves"></td>
+                    <td class="viernes"></td>
+                    <td class="sabado"></td>
+                  </tr>
+                  <tr id="7" >
+                    <td class="shadowd h">5:00 - 6:30</td>
+                    <td class="lunes"></td>
+                    <td class="martes"></td>
+                    <td class="miercoles"></td>
+                    <td class="jueves"></td>
+                    <td class="viernes"></td>
+                    <td class="sabado"></td>
+                  </tr>
+                  <tr id="8" >
+                    <td class="shadowd h">6:40 - 8:00</td>
+                    <td class="lunes"></td>
+                    <td class="martes"></td>
+                    <td class="miercoles"></td>
+                    <td class="jueves"></td>
+                    <td class="viernes"></td>
+                    <td class="sabado"></td>
+                  </tr>
+            </table>
+        </div>-->
+    <div id="tblHorarios">
+    </div>
+
+    
+
+<?php 
+echo $horariofinal;
+ ?>
+<script type='text/javascript'>
+   $('#tblFiltros:first-of-type tr:nth-child(4) > td:first-child').html('Ce&#769dula: ');
+   $('#tblFiltros:first-of-type tr:nth-child(5) > td:first-child').remove();
+   $('#filtericon').remove();
+   $('#txtBuscar').removeAttr('style');
+
+        
+  
+    
+ 
+    $(document).ready(function()
+    {   <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Action->getJavaScript('tblHorarios');
+            echo $this->filters->getJavaScript('tblHorarios');
+
+           
+        ?>
+
+   
+
+   });
+
+
+
+
+</script>

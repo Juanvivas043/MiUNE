@@ -1,0 +1,47 @@
+
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/paginator.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+
+?>
+
+
+<h2 id="title">
+<?php  echo $this->title; ?>    
+</h2>
+<div>
+    <div id="busqueda" align="center">
+        <table id="tblbusqueda"  align="center">
+            <tr>
+                <td class='relative'>
+                <?php  include_once('filtros.phtml'); ?>
+
+                <span></span>
+
+                </td>   
+           </tr>
+                    
+        </table> 
+    </div> 
+</div>
+<div id="tblEstudiantes" align="center" style="margin: 0px auto;"></div>  
+
+
+
+
+<script type="text/javascript">
+         
+    <?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+    echo $this->filters->getJavaScript('tblEstudiantes');
+    ?>
+    
+</script>

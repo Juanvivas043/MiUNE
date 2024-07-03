@@ -1,0 +1,291 @@
+<?php
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/bootstrap.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/bootstrap-tooltip.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/paginator.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/bootstrap.min.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/filtros.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/paginator.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+?>
+<h2 id="title"><?php echo $this->titulo; ?></h2>
+<style>
+    /*@import url(https://fonts.googleapis.com/css?family=Lato:400,100,300,700,900);*/
+    table#full_background {
+        /*background: #FFF;*/
+        font-family: 'Lato', helvetica, Arial, sans-serif;
+    }
+    h2#title {
+        margin-left: 5px;
+        margin-top: 5px;
+        font-size: 14px;
+    }
+    textarea{
+        vertical-align: top;
+        height: 5em;
+    }    
+    .error{
+        display: none;
+        margin-left: 10px;
+    }       
+    .error_show{
+        color: red;
+        margin-left: 10px;
+    }
+    div.ui-dialog{
+        top: 50%;
+        left: 37%;
+    }
+    #tblFiltros tr#nombres td#customfiltername{
+        display: inline-block;
+        margin-left: 50px;
+    }
+    #tblFiltros tr#selects td {
+        display: inline-block;
+    }
+    #tblFiltros #btnList, #tblFiltros #btnClear {
+        padding: 2.5px;
+        display: inline-block;
+        margin-right: 2px;
+    }
+    .selDate {
+        margin-top: -40px;
+        margin-left: 240px;
+    }
+    .selDate div {
+        display: inline-block;
+        margin-left: 13.5px;
+        margin-bottom: 5px;
+    }
+    .selDate div label {
+        font-weight: bold;
+    }
+    .selDate div input {
+        font-weight: bold;
+        width: 90px;
+        padding: 5px 5px;
+        float: right;
+        margin-top: -7.5px;
+    }
+    .clear {
+        clear: both;
+        overflow: hidden;
+    }
+    article {
+        border: 0.5px solid #CCC;
+        border-radius: 5px;
+        box-shadow: 0px 0px 5px #666;
+        padding: 20px 10px;
+        margin: 10px;
+        background: #FFF;
+        color: #000;
+    }
+    article .body {
+        position: relative;
+    }
+    article .body, article .body:hover, article .body:link, article .body:active{
+        color: #000;
+        font-weight: normal;
+    }
+    article .body div.picture img {
+        max-width: 150px;
+        max-height: auto;
+        border-radius: 50%;
+        margin: 0px auto;
+        box-shadow: 0px 0px 2.5px #666;
+    }
+    article .more {
+        visibility: hidden;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        display: block;
+        font-size: 20px;
+        background: rgba(0,0,0,0.4);
+        border-radius: 5px;
+        z-index: 1;
+        cursor: pointer;
+    }
+    article .more span {
+        position: relative;
+        top: calc(50% - 25px);
+        left: calc(50% - 25px);
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        background: #333;
+        color: #FFF;
+        text-align: center;
+        padding-top: 16px;
+        border: none;
+        border-radius: 50%;
+        box-shadow: 0px 0px 2.5px #666;
+    }
+    article:hover .more {
+        visibility: visible;
+    }
+    #file-dropzone {
+        display: block;
+        margin-top: 40px;
+        background: #FFF;
+        box-sizing: border-box;
+    }
+    #file-dropzone .dz-message {
+        margin: 2em 0px;
+        text-align: center;
+        font-weight: 400;
+        padding: 0px;
+        border: 0px none;
+        font: inherit;
+        vertical-align: baseline;
+    }
+    #file-dropzone .dz-message span {
+        padding: 10px;
+        vertical-align: middle;
+    }
+</style>
+<div id="busqueda" align="center">
+    <table id="tblbusqueda" align="center">
+        <tr>
+            <td class='relative'>
+                <?php include_once('filtros.phtml'); ?>
+                <span></span>
+                <div class="selDate" id="selDate">
+                    <div class="selDesde">
+                       <label>Desde:</label>
+                       <input type="text" class="selDateDesde" name="selDateDesde"  placeholder="Fecha Desde" id="selDateDesde">
+                    </div>
+                    <div class="selHasta">
+                        <label>Hasta:</label>
+                        <input type="text" class="selDateHasta" name="selDateHasta" placeholder="Fecha Hasta" id="selDateHasta">
+                    </div>
+                </div>
+            </td>   
+       </tr>
+       <tr>
+           <td>&nbsp;</td>
+       </tr>      
+    </table> 
+</div>
+<div class="container">
+    <div class="row">
+        <div id="tblVacantes">&nbsp;</div>
+    </div>
+</div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type="text/javascript">
+    <?php 
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        echo $this->SwapBytes_Crud_Form->getJavaScript();
+        echo $this->SwapBytes_Jquery->getLoading('loading'); 
+        echo $this->SwapBytes_Crud_Action->getJavaScript('tblVacantes');
+        echo $this->filters->getJavaScript('tblVacantes');
+    ?>
+    function setModal(id){
+        var data = "?" + $("#txtBuscar").serialize() + "&" +  $("#selDateDesde").serialize() + "&" + $("#selDateHasta").serialize() + "&id=" + id;
+        $.ajax({
+              dataType: 'json',
+              type: 'POST',
+              url: urlAjax + 'view/',
+              data: { 
+                id:  id,
+                url: data
+            },
+              success: function(data){executeCmdsFromJSON(data);}
+            });
+    }
+    function uploader(){
+        $('#file-dropzone').dropzone({ 
+            url: "/upload",
+            maxThumbnailFilesize: 1,
+            paramName: "file",
+            dictDefaultMessage: "Arrastra tu Curriculum Vitae",
+            dictFallbackMessage: "Tu Explorador no soporta drag 'n' drop",
+            dictFileTooBig: "El Archivo es muy Pesado ({{filesize}}MiB). Tamaño Maximo: {{maxFilesize}}MiB.",
+            dictInvalidFileType: "No puedes subir archivos de este tipo.",
+            dictResponseError: "Server responded with {{statusCode}} code.",
+            dictCancelUpload: "Carga Cancelada",
+            dictCancelUploadConfirmation: "Estas seguro que quieres cancelar la carga ?",
+            dictRemoveFile: "Quitar archivo",
+            dictMaxFilesExceeded: "No puedes subir mas archivos.",
+            maxFilesize: 2,
+            maxFiles: 1,
+            uploadMultiple: false,
+            addRemoveLinks: true,
+            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf,.doc,.docx",
+            clickable: true,
+            init: function() {
+              this.on('success', function(file, json) {
+              });
+              this.on('addedfile', function(file) {
+              });
+              this.on('error', function(file, response){
+                this.removeFile(file);
+                sweetAlert("Error ...", "No puede subir archivos de este tipo", "error");
+              });
+              this.on("sending", function (file) {
+                $('.meter').show();
+              });
+              this.on("totaluploadprogress", function (progress) {
+                $('.roller').width(progress + '%');
+              });
+              this.on("queuecomplete", function (progress) {
+                $('.meter').delay(999).slideUp(999);
+              });
+              this.on('maxfilesexceeded', function(file){
+                this.removeFile(file);
+                sweetAlert("Error ...", "No puede subir mas de un archivo", "error");
+              });
+            },
+            accept: function(file, done){
+                done();
+            }
+        });
+    }
+    function post(){
+        $.ajax({
+              dataType: 'json',
+              type: 'POST',
+              url: urlAjax + 'agregar/',
+              data: { id: $("#id_vacante").val() },
+              success: function(data){executeCmdsFromJSON(data);}
+            });
+    }
+    $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+        function list(){
+            $.getJSON(urlAjax + "list/filters/"+escape($('#tblPostulaciones').find(':input').serialize()), { empresa: $("#selEmpresa").val(), vacante: $("#selVacante").val(),selDateDesde: $("#selDateDesde").val(), selDateHasta: $("#selDateHasta").val(), buscar: $("#txtBuscar").val() }, function(d){executeCmdsFromJSON(d)});
+        }
+        $("#selDateDesde").datepicker({dateFormat: 'yy-mm-dd'}).datepicker();
+        $("#selDateHasta").datepicker({ dateFormat: 'yy-mm-dd'}).datepicker();
+        $("#btnList").unbind();
+        $("#btnList").click(function(){ list(); });
+        $("#selDateDesde").change(function(){ list(); });
+        $("#selDateHasta").change(function(){ list(); });
+        <?php 
+            if(isset($this->search) and isset($this->desde) and isset($this->hasta) and isset($this->id)){
+            ?>
+                //Data
+                $("#txtBuscar").val("<?php echo $this->search; ?>");
+                $("#selDateDesde").val("<?php echo $this->desde; ?>");
+                $("#selDateHasta").val("<?php echo $this->hasta; ?>");
+                //ListAction
+                $("#btnList").click();
+                //Modal
+                setModal("<?php echo $this->id; ?>");
+            <?php
+            }
+        ?>
+    });
+</script>

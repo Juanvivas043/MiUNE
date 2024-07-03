@@ -1,0 +1,32 @@
+<HEAD>
+ <meta name="tipo_contenido"  content="text/html;" http-equiv="content-type" charset="utf-8">
+</HEAD>
+<header>
+<?php
+//$this->controller = Zend_Controller_Front::getInstance();
+//var_dump($this->controller);
+//echo $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui-1.8.14.custom.min.js');
+echo $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.6.2.min.js');
+//echo $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+//$this->headScript()->appendFile($this->baseUrl() . '/js/video.js');
+echo $this->headScript()->appendFile($this->baseUrl() . '/js/flowplayer-3.2.6.min.js');
+
+//$this->headLink()->appendStylesheet($this->baseUrl() . '/css/video-js.css');
+//echo $this->headLink()->appendStylesheet($this->baseUrl() . '/css/flowplayer.css');
+//echo $this->headLink()->appendStylesheet($this->baseUrl() . '/css/generar.contenidos.css');
+echo $this->headLink()->appendStylesheet($this->baseUrl() . '/css/indication.generar.contenidos.css');
+//echo $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+//echo $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+//echo $this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+//echo $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+?>
+</header>
+<script type='text/javascript'>
+    $(document).ready(function(){
+        players = $('.player');
+        for(i=0;i<players.length;i++){
+            $.globalEval('flowplayer("'+players[i].id+'", "../../flowplayer-3.2.7.swf", {clip: {autoPlay : false, autoBuffering : false}});');
+        }
+//        flowplayer("player", "../../flowplayer-3.2.7.swf");
+    });
+</script>

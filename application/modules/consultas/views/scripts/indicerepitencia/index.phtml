@@ -1,0 +1,59 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+
+
+
+?>
+<style type="text/css">
+    #tableUniversidad {
+        margin-left: -530px;
+        margin-top: -65px;
+        margin-bottom: 20px;
+    }
+    #tableEscuela {
+        margin-left: 520px;
+    }
+
+
+</style>
+<h2>
+<?php  echo $this->title; ?> 
+</h2>
+
+<div id="busqueda" align="center">
+    <table id="tblbusqueda"  align="center">
+        <tr>
+            <td class='relative'>
+            <?php  include_once('filtros.phtml'); ?>
+
+            <span></span>
+
+            </td>   
+       </tr>
+                
+    </table> 
+</div>
+<div id="tblIndice" align="center">
+</div>  
+
+<script type="text/javascript">
+         
+    <?php
+        echo $this->SwapBytes_Jquery->getLoading('loading');
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        echo $this->SwapBytes_Crud_Action->getJavaScript('tblIndice');
+        echo $this->filters->getJavaScript('tblIndice');
+    ?>
+
+       
+   
+
+</script>
+
+
+

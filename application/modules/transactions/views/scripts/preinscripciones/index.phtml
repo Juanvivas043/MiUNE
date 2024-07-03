@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><?php echo $this->escape($this->title); ?></title>
+	<?php
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/pagination.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+	?>
+	<style>
+		.tdDatos{
+			margin: auto;
+			padding-top: 10px;
+		}
+		.datos{
+			width: 100%;
+			height: 100%;
+			display: block;
+		}
+		.datos h1 {
+			font-size: 72px;
+		}
+		.uc{
+			width: 300px;
+			float: left;
+		}
+		.uc h1{
+			height: 85px;
+		}
+		.uc div{
+			display: inline;
+		}
+		.cant_materias{
+			width: 300px;
+			float: left;
+		}
+		.semestre{
+			width: 300px;
+			float:left;
+		}
+		#btnPreinscribir{
+			width: 	40%;
+			margin: 10px auto;
+			display: block;
+		}
+		#btnPreinscribir span{
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+	<br>
+<table class='maintable' border="0" cellpadding="0" cellspacing="0" style="width: 910px; padding: 0px 0px 0px 10px; margin-left:auto; margin-right:auto;">
+	<tr>
+        <td align="center">
+			<table class="tableData">
+				<tbody>
+					<tr>
+						<td><b>Estudiante:</b></td>
+						<td><?php echo $this->datos[0]["apellido"].",".$this->datos[0]["nombre"] ?></td>
+						<td><b>Pensum:</b></td>
+						<td><?php echo $this->datos[0]["pensum"] ?></td>
+					</tr>
+					<tr>
+						<td><b>C.I:</b></td>
+						<td><?php echo $this->datos[0]["ci"] ?></td>
+						<td><b>Periodo:</b></td>
+						<td><?php echo $this->datos[0]["periodo"] ?></td>
+
+					</tr>
+					<tr>
+						<td><b>Escuela:</b></td>
+						<td><?php echo $this->datos[0]["escuela"] ?></td>
+						<td><b>Periodo Preinscribir</td>
+						<td><?php echo $this->datos[0]["periodo"] +1 ?></td>
+					</tr>
+				</tbody>
+			</table>
+        </td>
+    </tr>
+    <tr >
+        <td align="center" class='tdDatos' id='tdDatos' style="display:none;">
+        	<div class="datos">
+	            <div class="cant_materias">
+	            	<h2>Cantidad de Materias</h2>
+	            	<h1><span id="cmat">0</span></h1>
+	            </div>
+	            <div class="uc">
+	            	<h2>Unidades de Crédito</h2>
+	            	<h1><div id="uc_selec">0</div>/<div id="uc_limit">0</div></h1>
+	            </div>
+	            <div class="semestre">
+	            	<h2>Semestre de Ubicación</h2>
+	            	<h1><div id="semubic">0</div></h1>
+	            </div>
+        	</div>
+        </td>
+    </tr>
+    
+    <tr>
+        <td align="center" style="display: none;">
+            <?php include_once('filtros.phtml'); ?> 
+        </td>
+    </tr>
+    <tr>
+        <td>
+        <button id="btnPreinscribir" name="btnPreinscribir" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only" role="button" aria-disabled="false" style="display: none;">
+        	<span class="ui-button-text">Registrar Preinscripcion</span>
+        </button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="tableData">&nbsp;</div>
+        </td>
+    </tr>
+</table>
+
+<?php
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+?>
+<script type='text/javascript'>
+	var Materias = [];
+    $(document).ready(function(){
+		<?php
+		    echo $this->SwapBytes_Jquery->getLoading('loading');
+		    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+		    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+		?>
+		$('#btnList').click();
+		$('#btnPreinscribir').click(function(){
+			Materias = [];
+			$('input:checkbox:checked').each(function(index, item){ 
+				Materias.push(item.value) 
+			}); 
+			$.post(urlAjax + "preinscribir", {'materia': Materias}, function(response) {
+			    $('#cmat').text(response.cant_mat);
+			    $('#uc_selec').text(response.uc_select);
+			    $('#uc_limit').text(response.uc_limit);
+			    $('#semubic').text(response.sem_ubic);
+			    if(response.estado == 1){
+			    	$('#btnPreinscribir').addClass('ui-state-disabled');
+			    	$('input:checkbox').attr('disabled', 'disabled');
+			    }
+					$('#btnList').click();
+			}, 'json');
+
+		});
+    });
+
+    function checkMaterias(){
+		Materias = [];
+		$('input:checkbox:checked').each(function(index, item){ 
+			Materias.push(item.value) 
+		}) 
+		$.post(urlAjax + "list", {'materia': Materias}, function(response) {
+			executeCmdsFromJSON(response);
+			$('input:checkbox').each(function(pos, item){
+				if(jQuery.inArray( item.value, Materias ) > -1)
+					$(this).attr('checked', true);
+			});
+			Materias = [];
+			$('input:checkbox:checked').each(function(index, item){ 
+				Materias.push(item.value) 
+			}); 
+			$.post(urlAjax + "checkMaterias", {'materia': Materias}, function(response) {
+			    $('#cmat').text(response.cant_mat);
+			    $('#uc_selec').text(response.uc_select);
+			    $('#uc_limit').text(response.uc_limit);
+			    $('#semubic').text(response.sem_ubic);
+			    if(response.uc_select > response.uc_limit)
+			    {
+			    	$('#btnPreinscribir').addClass('ui-state-disabled')
+			    }else{
+			    	$('#btnPreinscribir.ui-state-disabled').removeClass('ui-state-disabled')
+			    }
+			}, 'json');
+		}, 'json');
+    }
+</script>
+</body>
+</html>
+
+

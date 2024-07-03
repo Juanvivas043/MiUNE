@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cartaexoneracion" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ci" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select u.pk_usuario as cedula, p.nombre as proyecto, escuela, u.nombre||' , '||u.apellido as estudiante,current_date as fecha
+            from tbl_inscripcionespasantias ip
+            join tbl_asignacionesproyectos ap on ap.pk_asignacionproyecto = ip.fk_asignacionproyecto
+            join tbl_recordsacademicos ra on ra.pk_recordacademico = ip.fk_recordacademico
+            join tbl_inscripciones i on i.pk_inscripcion = ra.fk_inscripcion
+            join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = i.fk_usuariogrupo
+            join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
+            join tbl_proyectos p on p.pk_proyecto = ap.fk_proyecto
+            join tbl_asignaturas a on a.pk_asignatura = ra.fk_asignatura
+            join tbl_pensums pen on pen.pk_pensum = a.fk_pensum
+            join vw_escuelas esc on esc.pk_atributo = pen.fk_escuela
+            WHERE u.pk_usuario =  $P{ci}::integer]]>
+	</queryString>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="proyecto" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="estudiante" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement x="15" y="10" width="59" height="14"/>
+				<textElement/>
+				<text><![CDATA[DR.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="24" width="172" height="14"/>
+				<textElement/>
+				<text><![CDATA[JESÚS ALBERTO RAMÍREZ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="38" width="186" height="14"/>
+				<textElement/>
+				<text><![CDATA[Rector Universidad Nueva Esparta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="15" y="52" width="69" height="14"/>
+				<textElement/>
+				<text><![CDATA[Presente.-]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="456" splitType="Stretch">
+			<staticText>
+				<reportElement x="15" y="15" width="102" height="14"/>
+				<textElement/>
+				<text><![CDATA[Apreciado Rector:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="15" y="43" width="540" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Yo, "+$F{estudiante}+", venezolano(a), mayor de edad,domiciliado en la ciudad de Caracas,"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="63" width="540" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["titular de la cedula de identidad Nro: "+$F{cedula}+" estudiante de la carrera de  "+$F{escuela}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="83" width="540" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["de la Universidad Nueva Esparta (UNE), por medio de la presente declaro que eximo de cualquier tipo"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="103" width="540" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["de responsabilidad a la Universidad Nueva Esparta, con motivo de la prestación del Servicio Comunitario"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="123" width="540" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["que establece la Ley de Servicio Comunitario del Estudiante de Educación Superior, a los estudiantes"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="143" width="540" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["que cursen estudios a nivel universitario, y que en la actualidad realizo en el proyecto"+$F{proyecto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="163" width="540" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["actividad  que se realiza en una jurisdicción distinta a la del campus universitario de la UNE."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="183" width="540" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Así mismo, declaro que comprendo y acepto los riesgos, costos y gastos que podrían originarse"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="203" width="540" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["ocasión de la mencionada actividad, por lo que también eximo a la Universidad de los mismos,"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="223" width="540" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["siendo estos cubiertos y enfrentados por mí persona. "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="243" width="538" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Fecha: "+$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="386" width="185" height="20"/>
+				<textElement/>
+				<text><![CDATA[___________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="311" width="293" height="27"/>
+				<textElement/>
+				<text><![CDATA[
+Sin otro particular a que hacer referencia, se despide.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="406" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["C.I: "+$F{cedula}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

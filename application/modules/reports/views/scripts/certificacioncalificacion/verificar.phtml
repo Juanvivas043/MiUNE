@@ -1,0 +1,71 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/generics.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$authSpace = new Zend_Session_Namespace('Zend_Auth');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <table border="0" cellpadding="0" cellspacing="0" width="140px">
+                <tr>
+                    <td align="right" style="font-weight:bolder;" width="20" rowspan="2">CI:</td>
+                    <td align="center" style="font-weight:bolder;" width="60" rowspan="2">
+                        <input autocomplete="off" type="text" id="txtCI" size="14" maxlength="8" />
+                    </td>
+                    <td align="center" style="font-weight:bolder;" width="140" rowspan="2">
+                        <select name="selEscuela" id="selEscuela" style="width:140px;"></select>
+
+                    </td>
+                    <td align="center" style="font-weight:bolder;" width="140" rowspan="2">
+                        <select name="selEscuela" id="selPensum" style="width:140px;"></select>
+
+                    </td>
+                    <td align="center" style="font-weight:bolder;" width="60" rowspan="2">
+                        <button type="button" id="btnGenerar">Generar</button>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+   <tr align="center" >
+       <td>
+           <table style="display: <?php if($authSpace->userId==10331709){echo 'inline';}else{echo 'none';}; ?>">
+        <tr>
+           <td>
+              <form name="SC">
+              <input type="radio" name="servicio" value="" checked>Sin Servicio Comunitario<br>
+              <input type="radio" name="servicio" value="- Servicio Comunitario Aprobado.">Aprobado<br>
+              <input type="radio" name="servicio" value="- Servicio Comunitario Convalidado segun acuerdo del CU No.107.Fecha 21-07-2008.">Convalidado<br>
+              <input type="radio" name="servicio" value="- Servicio Comunitario Exento.">Exento<br>
+              </form>
+           </td>
+        </tr>
+        <tr>
+        <td align="center"><div id="tblMsg"></div></td>
+    </tr>
+    <tr>
+        <td align="center"><div id="tblLista"></div></td>
+    </tr>
+    </table>
+       </td>
+    </tr>
+</table>
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#loading").ajaxStart(function(){$(this).show();});
+        $("#loading").ajaxStop(function(){$(this).hide();});
+
+        urlAjax = "<?php echo $this->baseUrl() . '/' . $this->module . '/' . $this->controller . '/' ?>";
+
+        $('#btnGenerar').click(function(){     
+            for (i=0;i<document.SC.servicio.length;i++){
+                if (document.SC.servicio[i].checked)
+         	 break;
+                }
+             $.getJSON(urlAjax + "verificar/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val() + "/servicio/" + document.SC.servicio[i].value, function(data){executeCmdsFromJSON(data)});
+            //window.location.href = urlAjax + "descargar/ci/" + $("#txtCI").val() + "/servicio/" + document.SC.servicio[i].value ;
+        });
+    });
+</script>

@@ -1,0 +1,69 @@
+@CHARSET "ISO-8859-1";
+div.pagination {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align:center;
+	background: transparent;
+	padding:15px;
+	margin:5px;
+    margin-left: 10px;
+}
+div.pagination a {
+	text-decoration: none;
+	color: #1F487A;
+    background: #FFF;
+    padding: 5px;
+    margin: 5px 2.5px;
+    border-radius: 5px;
+    border: 1px solid #666;
+    -webkit-transition: 300ms all ease;
+    -o-transition: 300ms all ease;
+    transition: 300ms all ease;
+}
+div.pagination a:hover, div.pagination a:active {
+	border: 1px solid #2b66a5;
+	color: #000;
+    background: rgba(255,255,255,0.8);
+    font-weight: normal;
+    box-shadow: 0px 0px 5px #666;
+}
+div.pagination span {
+    border-radius: 5px;
+    background: #FFF;
+}
+div.pagination span.current {
+	font-weight: bold;
+	padding: 5px;
+    margin: 5px 2.5px;
+    border: 1px solid navy;
+    background-color: #2E6AB1;
+    color: #FFF;
+    cursor: default;
+}
+div.pagination span.disabled {
+	padding: 5px;
+    margin: 5px 2.5px;
+    border: 1px solid #929292;
+    color: #929292;
+    cursor: not-allowed;
+}
+div.pagination div.info {
+    display: block;
+    margin-top: 15px;
+    padding: 2.5px 10px;
+    font-size: 125%;
+    color: #333;
+    text-align: center;
+    border-radius: 5px;
+    cursor: default;
+}
+div.pagination div.info span {
+	margin-right: 10px;
+	-webkit-transition: 100ms all ease;
+	-o-transition: 100ms all ease;
+	transition: 100ms all ease;
+	cursor: grab;
+}
+div.pagination div.info span:hover {
+	font-size: 120%;
+}

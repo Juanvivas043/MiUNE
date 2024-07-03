@@ -1,0 +1,209 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.6.2.min.js');
+
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/reports.horarios.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/js/pgrid-1.0.0/jquery.pgrid.default.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/generics.js');
+$this->headScript()->appendFile($this->baseUrl(). '/js/jquery-1.4.4.js', 'text/javascript');
+$this->headScript()->appendFile($this->baseUrl(). '/js/pgrid-1.0.0/jquery.pgrid.js', 'text/javascript');
+$authSpace = new Zend_Session_Namespace('Zend_Auth');
+
+
+?>
+<SCRIPT language="JavaScript" SRC="<?php echo $this->baseUrl('js/jquery-1.6.2.min.js'); ?>"></SCRIPT>
+<SCRIPT language="JavaScript" SRC="<?php echo $this->baseUrl('js/generics.js'); ?>"></SCRIPT>
+
+<link href="<?php echo $this->baseUrl('css/transactions.reinscripciones.css'); ?>" rel="stylesheet" type="text/css"></link>
+
+<table class="todoArial" width='800' cellpadding='0' border='0' align='center' cellspacg='0'>
+  <tr>
+     <td height='70px' colspan='2'>
+     </td>
+  </tr>
+  <tr>
+     <td colspan='2'class="PrintTitledBold">UNIVERSIDAD NUEVA ESPARTA</td> 
+  </tr>
+  <tr>
+     <td id="sede" class="PrintTitled"></td>
+     <td id="periacadem" class="PrintTitled" align='right'></td>
+  </tr>
+  <tr>
+     <td>&nbsp;</td>
+     <td id="fecha" class="PrintTitled" align='right'></td>
+  </tr>
+  <tr>
+     <td colspan='2' align='center' class="PrintTitledBold">MiUNE 2.0 - Reinscripci&oacute;n Acad&eacute;mica</td>
+  </tr>
+  <tr>
+     <td height='40' colspan='2'>&nbsp;</td>
+  </tr>
+  <tr>
+     <td colspan='2'>
+         <table width='800' cellspacing='0' cellpadding='0' border='0' align='center'>
+             <tr>
+                 <td width='150' valign='top'>
+                     <table width='100%' cellspacing='2' cellpadding='0' border='0'>
+                         <tr>
+                             <td valign='top'><div align='center' class="PrintTitledBold">Datos del Estudiante</div></td>
+                         </tr>
+                         <tr>
+                             <td valign='top'>
+                                 <table width='100%' cellspacing='1' cellpadding='4' border='0'>
+                                     <tr>
+                                         <td>
+                                             <table width='100%' cellspacing='0' cellpadding='0' border='0'>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="escuela">&nbsp;</label>
+                                                     </td>
+                                                        
+                                                 </tr>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="ci">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="nombre">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="apellido">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="estadoestu">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="ucapro">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                             </table>
+                                         </td>
+                                     <tr>
+                                 </table>
+                             </td>
+                         </tr>
+                     </table>
+                 </td>
+                 <td width='150' valign='top'>
+                     <table width='100%' cellspacing='2' cellpadding='0' border='0'>
+                         <tr>
+                             <td valign='top'><div align='center' class="PrintTitledBold">Datos de la Reinscripci&oacute;n</div></td>
+                         </tr>
+                         <tr>
+                             <td valign='top'>
+                                 <table width='100%' cellspacing='1' cellpadding='4' border='0'>
+                                     <tr>
+                                         <td>
+                                             <table width='100%' cellspacing='0' cellpadding='0' border='0'>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="ninscrip">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="npago">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="fecharegistro">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="fechareinsc">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="semubic">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                                 <tr>
+                                                     <td>
+                                                         <label id="toltalUCsemubic">&nbsp;</label>
+                                                     </td>
+                                                 </tr>
+                                             </table>
+                                         </td>
+                                     <tr>
+                                 </table>
+                             </td>
+                         </tr>
+                     </table>
+                 </td>
+             </tr>
+             <tr>
+                 <td height='40' colspan='2'>
+                 </td>
+             </tr>
+             <tr>
+                 <td valign='top' height='300' colspan='2'>
+                     <div id="tablamaterias"></div>
+                 </td>
+             </tr>
+             <tr>
+                 <td width='50%'>
+                     <table width='230' cellspacing='0' cellpadding='0' border='0' align='center'>
+                         <tr>
+                             <td height='80' style='border-bottom: 1px solid #000000;'>&nbsp;
+                             </td>
+                         </tr>
+                         <tr>
+                             <td>
+                                 <div align='center' class="PrintBoldText">Firma del Director de Escuela</div>
+                             </td>
+                         </tr>
+                      </table>
+                  </td>
+                  <td width='50%'>
+                      <table width='230' cellspacing='0' cellpadding='0' border='0' align='center'>
+                         <tr>
+                             <td height='80' style='border-bottom: 1px solid #000000;'>&nbsp;
+                             </td>
+                         </tr>
+                         <tr>
+                             <td>
+                                 <div align='center' class="PrintBoldText">Firma del Alumno</div>
+                             </td>
+                         </tr>
+                     </table>
+                  </td>
+             </tr>
+             <tr>
+                 <td height='80' colspan='2'>
+                 <div align='center'>SELLO</div>
+                 </td>
+             </tr>
+         </table>
+     </td>
+  </tr>
+</table>
+
+
+<script type='text/javascript'>
+
+        <?php
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        ?>
+            $(document).ready(function(){
+                $.getJSON(urlAjax + "impresion", function(data){executeCmdsFromJSON(data);
+                 window.print();});
+            });
+            
+            
+            
+            
+   
+
+            
+</script>

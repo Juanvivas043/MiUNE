@@ -1,0 +1,93 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.misgrupos');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+
+<div id="busqueda">
+    <table id="tblbusqueda"  align="center">
+            <tr>
+                <td>
+                    <p id="cedula">Cedula</p>
+                </td>
+                <td>
+                    <input id="cedulatxt" type="text" >
+                </td>
+                <td>
+                    <input id="verclik" type="button" value="ver" >
+                </td>
+                <td>
+                    <input id="claveclik" type="button" value="reiniciar clave" >
+                </td>
+            </tr>
+        </table>  
+</div>
+
+<p id="mensaje" align="center" style="font-weight:bold">Cedula no encontrada</p>
+
+<br></br>
+
+<div id="informacion">
+    
+    <table id="tblusuario" align="center" >
+            <tr>
+                <td>
+                    <p id="nombre_usuario">Nombre :</p>
+                </td>
+                <td>
+                    <p id="n_usuariotxt"></p>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <p id="apellido_usuario">Apellido :</p>
+                </td>
+                <td>
+                    <p id="a_usuariotxt"></p>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <p id="escuela_usuario">Escuela :</p>
+                </td>
+                <td>
+                    <p id="e_usuariotxt"></p>
+                </td>
+            </tr>
+        </table>
+    <div id="mgrupos" align="center">
+        <br></br>
+        <p style='font-weight:bold'>Mis grupos</p>
+        <div id="grupos"align="center"></div>
+        
+    </div>
+    
+    
+    
+</div>
+
+<script type='text/javascript'>
+    $(document).ready(function()
+    {
+        <?php
+           echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        ?>    
+    });
+    $('#informacion').hide();
+    $('#mensaje').hide();
+    $('#claveclik').attr('disabled',true);
+        $('#verclik').click(function(){
+            $ci = $('#cedulatxt').val();
+            $.getJSON(urlAjax+"mibusqueda/ci/"+ $ci, function(data){executeCmdsFromJSON(data)})
+           
+        });
+        $('#claveclik').click(function(){
+            $.getJSON(urlAjax+"reiniciarpass/ci/"+ $ci, function(data){executeCmdsFromJSON(data)})
+        });    
+      
+   
+</script>

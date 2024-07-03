@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitudgrado" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="305d9a54-f9b0-42a0-85a6-c67054eb95b2">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="728"/>
+	<parameter name="cedula" class="java.lang.Integer"/>
+	<parameter name="Imagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+u.nombre,
+u.apellido,
+u.pk_usuario as cedula,
+EXTRACT(year from AGE(u.fechanacimiento))::VARCHAR as edad,
+e.escuela,UPPER(a.valor) as titulo,
+CASE u.nacionalidad WHEN FALSE THEN 'Venezolano' ELSE 'Extranjero' end as nacionalidad,
+u.direccion,
+CASE u.sexo when true then 'M' else 'F' END as sexo,
+EXTRACT(YEAR FROM u.fechanacimiento) anac,
+EXTRACT(MONTH FROM u.fechanacimiento) as mnac,
+EXTRACT(DAY FROM u.fechanacimiento) as dnac,
+u.correo,u.telefono_movil,
+u.telefono,
+(SELECT
+trunc(fn_xrxx_estudiante_iia_escuela_periodo_articulado(u.pk_usuario,i.fk_atributo,i.fk_periodo,p.codigopropietario)::decimal,2)) as iac,
+
+	(select  atr.valor from tbl_inscripciones i
+	join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = i.fk_usuariogrupo AND ug.fk_usuario = $P{cedula}
+	join tbl_recordsacademicos rec on rec.fk_inscripcion = i.pk_inscripcion AND rec.fk_atributo IN (1264)
+	JOIN TBL_reconocimientos re On re.fk_inscripcion = i.pk_inscripcion
+	join tbl_atributos atr on  re.fk_universidad = atr.pk_atributo
+	limit 1
+	) as equivalencia,
+case(
+select count(DISTINCT i.fk_atributo) from tbl_inscripciones i
+join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = i.fk_usuariogrupo and ug.fk_usuario = $P{cedula})
+when 1 then 'NO' else 'SI' end as cambioescuela,
+EXTRACT(DAY from current_date)::INTEGER as dia,
+CASE
+		 WHEN EXTRACT(MONTH FROM current_date) = 1 THEN 'Enero'
+		 WHEN EXTRACT(MONTH FROM current_date) = 2 THEN 'Febrero'
+		 WHEN EXTRACT(MONTH FROM current_date) = 3 THEN 'Marzo'
+		 WHEN EXTRACT(MONTH FROM current_date) = 4 THEN 'Abril'
+		 WHEN EXTRACT(MONTH FROM current_date) = 5 THEN 'Mayo'
+		 WHEN EXTRACT(MONTH FROM current_date) = 6 THEN 'Junio'
+		 WHEN EXTRACT(MONTH FROM current_date) = 7 THEN 'Julio'
+		 WHEN EXTRACT(MONTH FROM current_date) = 8 THEN 'Agosto'
+		 WHEN EXTRACT(MONTH FROM current_date) = 9 THEN 'Septiembre'
+		 WHEN EXTRACT(MONTH FROM current_date) = 10 THEN 'Octubre'
+		 WHEN EXTRACT(MONTH FROM current_date) = 11 THEN 'Noviembre'
+		 WHEN EXTRACT(MONTH FROM current_date) = 12 THEN 'Diciembre'
+END as mes,
+EXTRACT(year from current_date)::INTEGER as ano,(
+SELECT DISTINCT I.fk_periodo ||' '||
+    CASE to_char(per.fechainicio, 'TMMONTH')
+    WHEN 'MAY' THEN 'MAYO '||to_char(per.fechainicio, 'YYYY')
+    ELSE to_char(per.fechainicio, 'TMMONTH YYYY')
+    END ||'/'||
+    CASE to_char(per.fechafin, 'TMMONTH')
+    WHEN 'MAY' THEN 'MAYO '||to_char(per.fechainicio, 'YYYY')
+    ELSE to_char(per.fechafin, 'TMMONTH YYYY')
+    END as periodo
+
+	from tbl_inscripciones i
+join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = i.fk_usuariogrupo and ug.fk_usuario = $P{cedula}
+join tbl_recordsacademicos rec on rec.fk_inscripcion = i.pk_inscripcion
+join tbl_asignaturas a on a.pk_asignatura = rec.fk_asignatura and a.fk_materia in (834,9724) and rec.fk_atributo = 862 and rec.calificacion >=15
+join tbl_pensums p on p.pk_pensum = i.fk_pensum
+join tbl_periodos per on per.pk_periodo = i.fk_periodo
+) as fecha,(SELECT valor from vw_atributosusuarios au
+where au.fk_usuario = $P{cedula} and au.fk_atributo = 19777) as titulotesis,
+(SELECT valor from vw_atributosusuarios au
+where au.fk_usuario = $P{cedula} and au.fk_atributo = 19774) as nacimiento,
+(SELECT valor from vw_atributosusuarios au
+where au.fk_usuario = $P{cedula} and au.fk_atributo = 19776) as teloficina,
+(SELECT valor from vw_atributosusuarios au
+where au.fk_usuario = $P{cedula} and au.fk_atributo = 19778) as cargo,
+(SELECT valor from vw_atributosusuarios au
+where au.fk_usuario = $P{cedula} and au.fk_atributo = 19775)as empresa
+from tbl_inscripciones i
+join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = i.fk_usuariogrupo and ug.fk_usuario = $P{cedula}
+join tbl_usuarios u ON ug.fk_usuario = u.pk_usuario
+join vw_escuelas e on e.pk_atributo = i.fk_atributo
+join tbl_pensums p ON p.pk_pensum = i.fk_pensum
+join tbl_atributos a on a.fk_atributo = i.fk_atributo AND fk_atributotipo = 83
+order by i.fk_periodo desc
+limit 1]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="edad" class="java.lang.Integer"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="titulo" class="java.lang.String"/>
+	<field name="nacionalidad" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="sexo" class="java.lang.String"/>
+	<field name="correo" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="equivalencia" class="java.lang.String"/>
+	<field name="cambioescuela" class="java.lang.String"/>
+	<field name="dia" class="java.lang.Integer"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="ano" class="java.lang.Integer"/>
+	<field name="anac" class="java.lang.String"/>
+	<field name="mnac" class="java.lang.String"/>
+	<field name="dnac" class="java.lang.String"/>
+	<field name="telefono_movil" class="java.lang.String"/>
+	<field name="iac" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="titulotesis" class="java.lang.String"/>
+	<field name="nacimiento" class="java.lang.String"/>
+	<field name="empresa" class="java.lang.String"/>
+	<field name="cargo" class="java.lang.String"/>
+	<field name="teloficina" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="752">
+			<staticText>
+				<reportElement uuid="1c98a844-73db-49c9-bf7c-594949393a62" x="16" y="239" width="167" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLO PARA USO INTERNO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="11423ade-6e86-4682-90d2-99b2895a9246" x="15" y="360" width="146" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA DE NACIMIENTO : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ec0f9c58-c3b3-4209-b56b-1be33b8de294" x="246" y="320" width="94" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NACIONALIDAD :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e11855b4-8fd1-4754-a07a-01d67a84b870" x="15" y="523" width="289" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA DE PRESENTACION DE LA TESIS DE GRADO :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="90706400-e7a7-4ea9-b426-3ec232843b95" x="18" y="299" width="167" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[APELLIDO Y NOMBRE :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9bc3e52c-021d-4649-b6fc-a5b680df35a1" x="15" y="340" width="146" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[LUGAR DE NACIMIENTO :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b857fd1c-395a-47da-be45-d955af13fbc9" x="16" y="279" width="138" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CEDULA DE IDENTIDAD :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bf565189-5562-443e-b6d3-c0861092e7b7" x="14" y="380" width="66" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESCUELA : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0861b16e-0938-421d-a833-1619fcb45b7f" x="16" y="319" width="39" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEXO :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="70ed9242-b436-48a2-9774-17f44eb834e2" x="397" y="708" width="146" height="31"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[___________________
+Firma del Egresado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e0d623c9-cf63-4548-81f5-a2cc86ac91e4" x="15" y="503" width="236" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EFECTUO CAMBIO INTERNO DE ESCUELA :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="13ed9772-f0e3-41bf-86e9-9c69fbf30e7b" x="15" y="420" width="156" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TELEFONO DE HABITACION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="96eb1992-c802-4d7c-bbfb-1fb16b2265fc" x="10" y="226" width="211" height="13"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS PERSONALES DEL EGRESADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6d90aebb-4918-42ad-8365-36901502cae1" x="248" y="212" width="306" height="47"/>
+				<textElement>
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[SOLVENTE ADMINISTRATIVAMENTE
+SOLVENTE ACADEMICAMENTE
+SOLVENTE CON COORDINACION DE TRABAJO DE GRADO
+SOLVENTE CON BIBLIOTECA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7d58edde-4a8d-40d4-9de2-e5b3e9231e11" x="15" y="400" width="162" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCION DE HABITACION :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="def161eb-88da-4616-bd23-678bbfa835de" x="12" y="115" width="542" height="85"/>
+				<textElement textAlignment="Justified" markup="html"/>
+				<textFieldExpression><![CDATA["Yo, "+ "<b>"+$F{nombre} +"</b>"+" "+"<b>"+ $F{apellido}+"</b>"+", portador de la C.I N : "+ "<b>"+$F{cedula}+"</b>"+", de "+"<b>"+$F{edad}+"</b>"+" años de edad ,mediante la presente, informo que he cumplido con todos los requisitos legales y académicos, exigidos por la Ley de Universidades y por el Estatuto Orgánico de la Universidad Nueva Esparta para optar al titulo de "+"<b>"+$F{titulo}+"</b>"+" .Por lo tanto,agredezco los trámites que puedan hacer para que se me confiera el titulo señalado anteriormente Caracas, "+"<b>"+$F{dia} +"</b>"+",de "+"<b>"+$F{mes}+"</b>"+", de "+"<b>"+$F{ano}+"</b>"+"."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e8f99bd9-bdc6-40ce-a660-e1351fe5e02f" x="15" y="543" width="183" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TITULO DE LA TESIS DE GRADO : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="84261ae6-d46e-4eb4-a1f4-c6b8559571e7" x="80" y="319" width="39" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EDAD : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="231a1791-a923-467b-b5d8-3185e38fb72c" x="15" y="461" width="43" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EMAIL : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ee755efc-cfcf-4110-96d2-aa80693acdde" x="206" y="77" width="154" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD DE GRADO]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="e8cd26ec-0c11-4cda-923e-a7b686f698c3" x="154" y="279" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="53292755-af36-4b3e-9404-9694d099d736" x="120" y="319" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{edad}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2cd1f02c-fcac-4b6a-919d-501063d7ec21" x="79" y="380" width="341" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{escuela}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2f7b42b9-02d2-425f-935b-acc25bde21dd" x="176" y="400" width="393" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="142db6ba-82ea-4c64-9371-2526c6f49c54" x="58" y="461" width="224" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{correo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5cb7d5c9-d31c-4ace-8bcc-0c1ddfc2516f" x="56" y="319" width="24" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{sexo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cf27b098-12ba-4cd7-9173-e2c34944230d" x="148" y="299" width="248" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{apellido}+" "+$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fe4626b5-c8f5-4106-bce0-360a19843d9a" x="340" y="320" width="116" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nacionalidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3806eed5-1e46-4c80-8a04-2a477c30412b" x="170" y="420" width="98" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e2ad7d4a-6cc4-4b03-abc0-ea2c9428af47" x="15" y="482" width="533" height="20"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{equivalencia}.equals( null )
+    ?"<b>INGRESO USTED A LA UNIVERSIDAD POR EQUIVALENCIA DE ESTUDIOS :</b>"+"NO"
+    :"<b>INSTITUTO DE PROCEDENCIA :</b> "+$F{equivalencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="67dde843-dbe0-4c9d-8494-782df91bbbd8" x="251" y="502" width="112" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{cambioescuela}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="e366722d-58c9-4b98-9d97-d11b6973c7b0" x="12" y="0" width="150" height="61"/>
+				<imageExpression><![CDATA[$P{Imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="17378844-cb5e-4687-86c3-22cecdd064d0" x="161" y="360" width="179" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{anac}+"/"+$F{mnac}+"/"+$F{dnac}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="40737ab1-7079-4142-ab2b-6c5324fbdceb" x="15" y="440" width="103" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TELEFONO MOVIL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="21432512-a5e2-4eee-b0b6-7d9d4bf770a5" x="118" y="440" width="151" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{telefono_movil}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="9bbfbbaf-3fb4-4c84-9729-1f2b49f61a31" x="161" y="320" width="36" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[iac :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="56549b52-53b0-45ad-99e3-eb402d2cc173" x="198" y="320" width="45" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{iac}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4d657e96-ac57-407d-b1dd-7d96060e5d4c" x="303" y="523" width="245" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Período "+$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9734c8c3-c189-43e6-9824-f4f6fd75c7bf" x="198" y="543" width="374" height="44"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{titulotesis}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="845e0fb8-5f1d-47f3-92a3-bae1032b27ca" x="161" y="340" width="179" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nacimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e0a87bd9-34c1-4af8-b2bb-17001437c8ae" x="17" y="587" width="379" height="121"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{empresa}.equals( null )
+
+?"<b>TRABAJA ACTUALMENTE :</b>"+"NO"
+
+:"<b>TRABAJO ACTUAL: </b> "+$F{empresa}+
+"<br><br>"+
+"<b>CARGO : </b>"+$F{cargo}+
+"<br><br>"+
+"<b>TELEFONO DE OFICINA : </b>"+$F{teloficina}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

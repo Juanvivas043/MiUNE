@@ -1,0 +1,298 @@
+<?php
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.9.1.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/bootstrap.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/angular.min.js');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/bootstrap.min.css');
+	//$this->SwapBytes_Jquery->endLine(true);
+?>
+<style>
+.factura{
+	display: block;
+	border-radius: 5px;
+	text-align: center;
+	max-width: 66%;
+	margin: 0px auto;
+	background-color: rgba(255,255,255,0.7);
+	box-shadow: 0px 0px 13px 0px rgba(38, 50, 50, 0.61); 
+	padding-bottom: 10px;
+}
+.subtitulo{ 
+	display: block;
+	text-align: center;
+	padding: 0px;
+	width: 100%;
+}
+.costo{
+	font-size: 150%;
+	font-weight: normal;
+	padding: 20px 0px 0px;
+	margin: 0px 0px 0px 57%;
+}
+.costoN{
+	font-style: italic;
+	font-weight: bold;
+	font-size: 110%;
+}
+.infoO{
+	width: 90%;
+	margin: 5% 7% auto;
+}
+.info{
+	max-width: 100%;
+	border-radius: 2px;
+	padding: 10px;
+	text-align: left;
+	font-size: 1.3em;
+	margin-bottom: 5px;
+	background: rgba(0, 120, 122, 0.85);
+	color: #FFF;
+	display: block;
+}
+.vencida{
+	color: #FFF;
+	text-align: center;
+	background-color: rgb(179,0,0);
+	padding: 5px 10px;
+	border: none;
+	border-radius: 5px;
+	border-bottom-right-radius: 0px;
+	box-shadow: 0px 0px 2.5px #333;
+	box-sizing: border-box;
+	position: absolute;
+	left: -56.5px;
+	top: -34px;
+}
+.vencida:before{
+	content: " ";
+	display: block;
+	border: 5px solid transparent;
+	border-top: 5px solid rgb(179,0,0);
+	position: absolute;
+	top: 27.66px;
+	right: 0px;
+}
+.clear {
+	overflow: hidden;
+	clear: both;
+}
+.valor{
+	font-family: Courier;
+	font-weight: bold;
+	display: block;
+	position: relative;
+}
+.precio{
+	position: absolute;
+	right: 0px;
+	text-align: right;
+}
+.fila{
+	display: block; 
+	width: 100%; 
+	max-width: 100%; 
+	min-width: 100%; 
+}
+.total{
+	display: block;
+	font-size: 1.5em;
+	font-weight: bold;
+	text-align: right;
+	margin: 15px 0px;
+}
+#btnContinuar{
+	display: block;
+	margin: 10px auto;
+}
+.temp{
+	display: none;
+	visibility: hidden;
+}
+.nav {
+	max-width: 50%; 
+	margin: 10px auto;
+}
+.nav a, .nav a:active, .nav a:link, .nav a:hover {
+	text-decoration: none;
+	color: #000;
+	font-weight: bold;
+	font-size: 120%;
+	background: rgba(179, 179, 179, 0.15);
+	box-shadow: 0px 0px 5px #666;
+	margin: 10px;
+	border: none;
+	-webkit-transition: 150ms all ease;
+	transition: 150ms all ease;
+}
+.nav-pills li a:hover {
+	background: rgba(179, 179, 179, 0.30);
+}
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover{
+	width: 105%;
+	margin-left: -2.5%;
+	background: rgba(158, 166, 21, 0.5);
+	box-shadow: 0px 0px 5px #222;	
+}
+
+.globo{  
+    width: 0 auto;
+    height: 0 auto;
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    border-bottom-right-radius: 0px;    
+    background-color: rgba(0, 120, 122, 0.85);
+    box-sizing: border-box;
+    position: absolute;
+	  right: -80px;
+    color: #FFF;
+    text-align: center;
+}
+.globo:before{
+    content: "";
+    width: 0;
+    position: absolute;
+    border-style: solid;
+    border-width: 0 5px 10px 5px;
+    border-color: #EEE transparent rgba(0, 120, 122, 0.85) transparent ;
+    top: -10px;    
+}
+
+.red {
+	background: rgb(179,0,0);
+}
+
+</style>
+<h5><?php echo $this->escape($this->title); ?></h5>
+
+	<?php if ($this->noConsecutivo) { ?>
+
+	<div class="row">
+            <div class="col-xs-8 col-sm-8 col-sm-offset-2  ">
+              <div class="alert" style="text-align:center;width:800px">Usted esta intentando inscribir un período no consecutivo, debe acudir a su sede.</div>
+                </button>
+            </div>
+        </div>   <br>
+
+    </div>
+
+    <?php }else{ ?>
+
+	<?php if ($this->inscrito) { ?>
+
+	<div class="row">
+            <div class="col-xs-8 col-sm-8 col-sm-offset-2  ">
+              <div class="alert" style="text-align:center;width:800px">Usted ya posee un pago en este período.</div>
+                </button>
+            </div>
+        </div>   <br>
+
+    </div>
+
+    <?php }else{ ?>
+
+    <?php if($this->noAutorizado == true){ ?>
+
+<h3 class="subtitulo"> Periodo a Reinscribir <?=$this->datos["nuevo_periodo"]?></h3>
+<div class="factura" ng-app="factApp">
+	<p class="costo">Costo del periodo <?=$this->datos["nuevo_periodo"]?>:  <span class="costoN"><?=number_format($this->datos["articulo_reinscribir"][1]["monto"],2)?></span></p>
+	<div ng-controller="mainCtrl as mc">
+		<ul class="nav nav-pills nav-stacked">
+			<li ><a href="#" class="option" data-toggle="pill" ng-click="getDetails('none')">Pagar solo deuda(s)</a></li>
+			<li><a href="#" class="option" data-toggle="pill" ng-click="getDetails('one')">Pagar solo Reinscripción + Deuda(s)</a></li>
+		<!--	<li><a href="#" class="option" data-toggle="pill" ng-click="getDetails('all')" id="des">Pagar Reinscripción Completa + Deuda(s)</a><span class="globo">-5% de Descuento</span></li>-->
+		</ul>
+		<br>
+		<div class="clear-fix"></div>
+		<div class="infoO">
+		    <div class="info" ng-repeat="detalle in detalles" ng-class="{ red: detalle.valor == 'DESCUENTO' }">
+		    	<div class="valor">
+		    		<span>{{detalle.valor}}</span>
+		    		<span class="precio">{{detalle.precio | currency:'Bs. '}}</span>
+		    		<span class="vencida" ng-if="detalle.deuda">Deuda</span>
+		    		<div class="clear"></div>
+		    	</div>
+		    </div>
+		    <div class="fila">
+		   		<div class="total"><span>{{text}}{{detalles.total | currency:'Bs. '}}</span></div> 
+				<button id="btnContinuar" ng-click ="continuarTransaccion(form)" name="btnContinuar" role="button" aria-disabled="false" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only">
+	    	        <span class="ui-button-text" ng-show="validar">Continuar</span>
+	   			</button>
+	   		</div>
+		</div>	
+      <form name="form"  id="form" method="POST" action="http://omicron.une.edu.ve/MiUNE2/transactions/pagocuotas/do" >
+ <!-- <form name="form" id="form" method="POST" action="http://localhost/MiUNE2/transactions/pagocuotas/do " > -->
+	<input type="hidden" ng-model="numeroControl" name="numerocontrol" id="numerocontrol">	
+</form>
+</div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+ <?php }else{ ?>
+            <div class="row">
+            <div class="col-xs-8 col-sm-8 col-sm-offset-2  ">
+              <div class="alert" style="text-align:center;width:800px">Usted por los momentos no tiene disponible esta opción.</div>
+                </button>
+            </div>
+        </div>   <br>
+
+    </div>
+<?php      }}} ?>
+<script type='text/javascript'>
+    $(document).ready(function(){
+    	$("#btnContinuar").addClass("temp");
+    	$(".fila").addClass("temp");
+		$(".option").click(function(){
+			$('#btnContinuar').removeClass("temp");
+			$('.fila').removeClass("temp");
+		});
+		<?php
+			echo $this->SwapBytes_Angular->getLoading();
+			echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+			//echo $this->SwapBytes_Crud_Form->getJavaScript();
+			echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+			echo $this->filters->getJavaScript('tableData');
+	//		echo $this->SwapBytes_Jquery->openDialogMaker();
+			echo $this->trigger;
+		?>
+	});
+
+    var app = angular.module('factApp',[]);
+	app.controller('mainCtrl',function($scope,$http) {
+		$scope.validar = false;
+		$scope.detalles = [];
+		$scope.text = null ;
+		$scope.optionSelected =  null;
+		$scope.numeroControl = null;
+
+		$scope.getDetails = function (dato){
+			$scope.optionSelected = dato;
+			$http.get(urlAjax + 'getFactDetails',{params:{optionSelected:dato},responseType:"json"})
+    			.then(function(response){
+    				$scope.validar = true;
+    				$scope.text = "TOTAL:";
+    				$scope.detalles = response.data.details;	    
+    				$scope.detalles.total = response.data.total;	
+    			});
+			//$('span:contains("DESCUENTO")').parent().parent().css("background-color","rgb(179,0,0)");
+		};
+
+		$scope.continuarTransaccion = function(form){
+			if($scope.optionSelected != null){
+				$http.get(urlAjax + 'getNumeroFact',{params:{optionSelected:$scope.optionSelected},responseType:"json"})
+    			.then(function(response){
+   				//$scope.numeroControl = response.data.numeroControl;
+    				//form.submit();
+    				$("#numerocontrol").val( response.data.numeroControl );
+    				$("#form").submit();
+    			});
+			}else{ }
+		}
+
+	});
+
+</script>

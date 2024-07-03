@@ -1,0 +1,190 @@
+@CHARSET "ISO-8859-1";
+
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+}
+
+body {
+    font: 12px Arial, sans-serif;
+    text-align: center;
+    background: #ffffff;
+    color: #000000;
+}
+
+a:link, a:visited, a:active, a:hover {
+    background: transparent;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    color: #000000;
+    text-decoration: underline;
+}
+
+a img {
+    border: 0px solid #ffffff;
+}
+
+#body_header {
+    left:0;
+    width: 100%;
+    height: 121px;
+/*    background-image:url('../images/background_top_header.png');*/
+    background-image:url('../images/banner_top.png');
+    background-repeat:repeat-x;
+    background-position:top;
+}
+
+#site_name {
+    background-image: url("../images/miune2.png");
+    background-repeat: no-repeat;
+    color: #006778;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 32px;
+    font-weight: bolder;
+    height: 48px;
+    left: 467px;
+    position: relative;
+    top: -72px;
+    width: 300px;
+}
+#site_name_login {
+    background-image: url("../images/miune2.png");
+    background-repeat: no-repeat;
+    color: #006778;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 32px;
+    font-weight: bolder;
+    height: 48px;
+    left: 467px;
+    position: relative;
+    top: -53px;
+    width: 300px;
+}
+
+#logo_left{
+      background-image: url("../images/logotipo_une.png");
+    background-repeat: no-repeat;
+    height: 70px;
+    left: 63px;
+    position: relative;
+    width: 172px;
+
+}
+
+#logo_left_login{
+      background-image: url("../images/logotipo_une.png");
+    background-repeat: no-repeat;
+    height: 70px;
+    left: 63px;
+    position: relative;
+    width: 172px;
+    top: 20px;
+
+}
+#logo_right{
+    background-image: url("../images/elemento_grafico.png");
+    background-repeat: no-repeat;
+    height: 221px;
+    left: 967px;
+    overflow: hidden;
+    position: relative;
+    top: -262px;
+    width: 300px;
+}
+
+#logo_right_login{
+    background-image: url("../images/elemento_grafico.png");
+    background-repeat: no-repeat;
+    height: 221px;
+    left: 967px;
+    overflow: hidden;
+    position: relative;
+    top: -242px;
+    width: 300px;
+}
+
+#full_background{
+    background-image: url("../images/fondo_une.jpg");
+    background-color: #EDECD0;
+    background-size: cover;
+}
+
+.text_label {
+    color: #cdcdcd;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+}
+
+#copy_right {
+    width: 100%;
+    height: 25px;
+    vertical-align: bottom;
+    margin-top: 10px;
+    border-top: 1px solid #b7b7b7;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: bold;
+    color: #999999;
+    text-align: center;
+}
+
+#site_development {
+    padding: 2;
+    width:100px;
+    position:absolute;
+    margin-top: 25px;
+    margin-left: 480px;
+    border: 1px solid #FCDE66;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    color: #000000;
+    background: #FDF7DD;
+}
+
+#body_username_bar{
+/*    background-image:url('../images/background_top_name.png');*/
+    width: 100%;
+    height: 20px;
+    background-repeat: repeat-x;
+    position:relative;
+    top:99px;
+}
+
+#user_name{
+    color: white;
+    height: 15px;
+    left: 5px;
+    padding-top: 5px;
+    position: relative;
+    text-align: left;
+    top: -1px;
+}
+
+#right_nav{
+    color: white;
+    position: relative;
+    right: 6px;
+    text-align: right;
+    top: -17px;
+}
+
+#right_nav a:link, a:visited, a:active, a:hover {
+    background: transparent;
+    font: bold 12px Arial,sans-serif;
+    color: white;
+    text-decoration: none;
+    
+}
+
+last {
+    background: #cdcdcd;
+    width: 30px;
+    height: 15px;
+}

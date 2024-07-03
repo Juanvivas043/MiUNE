@@ -1,0 +1,26 @@
+.TablaInfo{
+	margin: 2% auto;
+}
+.TablaEstudiante{
+	border : 1px solid #000;
+	border-radius: 2%;
+	margin: -1% auto;
+	width: 30%;
+}
+.TablaEstudiante tr td div
+.TablaEstudiante tr td
+.TablaEstudiante tr
+{
+	text-align: center;	
+}
+div td tr.TablaEstudiante{
+	text-align: right;
+}
+.btn-aceptar{
+	position: relative;
+	margin: -18% auto;
+}
+.ret{
+	background-color:#B01A1A;
+	opacity:0.8;
+}

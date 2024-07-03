@@ -1,0 +1,626 @@
+<script src= <?php echo "'". $this->baseUrl() ."/js/jquery-2.1.1.min.js'"?>  type='text/javascript'> </script>
+<script src= <?php echo "'". $this->baseUrl() ."/js/jquery-ui.min.js'"?>  type='text/javascript'> </script>
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/mododios.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+<section class="sec-1 float-1">
+	<h3>Interruptores</h3>
+	<div id="interruptores">
+		<div>
+			<div class="row-inter first">
+				<div class="col-inter title">
+					<h1>M&oacute;dulo de Reinscripciones MiUNE Acad&eacute;mico</h1>
+				</div>
+			</div>
+			<div class="row-inter" title="Al encenderlo, los estudiantes pueden ver el modulo de reinscripciones">
+				<div class="col-inter content">
+					<div class="interruptor" id="reinscripciones">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input0" data-acceso="573">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label class="label">Estudiantes</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, los directores de escuela pueden acceder al modulo de reinscripciones">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input1" data-acceso="460">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">Directores</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara reinscripcion por caso especial">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input5" data-acceso="18">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">Caso Especial</label>
+			</div>
+		</div>
+		<div>
+			<div class="row-inter first">
+				<div class="col-inter title">
+					<h1>M&oacute;dulo de Pagos MiUNE 2.0</h1>
+				</div>
+			</div>
+			<div class="row-inter" title="Al encenderlo, los estudiantes pueden pagar la reinscripcion">
+				<div class="col-inter content">
+					<div class="interruptor" id="reinscripcionescuotas">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input3" data-acceso="913">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">Reinscripcion</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, los estudiantes pueden pagar cuotas">
+				<div class="col-inter content">
+					<div class="interruptor" id="cuotas">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input2" data-acceso="819">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">Cuotas</label>
+			</div>
+		</div>
+		<div>
+			<div class="row-inter first">
+				<div class="col-inter title">
+					<h1>M&oacute;dulo de Reinscripciones MiUNE 2.0</h1>
+				</div>
+			</div>
+			<div class="row-inter" title="Al encenderlo, los estudiantes pueden reinscribirse en MiUNE2.0">
+				<div class="col-inter content">
+					<div class="interruptor" id="reinscripciones2">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input4" data-acceso="940">
+							<!-- 935 es el papa, al ocultarlo tambien se oculta el hijo para estudiantes-->
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">Estudiantes</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, los directores de escuela pueden acceder al modulo de reinscripciones">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input6" data-acceso="936">
+							<!-- 937 es el papa, al ocultarlo tambien se oculta el hijo para directores de escuela-->
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">Directores</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara reinscripcion por caso especial">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input7" data-acceso="937">
+							<!-- 936 es el papa, al ocultarlo tambien se oculta el hijo para caso especial-->
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">Caso Especial</label>
+			</div>
+		</div>
+		<!-- Nuevo 1 -->
+		<div>
+			<div class="row-inter first">
+				<div class="col-inter title">
+					<h1>M&oacute;dulo de Encuesta de Profesores (Estudiantes y profesores)</h1>
+				</div>
+			</div>
+			<div class="row-inter" title="Al encenderlo, los estudiantes pueden ver el modulo de encuesta.">
+				<div class="col-inter content">
+					<div class="interruptor" id="reinscripciones2">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input8" data-acceso="964">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<!-- Le quite el for="input4"  con su numero a cada nombre -->
+				<label class="label">Estudiantes</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, los estudiantes pueden ver el modulo de evaluacion docente.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input9" data-acceso="967">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">Estudiantes</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de autoevaluacion de los docentes.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input10" data-acceso="966">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">Docentes</label>
+			</div>
+		</div>
+		<div>
+			<div class="col-inter title">
+				<h1>M&oacute;dulo de Encuesta de Profesores (Resultados del Profesor)</h1>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de resultados personales al profesor.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input11" data-acceso="986">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">Docentes</label>
+			</div>
+		</div>
+		<div>
+			<div class="col-inter title">
+				<h1>M&oacute;dulo de Encuesta de Profesores (Encuesta de Directores y Coordinadores de escuela)</h1>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de encuesta al director de Administracion.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input12" data-acceso="968">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">D.Administracion</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de encuesta al director de Computacion.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input13" data-acceso="969">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">D.Computacion</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de encuesta al director de Diseño.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input14" data-acceso="970">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label class="label">D.Diseño</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de encuesta al director de Turismo.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input15" data-acceso="971">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">D.Turismo</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de encuesta al director de Civil.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input16" data-acceso="972">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label class="label">D.Civil</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de encuesta al director de Electronica.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input17" data-acceso="973">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">D.Electronica</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de encuesta al coordinador de la sede Los Naranjos">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input18" data-acceso="982">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">C.Naranjos</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de encuesta al coordinador de la sede Centro.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input19" data-acceso="983">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label class="label">C.Centro</label>
+			</div>
+		</div>
+		<div>
+			<div class="col-inter title">
+				<h1>M&oacute;dulo de Encuesta de Profesores (Evaluacion de Directores y Coordinadores de escuela)</h1>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de evaluacion docente al director de Administracion.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input20" data-acceso="974">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label class="label">D.Administracion</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de evaluacion docente al director de Computacion.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input21" data-acceso="975">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">D.Computacion</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de evaluacion docente al director de Diseño.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input22" data-acceso="976">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">D.Diseño</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de evaluacion docente al director de Turismo.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input23" data-acceso="977">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">D.Turismo</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de evaluacion docente al director de Civil.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input24" data-acceso="978">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">D.Civil</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de evaluacion docente al director de Electronica.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input25" data-acceso="979">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">D.Electronica</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de evaluacion docente al coordinador de la sede Los Naranjos">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input26" data-acceso="984">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">C.Naranjos</label>
+			</div>
+			<div class="row-inter" title="Al encenderlo, se activara el modulo de evaluacion docente al coordinador de la sede Centro.">
+				<div class="col-inter content">
+					<div class="interruptor" id="direccion">
+						<div class="carry">
+							<input type="checkbox" class="input" id="input27" data-acceso="985">
+							<div class="switch off"></div>
+						</div>
+					</div>
+				</div>
+				<label  class="label">C.Centro</label>
+			</div>
+		</div>
+		<!--<div class="complete-row">
+			<div class="row-inter first">
+				<div class="col-inter title">
+					<h1>Reset de contraseñas</h1> 
+				</div>
+			</div>
+			<div title="Al usar el botón, se reestablecen las contraseñas">
+			<button id="rst" type="button" class="materialbutton">RESET</button>
+			</div>
+		</div>-->
+		<div class="complete-row">
+			<div class="row-inter first">
+				<div class="col-inter title">
+					<h1>Creación de Período</h1> 
+				</div>
+			</div>
+			<div style="width:500px">
+				<table id="tablaperiodos" class="periodotabla">
+					<tr>
+						<input class="fechas" value="1" min="1" max="20" name="limit" id="limite" type="number">
+						<button id="listar" type="button" class="materialbutton">LISTAR</button>
+						<button id="agregar" type="button" class="materialbutton">AGREGAR</button>
+						<button id="modificar" type="button" class="materialbutton">MODIFICAR</button>
+					</tr>
+					<tr>
+						<th class="periodotabla">Periodo</th>
+						<th class="periodotabla">Fecha inicio</th>
+						<th class="periodotabla">Fecha fin</th>
+						<th class="periodotabla">Fecha corte</th>
+						<th class="periodotabla">Inicio clases</th>
+					</tr>
+					<tr>
+						<td class="periodotabla"></td>
+						<td class="periodotabla"></td>
+						<td class="periodotabla"></td>
+						<td class="periodotabla"></td>
+						<td class="periodotabla"></td>
+					</tr>
+				</table>
+				<div id="dialogoagregar" style="display:none">
+					<h1>Agregar periodo</h1>
+					<label class="fechalabel">Inicio Periodo</label>
+					<input type="button" class="fechas" id="fechainicio"></input>
+					<br>
+					<label class="fechalabel">Final Periodo</label>
+					<input type="button" class="fechas" id="fechafin"></input>
+					<br>
+					<label class="fechalabel">Fecha de Corte</label>
+					<input type="button" class="fechas" id="fechacorte"></input>
+					<br>
+					<labelclass="fechalabel" >Inicio de Clases</label>
+					<input type="button" class="fechas" id="fechaclases"></input>
+				</div>
+				<div id="dialogomodificar" style="display:none">
+					<h1>Modificar per&iacute;odo <?php echo $this->escape($this->ultimoperiodo); ?></h1>
+					<label class="fechalabel">Inicio Periodo</label>
+					<input type="button" class="fechas" id="fechainicio2"></input>
+					<br>
+					<label class="fechalabel">Final Periodo</label>
+					<input type="button" class="fechas" id="fechafin2"></input>
+					<br>
+					<label class="fechalabel">Fecha de Corte</label>
+					<input type="button" class="fechas" id="fechacorte2"></input>
+					<br>
+					<labelclass="fechalabel" >Inicio de Clases</label>
+					<input type="button" class="fechas" id="fechaclases2"></input>
+				</div>
+			</div>
+		</div>
+</section>
+<section  class="float-2">
+	<table border="0" cellpadding="0" cellspacing="0" style="padding: 0px 0px 0px 10px; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <div id="tableData">&nbsp;</div>
+        </td>
+    </tr>
+</table>
+</section>
+
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+
+<?php
+    echo $this->SwapBytes_Jquery->getloading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+?>
+
+	var input = [
+    { id0: 'input0', pkacceso0: $("#input0").data("acceso") },
+    { id1: 'input1', pkacceso1: $("#input1").data("acceso") },
+    { id2: 'input2', pkacceso2: $("#input2").data("acceso") },
+    { id3: 'input3', pkacceso3: $("#input3").data("acceso") },
+    { id4: 'input4', pkacceso4: $("#input4").data("acceso") },
+    { id5: 'input5', pkacceso5: $("#input5").data("acceso") },
+    { id6: 'input6', pkacceso6: $("#input6").data("acceso") },
+    { id7: 'input7', pkacceso7: $("#input7").data("acceso") },
+    { id8: 'input8', pkacceso8: $("#input8").data("acceso") },
+    { id9: 'input9', pkacceso9: $("#input9").data("acceso") },
+    { id10: 'input10', pkacceso10: $("#input10").data("acceso") },
+    { id11: 'input11', pkacceso11: $("#input11").data("acceso") },
+    { id12: 'input12', pkacceso12: $("#input12").data("acceso") },
+    { id13: 'input13', pkacceso13: $("#input13").data("acceso") },
+    { id14: 'input14', pkacceso14: $("#input14").data("acceso") },
+    { id15: 'input15', pkacceso15: $("#input15").data("acceso") },
+    { id16: 'input16', pkacceso16: $("#input16").data("acceso") },
+    { id17: 'input17', pkacceso17: $("#input17").data("acceso") },
+    { id18: 'input18', pkacceso18: $("#input18").data("acceso") },
+    { id19: 'input19', pkacceso19: $("#input19").data("acceso") },
+    { id20: 'input20', pkacceso20: $("#input20").data("acceso") },
+    { id21: 'input21', pkacceso21: $("#input21").data("acceso") },
+    { id22: 'input22', pkacceso22: $("#input22").data("acceso") },
+    { id23: 'input23', pkacceso23: $("#input23").data("acceso") },
+    { id24: 'input24', pkacceso24: $("#input24").data("acceso") },
+    { id25: 'input25', pkacceso25: $("#input25").data("acceso") },
+    { id26: 'input26', pkacceso26: $("#input26").data("acceso") },
+    { id27: 'input27', pkacceso27: $("#input27").data("acceso") }];
+
+	$.getJSON(urlAjax+"setclassswitcher", 
+		{inputs: input}, function(data){
+			executeCmdsFromJSON(data);
+	});
+
+	$(".switch").on("click", function(event){
+
+		var obj 	= $(event.target);
+			parent	= obj.parent().parent().parent().parent().parent(),
+			text 	= parent.find('h1').text();
+			text2 	=  obj.parent().parent().parent().parent().find('label').text();
+
+
+			console.log(parent);
+		$.getJSON(urlAjax+"switcher", {
+			id: $(this).attr("id"), 
+			acceso: $(this).siblings("input").data("acceso")
+		}, function(data){
+			executeCmdsFromJSON(data);
+		});
+
+		if($(this).siblings("input").is(":checked")){
+			$(this).siblings(".input").prop("checked", false);
+			$(this).parent(".carry").css({background:"grey"});
+			//alert("Módulo Desactivado");
+			//swal('Desactivado!','Se ha Desactivado el ' + text,'warning');
+			swal('Desactivado!','Se ha Desactivado el ' + text + '('+text2+')','warning');
+		}else{
+			
+			$(this).siblings(".input").prop("checked", true);
+			$(this).parent(".carry").css({background:"#2F7D62"});
+			//alert("Módulo Activado");
+			//swal('Activado!','Se ha Activado el ' + text,'success');
+			swal('Activado!','Se ha Activado el ' + text + '('+text2+')','success');
+		}
+	});
+	//boton del reset de las contraseñas
+	$("#rst").click(function(){
+		$.getJSON(urlAjax+"reset",function(respuesta){
+			executeCmdsFromJSON(respuesta)
+		});
+		//alert("Contraseñas reestablecidas");
+	});
+	$("#listar").click(function(){
+		$.getJSON(urlAjax+"listar/limit/"+$("#limite").val(),function(respuesta){
+			executeCmdsFromJSON(respuesta)
+		});
+	});
+	$("#agregar").click(function(){
+		$("#dialogoagregar").dialog({
+			modal:true,
+			position:['center'],
+			resizable:false,
+			buttons:{
+				Guardar:function(){
+
+					var fechainicio = $('#fechainicio').val();
+					var fechafin    = $('#fechafin').val();
+					var fechacorte  = $('#fechacorte').val();
+					var fechaclases = $('#fechaclases').val();
+
+					$.getJSON(urlAjax+"agregar",
+						{
+							fechainicio : fechainicio,
+							fechafin    : fechafin,
+							fechacorte  : fechacorte,
+							fechaclases : fechaclases
+						},
+						function(respuesta){
+							executeCmdsFromJSON(respuesta)
+					});
+					$(this).dialog("close");
+				},
+				Cancelar:function(){
+					$(this).dialog("close");
+				}
+			}	
+		});
+	});
+	$("#modificar").click(function(){
+		$("#dialogomodificar").dialog({
+			modal:true,
+			position:['center'],
+			resizable:false,
+			buttons:{
+				Guardar:function(){
+
+					var fechainicio = $('#fechainicio2').val();
+					var fechafin    = $('#fechafin2').val();
+					var fechacorte  = $('#fechacorte2').val();
+					var fechaclases = $('#fechaclases2').val();
+
+					$.getJSON(urlAjax+"modificar",
+						{
+							fechainicio : fechainicio,
+							fechafin    : fechafin,
+							fechacorte  : fechacorte,
+							fechaclases : fechaclases
+						},
+						function(respuesta){
+							executeCmdsFromJSON(respuesta)
+					});
+					$(this).dialog("close");
+				},
+				Cancelar:function(){
+					$(this).dialog("close");
+				}
+			}	
+		});
+	});
+
+	$(function(){
+		$("#fechainicio").datepicker();
+	});
+	$(function(){
+		$("#fechafin").datepicker();
+	});
+	$(function(){
+		$("#fechacorte").datepicker();
+	});
+	$(function(){
+		$("#fechaclases").datepicker();
+	});
+	$(function(){
+		$("#fechainicio2").datepicker();
+	});
+	$(function(){
+		$("#fechafin2").datepicker();
+	});
+	$(function(){
+		$("#fechacorte2").datepicker();
+	});
+	$(function(){
+		$("#fechaclases2").datepicker();
+	});
+	
+});
+</script>

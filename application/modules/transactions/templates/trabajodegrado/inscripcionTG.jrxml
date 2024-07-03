@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="anteproyectoTG" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f4dc2fbd-d0e3-4e93-b820-7cf70e9a3a1e">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="417"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#FEFEFE"/>
+			<bottomPen lineWidth="0.5" lineColor="#FEFEFE"/>
+		</box>
+	</style>
+	<subDataset name="estudiantes" uuid="04881f57-01d9-4e5f-9fc7-f356cd334832">
+		<parameter name="id" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select distinct u.pk_usuario as cedula,
+        (u.nombre ||' '||u.apellido) as nombre,
+        u.telefono_movil as telefono,
+        u.correo,
+        ve.escuela,
+        (select distinct i_sub.fk_periodo
+        from tbl_inscripciones          i_sub
+        join tbl_usuariosgrupos         ug_sub      on       ug_sub.pk_usuariogrupo = i_sub.fk_usuariogrupo
+        where ug_sub.fk_usuario = u.pk_usuario
+        order by 1 desc limit 1) as periodo
+from tbl_datostesis		dt
+join tbl_autorestesis		at	on	at.fk_datotesis		=	dt.pk_datotesis	and at.renuncia = false
+join tbl_usuariosgrupos		ug	on	ug.pk_usuariogrupo	=	at.fk_usuariogrupo
+join tbl_usuarios		u	on	u.pk_usuario		=	ug.fk_usuario
+join tbl_inscripciones		i	on	i.fk_usuariogrupo	=	ug.pk_usuariogrupo
+join vw_escuelas		ve	on	ve.pk_atributo		=	i.fk_atributo
+join tbl_recordsacademicos	ra	on	ra.fk_inscripcion = i.pk_inscripcion
+join tbl_asignaturas		a	on	a.pk_asignatura = ra.fk_asignatura
+join vw_materias		vma	on	vma.pk_atributo = a.fk_materia
+where pk_datotesis = $P{id}::integer
+and vma.pk_atributo in (
+519, --diseño de tesis
+9719, --seminario
+10621 --innvestigacion y desarrollo
+)
+group by 1,2,3,4,5]]>
+		</queryString>
+		<field name="cedula" class="java.lang.Long"/>
+		<field name="nombre" class="java.lang.String"/>
+		<field name="telefono" class="java.lang.String"/>
+		<field name="correo" class="java.lang.String"/>
+		<field name="escuela" class="java.lang.String"/>
+		<field name="periodo" class="java.lang.Long"/>
+	</subDataset>
+	<subDataset name="evaluadores" uuid="8deb57c5-734e-42af-aeb0-d869ea5d68d4">
+		<parameter name="mod" class="java.lang.String"/>
+		<parameter name="id" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select rank()OVER(order by u.pk_usuario desc),(u.apellido ||' '||u.nombre) as evaluador
+from tbl_datostesis		dt
+join tbl_evaluadorestesis	et	on	et.fk_datotesis = dt.pk_datotesis
+join tbl_usuariosgrupos		ug	on	ug.pk_usuariogrupo = et.fk_usuariogrupo
+join tbl_usuarios		u	on	u.pk_usuario = ug.fk_usuario
+where dt.pk_datotesis = $P{id}::integer
+and et.fk_tipo in(
+	select distinct a.pk_atributo
+	from tbl_atributos	a
+	join tbl_atributostipos	at	on	at.pk_atributotipo = a.fk_atributotipo
+	where at.nombre ilike '%Tipo Evaluador%'
+	and a.valor ilike '%Principal%'
+)]]>
+		</queryString>
+		<field name="rank" class="java.lang.Long"/>
+		<field name="evaluador" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="mod" class="java.lang.String"/>
+	<parameter name="id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select distinct dt.titulo,
+	atri_l.valor as linea,
+	atri_t.valor as tema,
+	( case
+		when (u.nombre || ' '||u.apellido) is not null then (u.nombre || ' '||u.apellido)
+		else 'Ninguno'
+	  end) as tutor,
+	u.telefono_movil, u.correo,
+	(select distinct e_sub.nombre
+	from tbl_tesis		te_sub
+	join tbl_estructuras	e_sub	on	e_sub.pk_estructura = te_sub.fk_Sede
+	where te_sub.fk_Sede = te.fk_Sede) as nombre,
+	(case when (tt.observaciones <>'') then pt.observaciones else 'Ninguno' end) as observaciones,
+	current_date as date,
+	(case when df.fecha is not null then df.fecha else 'Ninguno'end) as fecha_defensa,
+	(case when h.horainicio::text is not null then h.horainicio::text else 'Ninguno'end) as hora_defensa,
+	(case when e1.nombre is not null then e1.nombre else 'Ninguno'end) as aula,
+	(case when e2.nombre is not null then e2.nombre else 'Ninguno'end) as edificio
+from tbl_datostesis	dt
+full outer join tbl_tutorestesis	tt	on	tt.fk_datotesis		=	dt.pk_datotesis		and tt.renuncia = false
+full outer join tbl_autorestesis	at	on	at.fk_datotesis		=	at.fk_datotesis		and at.renuncia = false
+full outer join tbl_usuariosgrupos	ug	on	ug.pk_usuariogrupo	=	tt.fk_usuariogrupo
+full outer join tbl_usuarios		u	on	u.pk_usuario		=	ug.fk_usuario
+full outer join tbl_pasostesis		pt	on	pt.fk_datotesis		=	dt.pk_datotesis
+join tbl_tesis				te	on	te.fk_datotesis		=	dt.pk_datotesis
+join  vw_sedes				vse	on	vse.pk_estructura	=	te.fk_sede
+full outer join tbl_defensastesis	df	on	df.fk_datotesis		=	dt.pk_datotesis
+full outer join tbl_horarios		h	on	h.pk_horario		=	df.fk_horario
+full outer join tbl_estructuras		e1	on	e1.pk_estructura	=	df.fk_estructura
+full outer join tbl_estructuras		e2	on	e2.pk_estructura	=	e1.fk_estructura
+full outer join tbl_lineastemastesis	ltt	on	ltt.pk_lineatematesis	=	dt.fk_lineatematesis
+full outer join tbl_atributos		atri_l	on	atri_l.pk_atributo	=	ltt.fk_lineainvestigacion
+full outer join tbl_atributos		atri_t	on	atri_t.pk_atributo	=	ltt.fk_tema
+where dt.pk_datotesis = $P{id}::integer]]>
+	</queryString>
+	<field name="titulo" class="java.lang.String"/>
+	<field name="linea" class="java.lang.String"/>
+	<field name="tema" class="java.lang.String"/>
+	<field name="tutor" class="java.lang.String"/>
+	<field name="telefono_movil" class="java.lang.String"/>
+	<field name="correo" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="observaciones" class="java.lang.String"/>
+	<field name="date" class="java.sql.Date"/>
+	<field name="fecha_defensa" class="java.lang.String"/>
+	<field name="hora_defensa" class="java.lang.String"/>
+	<field name="aula" class="java.lang.String"/>
+	<field name="edificio" class="java.lang.String"/>
+	<summary>
+		<band height="747" splitType="Stretch">
+			<textField>
+				<reportElement uuid="5b1ccaa3-62e0-40e1-bd91-c54418b0d11b" x="0" y="52" width="572" height="39"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{mod}=='1'?"Trabajo de Grado Fase Inicial":
+($P{mod}=='2')?"Trabajo de Grado Fase Intermedia":
+"Trabajo de Grado Fase Final"]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement uuid="5b7c6e63-c004-4c30-8f7f-8264871dd349" key="table" style="table" x="31" y="251" width="514" height="52"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="estudiantes" uuid="de0b7708-cda6-45b0-a550-1a9e932612c2">
+						<datasetParameter name="id">
+							<datasetParameterExpression><![CDATA[$P{id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="514" uuid="252db7f9-a440-4a54-9413-3b3576ba2eb6">
+						<jr:detailCell style="table_TD" height="100" rowSpan="1">
+							<textField>
+								<reportElement uuid="6e91f9f5-40dc-4d92-b2d5-2b1bec47f9a5" x="0" y="0" width="514" height="13"/>
+								<textElement markup="html"/>
+								<textFieldExpression><![CDATA["<b>Cedula de Identidad: </b>" + $F{cedula}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement uuid="566550b8-2b61-4ac8-89b2-a741ca6a55e7" x="0" y="13" width="514" height="15"/>
+								<textElement markup="html"/>
+								<textFieldExpression><![CDATA["<b>Estudiante:</b> "+$F{nombre}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement uuid="9182d7e2-571e-4ac3-855e-e37fa7466ac0" x="0" y="28" width="514" height="16"/>
+								<textElement markup="html"/>
+								<textFieldExpression><![CDATA["<b>Telefono:</b> "+ $F{telefono}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement uuid="4f569568-5458-4b2f-878a-253f4fb1d948" x="0" y="44" width="514" height="14"/>
+								<textElement markup="html"/>
+								<textFieldExpression><![CDATA["<b>Correo:</b> "+$F{correo}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement uuid="7ef197c4-d18c-4732-ac9b-2d9eedb19e55" x="0" y="58" width="514" height="14"/>
+								<textElement markup="html"/>
+								<textFieldExpression><![CDATA["<b>Escuela: </b>"+$F{escuela}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement uuid="541eb9fb-b473-4b3b-8a49-ace7a043bf6d" x="0" y="72" width="514" height="15"/>
+								<textElement markup="html"/>
+								<textFieldExpression><![CDATA["<b>Periodo inscripcion anteproyecto: </b>"+$F{periodo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<textField>
+				<reportElement uuid="60377faa-ae17-45b1-8f78-da0c7884cd1f" x="336" y="91" width="209" height="20"/>
+				<textElement textAlignment="Right" markup="html"/>
+				<textFieldExpression><![CDATA["<b>Sede:</b> " + $F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="19cb915f-802f-41ab-8a7b-952b4a8e436e" x="31" y="111" width="514" height="129"/>
+				<textElement markup="html">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>Linea: </b>" + $F{linea} +
+"<br>" +
+"<b>Tema: </b>" + $F{tema} +
+"<br>" +
+"<b>Titulo: </b>" + $F{titulo} +
+"<br><br>" +
+"<b>Tutor Propuesto: </b>" +$F{tutor} +
+"<br>" +
+"<b>Telefono: </b>" +$F{telefono_movil} +
+"<br>" +
+"<b>Correo: </b>" +$F{correo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f58a7383-2deb-435c-8e00-c322054b84fc" x="31" y="623" width="514" height="124"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA["<b>Observaciones: </b> ____________________________________________________________________" +
+"<br>" +
+"__________________________________________________________________________________" +
+"<br>" +
+"<b>Firma 1:</b> __________________________________" +
+"<br>" +
+"<b>Firma 2:</b> __________________________________" +
+"<br>" +
+"<b>Recibido por:</b> ________________________" +  "<b> Firma:</b> ________________________" + " <b> Fecha:</b> " + $F{date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a7e74d37-263f-418c-a716-efd6aa1683d9" x="31" y="445" width="514" height="98"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$P{mod}=='1'?"<b>Documentos entregados (solo llenado por CTG): </b>" +"<br>" +"___    Carta de autorizacion del tutor" + "<br>" +"___    Curriculo Vitae del tutor (Solo para tutor externo)" +"<br>"+"___    Copia Titulo del tutor (Si aplica)"+"<br>"+"___    Carta de autorizacion de la empresa (Si aplica)":
+($P{mod}=='2')?"<b>Documentos entregados (solo llenado por CTG): </b>" +"<br>" +"___    Carta de autorizacion del tutor" + "<br>" +"___    Curriculo Vitae del tutor (Solo para tutor externo)" +"<br>"+"___    Copia Titulo del tutor (Si aplica)"+"<br>"+"___    Carta de autorizacion de la empresa (Si aplica)":
+"<b>Documentos entregados (solo llenado por CTG): </b>" + "<br>"+"___    Autorizacion del tutor para defensa" +"<br>"+"___    Comprobante de inscripcion (fase final) del trabajo de grado" +"<br>"+"___    Dos(2) ejemplares del Trabajo de Grado (encuadernacion sencilla)" + "<br>"+"___    Ultimo tomo corregido"+ "<br>"+"___    Carta de autorizacion de la empresa (si aplica)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="278e2314-6672-4e4c-980d-ca5b5c9bb355" x="321" y="554" width="224" height="69"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$P{mod}=='3'?
+"<b>Fecha defensa:</b> " + $F{fecha_defensa} +
+"<br>" +
+"<b>Hora:</b> "+ $F{hora_defensa} +
+"<br>" +
+"<b>Aula:</b> " +$F{aula}+
+"<br>" +
+"<b>Edificio:</b> " +$F{edificio}:""]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement uuid="240126a5-9261-4a2c-a459-0b3726abfc97" key="table 1" style="table 1" x="31" y="554" width="280" height="69"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="evaluadores" uuid="37d03ae8-146c-4c10-9dfd-4dd74a1a9d35">
+						<datasetParameter name="mod">
+							<datasetParameterExpression><![CDATA[$P{mod}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="id">
+							<datasetParameterExpression><![CDATA[$P{id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="285" uuid="c79465c6-6a9f-471a-bb7a-c8899f66fe43">
+						<jr:detailCell style="table 1_TD" height="21" rowSpan="1">
+							<textField>
+								<reportElement uuid="b1dcabc9-aeb9-42d6-9cad-270ee0d56787" x="0" y="0" width="284" height="21"/>
+								<textElement markup="html"/>
+								<textFieldExpression><![CDATA[$P{mod}=='3'?"<b>Evaluador "+$F{rank} +":</b> "+ $F{evaluador} +"<br>":""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<image>
+				<reportElement uuid="d595d32a-804f-4910-bfaa-effe0d3eea92" x="0" y="0" width="110" height="52"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,82 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.hotkeys-0.7.9.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/js/themes/ui-lightness/jquery-ui-1.7.2.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<div align="center">
+	<table width="520" cellpadding="0" border="0" align="center">
+		<tr>
+			<td colspan="3" style="text-align:left">Recuerde que el cambiar la C.I. del estudiante, tambi&eacute;n cambiara o reinicia la Clave de inicio de sesión, por lo que ambas ser&aacute;n iguales.</td>
+		</tr>
+		<tr>
+			<td width="250" style="font-weight:bolder;text-align:right">C.I. del Alumno:</td>
+			<td width="130" style="font-weight:bolder;text-align:left"><input autocomplete="off" type="text" id="txtCI" size="14" maxlength="8" /></td>
+			<td width="140" style="font-weight:bolder;text-align:left">
+				<input type="submit" id="btnBuscar" value="Buscar" style="width:80px"/>
+			</td>
+		</tr>
+		<tr>
+			<td style="font-weight:bolder;text-align:right">Nombre:</td>
+			<td colspan="2" style="text-align:left"><div id="lblNombre">&nbsp;</div></td>
+		</tr>
+		<tr>
+			<td style="font-weight:bolder;text-align:right">Apellido:</td>
+			<td colspan="2" style="text-align:left"><div id="lblApellido">&nbsp;</div></td>
+		</tr>
+		<tr>
+			<td style="font-weight:bolder;text-align:right">Fecha de Nacimiento:</td>
+			<td colspan="2" style="text-align:left"><div id="lblFechaNacimiento">&nbsp;</div></td>
+		</tr>
+		<tr>
+			<td style="font-weight:bolder;text-align:right">Correo:</td>
+			<td colspan="2" style="text-align:left"><div id="lblCorreo">&nbsp;</div></td>
+		</tr>
+		<tr>
+			<td style="font-weight:bolder;text-align:right">Ultimo Periodo Articulado:</td>
+			<td colspan="2" style="text-align:left"><div id="lblUltimoP">&nbsp;</div></td>
+		</tr>
+		<tr>
+			<td style="font-weight:bolder;text-align:right">Cantidad de Periodos Articulados:</td>
+			<td colspan="2" style="text-align:left"><div id="lblCantidadP">&nbsp;</div></td>
+		</tr>
+		<tr>
+			<!-- <td style="font-weight:bolder;text-align:right">Nueva C.I. del Alumno:</td> -->
+			<!-- <td style="text-align:left"> -->
+			<!-- 	<input autocomplete="off" type="text" id="txtNewCI" size="14" maxlength="8" disabled/> -->
+			<!-- </td> -->
+			<td style="font-weight:bolder;text-align:left">
+				<input type="submit" id="btnCambiar" value="Cambiar" disabled style="width:80px"/>
+			</td>
+<!-- 			<td style="font-weight:bolder;text-align:left">
+				<input type="submit" id="btnEliminar" value="Eliminar" disabled style="width:80px"/>
+			</td> -->
+		</tr>
+		<tr>
+			<td colspan="3"><div id="lblMessage" class='alert' style="display: none;">&nbsp;</div></td>
+		</tr>
+	</table>
+</div>
+<script type='text/javascript'>
+    $(document).ready(function(){
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+
+    $function = $this->SwapBytes_Jquery->getJSON('buscar', null, array('ci' => $this->SwapBytes_Jquery->getVal('txtCI')));
+    echo $this->SwapBytes_Jquery->setClick('btnBuscar', $function);
+
+    $function = $this->SwapBytes_Jquery->getJSON('cambiar', null, array('oldci' => $this->SwapBytes_Jquery->getVal('txtCI'), 'newci' => $this->SwapBytes_Jquery->getVal('txtNewCI')));
+    echo $this->SwapBytes_Jquery->setClick('btnCambiar', $function);
+
+    $function = $this->SwapBytes_Jquery->getJSON('eliminar', null, array('oldci' => $this->SwapBytes_Jquery->getVal('txtCI'), 'newci' => $this->SwapBytes_Jquery->getVal('txtNewCI')));
+    echo $this->SwapBytes_Jquery->setClick('btnEliminar', $function);
+?>
+	});
+</script>

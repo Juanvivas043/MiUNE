@@ -1,0 +1,143 @@
+<!--
+Creado por:
+    Ricardo Martos
+    Octubre 2015
+
+-->
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td>
+            <div align="center" id="tipofiltro" style="margin-bottom: 20px;">
+                <h2>Tipo</h2>
+                <select id="customfilterselect" name="selTipo">   <!-- Se agrega el filtro de tipo de listado -->
+                    <option value="11">Escoja su opcion</option>
+                    <option value="20096">Con materias reprobadas</option>
+                    <option value="20097">Inscritos por escuela</option>
+                    <option value="20098">Inscritos por periodo</option>
+                    <option value="20099">Nuevo Ingreso</option>
+                    <option value="20100">Nuevo Ingreso no reinscritos</option>
+                    <option value="20101">Por semestre de ubicacion</option>
+                    <option value="20102">Rango de UC aprobadas</option>
+                    <option value="20103">Repitientes</option>
+                    <option value="20104">Sin servicio comunitario con UCA</option>
+                    <option value="20105">Curso simultaneo</option>
+                </select>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" colspan="2">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="tblEstudiantes" align="center"></div>
+        </td>
+    </tr>
+</table>
+<script type='text/javascript'>
+$(document).ready(function(){
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+    echo $this->filters->getJavaScript('tblEstudiantes', "$('#btnDescargar').attr('disabled', true);$('#rdbFormatXLS').attr('disabled', true);$('#rdbFormatPDF').attr('disabled', true);");
+    $function = "window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize();";
+    echo $this->SwapBytes_Jquery->setClick('btnDescargar', $function);
+
+?>
+    $('#btnList').unbind('click'); //se desactiva la funcion de la accion click en el boton list de enviar el json.
+    $('#btnList').click(function(){
+        
+        $.getJSON(urlAjax + "list/buscar/"+encodeURIComponent($('#txtBuscar').val())+"/filters/"+escape($('select, :input').serialize())+"", function(d){executeCmdsFromJSON(d)}); //se crea el nuevo json
+
+    });
+  
+    $("#tblFiltros").attr('width','30%'); //achica el ancho del table para que los filtros tengan uniformidad
+
+    //NOMBRE DEL FILTRO
+    $("#nombres").append( "<td id='uca1name' align='center' style='font-weight:bolder; padding: 5px;'>UCA Aprobadas</td>" );
+    //FILTRO
+    $("#selects").append( "<td id='uca1value' width='200' align='center'><label style='font-weight:bolder; font-size: 12px; '>Entre </label><input name='selUCA' id='selUCA' size='3' maxlength='3' value='88'><label style='font-weight:bolder; font-size: 12px;'>y </label><input name='selUCAT' id='selUCAT' size='3' maxlength='3' value='175'></td>" );
+    //NOMBRE DEL FILTRO
+    $("#nombres").append( "<td id='uca2name' align='center' style='font-weight:bolder;'>UCA Aprobadas</td>" );
+    //FILTRO
+    $("#selects").append( "<td id='uca2value' width='200' align='center'><label style='font-weight:bolder; font-size: 15px;'>>=</label><input name='selUCA' id='selUCA' size='3' maxlength='3' value='88'></td>" );
+    
+    
+
+    //SE OCULTAN LOS DEMAS FILTROS
+    $("tr#selects > td").hide();
+    $("tr#nombres > td").hide();
+    $("#customfilterselect").show();
+    $("#customfiltername").show();
+
+
+    $( "#customfilterselect, #selects" ).change(function() {
+        var value = $('#customfilterselect').val();
+        switch (value){
+        case '11':          //tipo
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername").show();
+        break;
+        case '20096':       //con materias reprobadas
+            
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername, #periodo, #tdperiodo, #sede, #tdsede, #escuela, #tdescuela, #semestre, #tdsemestre, #materia, #tdmateria, #pensum, #tdpensum").show();
+            $("#selEscuela option[value='0']").remove();
+
+        break;              //inscritos por escuela
+        case '20097':
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername, #periodo, #tdperiodo, #sede, #tdsede, #escuela, #tdescuela, #pensum, #tdpensum").show();
+        break;
+        case '20098':       //inscritos por periodos
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername, #periodo, #tdperiodo, #sede, #tdsede").show();
+        break;
+        case '20099':       //Nuevo Ingreso
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername, #periodo, #tdperiodo, #sede, #tdsede, #escuela, #tdescuela").show();
+        break;
+        case '20100':       //Nuevo INgreso no reinscritos
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername, #periodo, #tdperiodo, #sede, #tdsede").show();
+        break;
+        case '20101':       //Por semestre de ubicacion
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername, #periodo, #tdperiodo, #sede, #tdsede, #escuela, #tdescuela, #semestre, #tdsemestre").show();
+        break;
+        case '20102':       //Rango de UCA aprobadas
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername, #periodo, #tdperiodo, #sede, #tdsede, #escuela, #tdescuela, #uca1name, #uca1value").show();
+        break;
+        case '20103':       //Repitientes
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername, #periodo, #tdperiodo, #sede, #tdsede, #escuela, #tdescuela, #semestre, #tdsemestre, #materia, #tdmateria").show();
+        break;
+        case '20104':       //Sin servicio comunitario con UCA
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername, #periodo, #tdperiodo, #sede, #tdsede, #escuela, #tdescuela, #uca2name, #uca2value").show();
+        break;
+        case '20105':       //Curso simultaneo
+            $("tr#selects > td, tr#nombres > td").hide();
+            $("#customfilterselect,#customfiltername, #periodo, #tdperiodo, #sede, #tdsede, #escuela, #tdescuela").show();
+        break;
+
+        default:
+
+        }
+
+    });
+
+});
+</script>

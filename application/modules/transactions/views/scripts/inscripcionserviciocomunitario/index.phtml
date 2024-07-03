@@ -1,0 +1,54 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<meta charset="utf-8">
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml'); ?>
+            <button type="button" name="btnDescargar" id="btnAsignar" disabled >Asignar</button>   
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr valign="top">
+        <td align="center" width="700px">
+            <div id="tblData"></div>
+        </td>
+    </tr>
+</table>
+
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $('#btnList').parent().append($('#btnAsignar'));
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblData');
+    echo $this->filters->getJavaScript('tblData', "$('#btnAsignar').attr('disabled', true);");
+    $function = "$.getJSON(urlAjax + 'asignar/filters/' + $(':input').serialize(),function(data){executeCmdsFromJSON(data)});";
+    
+    echo $this->SwapBytes_Jquery->setClick('btnAsignar', $function);
+    ?>
+         $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+         
+       
+    });
+     
+        
+    
+    
+</script>

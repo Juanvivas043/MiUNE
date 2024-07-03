@@ -1,0 +1,182 @@
+<script src= <?php echo "'". $this->baseUrl() ."/js/jquery-2.1.1.min.js'"?>  type='text/javascript'> </script>
+<script type="text/javascript">var $j = (jQuery).noConflict() </script>
+
+<?php
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/pagination.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/aviso.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/recordcalifacaciones.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<div id="aviso" hidden></div>
+<table border="0" cellpadding="0" cellspacing="0" width="830px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+	<tr>
+        <td align="center" id="cedulaEstudiante">
+	        <label for="cedula">
+	        Cedula estudiante: 
+	            <input type="text" id="cedula" name="cedula">
+	        </label>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" id="datosEstudiante" hidden>
+        <ul id="containerDatosEstudiante">
+	        <li>
+	        	<label for="cedula">
+	        	Cedula: 
+	            	<input type="text" id="datoCedula" name="cedula" disabled>
+	        	</label>
+	        </li>
+	        <li>
+	        	<label for="nombre">
+	        	Nombre: 
+	            	<input type="text" id="datoNombre" name="nombre" disabled>
+	        	</label>
+	        </li>
+	        <li>
+	        	<label for="apellido">
+	        	Apellido: 
+	            	<input type="text" id="datoApellido" name="apellido" disabled>
+	        	</label>
+	        </li>
+	    </ul>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" id="filtros" hidden>
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="tblCalificaciones"></div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <div class="text-leyenda1">
+                <button id="btnLeyenda">Leyenda</button>
+                <div id="leyenda" style="display:none">
+                    <span class="glob"></span>
+                </div>
+                <div id="leyenda1" style="display:none">
+                    <div id="text" class="left">
+                        <div>
+                            <div><strong> I.L1:</strong> Inasistencia Lapso 1</div>
+                            <div><strong> E.I1:</strong> Evaluacion Individual 1</div>
+                            <div><strong> E.G1:</strong> Evaluacion Grupal 1</div>
+                            <div><strong> P.L1:</strong> Prueba de Lapso 1</div>
+                            <div><strong> I.L2:</strong> Inasistencia Lapso 2</div>
+                            
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div>
+                            <div><strong> E.I2:</strong> Evaluacion Individual 2</div>
+                            <div><strong> E.G2:</strong> Evaluacion Grupal 2</div>
+                            <div><strong> P.L2:</strong> Prueba de Lapso 2</div>
+                            <div><strong> T.INASIST:</strong> Total de inasistencias</div>
+                            <div><strong> ACUM:</strong> Acumulado Lapso 1</div>
+                            <div><strong> C.F:</strong>  Calificacion Final</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+<script>
+    $(document).ready(function(){
+        <?php
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Crud_Form->getJavaScript();
+            echo $this->SwapBytes_Crud_Action->getJavaScript('tblCalificaciones');
+        ?>
+
+        
+    });
+</script>
+<script type="text/javascript">
+
+$j(document).ready(function(){
+
+    $j("button[name=btnList]").on("click", function(){
+        if(!$j(".text-leyenda1").is(":visible")){
+                $j(".text-leyenda1").fadeIn().css('display', 'inline-block');
+        }
+    });
+
+    $j("button[name=btnClear]").click(function(e){
+        if($j(".text-leyenda1").is(":visible")){
+                $j(".text-leyenda1").fadeOut().css('display', 'none');
+        }
+    });
+
+    $j("#cedula").on("focusout keydown", function(e){
+    	
+    	if(!$j("#datosEstudiante").is(":visible")){
+
+	    	if(e.keyCode == 13 || e.type == 'focusout'){
+	    		var cedula = $j(this).val();
+		    	$j.getJSON(urlAjax + 'getestudiante', {id:cedula}, function(datos){
+		    		executeCmdsFromJSON(datos);
+		    	});
+	    	}
+    	}
+    });
+
+    $j("#cedula").on("focus", function(){
+    	$j('#datosEstudiante, #filtros').fadeOut();
+        $j("#btnClear").trigger('click');
+    });
+
+     $("#btnLeyenda").click(function(){
+
+        if (!$("#leyenda").is(":visible")){
+            $("#leyenda").animate({ height: [ "10px", "swing" ] }, 200, "linear");
+            $("#leyenda1").animate({ height: [ "155px", "swing" ] }, 10, "linear", function(){
+                $("#leyenda1").animate({ width: [ "250px", "swing" ] }, 500, "linear");
+                });
+        }else{
+            $("#leyenda1").animate({ width: [ "0", "swing" ] }, 200, "linear");
+            $("#leyenda1").animate({ height: [ "0", "swing" ] }, 10, "linear", function(){
+                $("#leyenda").animate({ height: [ "0", "swing" ] }, 500, "linear");
+                });
+        }
+        $("#leyenda1").slideToggle()
+        $("#leyenda").slideToggle();
+        ;
+    });
+
+});
+
+</script>
+
+<style>
+	#cedula{
+		padding: 5px;
+		margin: 10px;
+		border: 0;
+		border-radius: 2px;  
+		-webkit-border-radius: 2px;  
+		-moz-border-radius: 2px;  
+		border-radius: 2px; 
+	}
+
+	#containerDatosEstudiante{
+		list-style: none;
+		margin: 15px;
+	}
+
+	#containerDatosEstudiante input{
+		padding: 2px;
+		border: 0;
+		background-color: transparent;
+		margin: 0;
+	}
+</style>

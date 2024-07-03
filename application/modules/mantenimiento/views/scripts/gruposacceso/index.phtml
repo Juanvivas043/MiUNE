@@ -1,0 +1,132 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.grupos');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+   
+<div id="gmarco">
+    
+    
+    <div id="busqueda">
+        <table id="tblbusqueda"  align="center">
+            <tr>
+                <td>
+                    <p id="grupotxt">Grupo</p>
+                </td>
+                <td>
+                    <select id="grupobox" style ="width: 300px;">
+                </td>
+                <td>
+                    <input id="botomclik" type="button" value="ver" >
+                </td>
+                
+            </tr>
+        </table> 
+    </div>
+    
+   
+    <div id ="marcos">
+     
+    <br></br>
+    
+    <div id="cuadrado">
+        
+        <table id="tblcuadrado"align="center"style="width:500px">
+            <tr>
+                <td>
+                    <p align="center"> Mis Accesos</p>
+                </td>
+                <td>   
+                </td>
+                <td>
+                    <p align="center"> Accesos </p>
+                </td>    
+            </tr>
+            
+            <tr>
+                <td>
+                    <div id="miacceso">
+                        <select multiple id="lista1" size="10"style='width:295px'>
+                             
+                        </select>   
+                    </div>
+                </td>
+                <td>
+                    <table id="tblcambio"align="center">
+                        <tr>
+                            <td>
+                                <br></br>
+                                <p id="f_dere"align="center" style="cursor:pointer">></p><br></br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p id="f_izq"align="center" style="cursor: pointer"><</p><br></br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p id="tf_dere"align="center" style ="cursor: pointer">>></p><br></br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p id="tf_izq"align="center" style="cursor: pointer"><<</p><br></br>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <div id="noacceso">
+                        <select multiple id="lista2" size="10" style='width: 295px'>
+                             
+                        </select>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+             
+    </div>
+   
+    </div>
+</div>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        <?php
+           echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+           
+        ?>              
+                
+     
+     $('#marcos').show();
+     $.getJSON(urlAjax+"grupobox/", function(data){executeCmdsFromJSON(data)})
+     
+     $('#botomclik').click(function(){
+       $.getJSON(urlAjax+"misaccesos/grupo/"+ $('#grupobox').val(), function(data){executeCmdsFromJSON(data)})
+     //  $.getJSON(urlAjax+"accesos/grupo/"+ $('#grupobox').val(), function(data){executeCmdsFromJSON(data)})
+     });
+     
+    $('#f_izq').click(function(){
+    if($('#lista2').select().change()){
+        $.getJSON(urlAjax+"agregar/value/"+$('#lista2').dblclick().val() + "/grupo/"+ $('#grupobox').val(), function(data){executeCmdsFromJSON(data)})
+        }
+    })
+    
+     $('#f_dere').click(function(){
+    if($('#lista1').select().change()){
+        $.getJSON(urlAjax+"eliminar/value/"+$('#lista1').dblclick().val() + "/grupo/"+ $('#grupobox').val(), function(data){executeCmdsFromJSON(data)})
+        }
+    })
+    
+    
+     
+    });
+    
+   
+</script>

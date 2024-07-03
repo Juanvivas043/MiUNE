@@ -1,0 +1,232 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.hotkeys.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.6.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.qtip-1.0.0-rc3.min');
+//$this->headScript()->appendFile($this->baseUrl() . '/js/transactions.reinscripciones.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.reinscripciones');
+?>
+<h2><?php echo $this->escape($this->title); echo $this->Ci; ?></h2>
+
+        <div class="line_separator">Re-inscripcion </div>
+        <input type="hidden" name="seltxtCI" id="seltxtCI" value="<?php echo $_SESSION["UID"];?>">
+
+        <center>
+            
+            <div id="infoEstudiante">hola</div>
+            
+        </center>
+
+<div id="frmMessage"></div>
+<script type='text/javascript'>
+
+        <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        ?>
+            $(document).ready(function(){
+                
+//                 $(document).bind("contextmenu",function(e){
+//
+//                    return false;
+//                 }); 
+
+                 $.getJSON(urlAjax + "estudiante", function(data){executeCmdsFromJSON(data);
+                 });
+                 $.getJSON(urlAjax + "horario", function(data){executeCmdsFromJSON(data);
+                             var agSeleccionada = '';
+                             var ags = '';
+                             $('#tblEstudiantes .clase table, #tblEstudiantesSabDom .clase table').each(function(){
+                                     if(($(this).attr('class') == 'claseinterna verde') || ($(this).attr('class') == 'claseinternarojo verde')){
+                                            agSeleccionada += $(this).find('#ag').attr('value') + ',';
+                                     }
+                             });
+
+                             ags = agSeleccionada.substring(0, agSeleccionada.length -1);   
+                             $.getJSON(urlAjax + "uc/ags/"+ags, function(data){executeCmdsFromJSON(data);});    
+                        
+                        
+                        $('#tblEstudiantes .clase table, #tblEstudiantesSabDom .clase table').each(function(){
+                                   var ag = $(this).find('#ag').attr('value');
+                                   var elemento = $(this);
+                                   $.getJSON(urlAjax + "tooltip/asignacion/"+ag, function(data){executeCmdsFromJSON(data);
+
+                                       crearToolTip(ag,data);
+                                   });
+                        });
+                        
+                        //Activa el cursor de CLICK
+                        $('#tblEstudiantes, #tblEstudiantesSabDom').find('.clase > table').hover(function(){
+                              $(this).css('cursor','pointer');
+                        },
+                        function(){
+                              $(this).css('cursor','default');
+                        });     
+                         $('#tblEstudiantes, #tblEstudiantesSabDom').find('.claseinternablanco').hover(function(){
+                              $(this).css('cursor','default');
+                        },
+                        function(){
+                              $(this).css('cursor','default');
+                        });  
+                        $('#tblEstudiantes, #tblEstudiantesSabDom').find('.azul').hover(function(){
+                              $(this).css('cursor','pointer');
+                        },
+                        function(){
+                              $(this).css('cursor','default');
+                        });                          
+                        
+                        //Se usa el bind para que al momento de seleccionar una materia
+                        //no se pueda seleccionar otra hasta que la materia que se 
+                        //selecciono quede seleccionada.
+                        //*Se activa el poder seleccionar una materia.*
+
+                        $('#tblEstudiantes , #tblEstudiantesSabDom').find('.clase > table').bind('click',seleccionar);
+                        //$('#tblEstudiantesSabDom').find('.clase > table').bind('click',seleccionarSabDom);
+
+                });
+                <?php
+                
+                	$function = "window.location.href = urlAjax + 'impresion';";
+                        echo $this->SwapBytes_Jquery->setClick('btnInscribir', $function);
+                ?>
+            
+          });  
+      
+            function seleccionar(){//Funcion que selecciona las materias
+                                  
+                     $('#tblEstudiantes , #tblEstudiantesSabDom').find('.clase > table').unbind('click');//Se quita el poder seleccionar una materia.
+                     
+                     var ag = $(this).find('#ag').attr('value');
+                     var agSeleccionada = '';
+                     var ags = '';
+
+                     $('#tblEstudiantes .clase table, #tblEstudiantesSabDom .clase table').each(function(){
+                             if($(this).attr('class') == 'claseinterna verde'){
+                                    agSeleccionada += $(this).find('#ag').attr('value') + ' - ';
+                             }
+                     });
+
+                     ags = agSeleccionada.substring(0, agSeleccionada.length -3);
+                           
+                     $.getJSON(urlAjax + "verificarseleccion/asignacion/"+ag+"/ags/"+ags, function(data){executeCmdsFromJSON(data);
+                         
+                             //*Se activa el poder seleccionar una materia.*
+                             $('#tblEstudiantes, #tblEstudiantesSabDom').find('.clase > table').bind('click',seleccionar);
+                             var agSeleccionada = '';
+                             var ags = '';
+                             $('#tblEstudiantes .clase table, #tblEstudiantesSabDom .clase table').each(function(){
+                                     if(($(this).attr('class') == 'claseinterna verde') || ($(this).attr('class') == 'claseinternarojo verde')){
+                                            agSeleccionada += $(this).find('#ag').attr('value') + ',';
+                                     }
+                             });
+
+                             ags = agSeleccionada.substring(0, agSeleccionada.length -1);   
+                             $.getJSON(urlAjax + "uc/ags/"+ags, function(data){executeCmdsFromJSON(data);});
+                     });
+  
+            }
+            
+            function crearToolTip(elemento,data){
+            
+//                var x = elemento.position().left;
+//                var y = elemento.offset;
+//                alert(elemento);
+//                alert(y);
+                
+//                $('#tooltip').css({
+//                    
+//                    
+//                    'position': 'absolute',
+//                    'margin-left': ''+ (x+75) + '',
+//                    'margin-top': '' + y + '',
+//                    'display': 'block',
+//                    'box-shadow': '0 0 7px black',
+//
+//                });
+
+//            var text = data.substring(1,data.length-1);
+//            var text = data.toString().substring(1, text.toString().length);
+            //Se le quitan las comillas la materia
+            var text = data.toString().substr(1, data.toString().length-2);
+            
+            $('#'+elemento).qtip({
+               content: ''+text+'',
+               position: {
+                  corner: {
+                     target: 'topRight',
+                     tooltip: 'bottomMiddle'
+                  }
+               },
+               
+               style: { 
+                      width: 200,
+                      padding: 5,
+                      background: '#006778',
+                      radius: 5,
+                      color: 'white',
+                      textAlign: 'center'
+                             ,border: {      
+                                 width: 1,
+                                 radius: 3,
+                                 color: 'black'
+//                                 color: '#006778'
+                                 
+                             }
+                             ,width: 200
+
+                            ,tip: { // Now an object instead of a string
+                             corner: 'bottomLeft', // We declare our corner within the object using the corner sub-option
+                             color: 'black',
+                             size: {
+                                x: 15, // Be careful that the x and y values refer to coordinates on screen, not height or width.
+                                y : 8 // Depending on which corner your tooltip is at, x and y could mean either height or width!
+                             }
+                            }
+               },
+               hide: { effect: { type: 'fade', length: 430 } },
+               show: { effect: { type: 'slide', length: 200 } }
+       
+               
+               
+               
+ 
+            });
+            
+
+            }
+            
+            function destroyToolTip(){
+                
+                $('#tooltip').css({
+                    
+                    'display': 'none'
+ 
+                });
+            
+            
+            }
+            
+</script>
+<style>
+    .TextBoxNormal {
+        background-color: #FFFFFF;
+        border-left: 1px solid #999999;
+        border-top: 1px solid #999999;
+        border-right: 1px solid #cccccc;
+        border-bottom: 1px solid #cccccc;
+        text-align:center;
+    }
+
+    .TextBoxAlert {
+        background-color: #FF9999;
+        border-left: 1px solid #FF0000;
+        border-top: 1px solid #FF0000;
+        border-right: 1px solid #FF6666;
+        border-bottom: 1px solid #FF6666;
+        text-align:center;
+    }
+</style>

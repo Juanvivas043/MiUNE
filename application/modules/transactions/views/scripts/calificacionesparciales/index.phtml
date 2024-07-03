@@ -1,0 +1,547 @@
+<script src= <?php echo "'". $this->baseUrl() ."/js/jquery-2.1.1.min.js'"?>  type='text/javascript'> </script>
+<script src= <?php echo "'". $this->baseUrl() ."/js/jquery-ui.min.js'"?>  type='text/javascript'> </script>
+<script type="text/javascript">var $j = (jQuery).noConflict() </script>
+<?php
+//Agrego 2 versiones Jquery por que los filtros solo funcionan con 
+// 1.44 y necesito el 1.8+ para la mascara de validacion
+$this->headScript()->appendFile($this->baseUrl(). '/js/jquery-ui-1.8.14.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() .'/js/keyboard-navigation-table.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.hotkeys.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+?>
+	<br>
+<h2 style="margin-left:5%;"><?php echo $this->escape($this->title); ?></h2>
+	<br>
+
+<table border="0" cellpadding="0" cellspacing="0" width="1230px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+	<tr>
+		<td align="center">
+			<div class=filtros>
+			<?php include_once('filtros.phtml'); ?>
+			</div>
+			<div id="descarga">
+           	<span style="font-size:15px;"> <b>Formatos para descargar:</b></span><br>
+            <input type="radio" id="rdbFormatPDF" name="rdbFormat" value="PDF" disabled checked>&nbsp;PDF<br><br>
+			<button type="button" name="btnDescargar" id="btnDescargar" disabled>Descargar</button>
+			</div>
+			
+		</td>
+	</tr>
+	<tr>
+		<td>
+<div class="container">
+    <div id="divLeyenda">
+        <div style="float: left; padding-right: 5px; padding-bottom: 5px;"><b>Leyenda:</b></div>
+        <div style="border: 1px solid rgb(0, 0, 0); background-color:#E3E3E3; float: left; width: 20px; height: 12px;"></div>
+        <span style="float: left;">&nbsp;Retirada&nbsp;</span>
+        <div style="border: 1px solid rgb(0,0,0); background-color:#FFFFFF; float: left; width: 20px; height: 12px;"></div>
+        <span style="float: left;">&nbsp;Inscrita&nbsp;</span>
+        <div style="border: 1px solid rgb(0,0,0); background-color:#99FF99; float: left; width: 20px; height: 12px;"></div>
+        <span style="float: left;">&nbsp;Cursada.&nbsp;</span>
+        <div id="extra">
+        <span style="float: left;">&nbsp;Clases.&nbsp;</span>
+        <div style="border: 1px solid rgb(0,0,0); background-color:#FFFFFF; float: left; width: 20px; height: 14px;"> 
+            <span id="clases" style="text-align:center;font-weight:bold;"></span>
+        </div>
+        <span style="float: left;">&nbsp;Inasistencias.&nbsp;</span>
+        <div style="border: 1px solid rgb(0,0,0); background-color:#FFFFFF; float: left; width: 20px; height: 14px;"> 
+        <span id="inasistencias" style="text-align:center;font-weight:bold;"></span>
+        </div>
+    </div>
+        <span id="btnLeyenda" class="ui-button ui-state-default ui-corner-all ui-button-text-only" type="button" >
+          Evaluaciones
+        </span>
+</div> 
+    <div id="tblEstudiantes" ></div>
+    <div id="tblAutorizacion" class="center" ></div>
+</div>
+		</td>
+	</tr>
+</table>
+
+<div id="frmMessage"></div>
+<div id="frmDialog"></div>
+<div id="exitDialog"></div>
+<div id="evalu">
+  <table style="border:solid 0.5px;float:left;width:200px"> 
+    <caption> <strong>Primer Lapso</strong> </caption>
+    <th> Evaluación</th>
+    <th> Descripción</th>
+    <tr> 
+      <td> IL1 </td>
+      <td> Inasistencias</td>
+    </tr>
+    <tr> 
+      <td> EI1 </td>
+      <td> Evaluacion Individual</td>
+    </tr>
+    <tr> 
+      <td> EG1 </td>
+      <td> Evaluacion Grupal</td>
+    </tr>
+    <tr> 
+      <td> PL1 </td>
+      <td> Prueba cerrada </td>
+    </tr>
+  </table>
+  <table style="border:solid 0.5px;float:left;margin-left:20px;width:200px"> 
+    <caption> <strong>Segundo Lapso </strong></caption>
+    <th> Evaluación</th>
+    <th> Descripción</th>
+    <tr> 
+      <td> IL2 </td>
+      <td> Inasistencias </td>
+    </tr>
+    <tr> 
+      <td> EI2 </td>
+      <td> Evaluación individual </td>
+    </tr>
+    <tr> 
+      <td> EG2 </td>
+      <td> Evaluación grupal</td>
+    </tr>
+    <tr> 
+      <td> PL2 </td>
+      <td> Prueba cerrada </td>
+    </tr>
+  </table>
+  <span style="margin:5px;">
+  <p> El Puntaje Maximo esta indicado entre parentesis</p>
+  <p> Junto al Nombre de la evaluacion ej: <strong>El1(3)</strong>.</p>
+  </span>
+</div>
+<script type='text/javascript'>
+//var $j = $.noConflict();
+jQuery(document).ready(function(){
+<?php
+echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+echo $this->SwapBytes_Jquery->getLoading('loading');
+echo $this->SwapBytes_Crud_Form->getJavaScript();
+echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+echo $this->filters->getJavaScript('tblEstudiantes', "$('#btnValidar').hide();$('#tblAutorizacion').hide();$('#btnFinalizar').hide();$('#extra').hide();$('#divLeyenda').hide();", 'generar/data/');
+?>
+
+$('#btnDescargar').click(function(){
+	window.location.href = urlAjax + "descargar/data/"+ encodeURIComponent($('#tblFiltros').find(':input').serialize()); 
+});
+$('#btnLeyenda').click( function (e) {
+  $('#evalu').dialog({
+      title: 'Leyenda de Evaluaciones',
+      bgiframe: true,
+      autoOpen: false,
+      width: 450,
+      modal: true,
+      resizable: false,
+      buttons: {
+        'Cancelar': function() {
+          $(this).dialog('close');
+        }
+      }
+  });
+  $('#evalu').dialog('open');
+});
+
+$('#btnValidar').click(function(){
+		$.post(urlAjax + "validar" ,
+			{data: encodeURIComponent($('#tblEstudiantes').find(':input').serialize()),
+			filters: encodeURIComponent($('#tblFiltros').find(':input').serialize())
+			}, 
+		function(data){
+			executeCmdsFromJSON(data)},'json');
+	});
+
+$('#btnFinalizar').click(function(){
+	$.post(urlAjax + "validar", 
+		{data: encodeURIComponent($('#tblEstudiantes').find(':input').serialize()),
+		filters: encodeURIComponent($('#tblFiltros').find(':input').serialize()), 
+		finalizar: true}, 
+		function(data){
+			executeCmdsFromJSON(data)},'json');
+	});
+        $("#frmMessage").dialog({
+            bgiframe: true,
+            autoOpen: false,
+            width: 600,
+            modal: true,
+            resizable: false,
+            buttons: {
+                // Indice 0
+                'Guardar': function() {
+                    $.post(urlAjax + "guardar", {
+                    data: $('#tblEstudiantes').find(':input').serialize(),
+                    filters: encodeURIComponent($('#tblFiltros').find(':input').serialize()), 
+                    finalizar: $('#frmMessage').find('input[name=finalizar]').val()
+                }, 
+                    function(data){executeCmdsFromJSON(data)},
+                    'json');
+                },
+                // Indice 1
+                'Cancelar': function() {
+                    $(this).dialog('close');
+                }
+            },
+            close: function() {
+            }
+        });
+
+$('#btnClear').click(
+	function(){
+		$j(window).unbind('beforeunload');
+	    window.isChange = false;
+        $('#tblAutorizacion').hide();
+        $('#btnValidar').hide();
+		$('#btnFinalizar').hide();
+		$('#divLeyenda').hide();
+		$('#extra').hide();
+	}
+);
+window.previousVal = [];
+$j('#tblFiltros select').on('focus', function (e) {
+    window.previousVal[$(this).attr('id')]= $(this).val();
+});
+
+$j(document).on('change','input[type=text]', function (e) {
+	window.isChange = true
+	$j(window).bind('beforeunload', function (e) {
+		e.preventDefault();
+		return 'Se perderan los cambios no guardados ¿Esta Seguro?';
+	});
+
+    /*funcion que sobreescribe la accion de los filtros con un 
+        * modal previo de confirmacion */
+    $('#tblFiltros select').override('change', function(item, originalFunction){
+        if (window.isChange) {
+           dialogoGuardarSalir(
+           	'<p>Se perderan los Cambios No Guardados.<br> <b>¿Esta seguro que desea Salir?</b></p>',
+           	function () {
+           		$.post(urlAjax + "guardar",{
+                        	data: $('#tblEstudiantes').find(':input').serialize(),
+                        	filters: encodeURIComponent($('#tblFiltros').find(':input').serialize()) 
+                        	}, function(data){executeCmdsFromJSON(data)},'json');
+                        $('#btnClear').click();
+           	},
+           	originalFunction, 
+           	function () {
+           	 $(item).val(window.previousVal[$(item).attr('id')]);
+           });   
+        } else {
+            originalFunction();
+        }
+    
+});
+	e.preventDefault();
+});
+
+	/**
+    * Remplaza la primera action de un elemento, con una generica
+    * que recibe como parametro la action original  
+    */
+ $.fn.override = function (action, fn) {
+        
+        this.each( function (index, item) {
+            // mantener la funcion original
+            var originalFunction = $(item).data('events')[action][0].handler;
+                // reemplazar el metodo
+            if (originalFunction) {
+                $(item).data('events')[action][0].handler = function () {
+                    fn(item, originalFunction);
+                }
+            }
+        }); 
+    }
+
+$.fn.focusNextInputField = function(callback) {
+	return this.each(function() {
+		var fields = $(this).parents('form:eq(0),body').find('input').not('input:disabled');
+		var width = $(this).closest('tr').find('input:enabled').size();
+		var row = $(this).closest('tr').next('tr');
+		var index = fields.index( this );
+		for (var i = index; i+Number(width) < fields.length;){
+			if ( ( i + Number(width) ) < fields.length) {
+				if(callback(i +width, fields)) {
+					$(fields.eq( i + width )).focus();
+					break;
+				}
+			}
+			i = i + Number(width);
+		}
+		return false;
+	});
+};
+
+  $j.fn.decimalMask = function (mask){
+    
+    if (!mask || !mask.match){
+      throw 'decimalMask: you must set the mask string.';
+    }
+
+    var
+      v,
+      neg = /^-/.test(mask) ? '(-)?' : '',
+      is = (function(){v = mask.match(/[0-9]{1,}/); return v !== null ? v[0].length : 0})(),
+      ds = (function(){v = mask.match(/[0-9]{1,}$/); return v !== null ? v[0].length : 0})(),
+      sep = (function(){v = mask.match(/,|\./); return v !== null ? v[0] : null})(),
+      events = /.*MSIE 8.*|.*MSIE 7.*|.*MSIE 6.*|.*MSIE 5.*/.test(navigator.userAgent) ? 'keyup propertychange paste' : 'input paste',
+      tester = (sep === null) 
+        ? new RegExp('^'+neg+'[0-9]{0,'+is+'}$')
+        : new RegExp('^'+neg+'[0-9]{0,'+is+'}'+(sep === '.' ? '\\.' : ',')+'[0-9]{0,'+ds+'}$|^'+neg+'[0-9]{0,'+is+'}'+(sep === '.' ? '\\.' : ',')+'$|^'+neg+'[0-9]{0,'+is+'}$');
+        
+    function handler(e){
+      var self = $j(e.currentTarget);
+      if (self.val() !== e.data.ov) {
+        if (!tester.test(self.val())) {
+          self.val(e.data.ov);
+        }
+        e.data.ov = self.val();
+      }
+    }
+
+    $j(this).each(function (){
+      $j(this)
+        .attr('maxlength', is + ds + (sep === null ? 0 : 1) + (neg === '' ? 0 : 1 ))
+        .val($(this).val() ? $(this).val().replace('.',sep) : $(this).val())
+       	.on(events,{ov:$(this).val()},handler);
+    });
+  }
+
+});
+	
+function dialogoGuardarSalir(message, saveAction, afterAction, cancelAction) {
+
+	 $('#exitDialog').html(message);
+            $( "#exitDialog" ).dialog({
+                dialogClass: 'no-close',
+                title:'Confirmar salida',
+                bgiframe: true,
+                autoOpen: false,
+                resizable: false,
+                width: 300,
+                modal: true,
+                buttons: 
+                {
+                    'Guardar y Salir': function() {
+                        saveAction();
+                        afterAction();
+                        $(this).dialog('close');
+                    },
+                    /*Solo refrescamos los filtros si el usuario 
+                    hace click en Si*/
+                    'Salir': function() {
+	                    window.isChange = false;
+                        afterAction();
+                        $(this).dialog('close');
+                    },
+                    'Cancelar': function() {
+                    	if ($.isFunction(cancelAction)){
+                    	  cancelAction();
+                    	}
+                        $(this).dialog('close');
+                    }
+                }}).dialog('open');
+}
+/**
+    * Funcion para la sumatoria de las notas se hace asyncronica 
+    * para aligerar el proceso en las computadoras de cdt  que 
+    * tienen peoblemas con grandes cantidades de estudiantes **/
+function chunk(array, process, context, end) {
+    var i=0;
+    var result = 0;
+    setTimeout(function() {
+        var item = array.shift();
+        result += process.call(context,i,item);
+        i++;
+        if (array.length > 0) {
+            setTimeout(arguments.callee, 10);
+        } else {
+            end(result, item);
+        }
+    }, 50);
+}
+
+function valueOfField(index, value) {
+    return parseFloat($(value).val()) || 0;
+}
+
+</script>
+<style>
+
+	.TextBoxNormal {
+		background-color: #FFFFFF;
+		border-left: 1px solid #999999;
+		border-top: 1px solid #999999;
+		border-right: 1px solid #cccccc;
+		border-bottom: 1px solid #cccccc;
+		text-align:center; 
+		transition-delay: 0.5s;
+        width:4em;
+		-webkit-transition-delay: 0.5s;
+		-webkit-transition: background-color 500ms linear;
+		-moz-transition: background-color 500ms linear;
+		-o-transition: background-color 500ms linear;
+		-ms-transition: background-color 500ms linear;
+		transition: background-color 500ms linear;
+	}
+
+	.TextBoxAlert {
+		background-color: #FF8888;
+		border-left: 1px solid #FF0000;
+		border-top: 1px solid #FF0000;
+		border-right: 1px solid #FF6666;
+		border-bottom: 1px solid #FF6666;
+		text-align:center;
+		transition-delay: 0.5s;
+        width:4em;
+		-webkit-transition-delay: 0.5s;
+	 	-webkit-transition: background-color 500ms linear;
+		-moz-transition: background-color 500ms linear;
+		-o-transition: background-color 500ms linear;
+		-ms-transition: background-color 500ms linear;
+		transition: background-color 500ms linear;	
+	}
+	.TextBoxWarning {
+		background-color: #FFAE00;
+		border-left: 1px solid #FFAE00;
+		border-top: 1px solid #FFAE00;
+		border-right: 1px solid #FF6666;
+		border-bottom: 1px solid #FF6666;
+		text-align:center;
+	 	-webkit-transition: background-color 500ms linear;
+		-moz-transition: background-color 500ms linear;
+		-o-transition: background-color 500ms linear;
+		-ms-transition: background-color 500ms linear;
+		transition: background-color 500ms linear;	
+	}
+
+	.filtros{
+		float:left;	
+	}
+    
+    .container {
+        display:block;
+        max-width:1024px;
+        margin:10px;
+        padding:5px;
+        position:relative;
+    }
+
+    .center {
+        margin-left: auto;
+        margin-right: auto;
+        text-align:center;
+    }
+
+    #divLeyenda {
+        display:none;
+        width:100%;
+        float:left;
+    }
+    #tblEstudiantes {
+        float:left;
+    }
+    #tblAutorizacion {
+        width:100%;
+        float:left;
+    }
+    #tblAutorizacion div {
+        margin-left: auto;
+        margin-right: auto;
+    }
+	#inasistencias {
+		text-align:center;
+	}
+	
+	#clases {
+		text-align:center;
+	}
+
+	table .tableData {
+		box-shadow: 2px 2px 3px #aaaaaa;
+	}
+	table .tableData tbody tr input {
+
+		color:#000 !important;
+	}
+/*
+	table.tableData tbody tr.nocursa {
+		background:rgba(255,20,20,0.7) !important ;
+	}
+	table .tableData tbody tr.nocursa:hover {
+		background:rgba(255,20,20,0.7) !important; 
+	}
+*/
+
+	.ui-tooltip {
+		padding: 8px;
+		position: absolute;
+		z-index: 9999;
+		max-width: 300px;
+		-webkit-box-shadow: 0 0 5px #aaa;
+		box-shadow: 0 0 5px #aaa;
+	}
+	body .ui-tooltip {
+		border-width: 2px;
+	}	
+	#extra{
+		width: auto;
+		float: left;
+		display:none;
+        text-align:center;
+	}
+
+	#descarga{
+		width: 150px;
+		float: left;
+		margin-left: 25px;
+        display:none;
+	}
+	select {
+		margin-left:10px;
+        font-size:15px;
+		width:auto;
+	}
+	select option{
+        font-size:15px;
+	}
+
+	.retirado{
+  background-color:#E3E3E3 !important;
+  color:#666666;pointer-events:none;
+	}
+	
+	.retirado td {
+    background-color:#E3E3E3 !important;
+	}
+	
+	.retirado input {
+	background-color:#E3E3E3 !important;
+	color:#666666;pointer-events:none;
+		border-left: 1px solid #999999;
+		border-top: 1px solid #999999;
+		border-right: 1px solid #cccccc;
+		border-bottom: 1px solid #cccccc;
+	}
+	.alert {
+    padding:10px;
+    min-width:250px;
+    width:50% !important;
+	}
+
+  #btnLeyenda  {
+    padding:1px 5px 1px 5px;
+    margin: 1px 0px 5px 10px;
+    height:14px;
+  }
+  
+  #evalu {
+   display: none; 
+  }
+  .selected{
+    background-color: #FFEA8E !important;
+  }
+  
+</style>
+

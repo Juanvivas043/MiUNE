@@ -1,0 +1,148 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+
+?>
+<h2>
+<?php  echo $this->title; ?>	
+</h2>
+
+<style type="text/css">
+    #busqueda{
+        margin-top: 20px;
+    }
+    #tblHorarios tr th{
+        border-right: 1px solid;
+        border-bottom: 1px solid;
+    }
+    #tblHorarios{
+        width: 80%;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+    #tblHorarios td.stripe{
+        background-color: rgba(120,120,120,0.1); 
+    }
+    #tblHorarios .clases{
+        padding: 6px;
+        font-weight: bold;
+        background-color: white;
+        box-shadow: 0px 0px 5px -3px #000;
+        text-align: center;
+        height:70px;
+
+    }
+    #tblHorarios #profesor{
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
+    #tblHorarios table{
+        border-collapse: collapse;
+        background-color: #fff;
+        margin: 0 auto;
+
+    }
+    #tblHorarios table tr:first-child{
+        background-color: #BABF46;
+        padding: 20px;
+        color: white;
+        border-bottom: 1px solid #fff;
+        font-size: 20px;
+    }
+    #tblHorarios table tr td {
+        background-color: rgba(120, 120, 120, 0.1);
+        border-right: 1px solid #C0C0C0B3;
+        border-bottom: 1px solid #C0C0C0B3;
+    }
+ 
+    #tblHorarios  table tr td.time{
+        background-color: #BABF46;
+        padding: 8px;
+        color: white;
+        font-size: 16px;
+        max-width: 80px;
+        font-style: bold;
+        border-bottom: 1px solid #fff;
+        border-top: 1px solid #fff;
+    }
+    }
+    #tblHorarios  table tr td.coincidencias{
+        background-color: rgba(255, 0, 0, 0.49);
+        padding: 8px;
+        color: white;
+    }
+    #tblHorarios .empty tr td{
+        color: #fff;
+        padding: 15px;
+        margin: 5px;
+        font-size: 75%;
+    }
+    .total{
+        margin-top: 15px;
+        visibility: hidden;
+        display: block;
+        text-align: center;
+        font-size: 140%;
+        font-weight: bold;
+    }
+    @media print{
+        body * {
+            visibility: hidden;
+            color: #000;
+            font-size: 100%;
+        }
+        div#tblHorarios *{
+            visibility: visible;
+        }
+        #user_name *, #busqueda{
+            display: none;
+        }
+        #tblHorarios table tr td,
+        #tblHorarios  table tr td.time, 
+        #tblHorarios table tr th{
+            border: 1.5px solid black;
+            border-bottom: 1px solid #000;
+        }
+        #tblHorarios .clases {
+            box-shadow: none;
+            font-weight: normal;
+            text-align: center;
+
+        }
+        #total {
+            visibility: visible;
+        }
+
+    }
+</style>
+
+<div id="busqueda" align="center">
+    <table id="tblbusqueda"  align="center">
+        <tr>
+            <td class='relative'>
+            <?php include_once('filtros.phtml'); ?>
+
+            <span></span>
+
+            </td>	
+       </tr>
+       			
+    </table> 
+</div>
+<div id="tblHorarios">    
+</div>	
+
+<script type="text/javascript">
+	<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblHorarios');
+    echo $this->filters->getJavaScript('tblHorarios');
+
+
+?>
+</script>

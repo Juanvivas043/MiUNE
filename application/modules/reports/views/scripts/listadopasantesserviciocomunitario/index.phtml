@@ -1,0 +1,79 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<br>
+<table align="center">
+<div id="fotoDiv" align="center"><input id="foto" width="120" type="image" height="161" disabled="disabled" alt="Foto:" name="foto" style="-moz-box-shadow: 0 0 10px black;"></div>
+</table>
+<br>
+<div id="usuario" align="center">
+    <table id="tblusuario" align="center" class="tableData">
+        <tr>
+                    <td>
+                        <p>C.I. :</p>
+                    </td>
+                    <td>
+                        <p id="cedula"></p>
+                    </td>
+                </tr>
+                   <tr>
+                    <td>
+                        <p>Nombre :</p>
+                    </td>
+                    <td>
+                        <p id="nombre"></p>
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        <p >Apellido :</p>
+                    </td>
+                    <td>
+                        <p id="apellido"></p>
+                    </td>
+                </tr>
+                
+    </table>
+    <br>
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center" colspan="2">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+ 
+        
+    </tr>
+</table>
+
+<table>
+          <div id="tblData" align="center"></div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+</table>
+<script type='text/javascript'>
+$(document).ready(function(){
+<?php
+    
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblData');
+    echo $this->filters->getJavaScript('tblData');
+    echo $this->trigger;
+    
+
+?>
+$(window).load(function(){
+           $.getJSON(urlAjax + "usuario", function(data){executeCmdsFromJSON(data)});
+        });
+});
+</script>

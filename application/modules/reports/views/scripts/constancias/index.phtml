@@ -1,0 +1,69 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$authSpace = new Zend_Session_Namespace('Zend_Auth');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <table border="0" cellpadding="0" cellspacing="0" width="420px">
+
+                <tr>
+                       <td align="center" style="font-weight:bolder;" width="80px" >C.I. del Alumno:</td>
+                       <td width="70px">&nbsp;</td>
+                       <td align="center" style="font-weight:bolder;" width="200px" >Escuela:</td>
+                       <td align="center" style="font-weight:bolder;" width="200px" >Constancia de:</td>
+                       <td width="70px">&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td align="center" style="font-weight:bolder;">
+                        <input autocomplete="off" type="text" id="txtCI" size="14" maxlength="8" />
+                    </td>
+                    <td align="center" style="font-weight:bolder;" width="70px" >
+                        <button type="button" id="btnBuscar">Buscar</button>
+                    </td>
+                    <td align="center" style="font-weight:bolder;" width="160px">
+                        <select name="selEscuela" id="selEscuela" style="width:140px;" disabled="true"></select>
+
+                    </td>
+                    <td align="center" style="font-weight:bolder;" width="180px">
+                        <select name="selEscuela" id="selConstancia" style="width:160px;" disabled="true"></select>
+                    </td>
+                    <td align="center" style="font-weight:bolder;" width="70px" >
+                        <button disabled="true" type="button" id="btnGenerar">Generar</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="center" colspan="5"><div id="tblInfoEst"></div></td>
+                </tr>
+
+                <tr>
+                    <td align="center" colspan="5"><div id="tblMsg"></div></td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#loading").ajaxStart(function(){$(this).show();});
+        $("#loading").ajaxStop(function(){$(this).hide();});
+
+        urlAjax = "<?php echo $this->baseUrl() . '/' . $this->module . '/' . $this->controller . '/' ?>";
+
+        $('#btnBuscar').click(function(){
+             $.getJSON(urlAjax + "verificar/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val(), function(data){executeCmdsFromJSON(data)});
+        });
+        $('#btnGenerar').click(function(){
+            window.open(urlAjax + "descargar/ci/" + $("#txtCI").val() + "/selEscuela/" + $("#selEscuela").val() + "/selConstancia/" + $("#selConstancia").val()) ;
+        });
+        $('#selEscuela').change(function(){
+             $.getJSON(urlAjax + "buscar/ci/"+$("#txtCI").val() + "/selEscuela/"+$("#selEscuela").val(), function(data){executeCmdsFromJSON(data)});
+        });
+    });
+</script>

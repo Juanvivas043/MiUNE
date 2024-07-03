@@ -1,0 +1,1148 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.hotkeys.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.6.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.qtip-1.0.0-rc3.min');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.showLoading.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.showLoading.min.js');
+
+//$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.7.1.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui-1.8.18.custom.min.js');
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.easyAccordion.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.wijmo.wijsplitter.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/scripts/utility.js');
+//$this->headScript()->appendFile($this->baseUrl() . '/js/transactions.reinscripciones.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.reinscripciones');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery.wijmo.wijsplitter.css');
+
+?>
+
+<h2><?php //echo $this->escape($this->title); echo $this->Ci; ?></h2>
+<div id="padreCaja">
+<div id="caja">
+<!--        <div class="line_separator">Re-inscripcion </div>-->
+        <input type="hidden" name="seltxtCI" id="seltxtCI" value="<?php echo $_SESSION["UID"];?>">
+        <div id="materiasSemestres"></div> 
+
+        <div id="tooltip"><div class="arrow"></div></div>
+        <center>
+        <table id="tablaHorarios" width ="100%" border="0" cellpadding="0" cellspacing="0" style="margin:auto;">
+            <tr>
+                <td width="0" valign="top" align="center" colspan="3" style="background: lightgray; height: 1px;">
+                    <table width="450">
+                        <tr>
+                            <td>
+                              <div id="datosFollowWrapper">
+                                <div id="datosFollow">
+                                        <table width="1050" style="margin: auto;">
+                                            <tr>
+                                                <td class="TextTitle" valign="top">Datos de la Reinscripci&oacute;n</td>
+                                                <td class="TextTitle" valign="top">Ubic.</td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" style="border-style:solid; border-width:1px;">
+                                                    <table width="100%" height="35px">
+                                                        <tr class="RowOdd">
+                                                            <td><b>Estado:</b></td>
+                                                            <td width="100">
+                                                                <div align="center">
+                                                                    <span id="estadoest"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td width="115"><b>Ind. Acad&eacute; Acum.:</b></td>
+                                                            <td width="60">
+                                                                <div align="center">
+                                                                    <span id="indiceacu"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td width="162"><b>Ind. Acad. Ult. Per. Cursado:</b></td>
+                                                            <td width="60">
+                                                                <div align="center">
+                                                                    <span id="indiceperi"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td width="85" ><b>U.C. Aprob:</b></td>
+                                                            <td width="60">
+                                                                <div align="center">
+                                                                    <span id="ucapro"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td><b>Per&iacute;odo:</b></td>
+                                                            <td width="30">
+                                                                <div align="center">
+                                                                    <span id="periodoreins"></span>
+                                                                </div>
+                                                            </td>
+<!--                                                            <td width="87" rowspan="2">
+                                                                <input style='width:100%; height:30px; font-size: 19px; -moz-border-radius: 0.5em;' type="submit" id="btnInscribir" value="Inscribir" />
+                                                            </td>-->
+                                                        </tr>
+                                                        <tr class="RowOdd">    
+                                                            <td><b>U.C. Sem. Ubic.:</b></td>
+                                                            <td width="30">
+                                                                <div align="center">
+                                                                    <span id="ucSem">0</span>
+                                                                </div>
+                                                            </td>
+                                                            <td width="70"><b>U.C. Adic.:</b></td>
+                                                            <td width="30">
+                                                                <div align="center">
+                                                                    <span id="ucadic"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td><b>U.C totales:</b></td>
+                                                            <td width="85">
+                                                                <div align="center">
+                                                                    <span id="uctotalins">0 de 0</span>
+                                                                </div>
+                                                            </td>
+                                                            
+                                                            <td width="70"><b>Cant. Mat.:</b></td>
+                                                            <td width="30">
+                                                                <div align="center">
+                                                                    <span id="nmat" >0</span>
+                                                                </div>
+                                                            </td>
+<!--                                                            <td width="85"><b>Per&iacute;odo Ubic:</b></td>
+                                                            <td width="30">
+                                                                <div id="ubicacionEst" align="center">0</div>
+                                                            </td>-->
+                                                            <td width="50"><b>Pensum:</b></td>
+                                                            <td width="30">
+                                                                <div id="pensum" align="center">0</div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table width="100%">
+                                                        <tr>
+                                                            <td>
+                                                                <div id="ubicacionEst" align="center" style="font-size:26px; text-align: center; border: 1px solid gray;">0º</div>
+                                                            </td>
+<!--                                                            <td>
+                                                                <input style='width:100%; height:30px; font-size: 19px; -moz-border-radius: 0.5em;' type="submit" id="btnInscribir" value="Finalizar" />
+                                                            </td>-->
+                                                        </tr>
+<!--                                                        <tr>
+                                                            <td>
+                                                                <input style='width:100%; height:30px; font-size: 19px; -moz-border-radius: 0.5em;' type="submit" id="btnInscribir" value="Finalizar" />
+                                                            </td>
+                                                        </tr>-->
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <input style='width:100%; height:30px; font-size: 19px; -moz-border-radius: 0.5em;' type="submit" id="btnInscribir" value="Finalizar" />
+                                                </td>
+                                                <td colspan="7" align="center">
+                                                    <div id="mensajeError" >&nbsp;</div>
+                                                </td>
+                                            </tr>
+<!--                                            <tr>
+                                                <td colspan="7" align="center"><div id="mensajeError" >&nbsp;</div></td>
+                                            </tr>-->
+                                        </table>
+                                </div>
+                              </div>
+                            </td>
+                        </tr>    
+<!--                        <tr height="35px;">
+                            
+                        </tr>-->
+<!--                        <tr>
+                            <td id="nombFiltro" colspan="4" class="TextTitle" valign="top">Filtro</td>
+                        </tr>
+                        <tr>
+                            <td class="scrollFil"><div id="filtro" style="margin:auto; display: table;"></div></td>
+                        </tr>-->
+                        <tr>
+                            <td>       
+<!--                              <div id="datosFollowWrapper">
+                                <div id="datosFollow">
+                                        <table width="910" style="margin: auto;">
+                                            <tr>
+                                                <td class="TextTitle" valign="top">Datos de la reinscripcion</td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" style="border-style:solid; border-width:1px;">
+                                                    <table width="100%">
+                                                        <tr class="RowOdd">
+                                                            <td><b>Estado:</b></td>
+                                                            <td colspan="3" width="145">
+                                                                <div align="center">
+                                                                    <span id="estadoest"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td colspan="2"><b>Ind. Acad&eacute; Acum.:</b></td>
+                                                            <td width="60">
+                                                                <div align="center">
+                                                                    <span id="indiceacu"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td colspan="3"><b>Ind. Acad. Ult. Per. Cursado:</b></td>
+                                                            <td width="60">
+                                                                <div align="center">
+                                                                    <span id="indiceperi"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td width="85" colspan="3"><b>U.C. Aprob:</b></td>
+                                                            <td colspan="2" width="60">
+                                                                <div align="center">
+                                                                    <span id="ucapro"></span>
+                                                                </div>
+                                                            </td>     
+                                                            <td width="87" rowspan="2">
+                                                                <input style='width:100%; height:30px; font-size: 19px; -moz-border-radius: 0.5em;' type="submit" id="btnInscribir" value="Inscribir" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="RowOdd">
+                                                            <td><b>Per&iacute;odo:</b></td>
+                                                            <td width="30">
+                                                                <div align="center">
+                                                                    <span id="periodoreins"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td><b>Cant. Mat.:</b></td>
+                                                            <td width="30">
+                                                                <div align="center">
+                                                                    <span id="nmat" >0</span>
+                                                                </div>
+                                                            </td>
+                                                            <td><b>U.C. Sem. Ubic.:</b></td>
+                                                            <td width="30">
+                                                                <div align="center">
+                                                                    <span id="ucSem">0</span>
+                                                                </div>
+                                                            </td>
+                                                            <td width="70"><b>U.C. Adic.:</b></td>
+                                                            <td width="30">
+                                                                <div align="center">
+                                                                    <span id="ucadic"></span>
+                                                                </div>
+                                                            </td>
+                                                            <td><b>U.C totales:</b></td>
+                                                            <td width="60">
+                                                                <div align="center">
+                                                                    <span id="uctotalins">0 de 0</span>
+                                                                </div>
+                                                            </td>
+                                                            <td width="85" colspan="2"><b>Per&iacute;odo Ubic:</b></td>
+                                                            <td width="30" colspan="4">
+                                                                <div id="ubicacionEst" align="center">0</div>
+                                                            </td>
+                                                            <td>
+                                                            
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="7" align="center"><div id="mensajeError" >&nbsp;</div></td>
+                                            </tr>
+                                        </table>
+                                </div>
+                              </div>-->
+                           </td>
+                        </tr>
+                        
+                    </table>
+                </td>
+                
+            </tr>
+<!--            <tr>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>-->
+
+<!--            <tr>
+                <td colspan="7" align="center"><div id="mensajeError" >&nbsp;</div></td>
+            </tr>-->
+            <tr>
+                <td colspan="7" align="center">
+                    <div id="tablaconte">
+                        <table style="width:100%;">
+                            <tr>
+                                <td width="100%" align="center">
+    <!--                                <div id="tblEstudiantes" style="OVERFLOW: scroll; WIDTH: 1180px; HEIGHT: 490px;">&nbsp;</div>-->
+                                    <div id="tblEstudiantes"></div>
+                                </td>
+                                <td valign="top">
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="100%" align="center">
+                                    
+                                    <div id="leyendaUi-wrapper">
+                                        <div id="leyendaUi">
+                            <!--                    <div id="leyendaLabel"><label>L<br>e<br>y<br>e<br>n<br>d<br>a</label></div>-->
+                                                <div id="verLeyenda" class="arrow_boxLeft"></div>
+                                                <table width="450" align="center" id="tablaLeyenda" style="margin:auto;">
+                                                    <tr>
+                                                        <td colspan="4" class="TextTitle" valign="top">Leyenda</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="center" valign="top" style="border-style:solid; border-width:1px;">
+                                                            <table>
+                                                                <tr class="leyendatr">
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div id="leyendaVerde" class="leyendacolor"></div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div class="leyendaTexto">Seleccionado</div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div id="leyendaAzul" class="leyendacolor"></div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div class="leyendaTexto">Materia Normal</div>
+                                                                    </td>
+                                                                    <td  style="border-style:solid; border-width:1px;">
+                                                                        <div id="leyendaRojo" class="leyendacolor"></div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div class="leyendaTexto">Materia Reprobada</div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div id="leyendaBlanco" class="leyendacolor"></div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div class="leyendaTexto">Curso Simultaneo</div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div id="leyendaAzulRayando" class="leyendacolor"></div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div class="leyendaTexto">C.S Activado</div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div id="leyendaGrisRayado" class="leyendacolor"></div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div class="leyendaTexto">C.S Desactivado</div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div id="leyendaVerdeRayado" class="leyendacolor"></div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div class="leyendaTexto">C.S Seleccionado</div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div id="leyendaRojoCupos" class="leyendacolor"></div>
+                                                                    </td>
+                                                                    <td style="border-style:solid; border-width:1px;">
+                                                                        <div class="leyendaTexto">Sin Cupos</div>
+                                                                    </td>
+
+
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                            <!--                            <td><div id="filt"><input style='width:90px; height:45px; font-size: 18px; -moz-border-radius: 0.5em;' type="submit" id="btnFiltro" value="Filtro" /></div></td>-->
+                                                    </tr>                    
+
+                                                </table>
+
+                                        </div>
+                                    </div>
+                                    
+                                </td>
+                                <td valign="top">
+
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+            
+            <div id="buscarCi" style="display:none;">
+                
+            </div>
+            <div id="mensaje" style="display:none;">
+                
+            </div>
+            <div id="infoEstudiante" style="display:none;">
+                <table>
+                    <tr>
+                        <td><div id="otroDia"></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h2 align="center" style="font-size:20px; padding: 10px;">Informaci&oacute;n del Estudiante</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div align="center">
+                                <table cellspacing="2">
+                                    <tr>
+                                        <td colspan="2">
+                                            <h4> Se encuentra en la red interna de la Universidad Nueva Esparta</h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="200px">
+                                            <div align="left">Per&iacute;odo:</div>
+                                        </td>
+                                        <td>
+                                            <div id="periodoinfo" align="left"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div align="left">C&eacute;dula del estudiante:</div>
+                                        </td>
+                                        <td>
+                                            <div id="ciinfo" align="left"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div align="left">Nombre del Estudiante:</div>
+                                        </td>
+                                        <td>
+                                            <div id="nombreinfo" align="left"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div align="left">Cr&eacute;ditos adicionales a inscribir:</div>
+                                        </td>
+                                        <td>
+                                            <div id="cainfo" align="left"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div align="left">Sede:</div>
+                                        </td>
+                                        <td>
+                                            <div id="sedeinfo" align="left"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div align="left">Escuela:</div>
+                                        </td>
+                                        <td>
+                                            <div id="escuelainfo" align="left"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div align="left">Pensum:</div>
+                                        </td>
+                                        <td>
+                                            <div id="pensuminfo" align="left"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div align="left">N&uacute;mero del Comprobante de Pago:</div>
+                                        </td>
+                                        <td>
+                                            <div id="numcompinfo" align="left"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            &nbsp;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <div id="btn"></div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                
+            </div>
+            <center>
+                <div id="erromsg">
+                    
+                </div>
+            </center>
+
+        </center>
+
+        <div id="frmMessage"></div>
+        
+        
+</div>
+</div>
+
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+<script type='text/javascript'>
+
+        <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Form->getJavaScript();
+      
+            
+
+        ?>
+            $(document).ready(function(){
+    
+                 $('#datosUi').hide(); //Ocultar la info
+                 $('#datos').hide();
+//                 $('#leyendaUi').hide();//Ocultar Leyenda
+//                 $('#leyendaUi-wrapper').hide();
+                 $('#datosFollow').hide();
+                 
+                 
+               $.getJSON(urlAjax + "acceso", function(data){executeCmdsFromJSON(data);
+
+                 if(data == 145){
+                 
+                    infoEstudiante();
+                 
+                 }else if(data != 1){
+                 
+                    $("#btnCi").click(function(){
+                         
+                         ci = $('#txtBuscar').val();
+                         
+                         $.getJSON(urlAjax + "pedirCi/id/"+ci, function(data){executeCmdsFromJSON(data);
+                             
+                             infoEstudiante();
+                             
+                         });
+                        
+                    });
+                 
+                 }
+                 
+               }); 
+               
+               function infoEstudiante(){
+               
+                     $.getJSON(urlAjax + "infoestudiante", function(data){executeCmdsFromJSON(data);
+
+                            $('#btnValidar').click(function() {
+
+                                 jQuery('#tablaHorarios').showLoading(
+                                    {
+                                    'addClass': 'loading-indicator-bars'
+                                    }
+                                    ); 
+
+                                 $('#loading-indicator-tablaHorarios').html('Cargando...');       
+
+                                 $('#infoEstudiante').hide();
+
+                                 $.getJSON(urlAjax + "inforeinscripcion", function(data){executeCmdsFromJSON(data);
+                                     //Ui despliegable
+                                     $('#datosUi').show();
+                                     $('#datos').show();
+                                     $('#leyendaUi').show();
+                                     $('#caja').css('background-color', 'lightgrey');
+    //                                 alert($('#tablaconte').offset().top);
+                                     //Se cambia el cursor a pointer
+                                     $('#ver').find('.arrow_boxTop, .arrow_box').hover(function(){
+                                            $(this).css('cursor','pointer');
+                                     },
+                                     function(){
+                                            $(this).css('cursor','default');
+                                     });   
+                                     //----------------------
+
+
+                                 }); 
+
+                            });
+                     });
+               
+               }
+               
+                 
+                 $('#datosUi').click(function(){     
+                    
+                    if($(this).height() == 175){
+                        
+                        $(this).animate({height: "15"});
+                        $('#ver').attr('class', 'arrow_box');
+                        
+                    }else{
+
+                        $(this).animate({height: "175"});
+                        $('#ver').attr('class', 'arrow_boxTop');
+                        
+                    }
+                    
+                 });
+                 $('#leyendaUi').click(function(){
+                    
+                    var total = $(window).width();
+                    var leyenda = $('#leyendaUi').width();
+                    
+                    if($(this).width() == 50){
+                        
+                        $(this).animate({width: total});
+                        $('#verLeyenda').attr('class', 'arrow_boxLeft');
+                        $('#verLeyenda').css({right: 0});
+                        $('#tablaLeyenda').show();
+//                        alert($('#verLeyenda').parent().width() - $('#verLeyenda').width() - $('#verLeyenda').offset().left);
+                        
+                    }else{
+
+                        $(this).animate({width: "50"});
+                        $('#verLeyenda').attr('class', 'arrow_boxRight');
+                        $('#verLeyenda').css({right: 30});
+                        $('#tablaLeyenda').hide();
+                    }
+                    
+                 });
+
+                
+                
+                
+                <?php
+//                        $click = '';
+//                	$function = "window.location.href = urlAjax + 'impresion';";
+//                        $function = "window.open(urlAjax + 'impresion')";
+//                        echo $this->SwapBytes_Jquery->setClick('btnInscribir', $function);
+//                        $function = "window.location.href = urlAjax + 'descargar'";
+//                        $click = $this->SwapBytes_Jquery->setClick('btnInscribir', $function);
+//                        echo $click;
+                        
+                ?>
+                        
+                        $('#btnInscribir').click(function(){
+                                
+                                jQuery('body').showLoading(
+                                {
+                                    'addClass': 'loading-indicator-bars'
+                                }
+                                );    
+                                
+                                $('#loading-indicator-body').html('Descargando PDF...');   
+                                
+                                $.getJSON(urlAjax + "descargar", function(data){executeCmdsFromJSON(data);
+                                
+                                    jQuery('body').hideLoading();
+                                    
+                                    $('#infoEstudiante').toggle(6000,function(){
+                                    
+                                        $(location).attr('href',urlAjax+'../../inicio');
+                                        
+                                    });
+                                });
+    
+                        });
+            
+          });  
+            
+            function clickBoton(){
+
+                 var botonId = $(this).attr('id');
+                 var num = '';
+                 var val = '';
+                 var posicion = parseInt($('#tblEstudiantes').find('#tablaMaterias').css('left'));
+                 var ancho = $('#tblEstudiantes').find('#tablaMaterias').width()*-1;
+                 
+                 
+                 
+                 if(botonId == 'botonesDerechaFollow'){
+                     
+                     if(posicion-1097 == ancho){
+                        num = '-=0px';
+                        val = (posicion-1097 == ancho) ? 1 :null;
+                        alert(posicion +' '+ ancho)
+                        
+                        
+                     }else{
+                         
+                        num = '-=204px';
+                        val = (posicion-204 > ancho) ? 1 :null;
+                        
+                        if(posicion-1097-204 <= ancho){
+                            
+                            $('#botonesDobleDerechaFollowWrapper').hide();
+                            $('#botonesDerechaFollowWrapper').hide();
+                            
+                        }
+
+                     }
+                     
+                     
+                     
+                     $('#botonesFollowWrapper').show();
+                     $('#botonesDobleFollowWrapper').show();
+                     
+                 }else if(botonId == 'botonesFollow'){
+                     
+                     num = '+=204px';
+                     val = (posicion < 0) ? 1 : null;
+                     
+                     if(posicion + 210 > 0){
+                         
+                         $('#botonesDobleFollowWrapper').hide();
+                         $('#botonesFollowWrapper').hide();
+                         
+                     }
+                     
+                     $('#botonesDobleDerechaFollowWrapper').show();
+                     $('#botonesDerechaFollowWrapper').show();
+                     
+                 }else if(botonId == 'botonesDobleDerechaFollow'){
+                     
+                     if(posicion-2194 < ancho){//Se saca el ancho que falta para llegar el final
+                         
+                         num = '-=' + (-1*(ancho-(posicion - 1021))).toString();
+                         $('#botonesDobleDerechaFollowWrapper').hide();
+                         $('#botonesDerechaFollowWrapper').hide();
+                         
+                     }else{
+                         
+                         num = '-=1021px';
+                   
+                         if(posicion+2194 <= ancho){
+                             
+                             $('#botonesDobleDerechaFollowWrapper').hide();
+                             $('#botonesDerechaFollowWrapper').hide();
+                             
+                         }
+                         
+                     }
+                     val = (posicion-1097 > ancho) ? 1 : null;
+                     
+                     $('#botonesFollowWrapper').show();
+                     $('#botonesDobleFollowWrapper').show();
+                     
+                     
+                 }else if(botonId == 'botonesDobleFollow'){
+                     
+                     if(posicion+1097 > 0){
+                        
+                         num = '+=' + (-(posicion)).toString();
+                         $('#botonesDobleFollowWrapper').hide();
+                         $('#botonesFollowWrapper').hide();
+
+                     }else{
+                         num = '+=1021px';
+                         
+                     }
+                     val = (posicion < 0) ? 1 : null;
+                     
+                     $('#botonesDobleDerechaFollowWrapper').show();
+                     $('#botonesDerechaFollowWrapper').show();
+                     
+                 }
+
+                 
+                 $(this).unbind('click')
+                                        .toggle(300,function(){
+                                            $(this).show();
+                                            $(this).bind('click',clickBoton);
+                                            
+                                        });
+
+                 var entro = 'false';
+                 
+                 $('#tblEstudiantes').each(function(){
+                                      
+                         if(val){
+                             
+                               $(this).find('#tablaMaterias').animate({'left': num});      
+                               $(this).find('#headFollowWrapper').animate({'left': num});      
+                             
+                                    
+                         }
+
+                 });   
+                                            
+            }
+            
+            function ventana(){
+                
+                if($(this).text() == 'Si '){
+                    
+                    $('#tblEstudiantes , #tblEstudiantesSabDom').find('.clase > table').unbind('click');//Se quita el poder seleccionar una materia.
+
+                     var ag = $('#aghide').text();
+                     var agSeleccionada = '';
+                     var ags = '';
+
+                     $('#tblEstudiantes .clase table, #tblEstudiantesSabDom .clase table').each(function(){
+                             if($(this).attr('class') == 'claseinterna verde'){
+                                    agSeleccionada += $(this).find('#ag').attr('value') + ' - ';
+                             }
+                     });
+
+                     ags = agSeleccionada.substring(0, agSeleccionada.length -3);
+                                
+
+                                     $.getJSON(urlAjax + "verificarseleccion/asignacion/"+ag+"/ags/"+ags, function(data){executeCmdsFromJSON(data);
+
+                                             //*Se activa el poder seleccionar una materia.*
+                                             $('#tblEstudiantes, #tblEstudiantesSabDom').find('.clase > table').bind('click',seleccionar);
+                                             var agSeleccionada = '';
+                                             var ags = '';
+                                             $('#tblEstudiantes .clase table, #tblEstudiantesSabDom .clase table').each(function(){
+                                                     if(($(this).attr('class') == 'claseinterna verde') || ($(this).attr('class') == 'claseinternarojo verde') || ($(this).attr('class') == 'claseinternablanco verderayado')){
+                                                            agSeleccionada += $(this).find('#ag').attr('value') + ',';
+                                                     }
+                                             });
+
+                                             ags = agSeleccionada.substring(0, agSeleccionada.length -1);   
+                                             $.getJSON(urlAjax + "uc/ags/"+ags, function(data){executeCmdsFromJSON(data);});
+
+                                             $.getJSON(urlAjax + "subrayar", function(data){executeCmdsFromJSON(data);
+
+                                                $('#tblEstudiantes , #tblEstudiantesSabDom').find('.subrayarVerde').each(function(){
+
+                                                       $(this).toggleClass("subrayarVerde");
+                                                       $(this).find('.stripe').toggleClass("stripeVerde");  
+                //                                       $(this).find('.clase').toggleClass("subrayarVerde");  
+                                                });
+                                                $('#tblEstudiantes , #tblEstudiantesSabDom').find('.stripeVerde').each(function(){
+
+                                                       $(this).toggleClass("stripeVerde");  
+                //                                       $(this).find('.clase').toggleClass("subrayarVerde");  
+                                                });
+
+
+
+                                                $.each(data, function(key, value) { 
+
+                                                     $('#tblEstudiantes , #tblEstudiantesSabDom').find('#semTable').each(function(){
+
+                //                                         if($(this).text() != key){
+
+                                                               $('.tableDiv').find('.horainicio').each(function(){
+
+                                                                   var hora = $(this).text();
+                                                                   var lugar = $(this);
+
+                                                                   $.each(value, function(key2, value2) {
+
+                                                                       $.each(value2, function() {
+
+                                                                           var horaVal = this.substring(0,5);
+                                                                           if(hora == horaVal){
+
+                                                                               if (lugar.data('dia') == key2){
+
+                                                                                    lugar.parent().toggleClass("subrayarVerde");
+                                                                                    lugar.siblings('td[class = "stripe"]').toggleClass("stripeVerde");
+                                                                                    lugar.siblings('td[class = "clase"]').toggleClass("subrayarVerde");
+                //                                                                    lugar.siblings('td[class = "clase"]').toggleClass("subrayarVerde");
+
+
+                                                                               }
+
+                                                                           }
+
+                                                                       });
+
+                                                                   });
+
+                                                               });
+
+                //                                         }
+
+                                                     });                                
+                                                });
+
+                                             });//Termina subrayar
+                                     });
+                    
+                    
+                        }else{
+
+                            $('#tblEstudiantes, #tblEstudiantesSabDom').find('.clase > table').bind('click',seleccionar);
+
+                        }
+                
+                       $('.ui-dialog-buttonset').find('.ui-button-text').each(function(){
+
+                            if($(this).text() == 'Si '){
+
+                                $(this).text('Ok');
+
+                            }
+
+                       });
+                       
+                       $('.ui-dialog-titlebar-close').hide()
+                
+                
+            }
+            
+            function seleccionar(){//Funcion que selecciona las materias
+                          
+                     $('#tblEstudiantes , #tblEstudiantesSabDom').find('.clase > table').unbind('click');//Se quita el poder seleccionar una materia.
+
+                     var ag = $(this).find('#ag').attr('value');
+                     var agSeleccionada = '';
+                     var ags = '';
+
+                     $('#tblEstudiantes .clase table, #tblEstudiantesSabDom .clase table').each(function(){
+                             if($(this).attr('class') == 'claseinterna verde'){
+                                    agSeleccionada += $(this).find('#ag').attr('value') + ' - ';
+                             }
+                     });
+                     
+                     ags = agSeleccionada.substring(0, agSeleccionada.length -3);
+                     
+                     $.getJSON(urlAjax + "mensajecoincidencia/ag/"+ag, function(data){executeCmdsFromJSON(data);   
+
+                     $('.ui-dialog-buttonset').find('.ui-button-text').each(function(){
+
+                            if($(this).text() == 'Ok'){
+
+                                $(this).text('Si ');
+
+                            }
+
+                       });
+                       
+                       $('.ui-dialog-titlebar-close').hide()
+                               if(!data){ 
+
+                                     $.getJSON(urlAjax + "verificarseleccion/asignacion/"+ag+"/ags/"+ags, function(data){executeCmdsFromJSON(data);
+
+                                             //*Se activa el poder seleccionar una materia.*
+                                             $('#tblEstudiantes, #tblEstudiantesSabDom').find('.clase > table').bind('click',seleccionar);
+                                             var agSeleccionada = '';
+                                             var ags = '';
+                                             $('#tblEstudiantes .clase table, #tblEstudiantesSabDom .clase table').each(function(){
+                                                     if(($(this).attr('class') == 'claseinterna verde') || ($(this).attr('class') == 'claseinternarojo verde') || ($(this).attr('class') == 'claseinternablanco verderayado')){
+                                                            agSeleccionada += $(this).find('#ag').attr('value') + ',';
+                                                     }
+                                             });
+
+                                             ags = agSeleccionada.substring(0, agSeleccionada.length -1);   
+                                             $.getJSON(urlAjax + "uc/ags/"+ags, function(data){executeCmdsFromJSON(data);});
+
+                                             $.getJSON(urlAjax + "subrayar", function(data){executeCmdsFromJSON(data);
+
+                                                $('#tblEstudiantes , #tblEstudiantesSabDom').find('.subrayarVerde').each(function(){
+
+                                                       $(this).toggleClass("subrayarVerde");
+                                                       $(this).find('.stripe').toggleClass("stripeVerde");  
+                //                                       $(this).find('.clase').toggleClass("subrayarVerde");  
+                                                });
+                                                $('#tblEstudiantes , #tblEstudiantesSabDom').find('.stripeVerde').each(function(){
+
+                                                       $(this).toggleClass("stripeVerde");  
+                //                                       $(this).find('.clase').toggleClass("subrayarVerde");  
+                                                });
+
+
+
+                                                $.each(data, function(key, value) { 
+
+                                                     $('#tblEstudiantes , #tblEstudiantesSabDom').find('#semTable').each(function(){
+
+                //                                         if($(this).text() != key){
+
+                                                               $('.tableDiv').find('.horainicio').each(function(){
+
+                                                                   var hora = $(this).text();
+                                                                   var lugar = $(this);
+
+                                                                   $.each(value, function(key2, value2) {
+
+                                                                       $.each(value2, function() {
+
+                                                                           var horaVal = this.substring(0,5);
+                                                                           if(hora == horaVal){
+
+                                                                               if (lugar.data('dia') == key2){
+
+                                                                                    lugar.parent().toggleClass("subrayarVerde");
+                                                                                    lugar.siblings('td[class = "stripe"]').toggleClass("stripeVerde");
+                                                                                    lugar.siblings('td[class = "clase"]').toggleClass("subrayarVerde");
+                //                                                                    lugar.siblings('td[class = "clase"]').toggleClass("subrayarVerde");
+
+
+                                                                               }
+
+                                                                           }
+
+                                                                       });
+
+                                                                   });
+
+                                                               });
+
+                //                                         }
+
+                                                     });                                
+                                                });
+
+                                             });//Termina subrayar
+                                     });
+                                     
+                                     
+                        $('.ui-dialog-buttonset').find('.ui-button-text').each(function(){
+
+                            if($(this).text() == 'Si '){
+
+                                $(this).text('Ok');
+
+                            }
+
+                        });
+                        $('.ui-dialog-titlebar-close').hide()
+                                     
+                               }
+                     
+                });    
+                     
+            }
+            
+            
+            function coincidenciaHorario(){
+            
+            
+            
+            }
+            
+            function crearToolTip(elemento,data){
+
+            var text = data.toString().substr(1, data.toString().length-2);
+            
+            $('#'+elemento).qtip({
+               content: ''+text+'',
+               position: {
+                  corner: {
+                     target: 'topRight',
+                     tooltip: 'bottomMiddle'
+                  }
+               },
+               
+               style: { 
+                      width: 200,
+                      padding: 5,
+                      background: '#006778',
+                      radius: 5,
+                      color: 'white',
+                      textAlign: 'center'
+                             ,border: {      
+                                 width: 1,
+                                 radius: 3,
+                                 color: 'black'
+//                                 color: '#006778'
+                                 
+                             }
+                             ,width: 200
+
+                            ,tip: { // Now an object instead of a string
+                             corner: 'bottomLeft', // We declare our corner within the object using the corner sub-option
+                             color: 'black',
+                             size: {
+                                x: 15, // Be careful that the x and y values refer to coordinates on screen, not height or width.
+                                y : 8 // Depending on which corner your tooltip is at, x and y could mean either height or width!
+                             }
+                            }
+               },
+               hide: { effect: { type: 'fade', length: 430 } },
+               show: { effect: { type: 'slide', length: 200 } }
+
+            });
+            
+
+            }
+            
+            function crearToolTipError(elemento,data){
+
+            var text = data.toString().substr(1, data.toString().length-2);
+            
+            $('#'+elemento).qtip({
+               content: ''+text+'',
+               position: {
+                  corner: {
+                     target: 'leftBottom',
+                     tooltip: 'rightTop'
+                  }
+               },
+               
+               style: { 
+                      width: 200,
+                      padding: 5,
+                      background: 'red',
+                      radius: 5,
+                      color: 'white',
+                      textAlign: 'center'
+                             ,border: {      
+                                 width: 1,
+                                 radius: 3,
+                                 color: 'black'
+//                                 color: '#006778'
+                                 
+                             }
+                             ,width: 200
+
+                            ,tip: { // Now an object instead of a string
+                             corner: 'topRight', // We declare our corner within the object using the corner sub-option
+                             color: 'black',
+                             size: {
+                                x: 15, // Be careful that the x and y values refer to coordinates on screen, not height or width.
+                                y : 8 // Depending on which corner your tooltip is at, x and y could mean either height or width!
+                             }
+                            }
+               },
+               hide: { effect: { type: 'fade', length: 430 } },
+               show: { effect: { type: 'slide', length: 200 } },
+               show: { when: { event: 'click' } }
+
+            });
+            
+
+            }
+            
+            function destroyToolTip(){
+                
+                $('#tooltip').css({
+                    
+                    'display': 'none'
+ 
+                });
+            
+            
+            }
+            
+            
+            
+</script>
+<style>
+    .TextBoxNormal {
+        background-color: #FFFFFF;
+        border-left: 1px solid #999999;
+        border-top: 1px solid #999999;
+        border-right: 1px solid #cccccc;
+        border-bottom: 1px solid #cccccc;
+        text-align:center;
+    }
+
+    .TextBoxAlert {
+        background-color: #FF9999;
+        border-left: 1px solid #FF0000;
+        border-top: 1px solid #FF0000;
+        border-right: 1px solid #FF6666;
+        border-bottom: 1px solid #FF6666;
+        text-align:center;
+    }
+</style>

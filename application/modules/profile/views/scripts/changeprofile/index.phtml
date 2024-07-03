@@ -1,0 +1,195 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+// $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.9.1.js');
+// $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+// $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.validate.js');
+
+?>
+
+<h2>
+<?php
+
+echo $this->titulo;
+?>
+</h2>
+<style>
+        #contact label{
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+        }
+        #contact_submit{
+            padding-left: 100px;
+        }
+        #contact div{
+            margin-top: 1em;
+        }
+        textarea{
+            vertical-align: top;
+            height: 5em;
+        }
+            
+        .error{
+            display: none;
+            margin-left: 10px;
+        }       
+        
+        .error_show{
+            color: red;
+            margin-left: 10px;
+        }
+        
+        input.invalid, textarea.invalid{
+            border: 2px solid red;
+        }
+        
+        input.valid, textarea.valid{
+            border: 2px solid green;
+        }
+        div.ui-dialog{
+            top: 50%;
+            left: 37%;
+        }
+    </style> 
+    
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> -->
+
+
+<table border="0" cellpadding="0" cellspacing="0" width="500px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td colspan="2" align="left">
+<div class="alert">           Para  cambiar su perfil no se debe dejar ningun espacio en blanco y los campos en rojo estan mal incorrectos.</div>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center">
+            <?php
+            $this->form->setAction($this->url(). '/');
+            echo $this->form;
+            ?>
+
+        </td>
+    </tr>
+
+</table>
+
+            <?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+
+
+<script type="text/javascript">
+
+
+    $(document).ready(function(){
+        <?php 
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Form->getJavaScript();
+            // echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+           
+        ?>
+
+                
+                $('#primer_nombre').keyup(function() {
+                    var input=$(this);
+                    var re = /^([a-zA-ZùÙüÜäàáëèéïìíöòóüùúÄÀÁËÈÉÏÌÍÖÒÓÜÚñÑ\s]+)$/;
+                    var is_name=re.test(input.val());
+                    if(is_name){input.removeClass("invalid").addClass("valid");}
+                    else{input.removeClass("valid").addClass("invalid");}
+                });
+                $('#segundo_nombre').keyup(function() {
+                    var input=$(this);
+                    var re = /^([a-zA-ZùÙüÜäàáëèéïìíöòóüùúÄÀÁËÈÉÏÌÍÖÒÓÜÚñÑ\s]+)$/;
+                    var is_name=re.test(input.val());
+                    if(is_name){input.removeClass("invalid").addClass("valid");}
+                    else{input.removeClass("valid").addClass("invalid");}
+                }).focusout(function(){
+                    if ( $(this).val() == undefined || $(this).val() == "") {
+                        $(this).removeClass("invalid");
+                    }
+                });
+                $('#primer_apellido').keyup(function() {
+                    var input=$(this);
+                    var re = /^([a-zA-ZùÙüÜäàáëèéïìíöòóüùúÄÀÁËÈÉÏÌÍÖÒÓÜÚñÑ\s]+)$/;
+                    var is_name=re.test(input.val());
+                    if(is_name){input.removeClass("invalid").addClass("valid");}
+                    else{input.removeClass("valid").addClass("invalid");}
+                });
+                $('#segundo_apellido').keyup(function() {
+                    var input=$(this);
+                     var re = /^([a-zA-ZùÙüÜäàáëèéïìíöòóüùúÄÀÁËÈÉÏÌÍÖÒÓÜÚñÑ\s]+)$/ ;
+                    var is_name=re.test(input.val());
+                    if(is_name){input.removeClass("invalid").addClass("valid");}
+                    else{input.removeClass("valid").addClass("invalid");}
+                }).focusout(function(){
+                    if ( $(this).val() == undefined || $(this).val() == "") {
+                        $(this).removeClass("invalid");
+                    }
+                });
+                $('#correo').keyup(function() {
+                    var input=$(this);
+                    var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+/;
+                    var is_email=re.test(input.val());
+                    if(is_email){input.removeClass("invalid").addClass("valid");}
+                    else{input.removeClass("valid").addClass("invalid");}
+                });
+                $('#fechanacimiento').keyup(function() {
+                    var input=$(this);
+                    var re = /^\d{4}([\-/.])(0?[1-9]|1[1-2])\1(3[01]|[12][0-9]|0?[1-9])$/;
+                    var is_fechanacimiento=re.test(input.val());
+                    if(is_fechanacimiento){input.removeClass("invalid").addClass("valid");}
+                    else{input.removeClass("valid").addClass("invalid");}
+                });
+      
+
+        $('#change_profile').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                  dataType: 'json',
+                  type: 'POST',
+                  url: urlAjax + 'update/',
+                  data: { 
+                    primer_nombre:      $("#primer_nombre").val(),
+                    segundo_nombre:     $("#segundo_nombre").val(),
+                    primer_apellido:    $("#primer_apellido").val(),
+                    segundo_apellido:   $("#segundo_apellido").val(),
+                    fechanacimiento:    $("#fechanacimiento").val(),
+                    nacionalidad:       $("input[name=nacionalidad]:checked").val(),
+                    sexo:               $("input[name=sexo]:checked").val(),
+                    direccion:          $("#direccion").val(),
+                    telefono:           $("#telefono").val(),
+                    telefono_movil:     $("#telefono_movil").val(),
+                    correo:             $("#correo").val(),
+                },
+                  success: function(data){executeCmdsFromJSON(data);}
+                });
+
+        });
+
+        
+ 
+
+  <?php 
+            echo $this->SwapBytes_Jquery_Mask->phone("telefono") . ";";
+            echo $this->SwapBytes_Jquery_Mask->phone("telefono_movil") . ";";
+
+            ?>
+
+    $("#fechanacimiento").datepicker({changeYear: true, changeMonth: true, dateFormat: 'yy-mm-dd' });
+
+
+    
+    
+
+    });
+
+  
+   
+</script>

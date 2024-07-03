@@ -1,0 +1,1272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="actadefensaTG" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0349a846-3653-4aaa-a88f-90f071f7244a">
+	<property name="ireport.zoom" value="0.9090909090909091"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="1980"/>
+	<style name="table">
+		<box>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5">
+		<box>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 5_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="tesistas" uuid="61903e3f-5dcc-4514-b06f-bec2cf1d4421">
+		<parameter name="cod" class="java.lang.String"/>
+		<parameter name="periodo" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select distinct u_sub.pk_usuario,
+	(u_sub.primer_apellido ||', '||u_sub.primer_nombre) as nombre,
+	(select distinct sqt.escuela
+	from(
+	select distinct ve.escuela, i.fk_periodo
+	from tbl_inscripciones		i
+	join tbl_usuariosgrupos		ug	on	ug.pk_usuariogrupo	=	i.fk_usuariogrupo
+	join vw_escuelas		ve	on	ve.pk_atributo		=	i.fk_atributo
+	where ug.fk_usuario = u_sub.pk_usuario
+	order by 2 desc limit 1
+	) as sqt) as escuela
+from tbl_datostesis	dt_sub
+join tbl_autorestesis	at_sub	on	at_sub.fk_datotesis		=	dt_sub.pk_datotesis		and at_sub.renuncia = false
+join tbl_usuariosgrupos	ug_sub	on	ug_sub.pk_usuariogrupo		=	at_sub.fk_usuariogrupo
+join tbl_usuarios	u_sub	on	u_sub.pk_usuario		=	ug_sub.fk_usuario
+where dt_sub.pk_datotesis = $P{cod}::integer
+order by 1 asc]]>
+		</queryString>
+		<field name="pk_usuario" class="java.lang.Long"/>
+		<field name="nombre" class="java.lang.String"/>
+		<field name="escuela" class="java.lang.String"/>
+		<group name="pk_usuario">
+			<groupExpression><![CDATA[$F{pk_usuario}]]></groupExpression>
+		</group>
+		<group name="nombre">
+			<groupExpression><![CDATA[$F{nombre}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="evaluadores" uuid="a716af79-5c10-484c-9dc2-c0fce762971e">
+		<parameter name="cod" class="java.lang.String"/>
+		<parameter name="periodo" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select distinct u.pk_usuario, (u.apellido ||', '||u.nombre) as evaluador, atri.valor as rol
+from tbl_evaluadorestesis	et
+join tbl_usuariosgrupos		ug	on	ug.pk_usuariogrupo	=	et.fk_usuariogrupo
+join tbl_usuarios		u	on	u.pk_usuario		=	ug.fk_usuario
+full outer join tbl_atributos		atri	on	atri.pk_atributo	=	et.fk_rol
+where et.fk_datotesis = $P{cod}::integer
+and et.fk_periodo = $P{periodo}::integer
+and et.fk_tipo = (select distinct a.pk_atributo
+		    from tbl_atributos      a
+		    join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+		    where at.nombre ilike 'Tipo Evaluadores'
+		    and a.valor ilike 'Principal')]]>
+		</queryString>
+		<field name="pk_usuario" class="java.lang.Long"/>
+		<field name="evaluador" class="java.lang.String"/>
+		<field name="rol" class="java.lang.String"/>
+		<group name="pk_usuario">
+			<groupExpression><![CDATA[$F{pk_usuario}]]></groupExpression>
+		</group>
+		<group name="evaluador">
+			<groupExpression><![CDATA[$F{evaluador}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="tecnico" uuid="3562535d-4735-4989-bb42-b4184eef0d7a">
+		<parameter name="cod" class="java.lang.String"/>
+		<parameter name="periodo" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select distinct u.pk_usuario, (u.apellido ||', '||u.nombre) as evaluador, atri.valor as rol
+from tbl_evaluadorestesis	et
+join tbl_usuariosgrupos		ug	on	ug.pk_usuariogrupo	=	et.fk_usuariogrupo
+join tbl_usuarios		u	on	u.pk_usuario		=	ug.fk_usuario
+full outer join tbl_atributos		atri	on	atri.pk_atributo	=	et.fk_rol
+where et.fk_datotesis = $P{cod}::integer
+and et.fk_periodo = $P{periodo}::integer
+and et.fk_tipo = (select distinct a.pk_atributo
+		    from tbl_atributos      a
+		    join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+		    where at.nombre ilike 'Tipo Evaluadores'
+		    and a.valor ilike 'Principal')
+and et.fk_rol = (select distinct a.pk_atributo
+		    from tbl_atributos      a
+		    join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+		    where at.nombre ilike 'Rol Evaluadores'
+		    and a.valor ilike 'Tecnico')]]>
+		</queryString>
+		<field name="pk_usuario" class="java.lang.Long"/>
+		<field name="evaluador" class="java.lang.String"/>
+		<field name="rol" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="investigacion" uuid="cc39904c-9012-4cd0-9b26-ed89a524900d">
+		<parameter name="cod" class="java.lang.String"/>
+		<parameter name="periodo" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select distinct u.pk_usuario, (u.apellido ||', '||u.nombre) as evaluador, atri.valor as rol
+from tbl_evaluadorestesis	et
+join tbl_usuariosgrupos		ug	on	ug.pk_usuariogrupo	=	et.fk_usuariogrupo
+join tbl_usuarios		u	on	u.pk_usuario		=	ug.fk_usuario
+full outer join tbl_atributos		atri	on	atri.pk_atributo	=	et.fk_rol
+where et.fk_datotesis = $P{cod}::integer
+and et.fk_periodo = $P{periodo}::integer
+and et.fk_tipo = (select distinct a.pk_atributo
+		    from tbl_atributos      a
+		    join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+		    where at.nombre ilike 'Tipo Evaluadores'
+		    and a.valor ilike 'Principal')
+and et.fk_rol = (select distinct a.pk_atributo
+		    from tbl_atributos      a
+		    join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+		    where at.nombre ilike 'Rol Evaluadores'
+		    and a.valor ilike 'De Investigacion')]]>
+		</queryString>
+		<field name="pk_usuario" class="java.lang.Long"/>
+		<field name="evaluador" class="java.lang.String"/>
+		<field name="rol" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="Table Dataset 1" uuid="5d261ebe-fec3-43eb-8a18-d9694c97be81">
+		<parameter name="cod" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="periodo" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+	</subDataset>
+	<subDataset name="Table Dataset 2" uuid="305be4f6-26fb-4e79-bcae-a8117d173408"/>
+	<subDataset name="tutores" uuid="453d1ad4-54a9-4a31-9787-52bae967e749">
+		<parameter name="cod" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="periodo" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString language="SQL">
+			<![CDATA[Select u.pk_usuario, (u.apellido ||', '||u.nombre) as evaluador, ta.valor as rol
+from tbl_tutorestesis as ttt
+join tbl_usuariosgrupos as tug on ttt.fk_usuariogrupo = tug.pk_usuariogrupo
+join tbl_usuarios as u on tug.fk_usuario = u.pk_usuario
+join tbl_atributos as ta on ttt.fk_tipo = ta.pk_atributo
+where fk_datotesis = $P{cod}::integer and ttt.fk_periodo = $P{periodo}::integer]]>
+		</queryString>
+		<field name="pk_usuario" class="java.lang.Long"/>
+		<field name="evaluador" class="java.lang.String"/>
+		<field name="rol" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="cod" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select distinct dt.pk_datotesis,
+	deft.fecha,
+	ho.horainicio,
+	e.nombre as aula,
+	e1.nombre as edificio,
+	e2.nombre as sede,
+	dt.titulo
+from tbl_datostesis		dt
+join tbl_defensastesis		deft	on	deft.fk_datotesis 		= 	dt.pk_datotesis
+join tbl_horarios		ho	on	ho.pk_horario 			= 	deft.fk_horario
+join tbl_estructuras		e	on 	e.pk_estructura			=	deft.fk_estructura
+join tbl_estructuras		e1	on 	e1.pk_estructura		=	e.fk_estructura
+join tbl_estructuras		e2	on 	e2.pk_estructura		=	e1.fk_estructura
+join tbl_autorestesis		at 	on 	at.fk_Datotesis 		=	dt.pk_datotesis 	and at.renuncia = false
+where dt.pk_datotesis = $P{cod}::integer]]>
+	</queryString>
+	<field name="pk_datotesis" class="java.lang.Long"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="horainicio" class="java.sql.Time"/>
+	<field name="aula" class="java.lang.String"/>
+	<field name="edificio" class="java.lang.String"/>
+	<field name="sede" class="java.lang.String"/>
+	<field name="titulo" class="java.lang.String"/>
+	<group name="tecnico">
+		<groupExpression><![CDATA[$F{pk_datotesis}]]></groupExpression>
+		<groupFooter>
+			<band height="752">
+				<staticText>
+					<reportElement x="18" y="55" width="536" height="55" uuid="6e672b99-e035-4708-9bd3-1fb799192b42"/>
+					<textElement textAlignment="Center" markup="html">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[EVALUACIÓN DE TRABAJO DE GRADO
+<br>
+<br>
+Evaluador Técnico]]></text>
+				</staticText>
+				<image>
+					<reportElement x="18" y="12" width="122" height="43" uuid="6c8089a9-ddac-4f8b-bfcf-41842655d55d"/>
+					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+				</image>
+				<componentElement>
+					<reportElement key="table 1" x="18" y="161" width="193" height="49" uuid="922b4607-6557-4627-b635-067063be6772"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="tesistas" uuid="785c5966-113e-4ce2-b872-bd64f9967199">
+							<datasetParameter name="cod">
+								<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodo">
+								<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="446" uuid="64d8ce2a-9206-43b3-b6ec-f33cb1319d3a">
+							<jr:detailCell height="27" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="1" width="446" height="26" uuid="46e371d1-eaa4-4c15-9b5c-a731685a2920"/>
+									<textElement>
+										<font size="12" isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA["Autor(es):"+$F{nombre}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<textField>
+					<reportElement x="18" y="224" width="536" height="64" uuid="3b12e2a1-aeca-437a-ab2b-c01c41a3991a"/>
+					<textElement textAlignment="Justified" markup="html">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["<b>Titulo: </b>''" + $F{titulo}+"''"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="351" y="121" width="203" height="40" uuid="ce038d8f-ac6c-4606-8225-6e9d6c1bc05b"/>
+					<textElement textAlignment="Right" markup="html">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["<b>Fecha:</b> "+$F{fecha}]]></textFieldExpression>
+				</textField>
+				<componentElement>
+					<reportElement key="table 6" x="18" y="299" width="220" height="34" uuid="e8da7c1a-2311-4b90-abf0-a9363fd636b5"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="tecnico" uuid="4bae56f1-1897-4ab9-b12b-e127b9683789">
+							<datasetParameter name="cod">
+								<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodo">
+								<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="535" uuid="066b32aa-6836-408d-817c-90efdcff15f8">
+							<jr:detailCell height="32" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="0" width="535" height="32" uuid="379e5283-6fdc-4775-a4a9-ebc24a35657a"/>
+									<textElement markup="html">
+										<font size="12"/>
+									</textElement>
+									<textFieldExpression><![CDATA["Evaluador Tecnico:<b>"+$F{evaluador}+"</b>"]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<componentElement>
+					<reportElement key="table 6" x="18" y="347" width="536" height="277" uuid="33ef9c03-78d4-4676-8203-190b5ec59326"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="Table Dataset 2" uuid="d27579bc-c5ca-489a-8de0-43ccaf6c2ce3">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
+						</datasetRun>
+						<jr:column width="199" uuid="e2caaacc-92e9-4185-a90f-35fb6297e105">
+							<jr:tableHeader height="31" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="199" height="31" uuid="dd3e97fd-9dfc-400a-a73a-ac9c5dff30de"/>
+									<textElement textAlignment="Justified">
+										<font size="12" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Aspectos a evaluar]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:detailCell height="267" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="199" height="38" uuid="ed06e3f5-09da-4b40-b6e6-beb9fa4ac127"/>
+									<textElement markup="html"/>
+									<text><![CDATA[1. Cumplimiento de los objetivos.]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="38" width="199" height="38" uuid="60beed62-643d-402b-9a40-addb39584571"/>
+									<text><![CDATA[2. Aplicación de la teoría y metodología para el desarrollo del Trabajo y dominio del tema.]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="76" width="199" height="38" uuid="5c39c1be-82c9-4a72-a091-9a03046bbbf0"/>
+									<text><![CDATA[3. Evaluacion de los resultados.]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="114" width="199" height="38" uuid="9d7125c5-e1ad-4ac8-aae4-d510b4d3a5b3"/>
+									<text><![CDATA[4. Pertinencia de las conclusiones y recomendaciones.]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="152" width="199" height="38" uuid="f13a23fe-96b0-4ca4-bae9-c1c6e3f114c7"/>
+									<text><![CDATA[5. Relevancia y contribucion del proyecto.]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="190" width="199" height="38" uuid="64f1aa6c-4a67-4291-95e2-40783b92ec30"/>
+									<text><![CDATA[6. Operatividad del diseño, sistema, modelo, prototipo u otros]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="228" width="199" height="38" uuid="19eba37f-b38e-49dc-ab20-3a3a9aeec503"/>
+									<text><![CDATA[7. Pertinencia de las respuestas.]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="140" uuid="c6dde694-2a09-4946-a501-95259ad9237f">
+							<jr:tableHeader height="31" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="140" height="31" uuid="0ddddefc-57d4-4179-ba81-c2c6e5c8e728"/>
+									<textElement textAlignment="Justified">
+										<font size="12" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Ponderacion]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:detailCell height="267" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="140" height="38" uuid="918e31b1-97f8-47ae-b5de-1b486565b677"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[20%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="38" width="140" height="38" uuid="56730d61-c4c9-477e-9b54-39c8028973e5"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[15%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="76" width="140" height="38" uuid="26494a26-ed2a-4dad-b54d-e6796b3147ce"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[15%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="114" width="140" height="38" uuid="09f002c0-3396-425d-91b8-a9733b26c096"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[15%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="152" width="140" height="38" uuid="78c9135d-ace7-49b5-b698-74b113bd6561"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[15%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="190" width="140" height="38" uuid="f0adc306-4414-4f2a-9bfa-1e5be62cda2a"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[10%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="228" width="140" height="38" uuid="9278da48-0544-4ed8-92f0-075e21b3ec54"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[10%]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="133" uuid="1cdc090e-70d1-4e91-8da8-e5a78963cb87">
+							<jr:tableHeader height="31" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="133" height="31" uuid="2cc75507-aac3-41fa-b76c-abcc41912da5"/>
+									<textElement textAlignment="Justified">
+										<font size="12" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Calificacion         (en escala 00 –20)]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:detailCell height="267" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="133" height="38" uuid="2ad7c6a6-b26f-4623-a3bb-c2114027dc10"/>
+									<textElement markup="html"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="38" width="133" height="38" uuid="dfb47da1-bdcc-4f99-bc93-7df81851c4d8"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="76" width="133" height="38" uuid="b082dc7a-60d7-44c6-9881-eea6cb4f21a8"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="114" width="133" height="38" uuid="27ffae38-f5cb-45ca-86fb-170078f77396"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="152" width="133" height="38" uuid="983407e4-8800-4c8a-ae46-9dedf5dd6797"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="190" width="133" height="38" uuid="278ea4d9-13c0-43de-bc06-071723b8c74d"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="228" width="133" height="38" uuid="b2a49c61-68db-4431-9d72-a60cba4b8ae4"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="130" uuid="0d84bd1d-856a-4a29-abb2-6f07ee0217b8">
+							<jr:tableHeader height="31" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="130" height="31" uuid="cea67f6d-6852-4396-be18-2747425288e1"/>
+									<textElement textAlignment="Justified">
+										<font size="12" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Ponderacion]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:detailCell height="267" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="130" height="38" uuid="df71b22c-488d-469a-a89a-ff7d1236dfa8"/>
+									<textElement markup="html"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="38" width="130" height="38" uuid="fb61b540-621f-4b64-89ee-72905bb33b5b"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="76" width="130" height="38" uuid="4c3adf63-7bde-4874-a36d-506410f399f2"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="114" width="130" height="38" uuid="c6892b8b-79fe-4f47-89da-abe287c446d6"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="152" width="130" height="38" uuid="ea4cee4b-4399-4642-b881-0b4f072a9368"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="190" width="130" height="38" uuid="af962a1d-64b1-4611-bd9d-6e9c49346962"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="228" width="130" height="38" uuid="10b7e4c4-fb60-44d9-accf-a80062ff5f75"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<staticText>
+					<reportElement x="18" y="652" width="536" height="89" uuid="1cdbd573-7017-44ac-996e-12b87869f056"/>
+					<textElement markup="html"/>
+					<text><![CDATA[<b>CALIFICACIÓN REDONDEADA: ___________________ (      ) PUNTOS</b>
+<br><b>ESTA CALIFICACIÓN REPRESENTA EL 50% DEL RESULTADO FINAL</b><br>
+<b>FIRMA DEL EVALUADOR TECNICO: __________________________________</b>
+<br>
+Nota: La calificacion se obtendrá de la sumatoria de las ponderaciones asignadas a cada aspecto y se expresa en forma numérica entre 00 y 20.]]></text>
+				</staticText>
+				<componentElement>
+					<reportElement key="table 1" x="18" y="121" width="193" height="38" uuid="37563f7d-9d9c-49a9-84df-d9c058331da6"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="tesistas" uuid="36d43514-54fb-45d3-bd52-0e16267d9681">
+							<datasetParameter name="cod">
+								<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodo">
+								<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="523" uuid="3ec3fb03-e0fd-4cef-a9ba-0c2ebc3707c6">
+							<jr:detailCell height="27" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="0" width="523" height="26" uuid="0e4ee270-c429-4680-b970-4e7f1fa85d25"/>
+									<textElement>
+										<font size="12"/>
+									</textElement>
+									<textFieldExpression><![CDATA["Escuela: "+$F{escuela}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<componentElement>
+					<reportElement key="table 1" x="455" y="161" width="99" height="49" uuid="9ebe6fe5-6f38-423f-8b4d-bdeded937a21"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="tesistas" uuid="d6b8b129-1307-4029-8215-4ef2db328ee0">
+							<datasetParameter name="cod">
+								<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodo">
+								<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="523" uuid="8d1554f5-9540-43b7-8229-b339ce357c25">
+							<jr:detailCell height="27" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="0" width="523" height="26" uuid="1cf51803-f660-4657-9790-8ff7f65f7b73"/>
+									<textElement>
+										<font size="12" isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA["C.I: "+$F{pk_usuario}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<componentElement>
+					<reportElement key="table 6" x="455" y="299" width="99" height="34" uuid="2cdb0356-f6da-4a38-bb7b-261e1092302f"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="tecnico" uuid="4a0475bf-6e56-403b-bb7a-48fffb16c177">
+							<datasetParameter name="cod">
+								<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodo">
+								<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="535" uuid="230dfa5d-9f43-4c1b-b6f4-b99a4f28921f">
+							<jr:detailCell height="32" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="0" width="535" height="32" uuid="40173e92-cb34-4515-82e1-7bcfb9db5078"/>
+									<textElement textAlignment="Justified" markup="html">
+										<font size="12"/>
+									</textElement>
+									<textFieldExpression><![CDATA["C.I:" +$F{pk_usuario}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</band>
+			<band height="752">
+				<staticText>
+					<reportElement x="18" y="66" width="536" height="71" uuid="5a710b86-621b-4ebb-b1da-8365490c5e4f"/>
+					<textElement textAlignment="Center" markup="html">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[EVALUACION DE TRABAJO DE GRADO
+<br>
+<br>
+Evaluador Metodológico]]></text>
+				</staticText>
+				<image>
+					<reportElement x="31" y="11" width="122" height="55" uuid="0f2ee84e-0cd4-419d-ad6f-35e67ed47e17"/>
+					<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+				</image>
+				<textField>
+					<reportElement x="18" y="259" width="536" height="79" uuid="47cc9b22-0d63-4d79-ab3b-5503b964f6c0"/>
+					<textElement textAlignment="Justified" markup="html">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["<b>Titulo: </b>''" + $F{titulo}+"''"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="351" y="159" width="203" height="37" uuid="bb0e8627-f9b5-461d-a1b1-945fb7b40f94"/>
+					<textElement textAlignment="Right" markup="html">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["<b>Fecha:</b> "+$F{fecha}]]></textFieldExpression>
+				</textField>
+				<componentElement>
+					<reportElement key="table 6" x="18" y="338" width="282" height="29" uuid="10d8e572-06e3-457f-9584-fc042b483972"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="investigacion" uuid="6cd4bc7a-c7de-40ee-b5a2-a939f7f12cc2">
+							<datasetParameter name="cod">
+								<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodo">
+								<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="533" uuid="241d08a8-bb70-40fd-8bfa-ab3cf5ab0114">
+							<jr:detailCell height="26" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="0" width="533" height="26" uuid="08da54f3-0a11-4093-85eb-d435955eea8b"/>
+									<textElement markup="html">
+										<font size="12"/>
+									</textElement>
+									<textFieldExpression><![CDATA["<b>Evaluador Metodológico:</b> "+$F{evaluador}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<staticText>
+					<reportElement x="18" y="648" width="536" height="89" uuid="094e9a29-fadd-4751-bae2-0d48f8be7fae"/>
+					<textElement markup="html">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[<b>CALIFICACIÓN REDONDEADA: ___________________ (___) PUNTOS</b>
+<br>
+<b>ESTA CALIFICACIÓN REPRESENTA EL 30% DEL RESULTADO FINAL</b>
+<br>
+<b>FIRMA DEL EVALUADOR METODOLOGICO: ________________________________</b>
+<br>
+Nota: la calificación se obtendrá de la sumatoria de las ponderaciones asignadas a cada aspecto y se expresa en forma numérica entre 00 y el 20]]></text>
+				</staticText>
+				<componentElement>
+					<reportElement key="table 6" x="18" y="382" width="536" height="256" uuid="aa036c39-b360-4680-9b91-3b4c5ba6cb65"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="Table Dataset 2" uuid="11cf21b9-ad07-436a-b5bf-49a26efc629d">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
+						</datasetRun>
+						<jr:column width="199" uuid="06176bcd-804e-4a94-84e7-e3ca02f8ae1c">
+							<jr:tableHeader height="31" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="199" height="31" uuid="2a622aa3-ec57-49c5-a397-c5427d06e8e8"/>
+									<textElement textAlignment="Justified">
+										<font size="12" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Aspectos a evaluar]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:detailCell height="244" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="199" height="30" uuid="42b1e1dc-8599-4f03-8873-777585bca8af"/>
+									<textElement markup="html"/>
+									<text><![CDATA[1. Uso formal del lenguaje técnico.]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="30" width="199" height="40" uuid="f050a1a1-c050-428a-8379-48a8b0d62b21"/>
+									<text><![CDATA[2. Cumplimiento de las normas de publicación y presentación del Trabajo de Grado.]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="70" width="199" height="40" uuid="a83b98c6-ff9d-4213-b2f2-6ef9d33ba3e0"/>
+									<text><![CDATA[3. Coherencia entre los objetivos de la investigación, el método empleado y los resultados obtenidos.]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="110" width="199" height="40" uuid="55cf7255-4ae4-4360-a6dc-c76af2481df0"/>
+									<text><![CDATA[4. Utilización de la bibliografía técnica actualizada.]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="150" width="199" height="40" uuid="9dd532df-ae4a-4bd8-b29e-eb669a6d8833"/>
+									<text><![CDATA[5. Uso apropiado de las normas para citas y referencias bibliográficas.]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="190" width="199" height="40" uuid="ee82f020-699c-4dda-848d-4d475e26aa78"/>
+									<text><![CDATA[6. Pertinencia en las respuestas.]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="140" uuid="4ce3581c-b084-4191-bcc4-1838928b13d8">
+							<jr:tableHeader height="31" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="140" height="31" uuid="d908dd47-800c-4898-aaf9-2dec49c8d456"/>
+									<textElement textAlignment="Justified">
+										<font size="12" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Ponderacion]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:detailCell height="244" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="140" height="30" uuid="669697f3-1ae4-4346-ad6b-39d717046303"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[15%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="30" width="140" height="40" uuid="e471d7cc-917c-4781-afb3-958e43a3582c"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[20%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="70" width="140" height="40" uuid="f2da3832-cd39-41ca-9817-91187df326bf"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[15%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="110" width="140" height="40" uuid="4c129158-16ff-49e6-ae4e-6b29ee533b2c"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[15%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="150" width="140" height="40" uuid="ffb32c8a-911f-4c55-8e78-02ac31686c36"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[15%]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="190" width="140" height="40" uuid="d79446a4-19a0-410c-ad98-e0bceb3ac17f"/>
+									<textElement textAlignment="Center"/>
+									<text><![CDATA[20%]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="133" uuid="018599e3-d5d2-4ae8-a6d7-c9a8b6621112">
+							<jr:tableHeader height="31" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="133" height="31" uuid="aee0ccd8-04f8-4c59-89ca-5647413b2a9a"/>
+									<textElement textAlignment="Justified">
+										<font size="12" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Calificacion         (en escala 00 –20)]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:detailCell height="244" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="133" height="30" uuid="f6d2de00-8528-496b-916d-796cd4d94e42"/>
+									<textElement markup="html"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="30" width="133" height="40" uuid="3888e11d-c6c2-4403-8cf0-07da45673be7"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="70" width="133" height="40" uuid="f806f7ef-e5c1-483e-8501-f74af43f6642"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="110" width="133" height="40" uuid="3885e0af-78f5-4f09-89f4-eb9273b66994"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="150" width="133" height="40" uuid="877e39f8-a60d-4bbb-b282-e12c48da7f63"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="190" width="133" height="40" uuid="4ce4c37d-fc1c-4266-a60e-0eadcc939bd9"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column width="130" uuid="4daecc97-a8a2-477e-a473-c57a672d96bc">
+							<jr:tableHeader height="31" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="130" height="31" uuid="408efbbd-850f-413f-a137-b415a5d7e3b0"/>
+									<textElement textAlignment="Justified">
+										<font size="12" isBold="true"/>
+									</textElement>
+									<text><![CDATA[Ponderacion]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:detailCell height="244" rowSpan="1">
+								<staticText>
+									<reportElement x="0" y="0" width="130" height="30" uuid="b331a60a-32d2-4961-b467-1d779d6e5ae8"/>
+									<textElement markup="html"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="30" width="130" height="40" uuid="c77d2515-3477-429b-8def-5ef41f72b51b"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="70" width="130" height="40" uuid="bd2c23f5-5ed9-4e06-bc70-d694b3116155"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="110" width="130" height="40" uuid="8f8fef06-d24b-4454-af46-9457cc3e948f"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="150" width="130" height="40" uuid="83ac6f3f-2e71-40e1-b466-bb3f930f7101"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+								<staticText>
+									<reportElement x="0" y="190" width="130" height="40" uuid="3d987180-15ca-4950-9dfe-c0ff384b6b96"/>
+									<text><![CDATA[______]]></text>
+								</staticText>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<componentElement>
+					<reportElement key="table 1" x="18" y="158" width="193" height="38" uuid="500a5f26-cd2d-44be-9132-0746a22e1fdb"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="tesistas" uuid="43587fd5-daba-480f-8868-a7a235c55a26">
+							<datasetParameter name="cod">
+								<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodo">
+								<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="523" uuid="2183b9f5-caed-47a8-a817-d3ea2b4d29ee">
+							<jr:detailCell height="27" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="0" width="523" height="26" uuid="2eff83af-af5c-467d-acd7-dfc3899c869c"/>
+									<textElement>
+										<font size="12"/>
+									</textElement>
+									<textFieldExpression><![CDATA["Escuela: "+$F{escuela}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<componentElement>
+					<reportElement key="table 1" x="18" y="196" width="193" height="49" uuid="2fa51f41-0028-4e3c-ac0c-bd1f0ffe36d5"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="tesistas" uuid="3b284ca1-3085-4a6d-b0e3-f5a85a5bec12">
+							<datasetParameter name="cod">
+								<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodo">
+								<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="446" uuid="faf6a92d-1497-4137-aa53-189ad94864ec">
+							<jr:detailCell height="27" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="1" width="446" height="26" uuid="eb33819c-c0f0-40ce-a366-f17eeb4c1da5"/>
+									<textElement>
+										<font size="12" isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA["Autor(es):"+$F{nombre}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<componentElement>
+					<reportElement key="table 1" x="434" y="196" width="120" height="31" uuid="ed53011b-87df-4fe7-8651-2f7f657d0563"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="tesistas" uuid="bf32e911-5157-42a9-ab12-a265365ae93a">
+							<datasetParameter name="cod">
+								<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodo">
+								<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="446" uuid="bce7a3a1-bf48-4e78-a7c4-fd9d74dfab5d">
+							<jr:detailCell height="27" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="1" width="446" height="26" uuid="93bca6c9-6078-4223-9f9c-bedcf075ae2f"/>
+									<textElement>
+										<font size="12" isBold="true"/>
+									</textElement>
+									<textFieldExpression><![CDATA["C.I."+$F{pk_usuario}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+				<componentElement>
+					<reportElement key="table 6" x="434" y="338" width="120" height="29" uuid="9f8da767-b0c0-4b6b-9d27-6276d28679ec"/>
+					<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+						<datasetRun subDataset="investigacion" uuid="4b3205c1-e969-43f3-8559-65860c8e1750">
+							<datasetParameter name="cod">
+								<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+							</datasetParameter>
+							<datasetParameter name="periodo">
+								<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+							</datasetParameter>
+							<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+						</datasetRun>
+						<jr:column width="533" uuid="4c474f8a-8737-4bc5-852b-442b780453c4">
+							<jr:detailCell height="26" rowSpan="1">
+								<textField>
+									<reportElement x="0" y="0" width="533" height="26" uuid="d7556f62-794c-4060-aab1-131ca725da10"/>
+									<textElement markup="html">
+										<font size="12"/>
+									</textElement>
+									<textFieldExpression><![CDATA[" C.I:"+ $F{pk_usuario}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:table>
+				</componentElement>
+			</band>
+		</groupFooter>
+	</group>
+	<summary>
+		<band height="752" splitType="Stretch">
+			<staticText>
+				<reportElement x="18" y="86" width="536" height="24" uuid="3f00858c-4c70-4682-812a-908bb976f01e"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACTA  DE DEFENSA DEL TRABAJO DE GRADO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="18" y="120" width="536" height="97" uuid="92e93566-8c31-4a4e-922a-edfb8d72fa0e"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Hoy, "+ $F{fecha} + ", siendo la(s) "+$F{horainicio}+", en el aula "+$F{aula}+
+", del " + $F{edificio} + ", en la sede "+ $F{sede}+ " de la Universidad Nueva Esparta, "+
+" se reunió el jurado designado para examinar y calificar el trabajo de grado: <b>"+$F{titulo}+"</b>"+
+", presentado por (el, la, los) Bachiller(es): "]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement key="table 1" x="18" y="217" width="253" height="44" uuid="337cb64b-7adf-444d-9cbb-16c409af9eb2"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tesistas" uuid="b69bc8a5-3726-4804-aa8e-57ddf0385d82">
+						<datasetParameter name="cod">
+							<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="523" uuid="63a9d771-4dd4-4581-9020-1a7b278507a4">
+						<jr:detailCell height="26" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="523" height="26" uuid="e1cdf2ec-7504-49c4-bc0c-311e44b17fdd"/>
+								<textElement>
+									<font size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement x="18" y="310" width="536" height="128" uuid="c3433f9e-555f-41db-8b3c-150ff67ca472"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[<br>
+<br>
+El veredicto es como sigue:         _____ Aprobado	_____Reprobado
+<br>
+<br>
+Con recomendación a mención: _____Honorífica	_____Publicación
+<br>
+La calificación otorgada al Trabajo de Grado y a su defensa es de _______________(      ) puntos, en escala de 00 a  20 puntos y cuya mínima aprobatoria es quince (15) puntos.]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="18" y="438" width="536" height="86" uuid="e2c616f4-9562-41ad-b7e8-cbb23ef5b82b"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="evaluadores" uuid="49d6ac6e-0f14-4c85-bf44-6c1c2a1bc9aa">
+						<datasetParameter name="cod">
+							<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="531" uuid="6768207f-eb57-4796-aa7b-496de1f683d9">
+						<jr:detailCell style="table 1_TD" height="83" rowSpan="1">
+							<textField>
+								<reportElement isPrintRepeatedValues="false" x="3" y="0" width="528" height="83" uuid="286133a3-2bce-4493-adaf-e9fbe88fb7ff"/>
+								<textElement markup="html"/>
+								<textFieldExpression><![CDATA["C.I: "+ $F{pk_usuario}+ "      Nombre: "+$F{evaluador}+
+"<br>"+
+"<br>"+
+"Jurado: "+ $F{rol}+
+"<br>"+
+"Firma:________________________________________________"]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<image>
+				<reportElement x="18" y="18" width="122" height="55" uuid="3f4d40b6-1fdd-40d6-abdc-dbb99fbc73e0"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<componentElement>
+				<reportElement key="table 1" x="18" y="261" width="536" height="49" uuid="3cd05360-b92f-4540-96d0-7acc0b9cca4e"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tesistas" uuid="567f4cd5-875f-4c73-8e8b-edf987175cdc">
+						<datasetParameter name="cod">
+							<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="586" uuid="ab4337fb-f276-4438-a777-5020b11f4f31">
+						<jr:detailCell height="26" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="586" height="26" uuid="694c4fb3-8e62-4ba3-8de0-45a7d83a482f"/>
+								<textElement>
+									<font size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA["De la Escuela de"+$F{escuela}+"para optar por el Título de correspondiente a su carrera."]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 1" x="434" y="217" width="120" height="44" uuid="35480ada-36f8-44ff-98f4-0861d8984998"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tesistas" uuid="a969fa95-3811-4b76-b9ef-ef7bf985c566">
+						<datasetParameter name="cod">
+							<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="523" uuid="f03c9010-b996-416d-b73b-36cf1b9e2f92">
+						<jr:detailCell height="26" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="523" height="26" uuid="4d317f0f-c654-4143-b60b-46427794dbbb"/>
+								<textElement>
+									<font size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA["C.I: "+$F{pk_usuario}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 1" style="table 1" x="18" y="593" width="536" height="70" uuid="83fa2736-e227-4530-86b4-d91907e6831d"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tutores" uuid="11803738-6f6b-4701-8b66-42f76f8d3ce5">
+						<datasetParameter name="cod">
+							<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="531" uuid="7b5c344f-81ba-4690-ad63-ca6f6b3cede7">
+						<jr:detailCell style="table 1_TD" height="83" rowSpan="1">
+							<textField>
+								<reportElement isPrintRepeatedValues="false" x="3" y="0" width="528" height="83" uuid="bcb60846-6628-4777-88de-ad3c031830cd"/>
+								<textElement markup="html"/>
+								<textFieldExpression><![CDATA["C.I: "+ $F{pk_usuario}+ "      Nombre: "+$F{evaluador}+
+"<br>"+
+"<br>"+
+"Tutor: "+ $F{rol}+
+"<br>"+
+"Firma:________________________________________________"]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</summary>
+	<noData>
+		<band height="752">
+			<staticText>
+				<reportElement x="18" y="80" width="536" height="71" uuid="d7559b65-c1b9-46e6-9792-5650592a9b1b"/>
+				<textElement textAlignment="Center" markup="html">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[EVALUACION DE TRABAJO DE GRADO
+<br>
+<br>
+Tutor-Evaluador]]></text>
+			</staticText>
+			<image>
+				<reportElement x="18" y="22" width="122" height="55" uuid="a3b5cf93-681d-4244-a12f-237263da327b"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="343" y="165" width="203" height="40" uuid="5769aea1-4181-43dc-ae65-4db6c166f65c"/>
+				<textElement textAlignment="Right" markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>Fecha:</b> "+$F{fecha}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement key="table 1" x="447" y="205" width="99" height="49" uuid="f67a9cc8-3e13-4c34-85ec-bd074519b6a1"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tesistas" uuid="b0fe233a-a9c2-4de3-92c6-73fdca41e137">
+						<datasetParameter name="cod">
+							<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="523" uuid="d166455a-553c-4aa6-a741-f3424d742de6">
+						<jr:detailCell height="27" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="523" height="26" uuid="5371c194-e395-4380-a81b-011a045ed421"/>
+								<textElement>
+									<font size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA["C.I: "+$F{pk_usuario}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 1" x="10" y="205" width="193" height="49" uuid="9ac58bba-289d-495c-90af-ac9c42f9ee3e"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tesistas" uuid="d9724300-49b1-4927-835b-020d54929a0b">
+						<datasetParameter name="cod">
+							<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="446" uuid="1e782668-deda-4ad4-a3e7-0b9547b264c7">
+						<jr:detailCell height="27" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="1" width="446" height="26" uuid="363363c8-0772-4989-92db-cf886ca4f30d"/>
+								<textElement>
+									<font size="12" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA["Autor(es):"+$F{nombre}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement key="table 1" x="10" y="165" width="193" height="38" uuid="bf34c4d5-00b7-435f-b62c-a2441e42f791"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tesistas" uuid="647df7c9-4f34-446d-bb4f-4f06e1c424c2">
+						<datasetParameter name="cod">
+							<datasetParameterExpression><![CDATA[$P{cod}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="523" uuid="4c27ac1b-1b8a-4990-848d-fafc4e1e2dbc">
+						<jr:detailCell height="27" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="523" height="26" uuid="f942c8a5-a496-4b8b-b148-0f97fd1203fd"/>
+								<textElement>
+									<font size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA["Escuela: "+$F{escuela}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<textField>
+				<reportElement x="10" y="268" width="536" height="64" uuid="cde745c5-e9ba-4bb6-9444-252b93fd46dd"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>Titulo: </b>''" + $F{titulo}+"''"]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>

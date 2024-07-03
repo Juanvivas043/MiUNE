@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteCalificaciones" pageWidth="792" pageHeight="612" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="765" leftMargin="13" rightMargin="14" topMargin="14" bottomMargin="14" uuid="43eb7dbd-bce2-4785-9160-bb0290076712">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="New Dataset 1" uuid="f0e3d520-48fa-4a27-b4ad-7712e1955dac">
+		<queryString language="SQL">
+			<![CDATA[SELECT u1.pk_usuario,u1.nombre,u1.apellido,a1.valor, COALESCE(rae.calificacion, 0) AS calificacion
+from tbl_asignaturas ag
+JOIN tbl_asignaturas_regimenes agr ON agr.fk_asignatura = ag.pk_asignatura
+CROSS JOIN tbl_regimenes_evaluaciones re
+JOIN tbl_regimenes_historico rh ON rh.pk_regimen_historico = agr.fk_regimen_historico AND re.fk_regimen_historico = rh.pk_regimen_historico
+JOIN tbl_atributos a1 ON a1.pk_atributo = re.fk_tipo_evaluacion
+JOIN tbl_pensums p ON p.pk_pensum = ag.fk_pensum
+--LEFT SI LA ASIGNACION NO ES OBLIGATORIA
+JOIN tbl_asignaciones ac ON ac.fk_asignatura = ag.pk_asignatura
+JOIN tbl_estructuras       e1 ON e1.pk_estructura    = ac.fk_estructura
+JOIN tbl_estructuras       e2 ON e2.pk_estructura    = e1.fk_estructura
+JOIN tbl_estructuras       e3 ON e3.pk_estructura    = e2.fk_estructura
+JOIN tbl_usuariosgrupos    ug ON ug.pk_usuariogrupo  =  ac.fk_usuariogrupo
+JOIN tbl_usuarios           u ON  u.pk_usuario       = ug.fk_usuario
+--NOTAS
+JOIN tbl_recordsacademicos ra ON ra.fk_asignatura = ag.pk_asignatura AND ra.fk_asignacion = ac.pk_asignacion
+JOIN tbl_atributos a2 ON a2.pk_atributo = ra.fk_atributo
+JOIN tbl_inscripciones i ON i.pk_inscripcion = ra.fk_inscripcion AND i.fk_periodo = ac.fk_periodo
+JOIN tbl_usuariosgrupos ug1 ON ug1.pk_usuariogrupo = i.fk_usuariogrupo
+JOIN tbl_usuarios u1 ON u1.pk_usuario = ug1.fk_usuario
+LEFT OUTER JOIN tbl_recordsacademicos_evaluaciones rae ON rae.fk_record_academico = ra.pk_recordacademico AND rae.fk_evaluacion = re.pk_regimen_evaluacion
+WHERE ra.fk_atributo IN (862,864)
+AND e3.pk_estructura = 7
+AND  p.fk_escuela    = 11
+AND  p.pk_pensum     = 21
+AND i.fk_periodo = 129
+AND 129 >= rh.fk_periodo_inicio AND (129 <= rh.fk_periodo_fin OR rh.fk_periodo_fin IS NULL)
+AND ac.fk_semestre   = 876
+AND ag.fk_materia = 484
+AND ac.fk_seccion   = 871
+order by u1.pk_usuario,a1.id]]>
+		</queryString>
+		<field name="valor" class="java.lang.String"/>
+		<group name="valor">
+			<groupExpression><![CDATA[$F{valor}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="Titulo" uuid="32458e77-7783-4e6f-9c2d-4024c12be8f5">
+		<queryString language="SQL">
+			<![CDATA[select *
+from vw_escuelas
+where pk_atributo = 11]]>
+		</queryString>
+		<field name="escuela" class="java.lang.String"/>
+		<group name="escuela">
+			<groupExpression><![CDATA[$F{escuela}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/var/www/MiUNE2/application/modules/transactions/templates/calificacionesparciales/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Estructura" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Escuela" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Pensum" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Periodo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Semestre" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Materia" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Seccion" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT distinct atr.valor as escuela, atr2.valor as asignatura, atr3.valor as turno, atr4.id || '' || atr5.valor as semestre, u2.apellido || ', ' || u2.nombre as profesor,
+per.pk_periodo || ', ' || TO_CHAR(per.fechainicio, 'MM/YYYY')::varchar || '-' || TO_CHAR(per.fechafin, 'MM/YYYY') as periodo,
+ag.codigopropietario || '' || atr5.valor as seccion_codigo
+from tbl_asignaturas ag
+JOIN tbl_asignaturas_regimenes agr ON agr.fk_asignatura = ag.pk_asignatura
+CROSS JOIN tbl_regimenes_evaluaciones re
+JOIN tbl_regimenes_historicos rh ON rh.pk_regimen_historico = agr.fk_regimen_historico AND re.fk_regimen_historico = rh.pk_regimen_historico
+JOIN tbl_atributos a1 ON a1.pk_atributo = re.fk_tipo_evaluacion
+JOIN tbl_pensums p ON p.pk_pensum = ag.fk_pensum
+--LEFT SI LA ASIGNACION NO ES OBLIGATORIA
+JOIN tbl_asignaciones ac ON ac.fk_asignatura = ag.pk_asignatura
+JOIN tbl_estructuras       e1 ON e1.pk_estructura    = ac.fk_estructura
+JOIN tbl_estructuras       e2 ON e2.pk_estructura    = e1.fk_estructura
+JOIN tbl_estructuras       e3 ON e3.pk_estructura    = e2.fk_estructura
+JOIN tbl_usuariosgrupos    ug ON ug.pk_usuariogrupo  =  ac.fk_usuariogrupo
+JOIN tbl_usuarios           u ON  u.pk_usuario       = ug.fk_usuario
+--NOTAS
+JOIN tbl_recordsacademicos ra ON ra.fk_asignatura = ag.pk_asignatura AND ra.fk_asignacion = ac.pk_asignacion
+JOIN tbl_atributos a2 ON a2.pk_atributo = ra.fk_atributo
+JOIN tbl_inscripciones i ON i.pk_inscripcion = ra.fk_inscripcion AND i.fk_periodo = ac.fk_periodo
+JOIN tbl_usuariosgrupos ug1 ON ug1.pk_usuariogrupo = i.fk_usuariogrupo
+JOIN tbl_usuarios u1 ON u1.pk_usuario = ug1.fk_usuario
+JOIN tbl_atributos atr ON p.fk_escuela = atr.pk_atributo --agregado
+JOIN tbl_atributos atr2 ON ag.fk_materia = atr2.pk_atributo --agregado
+JOIN tbl_atributos atr3 ON ac.fk_turno = atr3.pk_atributo --agregado
+JOIN tbl_atributos atr5 ON ac.fk_seccion = atr5.pk_atributo --agregado
+JOIN tbl_atributos atr4 ON ac.fk_semestre = atr4.pk_atributo --agregado
+join tbl_usuariosgrupos ug2 on ac.fk_usuariogrupo = ug2.pk_usuariogrupo --agregado
+join tbl_usuarios u2 on ug2.fk_usuario = u2.pk_usuario --agregado
+join tbl_periodos per on i.fk_periodo = per.pk_periodo
+LEFT OUTER JOIN tbl_recordsacademicos_evaluaciones rae ON rae.fk_recordacademico = ra.pk_recordacademico AND rae.fk_evaluacion = re.pk_regimen_evaluacion
+WHERE ra.fk_atributo IN (862,864,1699)
+AND e3.pk_estructura = $P{Estructura}
+AND  p.fk_escuela    = $P{Escuela}
+AND  p.pk_pensum     = $P{Pensum}
+AND i.fk_periodo = $P{Periodo}
+AND $P{Periodo} >= rh.fk_periodo_inicio AND ($P{Periodo} <= rh.fk_periodo_fin OR rh.fk_periodo_fin IS NULL)
+AND ac.fk_semestre   = $P{Semestre}
+AND ag.fk_materia = $P{Materia}
+AND ac.fk_seccion   = $P{Seccion}]]>
+	</queryString>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="asignatura" class="java.lang.String"/>
+	<field name="turno" class="java.lang.String"/>
+	<field name="semestre" class="java.lang.String"/>
+	<field name="profesor" class="java.lang.String"/>
+	<field name="periodo" class="java.lang.String"/>
+	<field name="seccion_codigo" class="java.lang.String"/>
+	<group name="subreport">
+		<groupExpression><![CDATA[$F{escuela}]]></groupExpression>
+		<groupHeader>
+			<band height="60">
+				<subreport>
+					<reportElement x="1" y="0" width="412" height="54" uuid="afeab0ec-ced7-4abe-b48f-b908f08603e4"/>
+					<subreportParameter name="SUBREPORT_DIR">
+						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="Seccion">
+						<subreportParameterExpression><![CDATA[$P{Seccion}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="Escuela">
+						<subreportParameterExpression><![CDATA[$P{Escuela}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="Materia">
+						<subreportParameterExpression><![CDATA[$P{Materia}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="Estructura">
+						<subreportParameterExpression><![CDATA[$P{Estructura}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="Periodo">
+						<subreportParameterExpression><![CDATA[$P{Periodo}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="Pensum">
+						<subreportParameterExpression><![CDATA[$P{Pensum}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="Semestre">
+						<subreportParameterExpression><![CDATA[$P{Semestre}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subreporteCalificacionesCrossTab.jasper"]]></subreportExpression>
+				</subreport>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="69">
+			<textField>
+				<reportElement x="0" y="26" width="269" height="12" uuid="387373c2-c7cd-4fa2-80d7-cc22f4f7f0a6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ASIGNATURA: " + $F{asignatura}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="50" width="235" height="12" uuid="77ef180d-b12c-4c63-9ebe-8464e2f945b2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SEMESTRE: " +$F{semestre}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="38" width="235" height="12" uuid="c5f3cc63-ea7a-42e8-bf67-4b5674f7c225"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TURNO: " + $F{turno}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="235" height="14" uuid="5bd3cdd5-7ebf-429f-ab55-d776db1ff5a1"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NUEVA ESPARTA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="14" width="269" height="12" uuid="0d7efd64-dedb-4477-843e-12f85a1b269a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ESCUELA: " + $F{escuela}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="26" width="84" height="12" uuid="42fefb36-fd92-4894-82f5-1e70916c5c6b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[PROFESOR:  ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="374" y="26" width="312" height="12" uuid="ac89e337-4630-493c-9491-ccd9360d93f4"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{profesor}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="597" y="14" width="168" height="12" uuid="1cb915ba-3e6f-4d7c-be2f-6e9d4aaeaa46"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REF. MATERIA: " + $F{seccion_codigo}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="374" y="14" width="120" height="12" uuid="5d700885-33f3-4736-a001-92b9bdb39822"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{periodo}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="14" width="84" height="12" uuid="b56d0e7c-1812-467d-80cb-5ac0f1f10866"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[PERÍODO:  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="561" y="50" width="204" height="12" uuid="accb44e7-d857-41fd-b202-0aa72bdd1386"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="477" y="50" width="84" height="12" uuid="cc02e470-81aa-44de-88ba-bfc9514a2e12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[FIRMA:  ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<pageFooter>
+		<band height="78">
+			<staticText>
+				<reportElement x="146" y="35" width="230" height="12" uuid="13a3ee84-6ed8-4c37-9932-ab7eef0e2985"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[___________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="591" y="55" width="68" height="10" uuid="43744a7d-c459-4c39-b22b-626527450b9c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[FECHA Y HORA: ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="659" y="55" width="106" height="10" uuid="f4e72ee1-39d8-4337-a78f-37d68024a299"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="54" width="42" height="10" uuid="9205258a-ffdd-4c02-bd40-27bbaea0271e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[PÁGINA: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="47" width="160" height="12" uuid="e81c4f87-e8cc-40b7-a411-2b5e1d857a5b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[FECHA Y FIRMA DEL DELEGADO (L1)]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="52" y="54" width="127" height="10" uuid="582a4ecd-0f39-46c5-9bba-35ee03427581"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="396" y="35" width="230" height="12" uuid="77ade8aa-5f04-465a-afb4-ed7ffbdf8f0c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[___________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="47" width="160" height="12" uuid="b8f81057-57fd-411d-98bb-ef18b1b530d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[FECHA Y FIRMA DEL DELEGADO (L2)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="43" y="54" width="9" height="10" uuid="f4038a3e-6fa6-44c7-a584-5fa9603a2c43"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="4" width="765" height="38" uuid="b88f8594-a753-479e-b2ca-eff722c4007e"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[EL PROFESOR DEBE CONSIGNAR COMO ANEXO EL LISTADO PROVISIONAL DE ESTUDIANTES YA ENTREGADO, DEBIDAMENTE COMPLETADO CON LAS ASISTENCIAS Y LAS CALIFICACIONES DE LA EVALUACION CONTINUA.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,470 @@
+@CHARSET "ISO-8859-1";
+/*
+    #informacion -> bloque de informacion que carga con la pagina
+*/
+.bar { 
+    display: none;
+    position: fixed;
+    left: -50px;
+    top: 200px;
+    z-index: 2;
+    -webkit-transition: 500ms all ease;
+    -o-transition: 500ms all ease;
+    transition: 500ms all ease;
+}
+.bar:hover {
+    left: -40px;
+}
+.bar ul {
+    list-style: none;
+}
+.bar ul li a, .bar ul li button {
+    display: inline-block;
+    text-decoration: none;
+    color: #FFF;
+    background: #000;
+    padding: 30px 5px;
+    font-size: 20px;
+    -webkit-transition: 300ms all ease;
+    -o-transition: 300ms all ease;
+    transition: 300ms all ease;
+    cursor: pointer;
+}
+.bar ul li a:hover , .bar ul li button:hover {
+    padding: 30px 0px;
+    background: #666;
+}
+.bar ul li a p, .bar ul li button p {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+    margin-left: 30px;
+}
+.bar ul li .red { background: #AE181F; }
+.bar ul li .blue { background: #00ABF0; }
+.bar ul li .orange { background: #D95232; }
+#titulo { 
+    font-size: 15px;
+}
+#informacion {
+    display: inline-block;
+    width: 30%;
+    max-width: 30%;
+    margin: 20px auto;
+    margin-top: 70px;
+    padding: 7.5px 15px;
+    font-size: 95%;
+    background: #FFF;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #666;
+    margin-top: 10%;
+}
+#informacion div.group {
+    display: block;
+}
+#informacion .clear {
+    overflow: hidden;
+    clear: both;
+}
+#informacion h2 {
+    display: inline-block;
+    text-align: right;
+    float: right;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 10px 0px;
+}
+#informacion p {
+    display: inline-block;
+    text-align: left;
+    float: left;
+    margin: 10px 0px;
+}
+ #informacion #btn {
+    margin-top: 25px; 
+}
+/*
+    #datoscarrera       -> bloque informacion izquierda
+    #datosreinscripcion -> bloque informacion derecha
+    #semestre_ubicacion -> contador de ubicacion
+*/
+#datosEstudiante {
+    position: relative;
+}
+#datosEstudiante #datoscarrera, #datosEstudiante #datosreinscripcion {
+    display: inline-block;
+    width: 30%;
+    max-width: 30%;
+    padding: 15px;
+    margin: 10px;
+    font-size: 95%;
+    background: #FFF;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #666;
+}
+#datosEstudiante #datoscarrera {
+    /*float: left;*/
+} 
+#datosEstudiante #datosreinscripcion {
+    /*float: left;*/
+}
+#datosEstudiante #datoscarrera h3 , #datosEstudiante #datosreinscripcion h3 {
+    font-size: 130%;
+}
+#datosEstudiante div.clear, #datosEstudiante div.clear {
+    overflow: hidden;
+    clear: both;
+}
+#datosEstudiante #datoscarrera div.group, #datosEstudiante #datosreinscripcion div.group {
+    display: block;
+    padding: 10px 5px;
+    border-top: 0.5px solid #CCC;
+}
+#datosEstudiante #datoscarrera div.group:nth-child(2), #datosEstudiante #datosreinscripcion div.group:nth-child(2) {
+    border-top: none;
+}
+#datosEstudiante #datoscarrera div.group:nth-child(2n+3), #datosEstudiante #datosreinscripcion div.group:nth-child(2n+3) {
+    background: rgba(204, 204, 204, 0.5);
+}
+#datosEstudiante #datoscarrera div.group:nth-firstchild, #datosEstudiante #datosreinscripcion div.group:nth-firstchild {
+    border-radius: 5px 5px 0px 0px;
+}
+#datosEstudiante #datoscarrera div.group:nth-lastchild, #datosEstudiante #datosreinscripcion div.group:nth-lastchild {
+    border-radius: 0px 0px 5px 5px;
+}
+#datosEstudiante #datoscarrera div.group p, #datosEstudiante #datosreinscripcion div.group p , #datosEstudiante #datoscarrera div.group h2, #datosEstudiante #datosreinscripcion div.group h2 {
+    margin-top: -5px;
+}
+#datosEstudiante #datoscarrera div.clear, #datosEstudiante #datosreinscripcion div.clear {
+    overflow: hidden;
+    clear: both;
+}
+#datosEstudiante #datoscarrera h2, #datosEstudiante #datosreinscripcion h2 {
+    display: inline-block;
+    text-align: right;
+    float: right;
+    font-size: 12px;
+    font-weight: bold;
+}
+#datosEstudiante #datoscarrera p, #datosEstudiante #datosreinscripcion p {
+    display: inline-block;
+    text-align: left;
+    float: left;
+}
+#datosEstudiante #semestre_ubicacion {
+    display: inline-block;
+    width: 10%;
+    max-width: 10%;
+    padding: 15px;
+    margin: 10px;
+    font-size: 95%;
+    position: absolute;
+    top: -2px;
+}
+#datosEstudiante #semestre_ubicacion #ubicacion {
+    padding: 20px;
+    background: #FFF;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #666;
+    text-align: center;
+    font-size: 200%;
+    vertical-align: center;
+    margin-top: 1px;
+}
+#tblMaterias table {
+    border: none;
+    background: #FFF;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #666;
+    padding: 10px;
+    border-collapse: collapse;
+    transition: 300ms all ease;
+     
+}
+#tblMaterias tr{
+    transition: 150ms all linear;
+}
+
+#tblMaterias table tr th {
+    font-size: 120%;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+    border-bottom: 0.5px solid #CCC;
+}
+#tblMaterias table tr td {
+    border: transparent;
+    padding: 5px;
+    border-bottom: 0.5px solid #CCC;
+    text-align: center;
+    padding: 5px;
+    border-collapse: collapse;
+}
+.materiaSelect{
+    color: #000000;
+    font-size: 101%;
+    font-weight: bold;
+    background-color: rgba(0, 101, 122, 0.8) !important;
+}
+.btnVisible{
+    padding: 6px;
+    background: #FFF;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #666;
+    text-align: center;
+    font-size: 175%;
+    cursor: pointer;
+    position: inherit;
+    top: 100%;
+    right: 16%;  
+    width: 68%;
+}
+.btnUnvisible{
+    color: rgba(0, 0, 0, 0.2);
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #666;
+    text-align: center;
+    font-size: 175%;
+    vertical-align: center;
+    margin-top: -102px;
+    margin-left: 32px;
+    display: none;
+}
+.disable, .sinCupos, .coincidencia, .exceso, .loading{
+    display: none;
+}
+.prelada{
+    background-color: gray;
+}
+.msgs{
+    display:block;
+    width:32%;
+    margin:10px auto;
+    border-radius: 5px;
+    z-index: 1;
+    background: red;
+    border: 0.5px solid rgba(102,102,102,0.8);
+    box-shadow: 0px 0px 5px #000000;
+    
+}
+.msgs{
+    color:#FFFFFF;
+    padding:10px;
+    font-size: 120%;
+    font-family: arial,helvetica;
+    font-weight: bold;
+}
+.footer{
+    padding: 0.5px;
+    background: #FFF;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #666;
+    text-align: center;
+    font-size: 175%;
+    vertical-align: center;
+    margin: 10px auto;
+    width: 60%;
+}
+.footer .titulo{
+    margin: 0px auto;
+    display: block;
+}
+.footer .txt {
+    display: inline-block;
+    font-size: 12px;
+    margin: 5px 10px;
+    margin-top: 0px;
+}
+.footer .txt .circle {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #060606;
+    border-radius: 50%;
+    margin: 0px 2s.5px;
+    vertical-align: bottom;
+}
+.white{
+    background: #FFF;
+}
+.grey{
+    background: #808080;
+}
+.red{
+    background: #F60B2C;
+}
+.orange {
+    background: #DE6814;
+}
+.acuamarine{
+    background: #338494;
+}
+.coincidente{
+    background: #DE6814 !important;
+}
+.prob{
+    width: 40%;
+    position: absolute;
+    left: 30%;
+    border-radius: 5px;
+    background: rgba(133,20,20,0.95);
+    border: 0.5px solid rgba(166,34,0,0.8);
+    box-shadow: 0px 0px 5px #000000;
+    color: white;
+    font-size: 15px !important;
+    padding: 5px;
+    font-weight: bold;
+    margin-top: 8%;
+}
+.prob p{
+    font-size: 20px !important;
+}
+.hor p{
+    margin: 2px;
+}
+.membrete{
+    display:none;
+    margin-left: auto;
+    text-align:center;
+    font-size: 20px;
+}
+.firmaselloest, .firmasellodir, .sello{
+    display: none;
+    margin-left: 25%;
+    border-width: 3px;
+    border-top-style: solid;
+    border-color: #000;
+}
+.firmaselloest {
+    float: left;
+}
+.firmasellodir{
+    float: right;
+}
+.sello{
+    margin-left: inherit;
+    margin-top: 5%;
+    text-align: center;
+    float: right;
+    font-size: 15px;
+}
+.obs{
+    display: none;
+    width: 75%;
+    margin-top: 2%;
+    resize: none;
+}
+.thhor {
+    min-width: 130px;
+}
+.reins{
+    width: 435px;
+    height: 65px;
+    margin: 2% 3.7%;
+}
+.modal-body {
+    background: linear-gradient(#FFF, #DBD6D6);
+    border-radius: 0px 0px 5px 5px;
+}
+#horas {
+    background-color: #FFF;
+}
+#horas  td,#horas th{
+    min-width: 75px;
+    padding: 6px;
+    text-align: center;
+}
+#horas {
+
+}
+
+#horas, #horas td{
+    margin: auto;
+    border: 1px solid rgba(155, 151, 151, 0.21);/*#534A4A66 color mas obscuro*/
+}
+.shadowhora{
+    box-shadow: 0 0 8px -4.5px #000;
+    transition: 200ms all ease;
+    color: #222;
+    /*background-color: #7EFC47;*/
+}
+.modalcon{
+    background-color: rgb(209,35,35);
+    font-weight: bold;
+}
+.modalcon:hover{
+    background-color: rgb(240,77,77) !important;
+    font-weight: bold;
+    color:#FFFFFF;
+}
+.shadowth{
+    box-shadow:-1px 4px 4px -5.5px #000;
+}
+.shadowd{
+    box-shadow: 2px 3px 3px #534A4A1A;
+}
+/*.shadowd:hover, #horas th:hover,*/.shadowhora:hover{
+    background-color: rgba(61, 176, 239,1);
+    color: #FFFFFF;
+}
+
+/*Para que se ilumine el first child cuando estes sobre el row*/
+#horas tr:hover .h{
+    background-color: rgba(214,231,55, 0.45);
+}
+/*fondo de horas y dias*/
+#horas tr:first-child{
+    background-color :rgb(171,188,14);
+}
+#horas .h{
+    background-color: rgb(214,231,55);
+}
+.ret{
+    background-color:#CA0E0E;
+}
+.tur{
+    width: 78px;
+}
+#verclick{
+    width: 50px; 
+    height: 25px;
+}
+#tblbusqueda{
+    margin-top: 2%;
+    margin-bottom: 1%;
+}
+#tblbusqueda2{
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+#tblbusqueda2 input{
+    width: 100px;
+    margin-left: 3%;
+}
+#nombreinfo{
+    max-width: 60%;
+}
+.gris{
+    background-color: gray;
+}
+.obstext{
+    display: none;
+    float: left;
+    margin: left;
+    margin-left: 4%;
+    position: absolute;
+    margin-top: 0.5%;
+}
+
+.cuposmax{
+    color: #AA2A2A;
+}

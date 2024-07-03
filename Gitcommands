@@ -1,0 +1,195 @@
+git init
+Inicia un repositorio
+
+git add -nombre del archivo-
+Agregar archivo
+
+git add .
+Agrega todos los archivos que hayas cambiado
+
+git commit -m "version 1"
+Envia los cambios con un mensaje
+
+git commit -am
+(git commit + git add)
+
+git commit --amend
+
+git status
+Estado de la base de datos
+
+git show
+Muestra el historico de cambios
+
+git log -nombre del archivo-
+Todos los cambios de un archivo
+
+git log --stat
+git log --all --graph --decorate --oneline
+
+git shortlog
+git shortlog -sn
+git shortlog -sn --all
+git shortlog -sn --all --no-merges
+
+git branch
+crea una rama
+
+git show-branch --all
+git branch -r
+git branch -a
+gitk
+
+git merge -nombre de la rama-
+une dos ramas y las une en la rama donde estes parado
+
+git diff
+Comparar versiones
+
+git stash
+git stash list
+git stash pop
+git stash branch -nombre de la nueva rama-
+git stash drop
+
+git grep -n -palabra por buscar-
+git grep -n "<p>"
+git grep -c -palabra por buscar-
+git log -S "palabra por buscar"
+
+git clean --dry-run
+git clean -f
+
+git reflog
+
+git blame
+git blame -c
+git blame --help
+
+git reset --hard
+git reset --soft
+
+git reset HEAD
+Devuelve los archivos al area de staging
+
+git rm
+
+git checkout -> git add -> git commit -m "dasd"
+
+git config
+Abre las opciones para configurar git
+
+git config --list
+git config --list --show-origin
+git config --global alias.nombredelalias "comando"
+
+git tag
+git show-ref --tags
+git tad -d "nombre del tag para eliminar"
+
+--=-=-
+
+Pasos para unirse y descargar el repositorio:
+git config -l (Para ver tu correo)
+git clone https://github.com/Yellow-Boi/MiUNE2.git (Funciona con repositorios publicos nada mas)
+git pull origin master
+
+--=-=-
+
+date "+%H:%M:%S   %d/%m/%y"
+
+git chekout -nombre de la rama-
+("Viaja en el tiempo" por las ramas)
+
+git show-branch --all
+(Muestra los branches)
+
+Pasos para usar branchs en github:
+git pull origin master (Jala todo el repositorio)
+git checkout -nombre de la rama- (Viajamos a la rama que se enviara)
+git push origin -nombre de la rama- (Envia todos los cambios hacia la rama)
+
+--=-=-
+
+Crear un branch:
+git branch -nombre del nuevo branch- (Creamos un branch local)
+git push origin -nombre del branch- (Enviamos el nuevo branch
+
+--=-=-
+
+Pasos para hacer cambios:
+git pull origin master (Jala todo el repositorio)
+git pull origin master --allow-unrelated-histories (Hace un merge, es decir, una fusion entre el repositorio local y el remoto)
+git push origin master (Envia todos los cambios hechos en local)
+
+--=-=-
+
+git remote
+
+git remote add -nombre del repositorio- -url del repositorio- 
+
+git remote remove -urls de omicron-
+
+"Remote origin already exists" error
+git remote set-url origin -url del repositorio-
+
+git clone -url-
+
+git push
+Envia a otro repositorio remoto
+
+git pull
+Descarga otro repositorio remoto
+
+git fetch
+Descarga los updates del ultimo cambio en el repositorio remoto
+
+git cherry-pick "hash del commit"
+
+git rebase
+solo ejecutar en local, no se recomienda
+
+.gitignore (archivo)
+
+README.md
+https://pandao.github.io/editor.md/en.html
+
+Github pages:
+Nombre del repo: -usuario-.github.io
+
+Llaves:
+Generar una nueva llave SSH: (Cualquier sistema operativo)
+
+ssh-keygen -t rsa -b 4096 -C "youremail@example.com"
+
+Comprobar proceso y agregarlo (Windows)
+
+eval $(ssh-agent - s)
+ssh-add ~/.ssh/id_rsa
+
+Forks:
+---
+
+gitflow
+
+Se crean dos archivos cuando creas una llave pública y privada para SSH, ¿cuál es la extensión de la llave privada?
+Ninguna extension
+id_rsa.pub
+
+¿Cuál es la diferencia entre git rm y git reset HEAD?
+> git reset head saca los archivos del repositorio, git rm saca los archivos del staging
+
+¿Qué crean los tags en Git?
+> Punto historico
+
+¿Con git amend puedo?
+git add > cambios se pegan al commit anterior sin hacer uno nuevo, hasta se puede agregar algo al comentario
+
+¿Cuándo deberías usar cherry-pick?
+Necesitas en master un commit especifico de una rama diferente
+
+En un repositorio público en GitHub, ¿qué puede hacer los colaboradores?
+Ver el codigo y clonarlo pero no editarlo
+
+Si ya hiciste el desafío de “Hazme un pull request,” ¿dentro de cuál etiqueta tenías que agregar el cambio?
+>POST

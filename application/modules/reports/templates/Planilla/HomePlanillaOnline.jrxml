@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HomePlanillaOnline" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20"><!--uuid="37637e08-5ca8-4023-9298-90b2cefd7d3d"-->
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/var/www/default/http/MiUNE2/application/modules/reports/templates/Planilla/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ci" class="java.lang.String"/>
+	<parameter name="escuela" class="java.lang.String"/>
+	<parameter name="pensum" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="sede" class="java.lang.String"/>
+	<parameter name="tipo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select sede, pensum, fk_periodo, current_date, escuela, pk_usuario, nombre, apellido,
+(SELECT
+    CASE WHEN (select pk_inscripcion
+           from tbl_inscripciones i
+           join tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+           where fk_periodo < $P!{periodo} and ug.fk_usuario = u.pk_usuario limit 1) is NULL
+        then 'Nuevo Ingreso'
+
+    WHEN (SELECT fn_xrxx_estudiante_iia_escuela_periodo_articulado(u.pk_usuario::integer,
+                                    i.fk_atributo::integer,
+                                    (SELECT fk_periodo FROM tbl_usuariosgrupos ug
+                                    join tbl_inscripciones i   ON i.fk_usuariogrupo = ug.pk_usuariogrupo
+                                    WHERE fk_usuario = u.pk_usuario
+                                    AND fk_periodo <> $P!{periodo}
+                                    ORDER BY 1 DESC limit 1)::integer,
+                                    p.codigopropietario)
+          ) < 11 AND
+          (SELECT COALESCE(fn_xrxx_estudiante_iap_sce(u.pk_usuario::integer,
+                            (SELECT fk_periodo FROM tbl_usuariosgrupos ug
+                                    join tbl_inscripciones i   ON i.fk_usuariogrupo = ug.pk_usuariogrupo
+                                    WHERE fk_usuario = u.pk_usuario
+                                    AND fk_periodo <> $P!{periodo}
+                                    ORDER BY 1 DESC limit 1)::integer,
+                            i.fk_atributo::integer),0)
+     ) < 11
+
+    THEN 'Periodo en recuperacion'
+
+        WHEN (SELECT COALESCE(fn_xrxx_estudiante_iap_sce(u.pk_usuario::integer,
+                            (SELECT fk_periodo FROM tbl_usuariosgrupos ug
+                                    join tbl_inscripciones i   ON i.fk_usuariogrupo = ug.pk_usuariogrupo
+                                    WHERE fk_usuario = u.pk_usuario
+                                    AND fk_periodo <> $P!{periodo}
+                                    ORDER BY 1 DESC limit 1)::integer,
+                            i.fk_atributo::integer),0)
+            ) >= 16
+
+    THEN 'Cuadro de Honor'
+
+    ELSE 'Regular'
+
+        end
+from tbl_usuarios u
+join tbl_usuariosgrupos ug ON ug.fk_usuario = u.pk_usuario
+join tbl_inscripciones i   ON i.fk_usuariogrupo = ug.pk_usuariogrupo
+join tbl_pensums p         ON p.pk_pensum = i.fk_pensum
+join tbl_estructuras es    ON es.pk_estructura = i.fk_estructura
+join tbl_atributos a1      ON i.fk_atributo    = a1.pk_atributo
+where pk_usuario = sqt1.pk_usuario
+AND i.fk_atributo = sqt1.fk_atributo
+AND p.codigopropietario = sqt1.codigopropietario
+AND fk_periodo = $P!{periodo}) as estado,
+CASE WHEN (   SELECT COALESCE(SUM(A.UnidadCredito),0)
+                                  FROM tbl_recordsacademicos RA
+                                  INNER JOIN tbl_asignaturas A ON RA.FK_Asignatura = A.PK_Asignatura
+                                  INNER JOIN tbl_inscripciones i ON i.pk_inscripcion = ra.fk_inscripcion
+                                  INNER JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+                                  INNER JOIN tbl_pensums p ON p.pk_pensum = A.fk_pensum
+                                  WHERE ug.FK_Usuario = sqt1.pk_usuario AND
+                                  i.fk_atributo = sqt1.fk_atributo
+                                  AND RA.fk_atributo IN (SELECT pk_atributo FROM vw_reconocimientos)
+                                  AND p.codigopropietario = sqt1.codigopropietario ) = 0 THEN
+                                     ( SELECT COALESCE(SUM(A.UnidadCredito),0) as uca
+                                      FROM tbl_recordsacademicos RA
+                                      INNER JOIN tbl_asignaturas A ON RA.FK_Asignatura = A.PK_Asignatura
+                                      INNER JOIN tbl_inscripciones i ON i.pk_inscripcion = ra.fk_inscripcion
+                                      INNER JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+                                      INNER JOIN tbl_pensums p ON p.pk_pensum = A.fk_pensum
+                                      WHERE ug.FK_Usuario = sqt1.pk_usuario AND
+                                      i.fk_atributo = sqt1.fk_atributo
+                                      AND (RA.fk_atributo = 862 AND RA.calificacion >= 10)
+                                      AND i.fk_periodo <= $P!{periodo}
+                                      AND p.codigopropietario = sqt1.codigopropietario )::text  ELSE ('' ||
+
+
+                                                        (SELECT COALESCE(SUM(A.UnidadCredito),0) as uca
+                                                     FROM tbl_recordsacademicos RA
+                                     INNER JOIN tbl_asignaturas A ON RA.FK_Asignatura = A.PK_Asignatura
+                                     INNER JOIN tbl_inscripciones i ON i.pk_inscripcion = ra.fk_inscripcion
+                                         INNER JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+                                         INNER JOIN tbl_pensums p ON p.pk_pensum = A.fk_pensum
+                                     WHERE ug.FK_Usuario = sqt1.pk_usuario AND
+                                     i.fk_atributo = sqt1.fk_atributo
+                                     AND (RA.fk_atributo = 862 AND RA.calificacion >= 10)
+                                     AND i.fk_periodo <= $P!{periodo}
+                                     AND p.codigopropietario = sqt1.codigopropietario )  || ' + ' ||
+
+                                    (SELECT COALESCE(SUM(A.UnidadCredito),0)
+                                     FROM tbl_recordsacademicos RA
+                                     INNER JOIN tbl_asignaturas A ON RA.FK_Asignatura = A.PK_Asignatura
+                                     INNER JOIN tbl_inscripciones i ON i.pk_inscripcion = ra.fk_inscripcion
+                                     INNER JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+                                     INNER JOIN tbl_pensums p ON p.pk_pensum = A.fk_pensum
+                                         WHERE ug.FK_Usuario = sqt1.pk_usuario
+                                         AND i.fk_atributo = sqt1.fk_atributo
+                                         AND i.fk_periodo <= $P!{periodo}
+                                             AND RA.fk_atributo IN (SELECT pk_atributo FROM vw_reconocimientos)
+                                     AND p.codigopropietario = sqt1.codigopropietario ) || ' = ' ||
+
+                                     (SELECT COALESCE(SUM(A.UnidadCredito),0) as uca
+                                                     FROM tbl_recordsacademicos RA
+                                     INNER JOIN tbl_asignaturas A ON RA.FK_Asignatura = A.PK_Asignatura
+                                     INNER JOIN tbl_inscripciones i ON i.pk_inscripcion = ra.fk_inscripcion
+                                         INNER JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+                                         INNER JOIN tbl_pensums p ON p.pk_pensum = A.fk_pensum
+                                     WHERE ug.FK_Usuario = sqt1.pk_usuario AND
+                                     i.fk_atributo = sqt1.fk_atributo
+                                     AND (RA.fk_atributo = 862 AND RA.calificacion >= 10)
+                                     AND i.fk_periodo <= $P!{periodo}
+                                     AND p.codigopropietario = sqt1.codigopropietario ) +
+
+                                     (SELECT COALESCE(SUM(A.UnidadCredito),0)
+                                     FROM tbl_recordsacademicos RA
+                                     INNER JOIN tbl_asignaturas A ON RA.FK_Asignatura = A.PK_Asignatura
+                                     INNER JOIN tbl_inscripciones i ON i.pk_inscripcion = ra.fk_inscripcion
+                                     INNER JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+                                     INNER JOIN tbl_pensums p ON p.pk_pensum = A.fk_pensum
+                                         WHERE ug.FK_Usuario = sqt1.pk_usuario
+                                         AND i.fk_atributo = sqt1.fk_atributo
+                                         AND i.fk_periodo <= $P!{periodo}
+                                             AND RA.fk_atributo IN (SELECT pk_atributo FROM vw_reconocimientos)
+                                     AND p.codigopropietario = sqt1.codigopropietario )
+                                     ) ::text
+                                     END as "ucapro", pk_inscripcion, numeropago, fechahora as fecha_pago, fechahora as fecha_reins,
+                                     (SELECT id
+                                        FROM(
+                                        SELECT ug.fk_usuario, pk_inscripcion, sem.id, sem.pk_atributo,  count(DISTINCT asi.fk_materia)
+                                        FROM tbl_inscripciones ins
+                                        JOIN tbl_recordsacademicos ra ON ra.fk_inscripcion = ins.pk_inscripcion
+                                        JOIN tbl_asignaciones asg ON ra.fk_asignacion = asg.pk_asignacion
+                                        JOIN tbl_asignaturas asi ON asg.fk_asignatura = asi.pk_asignatura
+                                        JOIN vw_semestres sem ON sem.pk_atributo = asg.fk_semestre_alterado
+                                        JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = ins.fk_usuariogrupo
+                                        WHERE ins.fk_periodo = $P!{periodo}
+                                        AND ug.fk_usuario = sqt1.pk_usuario
+                                        GROUP BY 1, 2, 3, 4
+                                        ORDER BY 1, 5 DESC, 3 DESC
+                                        LIMIT 1
+                                        ) as sqt) as semubic,
+                                        (SELECT uc FROM fn_xrxx_estudiante_calcular_ucps(sqt1.pk_usuario::integer, sqt1.fk_atributo::integer ,
+                                        (SELECT pk_atributo                                        FROM(
+                                        SELECT ug.fk_usuario, pk_inscripcion, sem.id, sem.pk_atributo,  count(DISTINCT asi.fk_materia)
+                                        FROM tbl_inscripciones ins
+                                        JOIN tbl_recordsacademicos ra ON ra.fk_inscripcion = ins.pk_inscripcion
+                                        JOIN tbl_asignaciones asg ON ra.fk_asignacion = asg.pk_asignacion
+                                        JOIN tbl_asignaturas asi ON asg.fk_asignatura = asi.pk_asignatura
+                                        JOIN vw_semestres sem ON sem.pk_atributo = asg.fk_semestre_alterado
+                                        JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = ins.fk_usuariogrupo
+                                        WHERE ins.fk_periodo = $P!{periodo}
+                                        AND ug.fk_usuario = sqt1.pk_usuario
+                                        GROUP BY 1, 2, 3, 4
+                                        ORDER BY 1, 5 DESC, 3 DESC
+                                        LIMIT 1
+                                        ) as sqt)::integer, sqt1.fk_estructura::integer ,
+                                        $P!{periodo}::integer,
+                                        sqt1.codigopropietario::integer) AS (semestre SMALLINT, uc INT8)) as uc_escuela,
+                                        (select count (pk_recordacademico)
+                                            from tbl_recordsacademicos
+                                            where fk_inscripcion = sqt1.pk_inscripcion)as total_mat_ins,
+                                        (select SUM (asi.unidadcredito)
+                                            from tbl_recordsacademicos re
+                                            join tbl_asignaturas asi ON asi.pk_asignatura = re.fk_asignatura
+                                            where re.fk_inscripcion = sqt1.pk_inscripcion)as total_uc_ins, sqt1.observaciones
+from(
+select i.fk_estructura, es.nombre as sede, i.fk_pensum, p.nombre as pensum, i.fechahora, i.fk_atributo,a1.valor as escuela, u2.pk_usuario, u2.nombre, u2.apellido, i.pk_inscripcion, i.numeropago, i.fk_semestre, current_date::date ,p.codigopropietario, i.fk_periodo, i.observaciones
+
+from tbl_usuarios u2
+join tbl_usuariosgrupos ug ON ug.fk_usuario = u2.pk_usuario
+join tbl_inscripciones i   ON i.fk_usuariogrupo = ug.pk_usuariogrupo
+join tbl_pensums p         ON p.pk_pensum = i.fk_pensum
+join tbl_estructuras es    ON es.pk_estructura = i.fk_estructura
+join tbl_atributos a1      ON i.fk_atributo    = a1.pk_atributo
+where i.fk_periodo = $P!{periodo} --and i.online = 't'
+and u2.pk_usuario IN ($P!{ci})
+AND i.fk_atributo = $P!{escuela}
+AND p.codigopropietario = $P!{pensum}
+AND i.fk_estructura = $P!{sede}
+)as sqt1]]>
+	</queryString>
+	<field name="sede" class="java.lang.String"/>
+	<field name="pensum" class="java.lang.String"/>
+	<field name="fk_periodo" class="java.lang.Long"/>
+	<field name="current_date" class="java.sql.Date"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="pk_usuario" class="java.lang.Long"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="ucapro" class="java.lang.String"/>
+	<field name="pk_inscripcion" class="java.lang.Integer"/>
+	<field name="numeropago" class="java.lang.Integer"/>
+	<field name="fecha_pago" class="java.sql.Timestamp"/>
+	<field name="fecha_reins" class="java.sql.Timestamp"/>
+	<field name="semubic" class="java.lang.Integer"/>
+	<field name="uc_escuela" class="java.lang.Long"/>
+	<field name="total_mat_ins" class="java.lang.Long"/>
+	<field name="total_uc_ins" class="java.lang.Long"/>
+	<field name="observaciones" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<subreport>
+				<reportElement x="-16" y="1" width="555" height="29" /><!--uuid="46de495c-7dc7-4e90-a879-f4d2693c88f1"/-->
+				<subreportParameter name="apellido">
+					<subreportParameterExpression><![CDATA[$F{apellido}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fecha">
+					<subreportParameterExpression><![CDATA[$F{current_date}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="sede">
+					<subreportParameterExpression><![CDATA[$F{sede}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="codperiodo">
+					<subreportParameterExpression><![CDATA[$P{periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="totalUc">
+					<subreportParameterExpression><![CDATA[$F{total_uc_ins}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semUbic">
+					<subreportParameterExpression><![CDATA[$F{semubic}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechaRegPag">
+					<subreportParameterExpression><![CDATA[$F{fecha_pago}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechaDeReins">
+					<subreportParameterExpression><![CDATA[$F{fecha_reins}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nombre">
+					<subreportParameterExpression><![CDATA[$F{nombre}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="observacion">
+					<subreportParameterExpression><![CDATA[$F{observaciones}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="escuela">
+					<subreportParameterExpression><![CDATA[$F{escuela}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="totalUcUbic">
+					<subreportParameterExpression><![CDATA[$F{uc_escuela}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="totalMat">
+					<subreportParameterExpression><![CDATA[$F{total_mat_ins}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="codpensum">
+					<subreportParameterExpression><![CDATA[$P{pensum}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nDeInsc">
+					<subreportParameterExpression><![CDATA[$F{pk_inscripcion}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="tipo">
+					<subreportParameterExpression><![CDATA[$P{tipo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="codescuela">
+					<subreportParameterExpression><![CDATA[$P{escuela}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ci">
+					<subreportParameterExpression><![CDATA[$F{pk_usuario}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="codsede">
+					<subreportParameterExpression><![CDATA[$P{sede}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="periodo">
+					<subreportParameterExpression><![CDATA[$F{fk_periodo}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="nDePago">
+					<subreportParameterExpression><![CDATA[$F{numeropago}.toString()]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pensum">
+					<subreportParameterExpression><![CDATA[$F{pensum}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="estadoEst">
+					<subreportParameterExpression><![CDATA[$F{estado}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ucApro">
+					<subreportParameterExpression><![CDATA[$F{ucapro}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "planillaMasivo2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

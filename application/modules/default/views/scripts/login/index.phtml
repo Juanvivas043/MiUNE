@@ -1,0 +1,176 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/login.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+
+/*
+ * <?php
+} else {
+    ?>
+    <div class="alertSecurity">
+        <img style="float:left" src="<?php echo$this->baseUrl()?>/images/icons/lock-128.png">
+        <div style="margin: 6px;">El navegador WEB que está utilizando para acceder al sitio, no tiene instalado el certificado de seguridad que le permite autentificarse al sistema, por favor comuníquese con la Dirección de Desarrollo Tecnológico Institucional, para que le otorge uno en caso de que lo amerite.</div>
+    </div>
+<?php
+?>
+ */
+
+//if(isset($_SERVER['SSL_CLIENT_VERIFY']) && $_SERVER['SSL_CLIENT_VERIFY'] == 'SUCCESS') {
+?>
+<div class="centered">
+    <div class="title">Autentificaci&oacute;n</div>
+    <?php
+        echo $this->form;
+        if (isset($this->failedAuthentication)) {
+            echo "<p class='error'>Nombre de usuario y contraseña invalidos.</p>";
+        }
+    ?>
+</div>
+<?php
+    if(isset($_GET['bt'])){
+        ?>
+            <div id="register">Registrarse como Empleador</div>
+        <?php
+    }
+?>
+<script language="javascript" type="text/javascript">
+    $('#username').focus();
+    $("#register").click(function(){ window.location="<?php echo $this->baseUrl(); ?>/transactions/nuevousuario"; });
+</script>
+
+<style type="text/css">
+    dl.zend_form dt {
+        float: left;
+        margin: 0px;
+        padding-top: 8px;
+        text-align: right;
+        width:80px;
+    }
+
+    dl.zend_form dd {
+        float: left;
+        margin: 0px;
+        padding: 0px;
+        padding-top: 4px;
+        text-align: left;
+        width:170px;
+    }
+    
+    dl.zend_form dd ul.errors li {
+        color:#FE2E2E;
+        display:block;
+        float: left;
+        list-style: none;
+        margin: 0;
+        padding: 0px;
+        font-family:arial, helvetica;
+        font-size:10px;
+        text-align:left;
+    }
+    
+    div.centered{
+        position:absolute;
+        top:50%;
+        left:50%;
+        width:250px;
+        height:120px;
+        margin-top:-60px;
+        margin-left:-125px;
+
+/*        background-image:url('images/background_login.png');*/
+        background-image:url('images/backgraund_table.png');
+        background-repeat:repeat-x;
+        background-position:top;
+
+        text-align: left;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+
+        border-top-color: #EEEEEE;
+        border-top-width:1px;
+        border-bottom-color: #B8B8B8;
+        border-bottom-style:solid;
+        border-bottom-width:1px;
+        border-left-color: #EEEEEE;
+        border-left-style:solid;
+        border-left-width:1px;
+        border-right-color: #B8B8B8;
+        border-right-width:1px
+        -webkit-border-radius:10px;
+        -moz-border-radius:10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px black;
+    }
+
+    div.alertSecurity{
+        position:absolute;
+        top:50%;
+        left:50%;
+        width:420px;
+        height:128px;
+        margin-top:-64px;
+        margin-left:-210px;
+
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+
+        border-top-color: #EEEEEE;
+        border-top-style:solid;
+        border-top-width:1px;
+        border-bottom-color: #B8B8B8;
+        border-bottom-style:solid;
+        border-bottom-width:1px;
+        border-left-color: #EEEEEE;
+        border-left-style:solid;
+        border-left-width:1px;
+        border-right-color: #B8B8B8;
+        border-right-style:solid;
+        border-right-width:1px
+    }
+
+    div.title{
+        color:#000000;
+        font-family:arial, helvetica;
+        font-size:12px;
+        font-weight:bold;
+        text-align:center;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    p.error {
+        list-style: none;
+        padding-top: 80px;
+        margin: 0;
+        display:block;
+        color:#FE2E2E;
+        font-family:arial, helvetica;
+        font-size:12px;
+        text-align:center;
+    }
+
+    div#register {
+        position: absolute;
+        bottom: 50px;
+        left: 25px;
+        border-radius: 5px;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        color: #FFF;
+        background: #00787A;
+        box-shadow: 0px 0px 2.5px #666;
+        -webkit-transition: 300ms all ease;
+        -o-transition: 300ms all ease;
+        transition: 300ms all ease;
+    }
+    div#register:hover {
+        text-decoration: none;
+        font-weight: bold;
+        color: #FFF;
+        box-shadow: 0px 0px 7.5px #666;
+        cursor: pointer;
+    }
+</style>

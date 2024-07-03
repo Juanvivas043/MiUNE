@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="CIs" class="java.lang.String">
+		<defaultValueExpression><![CDATA["19504266, 18941312, 17643490, 19242260, 18588526"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Periodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[123]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Escuela" class="java.lang.String">
+		<defaultValueExpression><![CDATA[11]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Sede" class="java.lang.String">
+		<defaultValueExpression><![CDATA[7]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  ug.fk_usuario, 
+	  us.nombre,
+	  us.apellido,  
+          pr.nombre AS proyecto,
+          it.nombre AS institucion,
+          es.escuela, 
+          to_char(fechainicio, 'MM-yyyy') || ' / ' ||  to_char(fechafin, 'MM-yyyy')  as periodo
+   FROM tbl_inscripcionespasantias ip
+    JOIN tbl_recordsacademicos 		ra ON ra.pk_recordacademico 	= ip.fk_recordacademico
+    JOIN tbl_inscripciones               i ON  i.pk_inscripcion 	= ra.fk_inscripcion
+    JOIN tbl_usuariosgrupos 		ug ON ug.pk_usuariogrupo 	=  i.fk_usuariogrupo
+    JOIN tbl_asignacionesproyectos      ap ON ap.pk_asignacionproyecto 	= ip.fk_asignacionproyecto
+    JOIN tbl_proyectos 			pr ON pr.pk_proyecto 		= ap.fk_proyecto
+    JOIN tbl_instituciones              it ON it.pk_institucion		= pr.fk_institucion
+    JOIN tbl_periodos 			pe ON pe.pk_periodo 		=  i.fk_periodo
+    JOIN vw_escuelas			es ON es.pk_atributo		=  i.fk_atributo
+    JOIN tbl_usuarios			us ON us.pk_usuario		= ug.fk_usuario
+  WHERE ug.fk_usuario IN ($P!{CIs})
+    AND  i.fk_periodo = $P!{Periodo}
+    AND  i.fk_atributo = $P!{Escuela}
+    AND  i.fk_estructura = $P!{Sede}
+  ORDER BY ip.pk_inscripcionpasantia DESC;]]>
+	</queryString>
+	<field name="fk_usuario" class="java.lang.Long"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="proyecto" class="java.lang.String"/>
+	<field name="institucion" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="periodo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="12" splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="293" splitType="Stretch">
+			<image scaleImage="RetainShape">
+				<reportElement x="23" y="0" width="188" height="283"/>
+				<imageExpression><![CDATA["/var/www/default/http/MiUNE2gitINTER/public/images/credencialsc.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="23" y="86" width="42" height="13"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="36" y="73" width="163" height="13" backcolor="#FEFEFE"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos Personales:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="99" width="42" height="13"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellido:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="36" y="112" width="163" height="13" backcolor="#FEFEFE"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos Académicos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="125" width="42" height="13"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Escuela:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="36" y="138" width="163" height="13" backcolor="#FEFEFE"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos de Servicio Comunitario:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="151" width="53" height="13"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Institucion:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="164" width="53" height="13"/>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proyecto:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="65" y="86" width="134" height="13"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="99" width="134" height="13"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="125" width="134" height="13"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{escuela}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="76" y="151" width="123" height="13"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{institucion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="76" y="164" width="123" height="22"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proyecto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="23" y="186" width="176" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{periodo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="36" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="planilla" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.3310000000000188"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="55"/>
+	<parameter name="sede" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="escuela" class="java.lang.String"/>
+	<parameter name="ci" class="java.lang.String"/>
+	<parameter name="nombre" class="java.lang.String"/>
+	<parameter name="apellido" class="java.lang.String"/>
+	<parameter name="estadoEst" class="java.lang.String"/>
+	<parameter name="ucApro" class="java.lang.String"/>
+	<parameter name="nDeInsc" class="java.lang.String"/>
+	<parameter name="nDePago" class="java.lang.String"/>
+	<parameter name="fechaRegPag" class="java.lang.String"/>
+	<parameter name="fechaDeReins" class="java.lang.String"/>
+	<parameter name="semUbic" class="java.lang.String"/>
+	<parameter name="totalUcUbic" class="java.lang.String"/>
+	<parameter name="totalMat" class="java.lang.String"/>
+	<parameter name="totalUc" class="java.lang.String"/>
+	<parameter name="pensum" class="java.lang.String"/>
+	<parameter name="observacion" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT CASE WHEN sqt.requisito = 'f' THEN '>>>' ELSE '' END, sqt.codigopropietario , sqt.materia, sqt.id, sqt.unidadcredito, sqt.seccion
+FROM
+(
+SELECT
+       at.codigopropietario,
+       m.materia,
+       sm1.id,
+       at.unidadcredito,
+       (SELECT COALESCE((SELECT sc.valor
+        FROM tbl_asignaciones ag1
+        INNER JOIN vw_secciones sc ON sc.pk_atributo = ag1.fk_seccion
+        WHERE ra.fk_asignacion = ag1.pk_asignacion), '')) AS seccion,
+       (SELECT CASE WHEN (array_upper(ARRAY(SELECT fk_asignaturaprelada
+                                              FROM tbl_prelaciones
+                                              WHERE fk_asignatura = ra.fk_asignatura
+                                                AND fk_asignaturaprelada <> 0), 1) IS NULL)
+                      THEN TRUE
+                      WHEN (SELECT COUNT(pk_inscripcion)
+                            FROM tbl_recordsacademicos ra1
+                            INNER JOIN tbl_inscripciones  i  ON i.pk_inscripcion   = ra1.fk_inscripcion
+                            INNER JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+                            WHERE calificacion >= 10
+                              AND ug.fk_usuario = $P!{ci}
+                              AND fk_asignatura = ANY(ARRAY(SELECT fk_asignaturaprelada
+                                                            FROM tbl_prelaciones
+                                                            WHERE fk_asignatura = ra.fk_asignatura))) = (array_upper(ARRAY(SELECT fk_asignaturaprelada
+                                                                                                                          FROM tbl_prelaciones
+                                                                                                                          WHERE fk_asignatura = ra.fk_asignatura), 1))
+                      THEN true
+                      WHEN ARRAY(SELECT fk_asignaturaprelada
+                                 FROM tbl_prelaciones
+                                 WHERE fk_asignatura = ra.fk_asignatura) IS NULL THEN true
+
+                      ELSE false
+                 END) AS requisito
+FROM tbl_inscripciones            i
+LEFT JOIN tbl_usuariosgrupos    ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+LEFT JOIN tbl_usuarios           u ON  u.pk_usuario      = ug.fk_usuario
+LEFT JOIN tbl_estructuras        e ON  e.pk_estructura   = i.fk_estructura
+LEFT JOIN tbl_recordsacademicos ra ON ra.fk_inscripcion  = i.pk_inscripcion
+LEFT JOIN tbl_asignaciones      ag ON ag.pk_asignacion   = ra.fk_asignacion
+LEFT JOIN tbl_asignaturas       at ON at.pk_asignatura   = ag.fk_asignatura
+LEFT JOIN tbl_periodos           p ON  p.pk_periodo      = i.fk_periodo
+LEFT JOIN vw_materias            m ON  m.pk_atributo     = at.fk_materia
+LEFT JOIN vw_semestres         sm1 ON sm1.pk_atributo     = ag.fk_semestre
+LEFT JOIN vw_semestres         sm2 ON sm2.pk_atributo     = i.fk_semestre
+LEFT JOIN vw_escuelas           es ON es.pk_atributo     = i.fk_atributo
+LEFT JOIN tbl_pensums pe ON pe.pk_pensum = i.fk_pensum
+WHERE ug.fk_usuario = $P!{ci}
+  AND  i.fk_periodo = (SELECT fn_xrxx_reinscripcion_upi(ug.fk_usuario))
+  ) as sqt
+  ORDER BY 2]]>
+	</queryString>
+	<field name="case" class="java.lang.String"/>
+	<field name="codigopropietario" class="java.lang.String"/>
+	<field name="materia" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="unidadcredito" class="java.lang.Integer"/>
+	<field name="seccion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="143" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="58" width="379" height="20"/>
+				<textElement>
+					<font fontName="Serif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NUEVA ESPARTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="78" width="33" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="9"/>
+				</textElement>
+				<text><![CDATA[Sede:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="408" y="92" width="103" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="9"/>
+				</textElement>
+				<text><![CDATA[Período Académico:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="120" width="553" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MiUNE 2.0 - Reinscripción Académia]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="34" y="78" width="100" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sede}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="511" y="92" width="43" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="408" y="106" width="146" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="408" y="78" width="46" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="9"/>
+				</textElement>
+				<text><![CDATA[Pensum:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="454" y="78" width="100" height="14"/>
+				<textElement>
+					<font fontName="Serif" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pensum}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="132" splitType="Stretch">
+			<staticText>
+				<reportElement x="285" y="78" width="123" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Semestre de Ubicación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="50" width="49" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="36" width="65" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº de Pago:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="22" width="95" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº de Inscripción:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="22" width="49" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Escuela:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="64" width="49" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellido:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="92" width="88" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[U.C. Aprobadas:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="78" width="121" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado del estudiante:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="92" width="182" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total de U.C del Semestre de Ubicación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="64" width="123" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Feha de Reinscripción:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="50" width="147" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha del Registro de Pago:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="3" width="280" height="14"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Serif" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Estudiante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="36" width="21" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C.I.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="3" width="273" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos de la Reinscripción]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="52" y="22" width="229" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{escuela}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="24" y="36" width="257" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ci}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="50" width="229" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="64" width="229" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{apellido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="124" y="78" width="157" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{estadoEst}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="92" width="190" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ucApro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="22" width="174" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nDeInsc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="36" width="204" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nDePago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="432" y="50" width="122" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaRegPag}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="408" y="64" width="146" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaDeReins}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="408" y="78" width="146" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{semUbic}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="467" y="92" width="87" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalUcUbic}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="281" y="3" width="1" height="103"/>
+			</line>
+			<line>
+				<reportElement x="0" y="106" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="2" width="554" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="3" width="1" height="103"/>
+			</line>
+			<line>
+				<reportElement x="554" y="3" width="1" height="103"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="24" y="1" width="77" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="1" width="294" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Materia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="395" y="1" width="72" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Semestre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="467" y="1" width="29" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[U.C]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="497" y="1" width="57" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sección]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement x="24" y="0" width="77" height="12"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigopropietario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="101" y="0" width="294" height="12"/>
+				<textElement>
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{materia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="497" y="0" width="57" height="12"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{seccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="397" y="0" width="70" height="12"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="467" y="0" width="30" height="12"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unidadcredito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="0" width="21" height="12"/>
+				<textElement>
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{case}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="169" splitType="Stretch">
+			<staticText>
+				<reportElement x="24" y="2" width="108" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total de materias:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="16" width="100" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observaciones:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="367" y="2" width="75" height="14"/>
+				<textElement>
+					<font fontName="Serif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total de U.C:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="130" width="280" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma del Director de Escuela]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="130" width="273" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma del Alumno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="153" width="553" height="14"/>
+				<textElement textAlignment="Center">
+					<font fontName="Serif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SELLO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="132" y="2" width="100" height="14"/>
+				<textElement>
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalMat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="442" y="2" width="100" height="14"/>
+				<textElement>
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalUc}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="61" y="129" width="159" height="1"/>
+			</line>
+			<line>
+				<reportElement x="336" y="128" width="159" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="24" y="30" width="518" height="50"/>
+				<textElement>
+					<font fontName="Serif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{observacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="213" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="13" splitType="Stretch"/>
+	</summary>
+</jasperReport>

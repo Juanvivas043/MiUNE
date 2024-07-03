@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pensums_subreport3" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b3177431-104e-42a7-8d75-8c3ba557e6b0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="escuela3" class="java.lang.String"/>
+	<parameter name="sede3" class="java.lang.String"/>
+	<parameter name="pensum3" class="java.lang.String"/>
+	<parameter name="periodo3" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT escuela, (SELECT nombre
+		FROM tbl_pensums
+		WHERE pk_pensum = $P!{pensum3}) AS pensum,
+		(SELECT nombre
+		FROM vw_sedes
+		WHERE pk_estructura = $P!{sede3}) AS sede,
+		codigo
+FROM vw_escuelas
+WHERE pk_atributo = $P!{escuela3}]]>
+	</queryString>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="pensum" class="java.lang.String"/>
+	<field name="sede" class="java.lang.String"/>
+	<field name="codigo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="57" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="6ebbb789-1aa2-4504-a4b8-9e44a5939953" x="11" y="2" width="55" height="12"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESCUELA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="49b8e69d-6b88-43e5-bc6d-29d1f91a0106" x="11" y="14" width="50" height="12"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEDE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="dd098e07-53d5-490c-8990-e8d0c89f6c28" x="11" y="26" width="50" height="12"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PENSUM:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9fc39a50-2c62-4942-ab41-3727c6f51d3a" x="66" y="2" width="303" height="12"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{escuela}+" "+"("+$F{codigo}+")"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="aeb12116-e7a8-47f3-85eb-e655ef6025d4" x="66" y="14" width="100" height="12"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{sede}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1352b808-eddb-4184-bef4-c55c577071b5" x="66" y="26" width="100" height="12"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{pensum}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="105cc7f1-77d8-44dd-aa8a-64c05fdc26ad" x="11" y="38" width="55" height="12"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERÍODO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="3ae2e84c-5b8a-475e-918b-e3fea7de9782" x="66" y="38" width="100" height="14"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{periodo3}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="2" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="2" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="2" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="nuevoi" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="109"/>
+	<parameter name="escuela" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[11]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sede" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[7]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *
+FROM (
+SELECT ug.fk_usuario, i.pk_inscripcion, i.numeropago, i.fechahora,
+       i.fk_periodo, e.nombre as sede, es.escuela, u.nombre, u.apellido,
+       at.codigopropietario, m.materia, sm1.id, at.unidadcredito,
+(
+
+	SELECT count(DISTINCT ra1.pk_recordacademico) >= 1
+	  FROM tbl_inscripciones     ins1
+	  JOIN tbl_recordsacademicos ra1  ON ra1.fk_inscripcion = ins1.pk_inscripcion
+	WHERE ins1.fk_periodo > 122
+	  AND ra1.fk_atributo IN (863,862)
+	  AND ins1.fk_usuariogrupo = i.fk_usuariogrupo
+),
+(
+		SELECT COALESCE(
+			       (
+					SELECT sc.valor
+					  FROM tbl_asignaciones ag1
+					 INNER JOIN vw_secciones sc
+					    ON sc.pk_atributo
+					    =  ag1.fk_seccion
+					 WHERE ra.fk_asignacion
+					 =  ag1.pk_asignacion
+			       ), ''
+		       )
+       ) AS seccion, sm2.id AS semstre, (
+		SELECT CAST(uc AS SMALLINT)
+		  FROM fn_xrxx_estudiante_calcular_ucps(
+			       CAST(ug.fk_usuario AS INTEGER),
+			       CAST(es.pk_atributo AS INTEGER), CAST(i.fk_semestre AS INTEGER),
+			       CAST(e.pk_estructura AS INTEGER)
+       ) AS (semestre SMALLINT, uc INT8))AS tuc,
+ COALESCE((
+		SELECT fn_xrxx_estudiante_calcular_uca(
+			       ug.fk_usuario,
+			       CAST(es.pk_atributo AS INTEGER)
+		       )
+       )::text,'0') AS uca,
+       to_char(p.fechainicio, 'TMMONTH YYYY') as fecha_inicio,
+       to_char(p.fechafin, 'TMMONTH YYYY') as fecha_fin, (
+		SELECT CASE
+		       WHEN (
+			       array_upper(
+				       ARRAY(
+						SELECT fk_asignaturaprelada
+						  FROM tbl_prelaciones
+						 WHERE fk_asignatura
+						 =  ra.fk_asignatura
+						   AND fk_asignaturaprelada
+						   <> 0
+				       ), 1
+			       ) IS NULL
+		       ) THEN TRUE
+		       WHEN (
+				SELECT COUNT(pk_inscripcion)
+				  FROM tbl_recordsacademicos ra1
+				 INNER JOIN tbl_inscripciones i
+				    ON i.pk_inscripcion
+				    =  ra1.fk_inscripcion
+				 INNER JOIN tbl_usuariosgrupos ug1
+				    ON ug1.pk_usuariogrupo
+				    =  i.fk_usuariogrupo
+				 WHERE calificacion
+				 >= 10
+				   AND ug1.fk_usuario
+				   =  ug.fk_usuario
+				   AND fk_asignatura
+				   =  ANY(
+					       ARRAY(
+							SELECT fk_asignaturaprelada
+							  FROM tbl_prelaciones
+							 WHERE fk_asignatura
+							 =  ra.fk_asignatura
+					       )
+				       )
+		       )                                                                                 =  (
+			       array_upper(
+				       ARRAY(
+						SELECT fk_asignaturaprelada
+						  FROM tbl_prelaciones
+						 WHERE fk_asignatura
+						 =  ra.fk_asignatura
+				       ), 1
+			       )
+		       ) THEN true
+		       WHEN ARRAY(
+				SELECT fk_asignaturaprelada
+				  FROM tbl_prelaciones
+				 WHERE fk_asignatura
+				 =  ra.fk_asignatura
+		       ) IS NULL THEN true
+		       ELSE false
+		       END
+       ) AS requisito, i.ucadicionales, i.observaciones, COALESCE((
+		SELECT COALESCE(SUM(A.UnidadCredito), 0)
+		  FROM tbl_recordsacademicos RA
+		 INNER JOIN tbl_asignaturas A
+		    ON RA.FK_Asignatura
+		    =  A.PK_Asignatura
+		 INNER JOIN tbl_inscripciones i9
+		    ON i9.pk_inscripcion
+		    =  ra.fk_inscripcion
+		 INNER JOIN tbl_usuariosgrupos ug9
+		    ON ug9.pk_usuariogrupo
+		    =  i9.fk_usuariogrupo
+		 INNER JOIN tbl_pensums p
+		    ON p.pk_pensum
+		    =  A.fk_pensum
+		 WHERE ug9.FK_Usuario
+		 =  ug.fk_usuario
+		   AND i9.fk_atributo
+		   =  es.pk_atributo
+		   AND RA.fk_atributo IN (
+				SELECT pk_atributo
+				  FROM vw_reconocimientos
+		       )
+       )::text,'0') as ucr,
+       COALESCE(case
+       fn_xrxx_estudiante_iap_escuela(ug.fk_usuario, (i.fk_periodo - 1),
+       es.pk_atributo) <  11
+       when true then 'Probatorio'
+       when false then
+		       case
+		       fn_xrxx_estudiante_iap_escuela(ug.fk_usuario, (i.fk_periodo -
+		       1), es.pk_atributo) >= 16
+		       when true then 'Cuadro de honor'
+		       else 'Regular'
+		       end
+       end, 'Nuevo Ingreso') as estado
+  FROM tbl_inscripciones i
+  LEFT JOIN tbl_usuariosgrupos ug
+    ON ug.pk_usuariogrupo
+    =  i.fk_usuariogrupo
+  LEFT JOIN tbl_usuarios u
+    ON u.pk_usuario
+    =  ug.fk_usuario
+  LEFT JOIN tbl_estructuras e
+    ON e.pk_estructura
+    =  i.fk_estructura
+  LEFT JOIN tbl_recordsacademicos ra
+    ON ra.fk_inscripcion
+    =  i.pk_inscripcion
+  LEFT JOIN tbl_asignaciones ag
+    ON ag.pk_asignacion
+    =  ra.fk_asignacion
+  LEFT JOIN tbl_asignaturas at
+    ON at.pk_asignatura
+    =  ag.fk_asignatura
+  LEFT JOIN tbl_periodos p
+    ON p.pk_periodo
+    =  i.fk_periodo
+  LEFT JOIN vw_materias m
+    ON m.pk_atributo
+    =  at.fk_materia
+  LEFT JOIN vw_semestres sm1
+    ON sm1.pk_atributo
+    =  ag.fk_semestre
+  LEFT JOIN vw_semestres sm2
+    ON sm2.pk_atributo
+    =  i.fk_semestre
+  LEFT JOIN vw_escuelas es
+    ON es.pk_atributo
+    =  i.fk_atributo
+ WHERE u.pk_usuario in (
+		select distinct u1.pk_usuario
+		  from tbl_usuarios u1
+		  JOIN tbl_usuariosgrupos ug
+		    on ug.fk_usuario
+		    =  u1.pk_usuario
+		  JOIN tbl_inscripciones i
+		    on i.fk_usuariogrupo
+		    =  ug.pk_usuariogrupo
+		  JOIN tbl_estructuras es
+		    ON i.fk_estructura
+		    =  es.pk_estructura
+		  JOIN vw_escuelas e
+		    on i.fk_atributo
+		    =  e.pk_atributo
+		  JOIN tbl_atributos atr
+		    on i.fk_semestre
+		    =  atr.pk_atributo
+		 where u1.pk_usuario not in (
+				select distinct ug1.fk_usuario
+				  from tbl_recordsacademicos ra
+				  JOIN tbl_inscripciones i1
+				    on ra.fk_inscripcion
+				    =  i1.pk_inscripcion
+				  JOIN tbl_usuariosgrupos ug1
+				    on ug1.pk_usuariogrupo
+				    =  i1.fk_usuariogrupo
+				 where ra.fk_atributo
+				 =  862
+				   and i1.fk_periodo
+				   <  122
+		       )
+		   and i.fk_periodo
+		   =  122
+		   and e.pk_atributo
+		   =  $P{escuela}
+		   and es.pk_estructura
+		   =  $P{sede}
+		 ORDER BY 1
+       )
+   AND es.pk_atributo
+   =  $P{escuela}
+   AND i.fk_estructura
+   =  $P{sede}
+   AND i.fk_periodo
+   = 122
+   AND fn_xrxx_estudiante_sem_ubicacion_periodod(ug.fk_usuario, i.fk_atributo, i.fk_periodo) = 1
+ UNION
+SELECT ug.fk_usuario, i.pk_inscripcion, i.numeropago, i.fechahora,
+       i.fk_periodo, e.nombre as sede, es.escuela, u.nombre, u.apellido,
+       at.codigopropietario, m.materia, sm1.id, at.unidadcredito,null::boolean,  'U', sm1.id AS
+       semstre, (
+		SELECT CAST(uc AS SMALLINT)
+		  FROM fn_xrxx_estudiante_calcular_ucps(
+			       CAST(ug.fk_usuario AS INTEGER),
+			       CAST(es.pk_atributo AS INTEGER), CAST(i.fk_semestre AS INTEGER),
+			       CAST(e.pk_estructura AS INTEGER)
+       ) AS (semestre SMALLINT, uc INT8))AS tuc,
+		COALESCE((
+		SELECT fn_xrxx_estudiante_calcular_uca(
+			       ug.fk_usuario,
+			       CAST(es.pk_atributo AS INTEGER)
+		       )
+       )::text, '0') AS uca,
+       to_char(p.fechainicio, 'TMMONTH YYYY') as fecha_inicio,
+       to_char(p.fechafin, 'TMMONTH YYYY') as fecha_fin, true, i.ucadicionales,
+       i.observaciones, (
+		SELECT COALESCE(SUM(A.UnidadCredito), 0)
+		  FROM tbl_recordsacademicos RA
+		 INNER JOIN tbl_asignaturas A
+		    ON RA.FK_Asignatura
+		    =  A.PK_Asignatura
+		 INNER JOIN tbl_inscripciones i9
+		    ON i9.pk_inscripcion
+		    =  ra.fk_inscripcion
+		 INNER JOIN tbl_usuariosgrupos ug9
+		    ON ug9.pk_usuariogrupo
+		    =  i9.fk_usuariogrupo
+		 INNER JOIN tbl_pensums p
+		    ON p.pk_pensum
+		    =  A.fk_pensum
+		 WHERE ug9.FK_Usuario
+		 =  ug.fk_usuario
+		   AND i9.fk_atributo
+		   =  es.pk_atributo
+		   AND RA.fk_atributo IN (
+				SELECT pk_atributo
+				  FROM vw_reconocimientos
+		       )
+       )::text as ucr,
+       case
+       fn_xrxx_estudiante_iap_escuela(ug.fk_usuario, (i.fk_periodo - 1),
+       es.pk_atributo) <  11
+       when true then 'Probatorio'
+       when false then
+		       case
+		       fn_xrxx_estudiante_iap_escuela(ug.fk_usuario, (i.fk_periodo -
+		       1), es.pk_atributo) >= 16
+		       when true then 'Cuadro de honor'
+		       else 'Regular'
+		       end
+       end as estado
+  FROM tbl_inscripciones i
+ INNER JOIN tbl_usuariosgrupos ug
+    ON ug.pk_usuariogrupo
+    =  i.fk_usuariogrupo
+ INNER JOIN tbl_usuarios u
+    ON u.pk_usuario
+    =  ug.fk_usuario
+ INNER JOIN tbl_estructuras e
+    ON e.pk_estructura
+    =  i.fk_estructura
+ INNER JOIN tbl_recordsacademicos ra
+    ON ra.fk_inscripcion
+    =  i.pk_inscripcion
+ INNER JOIN tbl_asignaturas at
+    ON at.pk_asignatura
+    =  ra.fk_asignatura
+ INNER JOIN tbl_periodos p
+    ON p.pk_periodo
+    =  i.fk_periodo
+ INNER JOIN vw_materias m
+    ON m.pk_atributo
+    =  at.fk_materia
+ INNER JOIN vw_semestres sm1
+    ON sm1.pk_atributo
+    =  at.fk_semestre
+ INNER JOIN vw_semestres sm2
+    ON sm2.pk_atributo
+    =  i.fk_semestre
+ INNER JOIN vw_escuelas es
+    ON es.pk_atributo
+    =  i.fk_atributo
+   AND es.pk_atributo
+   =  $P{escuela}
+   AND fn_xrxx_estudiante_sem_ubicacion_periodod(ug.fk_usuario, i.fk_atributo, i.fk_periodo) = 1
+   AND i.fk_estructura
+   =  $P{sede}
+   AND i.fk_periodo
+   =  (
+		SELECT fn_xrxx_reinscripcion_upi(ug.fk_usuario)
+       )
+   AND (
+	       at.fk_materia
+	       =  848
+	    OR at.fk_materia
+	    =  716
+	    OR at.fk_materia
+	    =  717
+	    OR at.fk_materia
+	    =  718
+	    OR at.fk_materia
+	    =  719
+	    OR at.fk_materia
+	    =  913
+       )
+ order by 1
+) as sqt
+where sqt.estado ilike '%nuevo ingreso%']]>
+	</queryString>
+	<field name="fk_usuario" class="java.lang.Long"/>
+	<field name="pk_inscripcion" class="java.lang.Integer"/>
+	<field name="numeropago" class="java.lang.Integer"/>
+	<field name="fechahora" class="java.sql.Timestamp"/>
+	<field name="fk_periodo" class="java.lang.Long"/>
+	<field name="sede" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="codigopropietario" class="java.lang.String"/>
+	<field name="materia" class="java.lang.String"/>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="unidadcredito" class="java.lang.Integer"/>
+	<field name="?column?" class="java.lang.Boolean"/>
+	<field name="seccion" class="java.lang.String"/>
+	<field name="semstre" class="java.lang.Integer"/>
+	<field name="tuc" class="java.lang.Integer"/>
+	<field name="uca" class="java.lang.String"/>
+	<field name="fecha_inicio" class="java.lang.String"/>
+	<field name="fecha_fin" class="java.lang.String"/>
+	<field name="requisito" class="java.lang.Boolean"/>
+	<field name="ucadicionales" class="java.lang.Integer"/>
+	<field name="observaciones" class="java.lang.String"/>
+	<field name="ucr" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<variable name="unidades_COUNT" class="java.lang.Integer" resetType="Group" resetGroup="estudiantes" calculation="Sum">
+		<variableExpression><![CDATA[$F{unidadcredito}]]></variableExpression>
+	</variable>
+	<group name="estudiantes" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{fk_usuario}]]></groupExpression>
+		<groupHeader>
+			<band height="143">
+				<textField isBlankWhenNull="false">
+					<reportElement x="397" y="10" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{pk_inscripcion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="48" width="68" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Apellido(s):]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="298" y="67" width="134" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Semestre de Ubicación:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement x="432" y="67" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{semstre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="298" y="29" width="72" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[N° de pago:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement x="527" y="86" width="44" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{tuc}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="29" width="68" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre(s):]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement x="69" y="48" width="201" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{apellido}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="409" y="122" width="59" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Semestre]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement x="121" y="67" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{estado}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement x="95" y="86" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[( $F{ucr} != "0" ? $F{uca} + " + " + $F{ucr} : $F{uca} )]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="2" y="86" width="93" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[U.C. Aprobadas:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="298" y="86" width="229" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total de U.C. del Semestre de ubicación:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement x="69" y="29" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="520" y="122" width="44" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Sección]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement x="367" y="29" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{numeropago}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="483" y="122" width="28" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[U.C.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="2" y="67" width="119" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Estado del Estudiante:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="2" y="10" width="20" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[C.I:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="298" y="10" width="100" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[N° de inscripción:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement x="406" y="48" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{fechahora}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement x="21" y="10" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$F{fk_usuario}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="248" y="122" width="46" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Materia]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="298" y="48" width="110" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha del registro:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="80" y="122" width="41" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Código]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="118">
+				<textField isBlankWhenNull="true">
+					<reportElement x="42" y="60" width="490" height="49"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{observaciones}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement x="151" y="10" width="17" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.Integer"><![CDATA[$V{estudiantes_COUNT}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="42" y="40" width="100" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Observaciones:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="398" y="10" width="78" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total de U.C.:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="42" y="10" width="105" height="20"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total de materias:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="476" y="10" width="25" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$V{unidades_COUNT}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="173" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="513" y="70" width="59" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{fk_periodo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="43" y="99" width="328" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{escuela}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="79" width="31" height="20"/>
+				<textElement/>
+				<text><![CDATA[Sede:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="118" width="571" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MiUNE - Reinscripción Académica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="99" width="43" height="20"/>
+				<textElement/>
+				<text><![CDATA[Escuela:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="371" y="152" width="146" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos de la Reinscripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="74" y="152" width="124" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Estudiante]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="31" y="79" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sede}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="404" y="90" width="167" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fecha_inicio} + " / " + $F{fecha_fin}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="472" y="70" width="42" height="20"/>
+				<textElement/>
+				<text><![CDATA[Periodo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="59" width="177" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NUEVA ESPARTA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement x="54" y="2" width="84" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigopropietario}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="487" y="2" width="20" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{unidadcredito}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="430" y="2" width="32" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="533" y="2" width="30" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{seccion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement x="153" y="2" width="232" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{materia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="110" splitType="Stretch">
+			<staticText>
+				<reportElement x="263" y="63" width="35" height="20"/>
+				<textElement/>
+				<text><![CDATA[SELLO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="358" y="42" width="180" height="1"/>
+			</line>
+			<line>
+				<reportElement x="30" y="42" width="180" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="36" y="45" width="168" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma del Director de Escuela]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="401" y="45" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma del Alumno]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,169 @@
+@CHARSET "ISO-8859-1";
+
+div#Contenedor{
+   width: inherit;
+}
+
+div.Pagina{
+    background-color: #A1BFFF;
+    margin-top: 5px;
+    border: 1px solid blue;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    border-radius: 0.5em;
+    width: inherit;
+    clear: both;
+    overflow: hidden;
+}
+div.Pagina .horario_header{
+   width: 100%;
+}
+
+div.Pagina .horario_header .horario_header_color{
+   background-color: #74A0FF;
+}
+
+div.Grupo{
+    margin-bottom: 3px;
+    margin-right: 3px;
+    margin-top: 5px;
+    margin-left: 3px;
+    border: 1px solid blue;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    border-radius: 0.5em;
+    background-color: #C8B9FA;
+    clear: both;
+    overflow: hidden;
+}
+
+div.Grupo .horario_header{
+    width: 100%;
+}
+
+div.Grupo .horario_header .horario_header_color{
+    background-color: #9476FF;
+}
+div.SubGrupo{
+    margin-bottom: 3px;
+    margin-right          : 3px;
+    margin-top: 5px;
+    margin-left: 3px;
+    border: 1px solid blue;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    border-radius: 0.5em;
+    background-color: #A1BFFF;
+    clear: both;
+    overflow: hidden;
+}
+div.SubGrupo .horario_header{
+   width: 100%;
+}
+
+div.SubGrupo .horario_header .horario_header_color{
+   background-color: #74A0FF;
+}
+div.Columna{
+    margin-bottom: 3px;
+    margin-right: 3px;
+    margin-top: 5px;
+    margin-left: 3px;
+    border: 1px solid blue;
+    -moz-border-radius: 0.5em;
+    -webkit-border-radius: 0.5em;
+    border-radius: 0.5em;
+    background-color: #C8B9FA;
+    float: left;
+    overflow: hidden;
+    max-width: 135px;
+}
+
+div.Columna .horario_header{
+   width: 100%;
+}
+
+div.Columna .horario_header .horario_header_color{
+   background-color: #9476FF;
+}
+div.SubColumna{
+   margin-top            : 5px;
+   margin-left           : 3px;
+   margin-bottom: 3px;
+   margin-right          : 3px;
+   border                : 1px solid blue;
+   -moz-border-radius    : 0.5em;
+   -webkit-border-radius : 0.5em;
+   border-radius         : 0.5em;
+	background-color      : #A1BFFF;
+	/* background-color   : #B9D0FF; */
+	float                 : left;
+   overflow              : hidden;
+}
+
+div.SubColumna .horario_header{
+   width: 100%;
+}
+
+div.SubColumna .horario_header .horario_header_color{
+   background-color: #74A0FF;
+}
+div.hor_pagina{
+   /* border: 7px solid red; */
+   overflow: hidden;
+}
+
+div.hor_grupo{
+   /* border: 5px solid black; */
+   overflow: hidden;
+}
+
+div.hor_columna{
+   /* border: 3px solid green; */
+   /* min-width: 250px; */
+   overflow: hidden;
+}
+div.hor_subcolumna{
+   /* border: 3px solid blue; */
+   width: auto;
+   /* min-width: 200px !important; */
+   overflow: hidden;
+}
+div.hor_posicion{
+   border: 2px solid green;
+   width: 210px;
+   float: left;
+   overflow: auto;
+}
+div.hor_dia{
+   /* float: left; */
+   border: 1px solid red;
+   width: 180px;
+   /* width: auto; */
+}
+div.hor_dia_base{
+   border: 1px solid red;
+   width: 30px;
+   float: left;
+   /* min-height: 180px; */
+   /* max-height: auto; */
+   /* overflow: auto; */
+   /* width: auto; */
+}
+div.hor_hora{
+   border: 1px solid blue;
+   width: 150px;
+   /* width: auto; */
+   height: 60px;
+}
+div.hor_hora_base{
+   float: left;
+   border: 1px solid blue;
+   width: 30px;
+   /* width: auto; */
+   height: 60px;
+}
+td.td_horario{
+   min-width: 300px;
+   overflow: hidden;
+}

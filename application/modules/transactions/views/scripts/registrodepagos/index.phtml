@@ -1,0 +1,152 @@
+<?php
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.9.1.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/bootstrap.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/angular.min.js');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+?>
+
+<style type="text/css">
+.registrodepago{
+	margin: 0 auto;
+	width: 38%;
+	}
+#Modificar{
+	top: -35px;
+	right: -84px;
+}
+#Eliminar{
+	top: -70px;
+    right: -176px;
+}
+.disabled{
+    color: #a4a4a4;
+    background: #dedede;
+    cursor: no-drop;
+}
+input.valid{
+    border: 2.5px solid #008000;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2.5px #008000;
+	}
+
+input.invalid{
+    border: 2.5px solid #FF0000;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2.5px #FF0000;
+	}
+input.novalid{
+	border: 2.5px solid #9F6000;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2.5px #9F6000;
+}
+#cedula{
+    text-align: center;
+}
+</style>
+<h6><?php echo $this->escape($this->title); ?></h6>
+	<br>
+	<?php echo $this->form; ?>
+<script type="text/javascript">
+<?php
+	echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+	echo $this->filters->getJavaScript('tableData');
+?>
+$(document).ready(function(){
+
+	$("#Verifi").click(function(){
+			var regex = new RegExp("^([0-9]+)$"),
+				match = regex.test($("#cedula").val())
+			if(match){
+				$.ajax({
+					method: "POST",
+					url: urlAjax + 'verificar',
+					data: { cedula: $("#cedula").val(), periodo: $("#periodo").val() },
+					dataType: "JSON"
+				})
+				.done(function(data){
+					executeCmdsFromJSON(data);
+				});
+			}
+			else{
+				$(this).removeClass("valid").addClass("invalid");
+			}
+	});	
+	$("#sede").change(function(){
+		escuela();
+		pensum();
+	});
+	$("#escuela").change(function(){
+		pensum();
+	});
+	$("#Agregar").click(function(){
+		$.ajax({
+				method: "POST",
+				url: urlAjax + 'agregar',
+				data: { cedula: $("#cedula").val(), periodo: $("#periodo").val(), numeropago: $("#numPago").val(), UCA: $("#UCA").val(), sede: $("#sede").val(), escuela: $("#escuela").val(), pensum: $("#pensum").val() },
+				dataType: "JSON"
+		})
+
+		.done(function(data){
+			executeCmdsFromJSON(data);
+		});
+	})
+	$("#Modificar").click(function(){
+		$.ajax({
+				method: "POST",
+				url: urlAjax + 'update',
+				data: { cedula: $("#cedula").val(), periodo: $("#periodo").val(), numeropago: $("#numPago").val(), UCA: $("#UCA").val(), sede: $("#sede").val(), escuela: $("#escuela").val(), pensum: $("#pensum").val() },
+				dataType: "JSON"
+		})
+
+		.done(function(data){
+			executeCmdsFromJSON(data);
+		});
+	})
+	$("#Eliminar").click(function(){
+		$.ajax({
+				method: "POST",
+				url: urlAjax + 'delete',
+				data: { cedula: $("#cedula").val(), periodo: $("#periodo").val()},
+				dataType: "JSON"
+		})
+
+		.done(function(data){
+			executeCmdsFromJSON(data);
+		});
+	})
+	
+
+	function escuela(){
+		$.ajax({
+			method: "POST",
+			url: urlAjax + 'filtoescuela',
+			data: { sede: $("#sede").val() },
+			dataType: "JSON",
+			async: false
+			})
+		.done(function(data){
+			executeCmdsFromJSON(data);
+		});
+	}
+	function pensum(){
+		$.ajax({
+			method: "POST",
+			url: urlAjax + 'filtopensum',
+			data: { escuela: $("#escuela").val() },
+			dataType: "JSON",
+			async: false
+			})
+		.done(function(data){
+			executeCmdsFromJSON(data);
+		});
+	}
+});
+</script>

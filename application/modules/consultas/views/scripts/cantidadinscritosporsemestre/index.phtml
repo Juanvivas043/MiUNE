@@ -1,0 +1,77 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+?>
+<h2>
+<?php  echo $this->title; ?>	
+</h2>
+<div align="center">
+    <table  id="tblFiltro" align="center">
+        <tr>
+            <td>
+            <?php include_once('filtros.phtml'); ?>
+            </td>   
+       </tr>    
+    </table>
+    <div>
+        <div>
+            <p class="title">Total de Inscritos</p>
+            <table id="tblTotal" class="tableData" align="center"></table>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+    .title{
+        padding: 5px;
+        font-size: 120%;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    #tblCantidad tr td, #tblTotal tr td{
+        padding: 10px 5px;
+    }
+    #tblCantidad tr:last-child:hover, #tblTotal tr:last-child:hover{
+        background: #ffffc5;
+    }
+    #tblCantidad tr:last-child td:hover, #tblTotal tr:last-child td:hover{
+        background: #ffffa5;
+    }
+    #tblCantidad, #tblTotal{
+        margin-bottom: 25px;
+    }
+    #message 
+</style>
+
+<script type="text/javascript">
+    <?php
+        echo $this->SwapBytes_Jquery->getLoading('loading');
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        echo $this->SwapBytes_Crud_Action->getJavaScript('tblCantidad');
+        echo $this->filters->getJavaScript('tblCantidad');
+    ?>
+    $(document).ready(function(){
+        $("td[style=text-align:right;font-weight:bolder;]").hide();
+        function list(){
+            $.getJSON(urlAjax + "generar/filters/"+escape($('#tblFiltros').find(':input').serialize())+"", function(d){executeCmdsFromJSON(d)}); 
+        };
+        $("#selSede").change(function(){
+            list();
+        });
+        $("#selPeriodo").change(function(){
+             list();
+        });
+        var first_time = true;
+        $("#selSede").ajaxStop(function(){
+            if(first_time){
+                list();
+            }
+            first_time = false;
+         });
+    });
+</script>
+

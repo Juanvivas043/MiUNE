@@ -1,0 +1,45 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/generics.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.4.4.js', 'text/javascript');
+$this->headScript()->appendFile($this->baseUrl() . '/js/reports.horarios.js', 'text/javascript');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/reports.horarios.css');
+$authSpace = new Zend_Session_Namespace('Zend_Auth');
+?>
+<meta charset="utf-8">
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+
+<form id='form1' method='POST' action='<?php echo $this->baseUrl() . '/' . $this->module . '/' . $this->controller . '/generar' ?>'>
+    <table border="0" cellpadding="0" cellspacing="0" width="1100px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+        <tr>
+            <td>
+                <?php include_once('filtros.phtml'); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div id="Contenedor">
+                    <h2>Contenedor</h2>
+                </div>
+                <br>
+                <input type='submit' value='generar'/>
+                <input type='button' value='Generar' id='Generar'/>
+            </td>
+        </tr>
+    </table>
+</form>
+<script type='text/javascript'>
+    $(document).ready(function(){
+<?php
+echo $this->SwapBytes_Jquery->getLoading('loading');
+echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+echo $this->SwapBytes_Crud_Form->getJavaScript();
+echo $this->SwapBytes_Crud_Action->getJavaScript('tblHorarios');
+echo $this->filters->getJavaScript('tblHorarios', $this->SwapBytes_Jquery_Ui_Form->buttonDisable('btnAdd', true));
+
+$function = "window.location.href = urlAjax + 'generar/data/' + $('#form1').serialize();";
+echo $this->SwapBytes_Jquery->setClick('Generar', $function);
+?>
+
+    });
+</script>

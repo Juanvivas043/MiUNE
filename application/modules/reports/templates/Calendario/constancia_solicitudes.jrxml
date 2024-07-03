@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="constancia_solicitudes" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Imagen" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/Users/pocho/Sites/MiUNE2-interfaz/public/images/logo_UNE_color.jpg"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="documentosolicitado" class="java.lang.String">
+		<defaultValueExpression><![CDATA[15]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select u.apellido || ' ' || u.nombre as nombre,
+       u.apellido as ape,
+       u.nombre as nome,
+       u.pk_usuario as cedula,
+       esc.escuela,
+       TO_CHAR(ugs.fechasolicitud,'DD/MM/YYYY'),
+       at.valor,
+       ugs.pk_usuariogruposolicitud,
+       CASE to_char(pe.inicioclases, 'TMMonth')
+       WHEN 'May' THEN 'Mayo' ELSE to_char(pe.inicioclases, 'TMMonth')
+       END AS mesinicio,
+       CASE to_char(pe.fechafin, 'TMMonth')
+       WHEN 'May' THEN 'Mayo' ELSE to_char(pe.fechafin, 'TMMonth')
+       END AS mesfin,
+       extract(year from fechafin)::int as ano_fin,
+       ugs.fk_periodo
+from tbl_usuariosgrupossolicitudes ugs
+JOIN tbl_documentossolicitados ds ON ds.fk_usuariogruposolicitud = ugs.pk_usuariogruposolicitud
+JOIN tbl_atributos at ON at.pk_atributo = ds.fk_documento
+JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = ugs.fk_usuariogrupo
+JOIN tbl_usuarios u ON u.pk_usuario = ug.fk_usuario
+JOIN tbl_inscripciones i ON i.fk_usuariogrupo = ug.pk_usuariogrupo
+JOIN vw_escuelas esc ON esc.pk_atributo = i.fk_atributo
+JOIN tbl_periodos pe ON pe.pk_periodo = ugs.fk_periodo
+where ds.pk_documentosolicitado = $P!{documentosolicitado}
+ and i.fk_periodo = ugs.fk_periodo]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="ape" class="java.lang.String"/>
+	<field name="nome" class="java.lang.String"/>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="to_char" class="java.lang.String"/>
+	<field name="valor" class="java.lang.String"/>
+	<field name="pk_usuariogruposolicitud" class="java.lang.Integer"/>
+	<field name="mesinicio" class="java.lang.String"/>
+	<field name="mesfin" class="java.lang.String"/>
+	<field name="ano_fin" class="java.lang.Integer"/>
+	<field name="fk_periodo" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="654" splitType="Stretch">
+			<frame>
+				<reportElement x="287" y="116" width="270" height="111"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</frame>
+			<staticText>
+				<reportElement x="57" y="170" width="23" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C.I:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="170" width="198" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="26" y="123" width="54" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="147" width="54" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellido:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="147" width="198" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ape}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="123" width="198" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="17" y="96" width="270" height="20" forecolor="#000000" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Estudiante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="287" y="96" width="270" height="20" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos de la Solicitud:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="123" width="52" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Numero:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="356" y="123" width="94" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pk_usuariogruposolicitud}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="304" y="147" width="112" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Solicitud:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="416" y="147" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{to_char}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="304" y="170" width="52" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Periodo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="356" y="170" width="191" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fk_periodo} + "  " + $F{mesinicio} + " - " + $F{mesfin} + " " + $F{ano_fin}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="17" y="116" width="270" height="111"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<staticText>
+					<reportElement x="12" y="77" width="50" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Escuela:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="62" y="77" width="100" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{escuela}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="0" width="572" height="314"/>
+				<box>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<image>
+					<reportElement x="20" y="11" width="166" height="70"/>
+					<imageExpression><![CDATA[$P{Imagen}]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="202" y="11" width="359" height="20"/>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Constancia de entrega de " + $F{valor}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<line>
+				<reportElement x="63" y="275" width="179" height="1"/>
+			</line>
+			<line>
+				<reportElement x="337" y="274" width="179" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="63" y="281" width="179" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma del Estudiante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="281" width="179" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma Autorizada]]></text>
+			</staticText>
+			<frame>
+				<reportElement x="0" y="340" width="572" height="314"/>
+				<box>
+					<topPen lineWidth="2.0"/>
+					<leftPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+					<rightPen lineWidth="2.0"/>
+				</box>
+				<image>
+					<reportElement x="20" y="11" width="166" height="70"/>
+					<imageExpression><![CDATA[$P{Imagen}]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="202" y="13" width="359" height="20"/>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Constancia de entrega de " + $F{valor}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<staticText>
+				<reportElement x="337" y="624" width="179" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma Autorizada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="63" y="624" width="179" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firma del Estudiante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="287" y="436" width="270" height="20" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos de la Solicitud:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="463" width="52" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Numero:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="356" y="463" width="94" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pk_usuariogruposolicitud}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="304" y="487" width="112" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Solicitud:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="416" y="487" width="100" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{to_char}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="304" y="510" width="52" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Periodo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="356" y="510" width="191" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fk_periodo} + "  " + $F{mesinicio} + " - " + $F{mesfin} + " " + $F{ano_fin}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="17" y="456" width="270" height="111"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<staticText>
+					<reportElement x="13" y="77" width="50" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Escuela:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="63" y="77" width="100" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{escuela}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<staticText>
+				<reportElement mode="Opaque" x="17" y="436" width="270" height="20" forecolor="#000000" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Estudiante]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="57" y="510" width="23" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[C.I:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="510" width="198" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="26" y="463" width="54" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="487" width="54" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellido:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="487" width="198" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ape}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="463" width="198" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="287" y="456" width="270" height="111"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+			</frame>
+			<line>
+				<reportElement x="63" y="617" width="179" height="1"/>
+			</line>
+			<line>
+				<reportElement x="337" y="618" width="179" height="1"/>
+			</line>
+			<line>
+				<reportElement x="3" y="333" width="568" height="1"/>
+				<graphicElement>
+					<pen lineWidth="3.0" lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

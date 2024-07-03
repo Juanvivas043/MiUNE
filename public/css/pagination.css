@@ -1,0 +1,40 @@
+@CHARSET "ISO-8859-1";
+
+div.pagination {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align:center;
+	background-color: #FFFFFF;
+	padding:3px;
+	margin:3px;
+}
+
+div.pagination a {
+	padding: 2px 5px 2px 5px;
+	margin-right: 2px;
+	border: 1px solid #9aafe5;
+	text-decoration: none;
+	color: #2e6ab1;
+}
+
+div.pagination a:hover, div.pagination a:active {
+	border: 1px solid #2b66a5;
+	color: #000;
+	background-color: lightyellow;
+}
+
+div.pagination span.current {
+	padding: 2px 5px 2px 5px;
+	margin-right: 2px;
+	border: 1px solid navy;
+	font-weight: bold;
+	background-color: #2e6ab1;
+	color: #FFF;
+}
+
+div.pagination span.disabled {
+	padding: 2px 5px 2px 5px;
+	margin-right: 2px;
+	border: 1px solid #929292;
+	color: #929292;
+}

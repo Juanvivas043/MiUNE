@@ -1,0 +1,55 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center" colspan="2">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr valign="top">
+        <td align="center" width="700px">
+            <div id="tblEstudiantes"></div>
+        </td>
+        <td align="left">
+           <span style="width:30px"> <b>Formatos para descargar:</b></span><br>
+            <input type="radio" id="rdbFormatXLS" name="rdbFormat" value="XLS" disabled>&nbsp;XLS<br>
+            <input type="radio" id="rdbFormatPDF" name="rdbFormat" value="PDF" disabled>&nbsp;PDF<br><br>
+            <button type="button" name="btnDescargar" id="btnDescargar" disabled>Descargar</button>
+        </td>
+    </tr>
+</table>
+<script type='text/javascript'>
+$(document).ready(function(){
+    
+    $("#loading").ajaxStart(function(){
+       
+       $('#btnList').attr('disabled', true);
+       
+    });
+    
+    $("#loading").ajaxStop(function(){
+       
+       $('#btnList').attr('disabled', false);
+       
+    });    
+
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+    echo $this->filters->getJavaScript('tblEstudiantes', "$('#btnDescargar').attr('disabled', true);$('#rdbFormatXLS').attr('disabled', true);$('#rdbFormatPDF').attr('disabled', true);");
+
+	$function = "window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize();";
+    echo $this->SwapBytes_Jquery->setClick('btnDescargar', $function);
+?>
+});
+</script>

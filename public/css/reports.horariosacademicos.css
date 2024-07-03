@@ -1,0 +1,61 @@
+.columnas{
+	border: 2px solid;
+	margin: 20px;
+	display: inline-block;
+	margin: 0px;
+	vertical-align: top;
+	
+}
+.materiascontenedores{
+	display: inline-flex;
+	align-items: center;
+	border-left: 2px solid;
+	max-height: 85px;
+	min-height: 85px;
+
+}
+
+.materias{
+	margin-bottom: 15px;
+	margin-top: 3px;
+	font-weight: bold;
+}
+.profesor{
+	font-size: 13px;
+}
+.secciones{
+	display: inline-block;
+	min-width: 25px;
+	/*margin-top: 30px;*/
+}
+.datos{
+	display: inline-block;
+	min-width: 270px;
+	max-width: 270px;
+	max-height: 84px;
+	min-height: 84px;
+	border-left: 1px solid;
+	border-right: 1px solid;
+
+}	
+.horas{
+	display: inline-block;
+	margin-left: 5px;
+	/*margin-top: 25px;*/
+	margin-right: 5px;
+}
+.dia_container{
+	display: inline-block;
+	min-width: 55px;
+	font-weight: bold;
+    font-size: 20px;
+    margin-left: 5px;
+}
+.dia{
+	border-bottom: 1px solid;
+	display: flex;
+    align-items: center;
+}
+.edificioaula{
+	max-height: 15px;
+}

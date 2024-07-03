@@ -1,0 +1,35 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+// $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.9.1.js');
+// $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+// $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.validate.js');
+
+?>
+
+<table border="0" cellpadding="0" cellspacing="0" width="500px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td colspan="2" align="left">
+           <?php 
+                echo $this->horario;    
+           ?>
+
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center">
+            <?php
+            
+            
+            ?>
+
+        </td>
+    </tr>
+
+</table>

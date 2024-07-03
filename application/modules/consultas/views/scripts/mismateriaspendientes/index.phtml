@@ -1,0 +1,179 @@
+<?php
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+?>
+
+<h2>
+<?php  echo $this->title; ?>	
+</h2>
+
+<div align="center">
+    <table  id="tblFiltro" align="center">
+        <div class="datosEstudiante" id="datosEstudiante" align="margin-left">
+            <div>
+                Universidad Nueva Esparta
+            </div>
+            <div>
+                Caracas - Venezuela
+            </div>
+            <div>
+                Estudiante: <strong class="textGray strong" id="est_nombre"><?php echo $this->escape($this->nombre);?></strong>
+            </div>
+            <div>
+                C.I.: <strong class="textGray strong" id="est_ci"><?php echo $this->escape($this->ci); ?></strong>
+            <div class="strong">
+                Ultima sede asociada: <span class="textGray" id="est_sede"><?php echo $this->escape($this->sedeN); ?></span>
+            </div>
+            <div class="strong">
+                Ultima escuela asociada: <span class="textGray" id="est_escuela"><?php echo $this->escape($this->ultimaEscuelaN); ?></span>
+            </div>
+            <div class="strong">
+                Período Actual: <span class="textGray" id="est_escuela"><?php echo $this->escape($this->periodoA); ?></span>
+            </div>
+            <div class="strong">
+                Pensum cursando: <span class="textBlue strong" id="est_pensumN"><?php echo $this->escape($this->pensumN); ?></span>
+            </div>
+            </div>
+            <div class="strong">
+                Total de asignaturas cursadas: <span class="textBlue strong" id="est_cursadas"><?php echo $this->escape($this->cursadas); ?></span> 
+            </div>
+            <div class="strong">
+                Total de asignaturas faltantes por cursar: <span class="textRed strong" id="est_porcursar"><?php echo $this->escape($this->porCursar); ?></span>
+            </div>
+            <div class="strong">
+                Total unidades de credito aprobadas: <span class="textBlue strong" id="est_uca"><?php echo $this->escape($this->uca); ?></span>
+            </div>
+            <br>
+        </div>
+        <div id="tableData" align="center">&nbsp;</div> 
+    </table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+    <?php
+        echo $this->SwapBytes_Jquery->getLoading('loading');
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+        echo $this->filters->getJavaScript('tableData');
+    ?>
+            
+         
+        $.getJSON(urlAjax + "tabla", function(d){executeCmdsFromJSON(d)
+            $(".estado").each(function(){
+                var texto = $(this).text();
+                if(texto == 'Pendiente') { 
+                    $(this).parent().addClass("bck_white"); 
+                }
+                if(texto == "Inscrita") { 
+                    $(this).parent().addClass("bck_green");  
+                }
+                if(texto == "Retirada") { 
+                    $(this).parent().addClass("bck_orange"); 
+                }
+                if(texto == "Reprobada") { 
+                    $(this).parent().addClass("bck_red"); 
+                }
+            });
+
+            function changeColor(){
+                $(".estado").ajaxStop(function(){
+                    $(".estado").each(function(){
+                        var texto = $(this).text();
+                        if(texto == 'Pendiente') { 
+                            $(this).parent().addClass("bck_white"); 
+                        }
+                        if(texto == "Inscrita") { 
+                            $(this).parent().addClass("bck_green");  
+                        }
+                        if(texto == "Retirada") { 
+                            $(this).parent().addClass("bck_orange"); 
+                        }
+                        if(texto == "Reprobada") { 
+                            $(this).parent().addClass("bck_red"); 
+                        }
+                    });
+                });
+            };
+        });
+
+    });
+
+</script>
+<style>
+    #tblFiltro{
+        margin-top: 25px;
+    }
+    #tableData tr td:hover{
+        background: #F5F5BC;
+    }
+
+    #tableData tr td [value = 1]{
+        padding: 10px 2px;
+        background: #fff
+    }
+
+    #tableData tr td [value = 2 or value = 3]{
+        padding: 10px 2px;
+        background: #F78181
+    }
+
+    #tableData tr td [value = 4]{
+        padding: 10px 2px;
+        background: #A9F5A9
+    }
+
+    .bck_red {
+        background: #F78181;
+    }
+
+    .bck_orange {
+        background: #e6a556;
+    }
+
+    .bck_green {
+        background: #A9F5A9;
+    }
+
+    .bck_white {
+        background: #fff;
+    }
+    .datosEstudiante{
+        font-size: 13px;
+        margin-left: 13%;
+        top: 10px;
+        position: relative;
+        color: rgb(102,102,102);
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        text-align: justify;
+    }
+    .textBlue{
+        color: rgb(28,152,172);
+        font-size: 14px;
+    }
+    .textRed{
+        color: rgb(255,0,0);
+        font-size: 14px;
+    }
+    .textGray{
+        color: rgb(102,102,102);
+        font-size: 14px;
+    }
+    .textBlack{
+        color: rgb(68,68,68);
+        font-size: 14px;
+    }
+    .strong{
+        font-weight: bold;
+    }
+    .btn-orden{
+        margin-top: 5px;
+    }
+    .textAzul{
+        color: rgb(91, 117, 254);
+    }
+ 
+</style>

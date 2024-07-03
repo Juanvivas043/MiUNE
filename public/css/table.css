@@ -1,0 +1,62 @@
+@CHARSET "ISO-8859-1";
+
+table.tableData{
+	border-collapse: collapse;
+	border: 2px solid #b7b7b7;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000000;
+	background: #f9f9f9;
+}
+table.tableData td {
+	border: 1px solid #b7b7b7;
+	padding: 4px;
+}
+table.tableData tbody td a {
+	background: transparent;
+	color: #1975D7;
+	text-decoration: underline;
+}
+table.tableData tbody td a img {
+	border: 0px solid #ffffff;
+}
+table.tableData tbody td a:hover {
+	background: transparent;
+	color: #000000;
+	text-decoration: underline;
+}
+table.tableData tbody th {
+	padding: 5px 5px 2px 5px;
+	vertical-align: top;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	background: #F5F5F5;
+	color: #666;
+	text-transform:uppercase;
+}
+table.tableData tbody tr:hover{
+	background: #ffffd9;
+}
+table.tableData tbody tr.odd:hover {
+	background: #ffffd9;
+}
+table.tableData tbody tr.odd {
+	background: #E7E7E7;
+}
+table.tableData tbody td div {
+	text-align: center;
+}
+
+table.tableData tfoot th {
+	border-collapse: collapse;
+    border-top: 2px solid #424242;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+	color: #000000;
+	padding: 0px 2px 0px 2px;
+	vertical-align: top;	
+	background: #f9f9f9;
+}

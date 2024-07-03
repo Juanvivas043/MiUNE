@@ -1,0 +1,81 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$authSpace = new Zend_Session_Namespace('Zend_Auth');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <table border="0" cellpadding="0" cellspacing="0" width="420px">
+                <tr>
+                    
+                       <td align="center" style="font-weight:bolder;" width="80px" >C.I. del Alumno:</td>
+                       <td width="70px">&nbsp;</td>
+                       <td align="center" style="font-weight:bolder;" width="200px" >Escuela:</td>
+                       <td width="70px">&nbsp;</td>
+                       
+                </tr>
+                <tr>
+                    
+                    <td align="center" style="font-weight:bolder;">
+                        <input autocomplete="off" type="text" id="txtCI" size="14" maxlength="8" />
+                    </td>
+                    
+                    <td align="center" style="font-weight:bolder;" width="70px" >
+                        <button type="button" id="btnBuscar">Buscar</button>
+                    </td>
+                    <td align="center" style="font-weight:bolder;">
+                        <select name="selEscuela" id="selEscuela" style="width:140px;" disabled="true"></select>
+                    </td>
+                    <td align="center" style="font-weight:bolder;" width="70px" >
+                        <button disabled="true" type="button" id="btnGenerar">Generar</button>
+                    </td>
+                </tr>
+                <tr>
+        <td align="center" colspan="5"><div id="tblMsg"></div></td>
+    </tr>
+            </table>
+        </td>
+    </tr>
+   <tr align="center" >
+       <td>
+           <table style="display: <?php if($authSpace->userId==10331709){echo 'inline';}else{echo 'none';}; ?>">
+        <tr>
+           <td>
+              <form name="SC">
+              <input type="radio" name="servicio" value="" checked>Sin Servicio Comunitario<br>
+              <input type="radio" name="servicio" value="- Servicio Comunitario Aprobado.">Aprobado<br>
+              <input type="radio" name="servicio" value="- Servicio Comunitario Convalidado segun acuerdo del CU No.107.Fecha 21-07-2008.">Convalidado<br>
+              <input type="radio" name="servicio" value="- Servicio Comunitario Exento.">Exento<br>
+              </form>
+           </td>
+        </tr>
+    </table>
+       </td>
+    </tr>
+</table>
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#loading").ajaxStart(function(){$(this).show();});
+        $("#loading").ajaxStop(function(){$(this).hide();});
+
+        urlAjax = "<?php echo $this->baseUrl() . '/' . $this->module . '/' . $this->controller . '/' ?>";
+
+        $('#btnBuscar').click(function(){
+             $.getJSON(urlAjax + "verificar/ci/"+$("#txtCI").val(), function(data){executeCmdsFromJSON(data)});
+        });
+        
+        $('#btnGenerar').click(function(){
+            
+            for (i=0;i<document.SC.servicio.length;i++){
+                if (document.SC.servicio[i].checked)
+         	 break;
+                }
+            //window.location.href = urlAjax + "descargar/ci/" + $("#txtCI").val()  + "/selEscuela/"+$("#selEscuela").val() + "/servicio/" + document.SC.servicio[i].value ;
+            window.open(urlAjax + "descargar/ci/" + $("#txtCI").val()+"/selEscuela/"+$("#selEscuela").val()) ;
+        });
+        
+
+    });
+</script> 

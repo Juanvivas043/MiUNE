@@ -1,0 +1,93 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+<table>
+    <div id="fotoDiv" align="center"><input id="foto" width="120" type="image" height="161" disabled="disabled" alt="Foto:" name="foto" style="-moz-box-shadow: 0 0 10px black;"></div>
+        <br>
+        <tr>
+            <div id="datosusuario" align="center" ></div>
+        </tr>
+        <br>
+</table> 
+
+<table>
+        <tr>
+            <div id="datossolvencia" align="center" style=" "border="0" cellpadding="0" cellspacing="0" class="list"></div>
+        </tr>
+        <br>
+        <tr>
+            <div id="mensajesolvencia" align="center" style=" "border="0" cellpadding="0" cellspacing="0" class="list"></div>
+        </tr>
+        <br>
+        <tr> 
+            <div id="tblRequisitos" align="center"> </div>
+            <div id="solvenciadoc" align="center"></div>
+        </tr>
+</table> 
+
+
+<table> 
+    <div>
+        <br>
+        <br>
+        <tr>
+        <div align="center">
+            <button type="button"  id="generarsolicitud" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">Generar Solicitud</span></button>
+            <button type="button"  id="imprimir" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">Imprimir</span></button>    
+        </div>
+        <br>
+        <div id="botones" align="center"></div>
+        </tr>
+    </div>
+</table> 
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type='text/javascript'>
+    $(document).ready(function(){
+
+        $("#loading").ajaxStart(function(){$(this).show();});
+        $("#loading").ajaxStop(function(){$(this).hide();});  
+        $('#fotoDiv').hide();
+        $('#generarsolicitud').hide();
+        $('#imprimir').hide();
+        
+        <?php
+            //echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Form->getJavaScript();
+        ?>
+                
+        $(window).load(function(){
+            $.getJSON(urlAjax + "verificar", function(data){executeCmdsFromJSON(data)});
+        });
+        
+        $('#generarsolicitud').click(function(){
+            $.getJSON(urlAjax + "generarsolicitud", function(data){
+                executeCmdsFromJSON(data);
+                $('#generarsolicitud').hide();
+            });
+        });
+        
+         $('#imprimir').click(function(){
+
+            $.getJSON(urlAjax + "addoreditload", function(data){
+                executeCmdsFromJSON(data);
+                
+            });
+        
+        }); 
+
+    });
+
+
+</script>

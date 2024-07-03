@@ -1,0 +1,345 @@
+<?php
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.9.1.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/dropzone/dropzone.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/validator.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/bootstrap.min.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/bootstrap.min.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/dropzone/dropzone.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/validator.css');  
+?>
+<h2 class="title"> <?php echo $this->titulo; ?> </h2>
+<style>
+    .title{
+        font-size: 150%;
+        margin-left: 10px;
+    }
+    #contact label{
+        display: inline-block;
+        width: 100px;
+        text-align: right;
+    }
+    #contact_submit{
+        padding-left: 100px;
+    }
+    #contact div{
+        margin-top: 1em;
+    }
+    #tipo_rif, #empresa_id {
+        margin-top: -25px;
+    }
+    #msg {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+    }
+    textarea{
+        vertical-align: top;
+        height: 5em;
+    }    
+    .error{
+        display: none;
+        margin-left: 10px;
+    }       
+    .error_show{
+        color: red;
+        margin-left: 10px;
+    }
+    input.invalid, textarea.invalid{
+        border: 2px solid red;
+    }
+    input.valid, textarea.valid{
+        border: 2px solid green;
+    }
+    div.ui-dialog{
+        top: 50%;
+        left: 37%;
+    }
+    #update {
+        width: 0px;
+        height: 0px;
+        background: transparent;
+        font-weight: bold;
+        color: #1C94C4;
+        margin-top: -60px;
+        margin-left: -7.5px;
+        border: none;
+        border-top: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-bottom: 15px solid #000;
+        border-left: 15px solid #000;
+        border-bottom-left-radius: 5px;
+        cursor: pointer;
+        -webkit-transition: 300ms all ease;
+        -o-transition: 300ms all ease;
+        transition: 300ms all ease;
+    }
+    #update:after {
+        width: 15px;
+        height: 15px;
+        background: url("<?php echo $this->baseUrl(); ?>/images/icons/plus.png");
+        content: " ";
+        display: block;
+        margin-left: -11px;
+        margin-top: -6px;
+    }
+    #file-dropzone {
+        display: block;
+        margin-top: -22.5px;
+        margin-bottom: 20px;
+        margin-left: 205px;
+        background: #FFF;
+        box-sizing: border-box;
+    }
+    #file-dropzone .dz-message {
+        margin: 2em 0px;
+        text-align: center;
+        font-weight: 400;
+        padding: 0px;
+        border: 0px none;
+        font: inherit;
+        vertical-align: baseline;
+    }
+    #file-dropzone .dz-message span {
+        padding: 10px;
+        vertical-align: middle;
+    }
+    .btn-location {
+        float: right;
+        background: transparent;
+        width: 25px;
+        height: 25px;
+        margin-top: -40px;
+        margin-left: 100%;
+        border: none;
+        z-index: 1000;
+    }
+    .btn-location:after {
+        width: 25px;
+        height: 25px;
+        content: " ";
+        display: block;
+        background: url("<?php echo $this->baseUrl(); ?>/images/icons/Location2-01.png");
+    }
+</style> 
+<table border="0" cellpadding="0" cellspacing="0" width="500px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td colspan="2" align="left">
+            <div id="msg" class="alert"></div>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center">
+            <?php
+                $this->form->setAction($this->url(). '/');
+                echo $this->form;
+            ?>
+        </td>
+    </tr>
+</table>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<div id="mapTable">
+    <div class="modal fade" id="modalMap" tabindex="-1" role="dialog" aria-labelledby="mapLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="mapLabel">Ubicacion - Mapa</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="googleMap" class="map"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" style="background: #00787A;">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .map { 
+            display: block; 
+            width: 100%; 
+            height: 50em; 
+            margin: 10px auto; 
+            border: 0.5px solid #666; 
+            border-radius: 5px; 
+            box-shadow: 0px 0px 5px #CCC; 
+            -webkit-box-sizing: border-box; 
+            -moz-box-sizing: border-box; 
+            box-sizing: border-box; }
+    </style>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3o_tYrVpgHEcZtvSWnVJI87OtUjy_Uw0"></script>-->
+<script type="text/javascript">
+    var GoogleLat = null, GoogleLng = null;
+    var objectToValidations =   [   
+                                    {input: "nombre",       type:   "alphabetic",   fn: function(){}},
+                                    {input: "direccion",    type:   "empty",        fn: function(){}},
+                                    {input: "telefono",     type:   "phone",        fn: function(){}},
+                                    {input: "telefono2",    type:   "phone",        fn: function(){}},
+                                    {input: "rif",          type:   "numeric",      fn: function(){}}
+                                ];
+    //llamamos al validator 
+    validator.insertValidation(objectToValidations);
+    var pic = false;
+    function uploader(){
+        var dropfile = new Dropzone("#file-dropzone", 
+                        { 
+                            url:  urlAjax + "upload",
+                            maxThumbnailFilesize: 1,
+                            paramName: "file",
+                            dictDefaultMessage:           "Selecciona la Foto de tu Empresa",
+                            dictFallbackMessage:          "Tu Explorador no soporta drag 'n' drop",
+                            dictFileTooBig:               "El Archivo es muy Pesado ({{filesize}}MiB). Tamaño Maximo: {{maxFilesize}}MiB.",
+                            dictInvalidFileType:          "No puedes subir archivos de este tipo.",
+                            dictResponseError:            "Server responded with {{statusCode}} code.",
+                            dictCancelUpload:             "Carga Cancelada",
+                            dictCancelUploadConfirmation: "Estas seguro que quieres cancelar la carga ?",
+                            dictRemoveFile:               "Quitar archivo",
+                            dictMaxFilesExceeded:         "No puedes subir mas archivos.",
+                            maxFilesize: 2,
+                            maxFiles: 1,
+                            uploadMultiple: false,
+                            addRemoveLinks: true,
+                            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg",
+                            clickable: true,
+                            init: function() {
+                              this.on('success', function(file, json) {
+                              });
+                              this.on('addedfile', function(file) {
+                              });
+                              this.on('error', function(file, response){
+                                this.removeFile(file);
+                                sweetAlert("Error", "Error al cargar el archivo :(", "error");
+                              });
+                              this.on("sending", function(file, xhr, formData){
+                                formData.append('id', $("#empresa_id").val());
+                                $('.meter').show();
+                              });
+                              this.on("totaluploadprogress", function(progress){
+                                $('.roller').width(progress + '%');
+                              });
+                              this.on("queuecomplete", function(progress){
+                                $('.meter').delay(999).slideUp(999);
+                              });
+                              this.on('maxfilesexceeded', function(file){
+                                this.removeFile(file);
+                                sweetAlert("Error", "No puede subir mas de un archivo", "error");
+                              });
+                            },
+                            accept: function(file, done){
+                                sweetAlert(
+                                    {
+                                        title: "Actualizado", 
+                                        text: "El archivo " + file.name + " se cargo correctamente", 
+                                        type: "success",  
+                                        showCancelButton: false, 
+                                        confirmButtonColor: "#00787A", 
+                                        closeOnConfirm: false
+                                    },
+                                    function(){
+                                        location.reload();
+                                    });
+                                done();
+                                picture();
+                            }
+                        }
+                    );
+        $('#file-dropzone').hide();
+        pic = false;
+    }
+    function show(){
+        if(pic){
+            $('#file-dropzone').fadeOut("slow");
+            pic = false;
+        }
+        else {
+            $('#file-dropzone').fadeIn("slow");
+            pic = true;
+        }
+    }
+    function picture(){
+        var id = $("#empresa_id").val();
+        $("#foto").attr('src','');
+        $("#foto").attr('src',urlAjax + 'getPicture/id/' + id);
+        $('#file-dropzone').fadeOut("slow");
+        pic = false;
+    }
+    $(document).ready(function(){
+        <?php 
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->map;
+            //echo $this->SwapBytes_Crud_Form->getJavaScript();   
+            echo $this->SwapBytes_Jquery->getLoading('loading'); 
+        ?>
+        //Set Form Status
+        $.ajax({
+            url: urlAjax + "getStatus",
+            data: {},
+            dataType: "json",
+            async: false,
+            success: function(data) {
+                executeCmdsFromJSON(data);
+            },
+        });
+        //Picture
+        $("#foto").attr('src',urlAjax + 'getPicture/id/');
+        //AJAX Consulta Empresa
+        $("body").delegate("#empresa_id","change",function(){
+            var empresa = $("#empresa_id").val();
+            $.ajax({
+                url: urlAjax + "getEmpresa",
+                data: {"empresa_id":empresa},
+                dataType: "json",
+                async: true,
+                success: function(data) {
+                    executeCmdsFromJSON(data);
+                },
+            });
+        });
+        //Submit
+        $('#empresa').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                  dataType: 'json',
+                  type: 'POST',
+                  url: urlAjax + 'update/',
+                  data: { 
+                    empresa_id: $("#empresa_id").val(),
+                    tipo_rif:   $("#tipo_rif").val(),
+                    rif:        $("#rif").val(),
+                    nombre:     $("#nombre").val(),
+                    direccion:  $("#direccion").val(),
+                    telefono:   $("#telefono").val(),
+                    telefono2:  $("#telefono2").val(),
+                    Latitud:    GoogleLat,
+                    Longitud:   GoogleLng
+                },
+                  success: function(data){executeCmdsFromJSON(data);}
+                });
+        });
+        uploader();
+        <?php 
+            echo $this->SwapBytes_Jquery_Mask->phone("telefono") . ";";
+            echo $this->SwapBytes_Jquery_Mask->phone("telefono2") . ";";
+        ?>
+    });
+</script>

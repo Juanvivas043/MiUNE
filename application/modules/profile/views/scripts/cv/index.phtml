@@ -1,0 +1,242 @@
+<?php
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/bootstrap.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/dropzone/dropzone.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/validator.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/bootstrap.min.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/dropzone/dropzone.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/validator.css');  
+?>
+<h2><?php echo $this->titulo; ?></h2>
+<style>
+    #msg {
+        width: 100%;
+        max-width: 350px;
+        display: block;
+        padding: 0px;
+        margin: 0px auto;
+        margin-bottom: 10px;
+    }
+    #msg p {
+        margin: 10px;
+        text-align: center;
+        font-size: 14px;
+    }
+    #msg p strong {
+        font-size: 120%;
+        margin: 5px 10px;
+    }
+    #btn {
+        margin: 0px auto;
+        max-width: 305px;
+    }
+    #file-dropzone {
+        width: 100%;
+        max-width: 350px;
+        display: block;
+        margin: 10px auto;
+        background: #FFF;
+        box-sizing: border-box;
+    }
+    #file-dropzone .dz-message {
+        margin: 2em 0px;
+        text-align: center;
+        font-weight: 400;
+        font-size: 125%;
+        padding: 0px;
+        border: 0px none;
+        vertical-align: baseline;
+    }
+    #file-dropzone .dz-message span {
+        padding: 10px;
+        vertical-align: middle;
+    }
+    #cv {
+        width: 100%;
+        min-height: 450px;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px #666;
+        margin: 10px 0px;
+    }
+</style> 
+<div class="container">
+    <div class="row">
+        <div id="msg" class="alert"></div>
+        <div id="btn">
+            <button aria-disabled="false" role="button" id="btnShow" name="btnShow" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only"><span class="ui-button-text">Ocultar</span></button>
+            <button aria-disabled="false" role="button" id="btnUpdate" name="btnUpdate" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only"><span class="ui-button-text">Actualizar</span></button>
+            <button aria-disabled="false" role="button" id="btnPost" name="btnPost" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only"><span class="ui-button-text">Ir a Posutlacion</span></button>
+        </div>
+    </div>
+    <div class="row">
+        <div id="file-dropzone" class="dropzone"></div>
+    </div>
+    <div class="row">
+        <iframe id="cv" src="<?php echo $this->document; ?>"></iframe>
+    </div>
+</div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml();?>
+<script type="text/javascript">
+    var objectToValidations =   [   
+                                    {input: "nombre",       type:   "alphabetic",   fn: function(){}},
+                                    {input: "direccion",    type:   "empty",        fn: function(){}},
+                                    {input: "telefono",     type:   "phone",        fn: function(){}},
+                                    {input: "telefono2",    type:   "phone",        fn: function(){}},
+                                    {input: "rif",          type:   "numeric",      fn: function(){}}
+                                ];
+    //llamamos al validator 
+    validator.insertValidation(objectToValidations);
+    var show   = false,
+        update = false;
+    function uploader(){
+        var dropfile = new Dropzone("#file-dropzone", 
+                        { 
+                            url:  urlAjax + "upload",
+                            maxThumbnailFilesize: 1,
+                            paramName: "file",
+                            dictDefaultMessage:           "Selecciona tu Curriculum Vitae",
+                            dictFallbackMessage:          "Tu Explorador no soporta drag 'n' drop",
+                            dictFileTooBig:               "El Archivo es muy Pesado ({{filesize}}MiB). Tamaño Maximo: {{maxFilesize}}MiB.",
+                            dictInvalidFileType:          "No puedes subir archivos de este tipo.",
+                            dictResponseError:            "Server responded with {{statusCode}} code.",
+                            dictCancelUpload:             "Carga Cancelada",
+                            dictCancelUploadConfirmation: "Estas seguro que quieres cancelar la carga ?",
+                            dictRemoveFile:               "Quitar archivo",
+                            dictMaxFilesExceeded:         "No puedes subir mas archivos.",
+                            maxFilesize: 2,
+                            maxFiles: 1,
+                            uploadMultiple: false,
+                            addRemoveLinks: true,
+                            acceptedFiles: ".png,.jpg,.gif,.bmp,.jpeg,.pdf,.doc.docx,.odt",
+                            clickable: true,
+                            init: function() {
+                              this.on('success', function(file, json) {
+                              });
+                              this.on('addedfile', function(file) {
+                              });
+                              this.on('error', function(file, response){
+                                this.removeFile(file);
+                                sweetAlert("Error", "Error al cargar el archivo :(", "error");
+                              });
+                              this.on("sending", function (file) {
+                                $('.meter').show();
+                              });
+                              this.on("totaluploadprogress", function (progress) {
+                                $('.roller').width(progress + '%');
+                              });
+                              this.on("queuecomplete", function (progress) {
+                                $('.meter').delay(999).slideUp(999);
+                              });
+                              this.on('maxfilesexceeded', function(file){
+                                this.removeFile(file);
+                                sweetAlert("Error", "No puede subir mas de un archivo", "error");
+                              });
+                            },
+                            accept: function(file, done){
+                                sweetAlert(
+                                    {
+                                        title: "Actualizado", 
+                                        text: "El archivo " + file.name + " se cargo correctamente", 
+                                        type: "success",  
+                                        showCancelButton: false, 
+                                        confirmButtonColor: "#00787A", 
+                                        closeOnConfirm: false
+                                    },
+                                    function(){
+                                        location.reload();
+                                    });
+                                done();
+                            }
+                        }
+                    );
+    }
+    function load(data){
+        if(data){
+            $("#cv").show();
+            show = true;
+            $("#file-dropzone").hide();
+            update = false;
+        }
+        else {
+            $("#cv").hide();
+            show = false;
+            $("#file-dropzone").show();
+            update = true;
+            $("#btnShow").hide();
+            $("#btnUpdate").hide();
+            $("#btnPost").hide();
+        }
+    }
+    $(document).ready(function(){
+        <?php 
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Form->getJavaScript();
+            echo $this->SwapBytes_Jquery->getLoading('loading'); 
+        ?>
+        uploader();
+        //Set Form Status
+        $.ajax({
+            url: urlAjax + "getStatus",
+            data: {},
+            dataType: "json",
+            async: false,
+            success: function(data) {
+                $("#msg").html("<p>" + data[1] + "</p>");
+                load(data[0]);
+            },
+        });
+        //Button Show
+        $("#btnShow").click(function(){
+            if(!show){
+                $("#cv").show();
+                $("#btnShow").html('<span class="ui-button-text">Ocultar</span>');
+                show = true;
+                if(update){
+                    $("#file-dropzone").hide();
+                    update = false;
+                }
+            }
+            else {
+                $("#cv").hide();
+                $("#btnShow").html('<span class="ui-button-text">Ver</span>');
+                show = false;
+            }
+        });
+        //Button Update
+        $("#btnUpdate").click(function(){
+            if(!update){
+                $("#file-dropzone").show();
+                update = true;
+                if(show){
+                    $("#cv").hide();
+                    $("#btnShow").html('<span class="ui-button-text">Ver</span>');
+                    show = false;
+                }
+            }
+            else {
+                $("#file-dropzone").hide();
+                update = false;
+            }
+        });
+        //Button Post
+        $("#btnPost").click(function(){
+            var url = <?php echo '"?txtBuscar='.str_replace(" ","+",$this->search).'&selDateDesde='.$this->desde.'&selDateHasta='.$this->hasta."&id=".$this->id.'"'; ?>;
+            window.location.href = "../transactions/postulacion" + url;
+        });
+        <?php 
+            echo $this->SwapBytes_Jquery_Mask->phone("telefono") . ";";
+            echo $this->SwapBytes_Jquery_Mask->phone("telefono2") . ";";
+        ?>
+    });
+</script>

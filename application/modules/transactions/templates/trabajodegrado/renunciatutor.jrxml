@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="renunciatutor" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7b3aa267-5241-46e1-a04b-0f12fbc222b7">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="240"/>
+	<parameter name="id" class="java.lang.String"/>
+	<parameter name="cedula" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select distinct dt.titulo,
+		btrim(array_agg((u_a.nombre ||'  '||u_a.apellido))::varchar,'{}') as nombre_autor,
+		u_t.pk_usuario as cedula_tutor,
+		(u_t.nombre ||', '||u_t.apellido) as nombre_tutor,
+		u_t.correo as correo,
+		current_date as date,
+		u_t.telefono_movil as telefono
+from tbl_datostesis		dt
+join tbl_autorestesis		at	on	at.fk_datotesis		=	dt.pk_datotesis and at.renuncia = false
+join tbl_tutorestesis		tt	on	tt.fk_datotesis		=	dt.pk_datotesis
+join tbl_usuariosgrupos		ug_a	on	ug_a.pk_usuariogrupo 	=	at.fk_usuariogrupo
+join tbl_usuariosgrupos		ug_t	on	ug_t.pk_usuariogrupo 	=	tt.fk_usuariogrupo
+join tbl_usuarios		u_a	on	u_a.pk_usuario		=	ug_a.fk_usuario
+join tbl_usuarios		u_t	on	u_t.pk_usuario		=	ug_t.fk_usuario
+where dt.pk_datotesis = $P{id}::integer
+and u_t.pk_usuario  = $P{cedula}::integer
+group by 1,3,4,5,6,7]]>
+	</queryString>
+	<field name="titulo" class="java.lang.String"/>
+	<field name="nombre_autor" class="java.lang.String"/>
+	<field name="cedula_tutor" class="java.lang.Long"/>
+	<field name="nombre_tutor" class="java.lang.String"/>
+	<field name="correo" class="java.lang.String"/>
+	<field name="date" class="java.sql.Date"/>
+	<field name="telefono" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="752">
+			<textField>
+				<reportElement uuid="4bf98c86-bc9c-485d-a6a8-87e191799c26" x="17" y="131" width="536" height="208"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Caracas,  "+ $F{date} +
+"<br><br>" +
+"Ciudadano.-"+
+"<br>" +
+"Coordinación de Trabajo de Grado."+
+"<br><br> "+
+"Por la presente comunico a Usted, que por motivos  personales no podre "+
+"seguir responsabilizándome de la tutoría  del Trabajo de Grado: <b>"+$F{titulo}+"</b>"+
+", desarrollado por el (la/los)  bachiller(es): " +$F{nombre_autor} + ". " +
+"<br><br>" +
+"Atentamente,"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c5514abd-ef0c-420a-b470-52361fcfc60d" x="81" y="98" width="435" height="18"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RENUNCIA A DEFENSA DE TRABAJO DE GRADO TUTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a4dd4fda-6f45-496b-8c0b-0c0efdec59f3" x="17" y="339" width="536" height="64"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[____________________________
+Firma]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9d80a9f6-3d32-4c8d-9c79-5cda15e38150" x="17" y="403" width="536" height="192"/>
+				<textElement markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Nombre Tutor: "+$F{nombre_tutor}+
+"<br> "+
+"C.I. " +$F{cedula_tutor} +
+"<br>" +
+"Email: "+ $F{correo}+
+"<br>" +
+"Telefono: "+ $F{telefono}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="b0f14171-7f42-4929-a823-d7ec7ab28200" x="17" y="16" width="100" height="68"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</summary>
+</jasperReport>

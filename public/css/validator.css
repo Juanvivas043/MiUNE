@@ -1,0 +1,13 @@
+@CHARSET "ISO-8859-1";
+
+input.valid, textarea.valid{
+    border: 2.5px solid #008000;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2.5px #008000;
+}
+
+input.invalid, textarea.invalid{
+    border: 2.5px solid #FF0000;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2.5px #FF0000;
+}

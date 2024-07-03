@@ -1,0 +1,25 @@
+#filtro {
+    width: 100%;
+}
+
+#filtro select{
+    width: 150px;
+    margin-left: 10px;
+}
+
+#filtro label{
+    font-weight: bold;
+}
+
+#filtro .label {
+    text-align: center;
+}
+
+#filtro .select{
+    text-align: center;
+}
+
+#filtro .select_filters{
+    text-align: center;
+    width:100%;
+}

@@ -1,0 +1,31 @@
+[production]
+session.timeout = 30
+phpSettings.display_startup_errors = 1
+phpSettings.display_errors = 1
+phpSettings.date.timezone = "America/Caracas"
+
+includePaths.library = APPLICATION_PATH "/../library"
+; user.resources.view.helperPath.Zend_View_Helper = APPLICATION_PATH "/modules/user/views/helpers"
+user.resources.view.helperPath.Sozfo_View_Helper = APPLICATION_PATH "/../library/Sozfo/Views/Helper"
+resources.view.helperPath.Sozfo_View_Helper = APPLICATION_PATH "/../library/Sozfo/View/Helper/"
+
+bootstrap.path = APPLICATION_PATH "/Bootstrap.php"
+bootstrap.class = "Bootstrap"
+
+autoloaderNamespaces[] = "SwapBytes"
+autoloaderNamespaces[] = "Sozfo"
+
+resources.frontController.moduleDirectory = APPLICATION_PATH "/modules"
+resources.view.encoding = "UTF-8"
+
+database.adapter         = PDO_PGSQL
+database.params.host     = localhost
+database.params.password = 102230
+;database.params.host     = 192.168.14.200
+database.params.username = MiUNE
+;database.params.password = M1UN3@OWNER:k5p9q6vv4xklmu709vz
+database.params.dbname   = MiUNE
+
+jasperserver.params.host     = http://192.168.6.8:80/jasperserver/services/repository?wsdl
+jasperserver.params.username = jasperadmin
+jasperserver.params.password = jasperadmin

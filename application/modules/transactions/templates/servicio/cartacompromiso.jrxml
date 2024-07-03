@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cartacompromiso" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ci" class="java.lang.String"/>
+	<parameter name="Imagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select u.pk_usuario as cedula, p.nombre as proyecto, escuela, u.nombre||' , '||u.apellido as estudiante,current_date as fecha
+            from tbl_inscripcionespasantias ip
+            join tbl_asignacionesproyectos ap on ap.pk_asignacionproyecto = ip.fk_asignacionproyecto
+            join tbl_recordsacademicos ra on ra.pk_recordacademico = ip.fk_recordacademico
+            join tbl_inscripciones i on i.pk_inscripcion = ra.fk_inscripcion
+            join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = i.fk_usuariogrupo
+            join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
+            join tbl_proyectos p on p.pk_proyecto = ap.fk_proyecto
+            join tbl_asignaturas a on a.pk_asignatura = ra.fk_asignatura
+            join tbl_pensums pen on pen.pk_pensum = a.fk_pensum
+            join vw_escuelas esc on esc.pk_atributo = pen.fk_escuela
+            WHERE u.pk_usuario =  $P{ci}::integer]]>
+	</queryString>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="proyecto" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="estudiante" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="109" splitType="Stretch">
+			<staticText>
+				<reportElement x="162" y="17" width="215" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NUEVA ESPARTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="121" y="57" width="328" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COORDINACIÓN DE SERVICIO COMUNITARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="77" width="171" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARTA DE COMPROMISO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="121" y="37" width="328" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIRECCIÓN DE SERVICIOS A LA COMUNIDAD]]></text>
+			</staticText>
+			<image>
+				<reportElement x="456" y="17" width="99" height="45"/>
+				<imageExpression><![CDATA[$P{Imagen}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="678" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="259" width="528" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["4. Mantener una comunicación permanente con los asesores del Servicio Comunitario, el asesor"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="489" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["el plan de actividades y el registro de horas  cuando le sea solicitado por la Coordinación de"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="558" width="528" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["10. Solo se podrá cambiar de proyecto en una oportunidad por causas justificables."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="628" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["en cualquier momento y lugar."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="351" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["los Asesores y las Instituciones o Comunidades donde se realice el Servicio Comunitario."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="8" width="553" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Yo, "+$F{estudiante}+" estudiante de la Universidad Nueva Esparta, habiendo cumplido con los requisitos"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="99" width="528" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["1. Actuar con honestidad en el desempeño del Servicio Comunitario."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="374" width="528" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["6. Comprometerse  a  realizar la prestación de su Servicio Comunitario en el Proyecto elegido."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="651" width="527" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["13. Comunicar a la Coordinación de Servicio Comunitario la información necesaria para el seguimiento"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="535" width="528" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["9. Entregar el informe final en la fecha establecida en el calendario académico. "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="214" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["adquiridas en el área de especialidad, con la puesta en práctica de soluciones eficaces para los"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="397" width="528" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["7. Hacer el retiro respectivo del Servicio Comunitario en las fechas establecidas por la UNE , mediante"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="512" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Servicio Comunitario."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="31" width="553" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["previos para el desempeño del Servicio Comunitario, establecidos en la Ley de Servicio Comunitario del"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="145" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["el cual tendrá una duración mínima de 120 horas que deberán cumplirse en un lapso no menor"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="237" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["problemas comunitarios identificados durante la formulación del proyecto de adscripción."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="420" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["una comunicación por escrito que justifique la causa del mismo, presentada en la Coordinación"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="122" width="528" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["2. Llevar un registro de actividades con  el computo y registro del número de horas trabajadas"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="76" width="553" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["me comprometo durante la prestación del Servicio Comunitario en:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="282" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Académico, los Directores de Escuela y los miembros de la Institución o Comunidad suministrando"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="168" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["a 3 meses."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="328" width="528" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["5. Asistir puntualmente a todas las actividades planteadas por la Coordinación de Servicio Comunitario"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="466" width="528" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["8. Entregar el  informe preliminar con el planteamiento del problema, la formulación de objetivos"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="53" width="553" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Estudiante de Educación Superior, y el Reglamento Interno de Servicio Comunitario de la UNE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="443" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["del Servicio Comunitario."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="305" width="512" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["información veraz sobre el desarrollo del proyecto de adscripción."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="605" width="527" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["12. Mantener una conducta cónsona con los principios éticos y morales establecidos por la UNE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="581" width="527" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["11. Portar el carnet de la UNE durante la prestación del mismo. "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="191" width="528" height="23"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["3. Instrumentar medios idóneos y viables para articular los conocimientos, habilidades y destrezas"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

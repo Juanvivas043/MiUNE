@@ -1,0 +1,359 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+?>
+<h2>
+<?php  echo $this->title; ?>	
+</h2>
+<style type="text/css">  
+    #busqueda{
+        margin-top: 17px;
+    }
+    #leyenda{
+        position: absolute;
+        margin-left: 275px;
+        margin-top: -45px;
+        display: inline-block;
+        background-color: white;
+        border-radius: 10px;
+        width: 0px;
+        height: 0px;
+        padding: 3px;
+    }
+        #leyenda .coincidencias{       
+        height: 25px;
+        width: 25px;
+        background-color: rgba(35, 128, 154, 0.55);
+        border-style: solid;
+        border-color: black;
+        border-width: 1px;
+        position: absolute;
+        margin-left: -113px;
+        margin-top: 14px;
+        display: inline-block;
+        font-weight: bold;
+    }
+    #leyenda .fusion{
+       width: 25px;
+        height: 25px;
+        background-color: rgba(255, 0, 0, 0.6);
+        position: absolute;
+        display: inline-block;
+        margin-top: 45;
+        margin-left: -113px;
+        border: solid;
+        border-color: black;
+        border-width: 1px;
+    }
+    #leyenda label {
+        margin-left: 65px;
+    }
+    #leyenda p {
+        margin-left: 35px;
+        padding-bottom: 11px;
+        padding-top: 7px;
+    }
+    #encabezados {
+        display: none;
+    }
+    #tblHorarios{
+        width: 95%;
+        margin: 0 auto;
+        
+
+    }
+    #tblHorarios td.stripe{
+        background-color: rgba(120,120,120,0.1); 
+        padding: 15px;
+        border: 1px solid #CDCDCD80;
+        min-width: 75px;
+        max-width: 150px;
+        height: 60px;
+        content: " ";
+    }
+    #tblHorarios .clases{
+        padding: 5px;
+        font-weight: bold;
+        background-color: white;
+        box-shadow: 0 0 3.5px -3px #000;
+        border-radius: 2.5px;
+        text-align: center;
+        height: 80px;
+    }
+
+    #tblHorarios #print {
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: bold;
+    }
+    #tblHorarios table{
+        border-collapse: collapse;
+        background-color: white;
+        margin: 0 auto;
+    }
+    .h{
+        color: #FFF;
+        font-weight: bold;
+        font-size: 13px;
+        background-color: #BABF46;
+        text-align: center;
+        min-width: 100px;
+        border-top: 1px solid;
+
+    }
+    #tblHorarios table tr:first-child{
+        background-color: #BABF46;
+        padding: 15px;
+        color: white;
+        font-size: 15px;
+        border-right: 1px solid #FFF;
+    }
+    #tblHorarios table tr .time{
+        background-color: #BABF46;
+        padding: 8px;
+        color: white;
+        font-size: 15px;
+        max-width: 150px;
+    }
+
+    #tblHorarios table tr td.coincidencias{
+        background-color: rgba(35, 128, 154, 0.55);
+        padding: 8px;
+        color: white;
+        box-shadow: 0 0 3.5px -3px #000;
+        text-align: center;
+        font-weight: bold;
+    }
+    .fusion{
+        color:rgba(255, 0, 0, 0.6);
+        font-weight: bolder;
+    }
+    #tblHorarios table tr th {
+        padding: 5px;
+        margin: 0px auto: ;
+        border-right: 1px solid;
+        border-bottom: 1px solid;
+    }
+    .sign {
+        font-size: 13px;
+        padding: 0px;
+        font-weight: bold;
+    }
+    
+    #image{
+        display: none;
+        visibility: hidden;
+        margin: -95 auto;
+        padding: 0px;
+        position: absolute;
+        top: 110px;
+        left: 0px;
+        width: 165px;
+        height: 55px; 
+    }
+    .hour{
+        display: block;
+        margin: 5px;
+        padding-right: 250px;
+        padding-bottom: 5px; 
+        font-size: 18px;
+        text-align: right;
+    }
+    .clear {
+        clear: both;
+        overflow: hidden;
+    }
+    .hora {
+        text-decoration: underline; 
+        display: inline-block; 
+        font-size: 20px;
+    }
+    .time {
+        text-align: justify;
+    }
+    @media print{    
+        @page {
+            margin: 10mm 10mm;
+            margin-right: 5mm;
+            margin-left: 5mm;
+            size: landscape;
+            orientation: landscape; /*<-------------Esto no lo lee koalin*/
+        }
+        *{  
+            color: black;
+            margin: 0px;
+            padding: 0px;
+        }
+        body * {
+            visibility: hidden;
+        }
+        div#tblHorarios *{
+            visibility: visible;
+            color: black;
+        }
+        #tblHorarios{
+            width: 100%;
+            position: relative;
+            top: 20px;
+            padding: 0px;
+        }
+        #tblHorarios table {
+            width: 100%;
+        }
+        #tblHorarios .clases{
+            font-size: 12px;
+            border: 1px solid #000 ;
+            padding: 1px;
+            width:80px;
+        }
+        #tblHorarios table tr td.coincidencias{
+            box-shadow: 0px 0px 0px #fff;
+            font-size: 12px;
+            padding: 1px;
+            widows:  100%;
+            border: 1px solid #000;
+        }
+        #sedeprint, #periodoprint, #datosprint{
+            visibility: visible;
+        }
+        #user_name *,#tblFiltros, #body_header, #right_nav{
+            display: none;
+        }
+        #tblHorarios table tr, #tblHorarios table tr td.time, #tblHorarios table tr .top-hour {
+ border: 1px solid #000;
+        }
+        #tblHorarios table tr td, #tblHorarios table tr th{
+            border: 1px solid #000;
+        } 
+        #tblHorarios table {
+            border: 2.2px solid #000;
+        }
+        #tblHorarios table tr:nth-child(1), #tblHorarios table tr:nth-child(4), #tblHorarios table tr:nth-child(7), #tblHorarios table tr:nth-child(9){
+          border: 1px solid #000;
+        }
+        #tblHorarios table tr:nth-child(1), #tblHorarios table tr:nth-child(8) {
+    border: 1px solid #000;
+        }
+        #tblHorarios table tr:nth-child(2) td.time, #tblHorarios table tr:nth-child(5) td.time, #tblHorarios table tr:nth-child(8) td.time {
+           border: 1px solid #000;
+        }
+        #tblHorarios table tr:nth-child(3) td.time, #tblHorarios table tr:nth-child(6) td.time {
+ border: 1px solid #000;
+        }
+        #tblHorarios table tr:nth-child(4) td.time, #tblHorarios table tr:nth-child(7) td.time, #tblHorarios table tr:nth-child(9) td.time {
+ border: 1px solid #000;
+        }
+        tbody tr:first-child{
+            
+        }
+        #body_header{
+            display: none;
+        }
+        .sign{
+            display: block;
+        }
+        .hour{
+            font-size: 12px;
+            font-weight: bold;
+            display: block;
+            margin-top: 5px;
+            float: left;
+            text-transform: uppercase;
+            position: relative;
+            left: 75%;
+        }
+        .noprint{
+            display: none;
+            visibility: hidden;
+        }
+        .horario {
+            position: relative;
+            top: -25px;
+        }
+        #image{
+            visibility: visible;
+            display: inline-block;
+        }
+        #busqueda{
+            display: none;
+            visibility: hidden;
+        }
+        #encabezados{
+            display: inline;
+            text-transform: uppercase;
+            position: absolute;
+            top: -117px;
+            left: 180px;
+        }
+
+        #tblHorarios .clases, #tblHorarios td.stripe {
+            box-shadow: 0px 0px 0px #fff;
+            width: 130px; 
+        }
+        #tblHorarios table tr .time{
+            font-size: 12px;
+            text-align: center;
+            height:0px;
+            min-width: 89px;
+            max-width: 120px;
+        }
+        .clases {
+            text-align: center;
+            font-weight: normal;
+            border: 1px solid #000;
+        }
+        .day, .hora {
+            text-transform: uppercase;
+        }
+        .hora {
+            font-size: 12px;
+        }
+        .day,.time,.stripe,.clases, #encabezado {
+            font-size: 12px;
+        }
+    }
+</style>
+<div id="busqueda" align="center">
+    <table id="tblbusqueda"  align="center">
+        <tr>
+            <td class='relative'>
+                <?php include_once('filtros.phtml'); ?>
+                <span></span>
+            </td>	
+       </tr>    			
+    </table>  
+</div>
+<img id="image" src="../images/logo_UNE_color.png" height="100px" width="100px">
+<div id="tblHorarios"></div>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+       
+              
+        $("#leyenda").hide();
+        $("#btnList").click(function(){
+             $("#leyenda").show();
+             $( "#leyenda" ).effect( "size", {
+                to: { width: 201, height: 75}
+              }, 1000 );
+
+        });
+
+
+        
+
+        <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Action->getJavaScript('tblHorarios');
+            echo $this->filters->getJavaScript('tblHorarios');
+        ?>
+
+
+    });
+
+</script>

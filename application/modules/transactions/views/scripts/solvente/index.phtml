@@ -1,0 +1,136 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.misgrupos');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+
+<div id="busqueda">
+    <table id="tblbusqueda"  align="center">
+            <tr>
+                <td>
+                    <p id="cedula">Cedula</p>
+                </td>
+                <td>
+                    <input id="cedulatxt" type="text" >
+                </td>
+                <td>
+                    <input id="verclik" type="button" value="ver" >
+                </td>
+            </tr>
+        </table>  
+</div>
+
+<!--<p id="mensaje" align="center" style="font-weight:bold"></p>-->
+
+<br></br>
+
+<div id="informacion">
+        <div height="161" style="border: 1px solid black; width: 290px; margin: auto; padding: 25px; -moz-box-shadow: 0 0 10px black;">
+            <div id="fotoDiv" align="center"><input id="foto" width="120" type="image" height="161" disabled="disabled" alt="Foto:" name="foto" style="-moz-box-shadow: 0 0 10px black;"></div>
+            <table id="tblusuario" align="center" style="font-size: 13px;">
+                    <tr>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center; background-color: #BBC21C;">
+                            <span style="font-size: 13px"><b>Datos Personales:</b></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p id="nombre_usuario">Nombre :</p>
+                        </td>
+                        <td>
+                            <p id="n_usuariotxt"></p>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>
+                            <p id="apellido_usuario">Apellido :</p>
+                        </td>
+                        <td>
+                            <p id="a_usuariotxt"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center; background-color: #BBC21C;">
+                            <span style="font-size: 13px"><b>Datos Acad&eacute;mico:</b></span>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>
+                            <p id="escuela_usuario">Escuela :</p>
+                        </td>
+                        <td>
+                            <p id="e_usuariotxt"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: center; background-color: #BBC21C;">
+                            <span style="font-size: 13px"><b>Datos Administrativos:</b></span>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>
+                            <p id="estatus_usuario">Estatus :</p>
+                        </td>
+                        <td>
+                            <p id="est_usuariotxt"></p>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>
+                            <p id="perfil_usuario">Perfiles :</p>
+                        </td>
+                        <td>
+                            <p id="per_usuariotxt"></p>
+                        </td>
+                        <td>
+                            <p id="perest_usuariotxt"></p>
+                        </td>
+                    </tr>
+            </table>
+         </div>
+</div>
+
+<script type='text/javascript'>
+    $(document).ready(function()
+    {
+        <?php
+           echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        ?> 
+            $('#claveclik').attr('disabled',true);  
+            $('#mensaje').hide();
+            $('#informacion').hide();
+            
+            $('#verclik').click(function(){
+                
+            $ci = $('#cedulatxt').val();
+            $x=0;
+            while($ci[$x]!= null){
+            if($ci[$x]=='%')
+            {
+              $ci = 'E';
+            }    
+            $x = $x +1;
+            }   
+            
+            $.getJSON(urlAjax+"buscar/ci/"+$ci , function(data){executeCmdsFromJSON(data)})
+            }); 
+            
+            
+            $('#claveclik').click(function(){
+            $.getJSON(urlAjax+"reiniciarpass/ci/"+  $('#cedulatxt').val(), function(data){executeCmdsFromJSON(data)})
+    
+            });
+    });
+      
+      
+   
+</script>

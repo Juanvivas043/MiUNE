@@ -1,0 +1,146 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<div align="center">
+    <table  id="tblFiltro" align="center" border="0" cellpadding="0" cellspacing="0" style="margin:auto;">
+	    <tr>
+	         <td align="center">
+	            <?php include_once('filtros.phtml'); ?>
+	         </td>
+	    </tr>
+	     <tr>
+	     	<td>
+			    <table id="tableLeyenda" align="center" style="margin:auto;">
+			    	<tr>
+			    		<td><strong>1:</strong></td>
+			    		<td>Índice del Período Anterior</td>
+			    		<td><strong>11:</strong></td>
+			    		<td>Todas Cargadas</td>
+			    	</tr>
+			    	<tr>
+			    		<td><strong>2:</strong></td>
+			    		<td>Asignaturas Reprobadas en el Período Anterior</td>
+			    		<td><strong>12:</strong></td>
+			    		<td>UC Aprobadas mas Inscritas</td>
+			    	</tr>
+			    	<tr>
+			    		<td><strong>3:</strong></td>
+			    		<td>Asignaturas Ínscritas menos Retiradas Período Anterior</td>
+			    		<td><strong>13:</strong></td>
+			    		<td>UC Carrera</td>
+			    	</tr>
+			    	<tr>
+			    		<td><strong>4:</strong></td>
+			    		<td>Asignaturas Retiradas Período Anterior</td>
+			    		<td><strong>14:</strong></td>
+			    		<td>Sede</td>
+			    	</tr>
+			    	<tr>
+			    		<td><strong>5:</strong></td>
+			    		<td>Porcentaje Aprobadas Período Anterior</td>
+			    		<td><strong>15:</strong></td>
+			    		<td>Escuela</td>
+			    	</tr>
+			    	<tr>
+			    		<td><strong>6:</strong></td>
+			    		<td>Índice Acumulado</td>
+			    		<td><strong>16:</strong></td>
+			    		<td>Semestre Academico</td>
+			    	</tr>
+			    	<tr>
+			    		<td><strong>7:</strong></td>
+			    		<td>Reprobadas Cursantes</td>
+			    		<td><strong>17:</strong></td>
+			    		<td>UC Inscritas Período Actual</td>
+			    	</tr>
+			    	<tr>
+			    		<td><strong>8:</strong></td>
+			    		<td>Asignaturas Inscritas Menos Retiradas Período Actual</td>
+			    		<td><strong>18:</strong></td>
+			    		<td>UC Período Ubicación</td>
+			    	</tr>
+			    	<tr>
+			    		<td><strong>9:</strong></td>
+			    		<td>Asignaturas Retiradas Período Actual</td>
+			    		<td><strong>19:</strong></td>
+			    		<td>Estado</td>
+			    	</tr>
+			    	<tr>
+			    		<td><strong>10:</strong></td>
+			    		<td>Porcentaje Aprobadas Período Actual</td>
+			    		<td><strong>20:</strong></td>
+			    		<td>Razón</td>
+			    	</tr>
+			    	<tr>
+			    		<td colspan="2"></td>
+			    		<td ><strong>21:</strong></td>
+			    		<td>Artículo</td>
+			    	</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+	            <div class="text-leyenda1">
+	                <button id="btnLeyenda">Leyenda</button>
+	            </div>
+	        </td>
+	    </tr>
+	     <tr>
+	        <td>
+	            <div id="tableData" align="center">&nbsp;</div>   
+	         </td>
+	    </tr>
+    </table> 
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    <?php
+        echo $this->SwapBytes_Jquery->getLoading('loading');
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+        echo $this->filters->getJavaScript('tableData');
+    ?>
+
+    $('#tableLeyenda').hide();
+    $('#btnLeyenda').click(function(){
+    	if (!$("#tableLeyenda").is(":visible")){
+    		$('#tableLeyenda').show();
+    	}
+    	else if($("#tableLeyenda").is(":visible")){
+    		$('#tableLeyenda').hide();
+    	}
+    });
+});
+</script>
+<style type="text/css">
+	#tableLeyenda{
+		border-collapse: collapse;
+		border: 2px solid #b7b7b7;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		color: #000000;
+		background: #f9f9f9;
+	}
+	#tableLeyenda td {
+		border: 1px solid #b7b7b7;
+		padding: 4px;
+	}
+	#tableLeyenda tbody tr:hover{
+		background: #ffffd9;
+	}
+
+	#btnLeyenda{
+		position: relative;
+		left: 9px;
+		margin-top: 10px;
+		margin-bottom: 10px;
+	}
+</style>

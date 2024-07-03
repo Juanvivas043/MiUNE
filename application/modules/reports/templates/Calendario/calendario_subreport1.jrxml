@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="calendario_subreport1" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="MIO" class="java.lang.String"/>
+	<parameter name="miperiodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[123]]></defaultValueExpression>
+	</parameter>
+	<parameter name="subs" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT consecutivo,
+       actividad,
+       CASE WHEN fechainicio <> fehafin
+	  THEN CASE WHEN mesinicio <> mesfin
+                      THEN
+diainicio || ' de ' || mesinicio || ' al ' || diafin || ' de ' || mesfin
+		  ELSE diainicio || ' al ' || diafin || ' de ' || mesinicio END
+            ELSE diainicio || ' de ' || mesinicio END AS fecha,
+subconsec,
+subcount
+FROM(
+SELECT consecutivo,subconsec,
+actividad,
+to_char(fechainicio, 'DD') as diainicio,
+CASE to_char(fechainicio, 'TMMonth')
+WHEN 'MAY' THEN 'Mayo' ELSE to_char(fechainicio, 'TMMonth')
+END AS mesinicio,
+to_char(fehafin, 'DD') as diafin,
+CASE to_char(fehafin, 'TMMonth')
+WHEN 'MAY' THEN 'Mayo' ELSE to_char(fehafin, 'TMMonth')
+END AS mesfin,
+fechainicio,
+fehafin,
+subcount
+FROM fn_xrxx_get_calendario($P!{miperiodo}) as (consecutivo varchar, subconsec varchar, actividad varchar, fechainicio date, fehafin date,subcount int,destacar boolean)
+where subconsec ilike $P{MIO} || '.%'
+) as sqt]]>
+	</queryString>
+	<field name="consecutivo" class="java.lang.String"/>
+	<field name="actividad" class="java.lang.String"/>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="subconsec" class="java.lang.String"/>
+	<field name="subcount" class="java.lang.Integer"/>
+	<variable name="prueba" class="java.lang.String">
+		<variableExpression><![CDATA[$F{consecutivo}]]></variableExpression>
+	</variable>
+	<variable name="print_consec" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{consecutivo}]]></variableExpression>
+	</variable>
+	<group name="consecutivo">
+		<groupExpression><![CDATA[$F{consecutivo}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="83" y="0" width="278" height="15"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{actividad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="361" y="0" width="194" height="15"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineWidth="0.5" lineStyle="Dotted"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="40" y="0" width="43" height="15"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Dotted"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.5" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{subconsec}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="40" height="15"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[( $V{print_consec}%2 == 0 ? $F{consecutivo} : ' ' )]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="14" width="40" height="1">
+					<printWhenExpression><![CDATA[$V{print_consec} == $P{subs}]]></printWhenExpression>
+				</reportElement>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

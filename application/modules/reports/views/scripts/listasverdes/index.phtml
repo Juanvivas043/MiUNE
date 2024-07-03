@@ -1,0 +1,161 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10">
+    <tr>
+        <td colspan="2">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td width="250px" valign="top">
+            <table>
+                <tr>
+                    <td><b>Tipos de Listas Verdes:</b></td>
+                </tr>
+                <tr>
+                    <td>
+                        <ol style="padding:4 0 0 30;">
+                            <li><input name="tipoListaVerde" value="0" type="radio">&nbsp;Por escuela</li>
+                            <li><input name="tipoListaVerde" value="1" type="radio">&nbsp;Por escuela y semestre en adelante.</li>
+                            <li><input name="tipoListaVerde" value="2" type="radio" checked >&nbsp;Por sección.</li>
+                        </ol>
+                    </td>
+                </tr
+                <tr>
+                    <td style="padding:4 4 4 30px">
+                        <button type="button" id="btnDescargar">Descargar Lista Verde</button>
+                        <button type="button" id="btnDescargarListaBlanca">Descargar Lista Blanca</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Instrucciones para imprimir:</b></td>
+                </tr>
+                <tr>
+                    <td>
+                        <ol style="padding:0 0 0 30;">
+                            <li>Descargue el archivo para guardar el archivo en el disco duro y recuerde la ruta.</li>
+                            <li>Acceda al Command de Windows y dirijase a la ruta donde guardo el archivo que descargo anteriormente.</li>
+                            <li>Escriba el siguiente comando para imprimir, remplace los nombres por sus respectivos valores.</li>
+                            <div style="font-family: courier;">type archivo.txt > \\servidor\impresora</div>
+                        </ol>
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <td width="500px"><div id="tblEstudiantes"></div></td>
+    </tr>
+</table>
+<div id="Cargando">
+</div>
+<script type='text/javascript'>
+    $(document).ready(function(){
+       $('#btnDescargarListaBlanca').button({ disabled: true });
+       $('#btnDescargar').button({ disabled: true });
+        
+    $("#loading").ajaxStart(function(){
+       
+       $('#btnList').attr('disabled', true);
+       
+    });
+    
+    $("#loading").ajaxStop(function(){
+       
+       $('#btnList').attr('disabled', false);
+       
+    });    
+        
+    
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+    echo $this->filters->getJavaScript('tblEstudiantes');
+?>
+
+        $("input[name='tipoListaVerde']").change(function(){
+            switch($("input[name='tipoListaVerde']:checked").val()) {
+                case '0':
+					$('#btnList').button({ disabled: true });
+					$('#btnClear').button({ disabled: true });
+					$('#btnDescargarListaBlanca').button({ disabled: false });
+					$('#btnDescargar').button({ disabled: false });
+                    $('#selSemestre').attr('disabled', true);
+                    $('#selMateria').attr('disabled', true);
+                    $('#selSeccion').attr('disabled', true);
+                    $('#selEscuela').unbind('change');
+                    $('#selSemestre').unbind('change');
+                    $('#selMateria').unbind('change');
+                    clearSelect('#selSemestre');
+                    clearSelect('#selMateria');
+                    clearSelect('#selSeccion');
+
+                    arraySelects = new Array("periodo", "sede", "escuela", "pensum");
+                    $('#selEscuela').change(function(){eval(fillSelectRecursive(urlAjax, arraySelects, 3));$('#tblEstudiantes').html('');});
+                    eval(fillSelectRecursive(urlAjax, arraySelects, 3));
+                    break;
+                case '1':
+					$('#btnList').button({ disabled: true });
+					$('#btnClear').button({ disabled: true });
+					$('#btnDescargarListaBlanca').button({ disabled: false });
+					$('#btnDescargar').button({ disabled: false });
+                    $('#selSemestre').attr('disabled', false);
+                    $('#selMateria').attr('disabled', true);
+                    $('#selSeccion').attr('disabled', true);
+                    $('#selEscuela').unbind('change');
+                    $('#selSemestre').unbind('change');
+                    $('#selMateria').unbind('change');
+                    clearSelect('#selMateria');
+                    clearSelect('#selSeccion');
+
+                    arraySelects = new Array("periodo", "sede", "escuela", "pensum", "semestre");
+
+                    $('#selEscuela').change(function(){eval(fillSelectRecursive(urlAjax, arraySelects, 3));$('#tblEstudiantes').html('');});
+                    eval(fillSelectRecursive(urlAjax, arraySelects, 3));
+                    break;
+                case '2':
+					$('#btnList').button({ disabled: false });
+					$('#btnClear').button({ disabled: false });
+					$('#btnDescargarListaBlanca').button({ disabled: true });
+					$('#btnDescargar').button({ disabled: true });
+                    $('#selSemestre').attr('disabled', false);
+                    $('#selMateria').attr('disabled', false);
+                    $('#selSeccion').attr('disabled', false);
+                    $('#selEscuela').unbind('change');
+                    $('#selSemestre').unbind('change');
+                    $('#selMateria').unbind('change');
+                    clearSelect('#selMateria');
+                    clearSelect('#selSeccion');
+
+                    arraySelects = new Array("periodo", "sede", "escuela", "pensum", "semestre", "materia", "seccion");
+
+                    $('#selEscuela').change(function(){eval(fillSelectRecursive(urlAjax, arraySelects, 3));$('#tblEstudiantes').html('');});
+                    $('#selSemestre').change(function(){eval(fillSelectRecursive(urlAjax, arraySelects, 5));$('#tblEstudiantes').html('');});
+                    $('#selMateria').change(function(){eval(fillSelectRecursive(urlAjax, arraySelects, 6));$('#tblEstudiantes').html('');});
+                    eval(fillSelectRecursive(urlAjax, arraySelects, 3));
+                    break;
+            }
+            
+            $('#tblEstudiantes').html('');
+        });
+        $('#btnDescargarListaBlanca').click(function(){
+             $.getJSON(urlAjax + "generando/data/" + $(':input').serialize(), function (d) {
+            executeCmdsFromJSON(d)
+        });
+           // window.location.href = urlAjax + "descargarlistasblancas/data/" + $(':input').serialize();
+            //alert("Espere unos minutos mienntras el reporte solicitado es generado.");
+        });
+        $('#btnDescargar').click(function(){
+            window.location.href = urlAjax + "descargar/data/" + $(':input').serialize();
+        });
+        $('#btnDescargarLB').live("click", function() { 
+           window.location.href = urlAjax + "descargarlistasblancas/";
+           $(this).parents('div').dialog('close');
+        });
+    });
+</script>

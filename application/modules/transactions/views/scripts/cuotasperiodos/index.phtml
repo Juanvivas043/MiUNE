@@ -1,0 +1,163 @@
+<?php
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.9.1.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/bootstrap.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/angular.min.js');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+?>
+
+<style type="text/css">
+.cuotasperiodo
+{
+	margin: 50 auto;
+	width: 38%;
+}
+#Modificar
+{
+	top: -35px;
+	right: -84px;
+}
+.disabled
+{
+    color: #a4a4a4;
+    background: #dedede;
+    cursor: no-drop;
+}
+input.valid
+{
+    border: 2.5px solid #008000;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2.5px #008000;
+}
+
+input.invalid
+{
+    border: 2.5px solid #FF0000;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2.5px #FF0000;
+}
+input.novalid
+{
+	border: 2.5px solid #9F6000;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2.5px #9F6000;
+}
+</style>
+
+<h2> <?php echo $this->escape($this->title); ?> </h2>
+	<br>
+	<?php echo $this->form; ?>
+
+
+
+<script type="text/javascript">
+
+<?php
+	echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    
+?>
+
+
+$(document).ready(function()
+{
+	
+	/*function AlertEmpty() 
+	{
+	    alert("Campos vacíos");
+	}
+	*/
+
+	$("#Verifi").click(function()
+	{
+		$.ajax(
+				{
+					method: "POST",
+					url: urlAjax + 'verificar',
+					data: { periodo: $("#periodo").val(),
+							sede: $("#sede").val(), 
+							NuevoIngreso: $("#NuevoIngreso").val() 
+						  },
+					dataType: "JSON"
+				})
+		.done(function(data)
+		{
+			executeCmdsFromJSON(data);
+		});				
+	});
+
+
+	
+
+	$("#Agregar").click(function()
+	{
+		$.ajax(
+		{
+				method: "POST",
+				url: urlAjax + 'agregar',
+				data: { periodo: $("#periodo").val(), 
+						montocuota: $("#montocuota").val(),
+						montocuotaNew: $("#montocuotaNew").val(), 
+						montoinscri: $("#montoinscri").val(),
+						montoinscriNew: $("#montoinscriNew").val(), 
+						NuevoIngreso: $("#NuevoIngreso").val(),
+						sede: $("#sede").val() 
+					  },
+				dataType: "JSON"
+		})
+
+		.done(function(data)
+		{
+			executeCmdsFromJSON(data);
+		});
+	})
+
+
+	$("#Modificar").click(function()
+	{
+		$.ajax(
+		{
+				method: "POST",
+				url: urlAjax + 'update',
+				data: { periodo: $("#periodo").val(), 
+						montocuota: $("#montocuota").val(),
+						montocuotaNew: $("#montocuotaNew").val(), 
+						montoinscri: $("#montoinscri").val(),
+						montoinscriNew: $("#montoinscriNew").val(), 
+						NuevoIngreso: $("#NuevoIngreso").val(),
+						sede: $("#sede").val() 
+					  },
+				dataType: "JSON"
+		})
+		.done(function(data)
+		{
+			executeCmdsFromJSON(data);
+		});
+	})
+
+	$("#Reiniciar").click(function()
+	{
+		$.ajax(
+				{
+					method: "POST",
+					url: urlAjax + 'Reiniciar',
+					data: { periodo: $("#periodo").val(),
+							sede: $("#sede").val(), 
+							NuevoIngreso: $("#NuevoIngreso").val() 
+						  },
+					dataType: "JSON"
+				})
+		.done(function(data)
+		{
+			executeCmdsFromJSON(data);
+		});				
+	});
+
+
+});
+</script>

@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title><?php echo $this->escape($this->title); ?></title>
+	<?php
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/pagination.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/bootstrap.min.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/docs.min.css');
+		$this->headLink()->appendStylesheet($this->baseUrl() . '/css/font-awesome.css');
+
+	?>
+	<style>
+		.tdDatos{
+			margin: auto;
+			padding-top: 10px;
+		}
+		.datos{
+			width: 100%;
+			height: 100%;
+			display: block;
+		}
+		h1{
+			font-size: 100px;
+		}
+		.uc{
+			width: 300px;
+			float: left;
+		}
+		.uc h1{
+			height: 85px;
+		}
+		.uc div{
+			display: inline;
+		}
+		.cant_materias{
+			width: 300px;
+			float: left;
+		}
+		.semestre{
+			width: 300px;
+			float:left;
+		}
+		#btnContinuar{
+			width: 	33%;
+			margin: 10px auto;
+			display: block;
+		}
+		#btnContinuar span{
+            font-size: 13px;
+            text-align: center;
+		}
+select.list1 option.option2
+{
+    background-color: #007700;
+}
+
+select option {
+    margin:40px;
+    background: rgba(0,0,0,0.3);
+    color:#fff;
+    text-shadow:0 1px 0 rgba(0,0,0,0.4);
+}
+select option[val="1"]{
+    background: rgba(100,100,100,0.3);
+}
+
+/* Use a wide full screen for small screens like tablets. */
+@media (min-width: 768px) and (max-width:992px) {
+    .container {
+		width: initial;
+        padding-left: 2em;
+        padding-right: 2em;
+	}
+}
+
+/* --- Plans ---------------------------- */
+
+.my_planHeader {
+    text-align: center;
+    color: white;
+    padding-top:0.2em;
+    padding-bottom:0.2em;
+}
+.my_planTitle {
+    font-size:1.6em;
+    font-weight: bold;
+}
+.my_planPrice {
+    font-size:1.4em;
+    font-weight: bold;
+}
+.my_planDuration {
+    margin-top: -0.6em;
+}
+
+@media (max-width: 768px) {
+    .my_planTitle {
+        font-size:small;
+    }
+}
+
+/* --- Features ------------------------- */
+
+.my_feature {
+    line-height:2.0em;
+}
+
+@media (max-width: 768px) {
+    .my_feature {
+        text-align: center
+    }
+ }
+
+.my_featureRow {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    border: 0.0em solid rgb(163, 163, 163);
+}
+
+/* --- Plan 0 --------------------------- */
+.my_plan0 {
+    background:rgb(173,173,173);
+}
+.my_planHeader.my_plan0 a {
+    background: rgb(173,173,173);
+    color:white;
+}
+.my_planHeader.my_plan0 {
+    background: rgb(209,209,182<D-2>);
+    border-bottom: black;
+}
+
+/* --- Plan 1 --------------------------- */
+.my_plan1 {
+    background: rgb(224,234,242);
+}
+.my_planHeader.my_plan1 a {
+    background: rgb(72, 109, 139);
+    color:white;
+}
+.my_planHeader.my_plan1 {
+    background: rgb(105, 153, 193);
+    border-bottom: thick solid rgb(72, 109, 139);
+}
+.my_planHeader.my_plan1.xpecial {
+    background: rgb(105, 153, 193);
+    border-bottom: 2px solid rgb(72, 109, 139);
+}
+
+/* --- Plan 2 --------------------------- */
+.my_plan2 {
+    background: rgb(230,235,218);
+}
+.my_planHeader.my_plan2 a {
+    background: rgb(108, 131, 62);
+    color:white;
+}
+.my_planHeader.my_plan2 {
+    background: rgb(134, 162, 77);
+    border-bottom: thick solid rgb(108, 131, 62);
+}
+
+/* --- Plan 3 --------------------------- */
+.my_plan3 {
+    background: rgb(254,235,212);
+}
+.my_planHeader.my_plan3 a {
+    background: rgb(199, 127, 40);
+    color:white;
+}
+.my_planHeader.my_plan3 {
+    background: rgb(253, 161, 49);
+    border-bottom: thick solid rgb(199, 127, 40);
+}
+/* --- Plan 4 --------------------------- */
+.my_plan4 {
+    background: rgb(254,235,212);
+    background: rgb(194, 177, 177);
+}
+.my_planHeader.my_plan4 a {
+    background: rgb(199, 127, 40);
+    color:white;
+}
+.my_planHeader.my_plan4 {
+    background: rgb(112, 64, 64);
+    border-bottom: thick solid rgb(69, 39, 39);
+}
+.my_planHeader.my_plan4 input{
+    margin-bottom: 4px;
+}
+.my_planFeature.my_plan4 input{
+    padding-bottom: 3px;
+}
+.my_planFeature {
+    text-align: center;
+    font-size: 1.5em;
+}
+.my_planFeature input.seleccion_cuotas {
+    margin-bottom: 3px;
+}
+.my_planFeature i.my_check {
+    color: green;
+    padding-bottom: 3px;
+}
+.got{
+    padding-bottom: 7px;
+}
+
+.words{
+    text-align:left;
+}
+.numbers{
+    text-align:right;
+}
+.off{
+    text-decoration: line-through;
+    color: rgb(86,86,86);
+}
+.Xpecial{
+    background: white;
+    color; black;
+    border-bottom: black;
+}
+#framefloat{ position: absolute;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+z-index: 100;
+background-color: rgba(0,0,0,0.5);
+ }
+
+#closeFrame{
+    position:inherit;
+    left: 91%;
+    top: 6%;
+    color: red;
+    font-size: 20px;
+
+}
+iframe{
+width: 90%;
+height: 75%;
+left: 5%;
+top: 5%;
+position: inherit;
+border-radius: 36px;
+box-shadow: 0px 0px 20px 5px rgba(3, 49, 40, 1);
+
+}
+
+.containerXpecial{
+    border-radius:2px;
+    -webkit-border-radius:2px; /* Safari y Chrome */
+    -moz-border-radius:2px; /* Firefox */
+    -webkit-box-shadow: 0px 0px 13px 0px rgba(38, 50, 50, 0.71);
+    -moz-box-shadow:    0px 0px 13px 0px rgba(38, 50, 50, 0.71);
+    box-shadow:         0px 0px 13px 0px rgba(38, 50, 50, 0.71);
+}
+.cancelado{
+    margin-left:-5px;
+    padding: .0em .6em .3em;
+}
+.voucher{
+	text-align: center;
+    font-size: initial;
+}
+
+.voucher-print {
+    text-align: center;
+    font-size: 12px;
+    height: 100%;
+    width: 100%;
+    padding: auto auto;
+}
+
+#btnPrint {
+    width:  33%;
+    margin: 10px auto;
+    display: block;
+}
+#btnPrint span{
+    font-size: 13px;
+    padding: 5px 15px;
+    text-align: center;
+}
+
+.white-black {
+    background: #fff;
+    color: #000;
+}
+
+#transactionState {
+    color:<?php echo $this->info->color ?>
+}
+
+#print {
+    display: none;
+}
+
+.group {
+    display: none;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.column-center {
+    width: 100%;
+}
+
+.column-left {
+    width: 64.5%
+}
+
+.column-right {
+    width: 35%
+}
+
+.border {
+    border: 1px solid #000;
+}
+
+.clear {
+    clear:both;
+    overflow: hidden;
+}
+
+.col {
+    width: calc(48% - 4px);
+}
+
+.col-right {
+    margin-right: 0px;
+}
+
+.col-left {
+    margin-left: 0px;
+}
+
+.logo {
+    width: 150;
+    height: auto;
+    position: absolute;
+    top: 60px;
+    left: 0px;
+}
+
+.border-right {
+    border-right: 1px solid #000;
+}
+
+.border-left {
+    border-left: 1px solid #000;
+}
+
+.border-top {
+    border-top: 1px solid #000;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #000;
+}
+
+.margin-left {
+    margin-left: 30px;
+}
+
+.margin-min-left {
+    margin-left: 15px;
+}
+
+.especial-border{
+    margin: 0px;
+    clear: both;
+    overflow: hidden;
+    border-right: 1px solid #000;
+}
+
+.main_title{
+    display: block;
+    font-size: 18px;
+    text-align: center;
+    padding: 10px auto;
+    font-weight: bold;
+}
+.alerta-info{
+    display: block;
+    font-size: 15px;
+    margin: 0px auto 15px auto;
+    border: 1px solid #a94442;
+    padding: 5px;
+    width: 60%;
+    }
+.alerta{
+    display: block;
+    font-size: 15px;
+    margin: 0px auto 15px auto;
+    border: 1px solid #a94442;
+    background-color: #f2dede;
+    padding: 5px;
+    color: #000;
+    width: 60%;
+    box-shadow: 0px 0px 13px 0px rgba(38, 50, 50, 0.50);;
+    }
+
+@media print {
+
+    body {
+        background: transparent;
+        text-align: justify;
+        font-weight: normal;
+    }
+
+    head, #btnContinuar, #btnPrint {
+        display: none;
+    }
+
+    #mainBody {
+        display: block;
+        border: none;
+        box-shadow: none;
+        color: #000;
+    }
+    
+    .printing {
+        color: #000;
+        font-size: 12px;
+        font-weight: normal;
+    }
+
+    #transactionState {
+        color: #000;
+    }
+
+    #preview {
+        display: none;
+    }
+
+    #print {
+        display: block;
+    }
+
+    .group {
+        display: block;
+        padding: 5px;
+        margin: 2px;
+    }
+
+    .col, .logo {
+        display: inline-block;
+    }
+}
+
+</style>
+</head>
+<body>
+<br><br><br>
+<div class"container">
+    <?php if(!$this->connection): ?>
+        <div class="clear"> </div>
+            <div id="alerta" class="alerta alert-danger" style="text-align: center">
+                <div>
+                  Hacer click sobre el boton Regarcar Pagina, hasta que cambie el recuadro que dice: <i><strong>"En este momento no podemos procesar su solicitud, por favor intente mas tarde.".</strong></i> Hasta no ver el estado en: <em>Pendiente<em>, <em>Rechazado<em> o <em>Aprobado<em> 
+                </div>
+            </div>
+    <?php endif; ?>
+	<?php if($this->transactionInfo["fk_tipo"]==20118 && $this->info->estado == 'Aprobada' && isset($this->cob_num)): ?>
+            <div id="alerta" class="alerta-info alert-info" style="text-align: center">
+                <div>
+                 Al realizar tu pago online puedes <strong>inscribirte online</strong>, copiando el siguiente n&uacute;mero de comprobante: <i><strong><?=$this->cob_num?></strong></i>, luego puedes ir a MiUNEAcademico haciendo click  <strong><a style="color:black" target="_blank" href="http://omicron.une.edu.ve/MiUNEAcademico/index.php">Aqui!.</a></strong> O desde MiUNE2.0 en Transacciones > Reinscripciones > Reinscripciones.
+                </div>
+            </div>
+    <?php endif; ?>
+
+    <div class="col-xs-6 col-md-offset-3 col-sm-6 containerXpecial" style="background:white;" id="mainBody">
+        <br>
+        <?php if(!empty($this->info)): ?>
+        <div class="row" id="preview">
+            <div class="col-xs-10 col-md-offset-1 col-sm-10">
+                 <div class="row">
+                     <div class="col-md-offset-1 col-xs-4 col-sm-4 my_planHeader my_featureRow xpecial white-black">
+                        <div class="my_planPrice">Numero Factura:</div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 my_planHeader  xpecial white-black">
+                        <div class="my_planPrice"><?php echo $this->info->factura ?></div>
+                    </div>
+                </div>
+                <div class="row">
+                     <div class="col-md-offset-1 col-xs-4 col-sm-4 my_planHeader my_featureRow xpecial white-black">
+                        <div class="my_planPrice">Monto Total:</div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 my_planHeader  xpecial white-black">
+                        <div class="my_planPrice"><?php echo $this->info->monto ?></div>
+                    </div>
+                </div>
+                <div class="row">
+                     <div class="col-md-offset-1 col-xs-4 col-sm-4 my_planHeader my_featureRow xpecial white-black">
+                        <div class="my_planPrice">Estado de la transaccion:</div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 my_planHeader  xpecial white-black">
+                        <div class="my_planPrice" id="transactionState"><?php echo $this->info->estado ?></div>
+                    </div>
+                </div>
+                <?php if(!empty($this->info->tarjeta)): ?>
+                <div class="row">
+                     <div class="col-md-offset-1 col-xs-4 col-sm-4 my_planHeader my_featureRow xpecial white-black">
+                        <div class="my_planPrice">Tarjeta:</div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 my_planHeader  xpecial white-black">
+                        <div class="my_planPrice"><?php echo $this->info->tarjeta ?></div>
+                    </div>
+                </div>
+                <?php endif; ?>
+                <?php if($this->info->descripcion != ""): ?>
+                <div class="row">
+                     <div class="col-md-offset-1 col-xs-4 col-sm-4 my_planHeader xpecial white-black">
+                        <div class="my_planPrice">Descripcion:</div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 my_planHeader xpecial white-black">
+                        <div class="my_planPrice"><?php echo $this->info->descripcion ?></div>
+                    </div>
+                </div>
+                <?php endif; ?>
+                <?php if(!empty($this->info->voucher)): ?>
+                <div class="row">
+                    <div class="col-xs-2 col-sm-2 my_planHeader xpecial white-black"></div>
+                    <div class="col-xs-8 col-sm-8 my_planHeader xpecial white-black">
+                        <div class="voucher"><?php echo $this->info->voucher ?></div>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 my_planHeader xpecial white-black"></div>
+                </div>
+            <?php endif; ?>
+            </div>
+        </div>
+        <div class="row" id="print">
+            <div class="column-left">
+                <div class="row group clear">
+                    <div class="logo">
+                        <img src="http://omicron.une.edu.ve/MiUNE2/images/logotipo_une.png" class="logo">
+                    </div>
+                </div>
+            </div>
+            <div class="column-center clear">
+                <div class="row group clear">
+                    <div class="col-xs-12">
+                        <span class="main_title">Comprobante de Pago de Cuotas</span>
+                    </div>
+                </div>
+                <div class="row group clear">
+                    <div class="col-xs-12">
+                        <span style="text-align:right" >Fecha: <?php echo $this->info->date  ?></span>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"><br></div>
+            <div class="row clear border">
+                <div class="column-left left">
+                    <div class="row group clear">
+                        <div class="col-xs-6">
+                            <span class="left">Cliente:</span>
+                        </div>
+                        <div class="col-xs-6">
+                            <span class="margin-left"><?php echo $this->dataUser["estudiante"] ?></span>
+                        </div>
+                    </div>
+                    <div class="row group clear">
+                        <div class="col-xs-6 left">
+                            <span class="">Cédula:</span>
+                            <span class="margin-left"><?php echo $this->dataUser["cedula"] ?></span>
+                        </div>
+                        <div class="col-xs-6">
+                            <span class="margin-left">Teléfono:</span>
+                            <span class="margin-left"><?php echo $this->dataUser["telefono"] ?></span>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="row group">
+                        <div class="col-xs-6">
+                            <span class="left">Escuela:</span>
+                        </div>
+                        <div class="col-xs-6">
+                            <span class="margin-left"><?php echo $this->dataUser["escuela"] ?></span>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="row group">
+                         <div class="col-xs-6 left">
+                            <span class="">Sede:</span>
+                            <span class="margin-min-left"><?php echo $this->dataUser["sede"] ?></span>
+                         </div>
+                        <div class="col-xs-6 right">
+                            <span class="">Período:</span>
+                            <span class="margin-min-left">
+                                <?php echo $this->datos["fk_periodo"]; ?>
+                            </span>
+                            <span class="margin-min-left">
+                                <?php echo $this->datos["inicio_periodo"]; ?>
+                            </span>
+                            <span class="margin-min-left">
+                                <?php echo $this->datos["fin_periodo"]; ?>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="row group"></div>
+                </div>
+                <div class="column-right right border-left">
+                    <div class="row group clear">
+                        <div class="col-xs-6">
+                            <div class="left">Estado de la transacción:</div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="right" id="transactionState"><?php echo $this->info->estado ?></div>
+                        </div>
+                    </div>
+                    <?php
+
+                        if($this->info->estado != 'Aprobada'){
+                    ?>
+                        <div class="row group clear">
+                            <div class="col-xs-6">
+                                <div class="right"><?php echo $this->info->descripcion ?></div>
+                            </div>
+                        </div>
+                    <?php
+                        }
+                    ?>
+                    <div class="row group clear">
+                        <div class="col-xs-6">
+                            <div class="left">Número de Referencia:</div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="right"><?php echo $this->info->factura ?></div>
+                        </div>
+                    </div>
+                    <div class="row group clear">
+                        <div class="col-xs-6">
+                            <div class="left">Numero de Cobro:</div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="right"><?php echo $this->info->cob_num ?></div>
+                        </div>
+                    </div>
+                    <div class="row group clear">
+                        <div class="col-xs-6">
+                            <span class="left">Descripción:</span>
+                        </div>
+                        <div class="col-xs-6">
+                            <span class="right">
+                                <?php 
+                                    $print = substr($this->transactionDescription,20);
+                                    if($this->transactionAmount == 1){
+                                        $print = str_ireplace("(S)", "", $print);
+                                    }
+                                    echo 'PAGO DE '.$print; 
+                                ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear"><br></div>
+            <div class="row clear border">
+                <?php if(!empty($this->info->voucher)): ?>
+                    <div class="row">
+                        <div class="col-xs-8 col-sm-8 my_planHeader xpecial white-black">
+                            <div class="voucher-print">
+                                <?php echo $this->info->voucher ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="row"> 
+            <div class="col-xs-12 col-sm-12 my_planHeader  xpecial white-black">
+                <div class="my_planPrice"><?php echo $this->message; ?></div>
+            </div>
+        </div>
+    <?php endif; ?>
+        <br>
+        <?php if(!empty($this->info->voucher)): ?>
+
+            <div class="row" >
+                    <div class="col-xs-12 center">
+                        <button id="btnPrint" name="btnPrint" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only" role="button" aria-disabled="false" style="display: block;">
+                            <span class="ui-button-text">Imprimir</span>
+                        </button>
+                    </div>
+            </div>
+
+             <?php elseif($this->reloadOn): ?>
+
+		        <div class="row"> 
+		        	<div class="col-md-offset-4 col-xs-4 center">
+				        <button id="btnReload" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only" role="button" aria-disabled="false" style="display: block;">
+		                    <span class="ui-button-text">Recargar Pagina</span>
+		                </button>
+	                </div>
+		        </div>
+            <?php endif; ?>
+            <div class="row" >
+                    <div class="col-xs-12">
+                        <button id="btnContinuar" name="btnContinuar" class="ui-button ui-state-default ui-corner-all ui-widget ui-button-text-only" role="button" aria-disabled="false" style="display: block;">
+                            <span class="ui-button-text">Ver Otras Operaciones</span>
+                        </button>
+                    </div>
+            </div>
+        <br>
+    </div>
+</div>
+
+
+<br>
+
+<?php
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+?>
+<script type='text/javascript'>
+    $(document).ready(function(){
+
+		<?php
+		    echo $this->SwapBytes_Jquery->getLoading('loading');
+		    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+		    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+		?>
+
+        $("#btnContinuar").click(function() {
+
+            window.location =  urlAjax + "ver";
+            
+        });
+
+        var clicked = false;
+
+        $("#btnPrint").click(function() {
+            $("#btnPrint").hide();
+            $("#btnContinuar").hide();
+            $("#copy_right").hide();
+            $("#body_header").hide();
+            $("#menucontainer").hide();
+            $("#preview").hide();
+            $("#print").show();
+            window.print();
+            $("#btnPrint").show();
+            $("#btnContinuar").show();
+            $("#copy_right").show();
+            $("#body_header").show();
+            $("#menucontainer").show();
+            $("#preview").show();
+            $("#print").hide();
+        });
+
+        $("#btnReload").click(function(){
+        	location.reload();
+        });
+
+    });
+
+
+
+</script>
+</body>
+</html>
+
+
+

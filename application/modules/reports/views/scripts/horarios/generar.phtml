@@ -1,0 +1,12 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/reports.horarios.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/js/pgrid-1.0.0/jquery.pgrid.default.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/generics.js');
+$this->headScript()->appendFile($this->baseUrl(). '/js/jquery-1.4.4.js', 'text/javascript');
+$this->headScript()->appendFile($this->baseUrl(). '/js/pgrid-1.0.0/jquery.pgrid.js', 'text/javascript');
+$authSpace = new Zend_Session_Namespace('Zend_Auth');
+
+
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>

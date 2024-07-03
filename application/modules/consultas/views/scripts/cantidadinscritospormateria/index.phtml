@@ -1,0 +1,149 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+?>
+<h2>
+<?php  echo $this->title; ?>	
+</h2>
+<div align="center">
+    <table  id="tblFiltro" align="center">
+        <tr>
+            <td>
+                <?php include_once('filtros.phtml'); ?>
+            </td>
+            <td>
+                <div class="check_box">
+                    <p class="box">Menos 5 Inscritos</p><input type="checkbox" id="check5" name="check" />
+                </div>
+            </td>
+       </tr>    
+    </table> 
+
+    <div id="tableData" align="center">
+    </div> 
+</div>
+<style type="text/css">
+
+    #tableData tr, #tableData tr td{
+        -webkit-transition: 300ms all ease;
+        -o-transition: 300ms all ease;
+        transition: 300ms all ease;
+    }
+
+    #tableData tr td:hover{
+        background: #F5F5BC;
+    }
+
+    #tableData tr td{
+        padding: 10px 2px;
+    }
+
+    .bck_red {
+        background: #F78181;
+    }
+
+    .bck_orange {
+        background: #FFB76F;
+    }
+
+    .bck_yellow {
+        background: #F4F7A3;
+    }
+
+    .bck_green {
+        background: #A9F5A9;
+    }
+
+    .bck_white {
+        background: #fff;
+    }
+
+    .check_box {
+        margin-right: 5px;
+        margin-top: -30px;
+    }
+
+    .box {
+        font-size: 14px;
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+
+</style>
+
+<script type="text/javascript">
+    <?php
+        echo $this->SwapBytes_Jquery->getLoading('loading');
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+        echo $this->filters->getJavaScript('tableData');
+    ?>
+    $(document).ready(function(){
+        $("td[style=text-align:right;font-weight:bolder;]").hide();
+        function list(){
+            //check = (boolean) check;
+            $.getJSON(urlAjax + "generar/filters/"+escape($('#tblFiltros').find(':input').serialize()), { check : $("#check5:checked").length }, function(d){executeCmdsFromJSON(d)});
+            $(".alert").each(function(){
+                var texto = $(this).text().replace(' %','');
+                if(texto == 0) { 
+                    $(this).parent().addClass("bck_white"); 
+                }
+                if(texto > 0 && texto < 51) { 
+                    $(this).parent().addClass("bck_green");  
+                }
+                if(texto > 50 && texto <71) { 
+                    $(this).parent().addClass("bck_yellow"); 
+                }
+                if(texto > 70 && texto < 91) { 
+                    $(this).parent().addClass("bck_orange"); 
+                }
+                if(texto > 90) { 
+                    $(this).parent().addClass("bck_red"); 
+                }
+            });
+        };
+        function changeColor(){
+            $(".alert").ajaxStop(function(){
+                $(".alert").each(function(){
+                    var texto = $(this).text().replace('%','');
+                    if(texto == 0) { 
+                        $(this).parent().addClass("bck_white"); 
+                    }
+                    if(texto > 0 && texto < 51) { 
+                        $(this).parent().addClass("bck_green");  
+                    }
+                    if(texto > 50 && texto <71) { 
+                        $(this).parent().addClass("bck_yellow"); 
+                    }
+                    if(texto > 70 && texto < 91) { 
+                        $(this).parent().addClass("bck_orange"); 
+                    }
+                    if(texto > 90) { 
+                        $(this).parent().addClass("bck_red"); 
+                    }
+                });
+            });
+        };
+        $("select").change(function(){
+            changeColor();
+            list();
+        });
+        var first_time = true;
+        $("#selSemestre").ajaxStop(function(){
+            if(first_time){
+                list();
+            }
+            first_time = false;
+         });
+
+        $("#check5").click(function(){
+            list($("#check5:checked").length);
+        });
+
+    });
+</script>

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstudianteProyectoEscuela" language="groovy" printOrder="Horizontal" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<parameter name="Sede" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Periodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Escuela" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombreSede" class="java.lang.String"/>
+	<parameter name="nombreEscuela" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT tu2.pk_usuario AS cedula, tu2.apellido || ', ' || tu2.nombre AS estudiante, lower(tu2.correo) AS correo, tu2.telefono, tu2.telefono_movil as celular, tt.valor AS escuela, tp.nombre AS proyecto, tii.nombre AS institucion
+             FROM tbl_inscripcionespasantias  tip
+              JOIN tbl_asignacionesproyectos  tap   ON tap.pk_asignacionproyecto  = tip.fk_asignacionproyecto
+              JOIN tbl_atributos              tt    ON tap.fk_escuela             = tt.pk_atributo
+              JOIN tbl_proyectos              tp    ON tp.pk_proyecto             = tap.fk_proyecto
+              JOIN tbl_contactos              tc    ON tc.pk_contacto             = tip.fk_tutor_institucion
+              JOIN tbl_instituciones          tii   ON tc.fk_institucion          = tii.pk_institucion
+              JOIN tbl_usuariosgrupos         tg    ON tg.pk_usuariogrupo         = tip.fk_tutor_academico
+              JOIN tbl_usuarios               tu    ON tg.fk_usuario              = tu.pk_usuario
+              JOIN tbl_recordsacademicos      tr    ON tr.pk_recordacademico      = tip.fk_recordacademico
+              JOIN tbl_inscripciones          ti    ON tr.fk_inscripcion          = ti.pk_inscripcion
+              JOIN tbl_usuariosgrupos         tg2   ON ti.fk_usuariogrupo         = tg2.pk_usuariogrupo
+              JOIN tbl_usuarios               tu2   ON tg2.fk_usuario             = tu2.pk_usuario
+              JOIN tbl_usuariosgrupos         tg3   ON tg3.pk_usuariogrupo        = tc.fk_usuariogrupo
+              JOIN tbl_usuarios               tu3   ON tg3.fk_usuario             = tu3.pk_usuario
+              WHERE tap.fk_periodo = $P!{Periodo}
+              AND ti.fk_estructura = $P!{Sede}
+              AND ti.fk_atributo = $P!{Escuela}
+              ORDER BY tp.nombre, tt.valor, tu2.pk_usuario]]>
+	</queryString>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="estudiante" class="java.lang.String"/>
+	<field name="correo" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="celular" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="proyecto" class="java.lang.String"/>
+	<field name="institucion" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="74">
+			<staticText>
+				<reportElement x="10" y="0" width="235" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[UNIVERSIDAD NUEVA ESPARTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="16" width="384" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTUDIANTES SERVICIO COMUNITARIO II POR ESCUELA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="30" width="82" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEDE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="44" width="82" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="58" width="82" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESCUELA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="92" y="30" width="154" height="14"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{nombreSede}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="58" width="335" height="14"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{escuela}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="44" width="154" height="14"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{Periodo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="41">
+			<textField>
+				<reportElement mode="Opaque" x="348" y="15" width="79" height="26" backcolor="#CCCCCC"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Teléfono"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="56" y="15" width="144" height="26" backcolor="#CCCCCC"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Estudiante"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="427" y="15" width="76" height="26" backcolor="#CCCCCC"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Celular"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="200" y="15" width="148" height="26" backcolor="#CCCCCC"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Correo"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="503" y="15" width="124" height="26" backcolor="#CCCCCC"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Proyecto"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="627" y="15" width="125" height="26" backcolor="#CCCCCC"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Institución"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="15" width="56" height="26" backcolor="#CCCCCC"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Cédula"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="56" y="0" width="144" height="31"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{estudiante}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="0" y="0" width="56" height="31"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="200" y="0" width="148" height="31"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{correo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="348" y="0" width="79" height="31"/>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="427" y="0" width="76" height="31"/>
+				<box leftPadding="0">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{celular}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="503" y="0" width="124" height="31"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{proyecto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="627" y="0" width="125" height="31"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{institucion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

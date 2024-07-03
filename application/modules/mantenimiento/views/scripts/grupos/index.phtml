@@ -1,0 +1,172 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.grupos');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+   
+<div id="gmarco">
+    
+    
+    <div id="busqueda">
+        <table id="tblbusqueda"  align="center">
+            <tr>
+                <td>
+                    <p id="cedula">Cedula</p>
+                </td>
+                <td>
+                    <input id="cedulatxt" type="text" >
+                </td>
+                <td>
+                    <input id="botomclik" type="button" value="ver" >
+                </td>
+                <td>
+                    <!--<input id="claveclik" type="button" value="reiniciar pass" >-->
+                </td>
+            </tr>
+        </table> 
+    </div>
+    <p id="mensaje" align="center" style="font-weight:bold">Cedula no encontrada</p>
+    
+    <br></br>
+    <div id ="marcos">
+    <div id="usuario">
+        <table id="tblusuario" align="center" >
+            <tr>
+                <td>
+                    <p id="nombre_usuario">Nombre :</p>
+                </td>
+                <td>
+                    <p id="n_usuariotxt"></p>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <p id="apellido_usuario">Apellido :</p>
+                </td>
+                <td>
+                    <p id="a_usuariotxt"></p>
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <p id="escuela_usuario">Escuela :</p>
+                </td>
+                <td>
+                    <p id="e_usuariotxt"></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <br></br>
+    
+    <div id="cuadrado">
+        
+        <table id="tblcuadrado"align="center"style="width:500px">
+            <tr>
+                <td>
+                    <p align="center"> Mis grupos</p>
+                </td>
+                <td>   
+                </td>
+                <td>
+                    <p align="center"> Grupos </p>
+                </td>    
+            </tr>
+            
+            <tr>
+                <td>
+                    <div id="migrupos"></div>
+                </td>
+                <td>
+                    <table id="tblcambio"align="center">
+                        <tr>
+                            <td>
+                                <br></br>
+                                <p id="f_dere"align="center" style="cursor:pointer">></p><br></br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p id="f_izq"align="center" style="cursor: pointer"><</p><br></br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p id="tf_dere"align="center" style ="cursor: pointer">>></p><br></br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p id="tf_izq"align="center" style="cursor: pointer"><<</p><br></br>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <div id="n_grupos"></div>
+                </td>
+            </tr>
+
+        </table>
+             
+    </div>
+   
+    </div>
+</div>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        <?php
+           echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        ?>              
+                
+
+     $('#marcos').hide();
+     $('#mensaje').hide();
+     $('#claveclik').attr('disabled',true);
+     
+     $('#botomclik').click(function(){
+        $x=0;
+        $ci = $('#cedulatxt').val();
+        while($ci[$x]!= null){
+        if($ci[$x]=='%')
+        {
+              $ci = 'E';
+        }    
+           $x = $x +1;
+        }           
+        $.getJSON(urlAjax+"busqueda/ci/"+ $ci, function(data){executeCmdsFromJSON(data)})
+     });
+    
+    
+    $('#tf_izq').click(function(){
+           $.getJSON(urlAjax+"cambiots/ci/"+ $ci, function(data){executeCmdsFromJSON(data)})
+    });
+    
+    $('#tf_dere').click(function(){
+        $.getJSON(urlAjax+"cambiotn/ci/"+ $ci, function(data){executeCmdsFromJSON(data)})
+    });
+
+    $('#f_dere').click(function(){
+        if($('#listbox1').select().change()){
+        $.getJSON(urlAjax+"cambion/value_n/"+$('#listbox1').dblclick().val() + "/ci/"+ $ci, function(data){executeCmdsFromJSON(data)})
+        }        
+    });
+    
+    $('#f_izq').click(function(){
+        if($('#listbox2').select().change()){
+        $.getJSON(urlAjax+"cambios/value_s/"+$('#listbox2').dblclick().val() + "/ci/"+ $ci, function(data){executeCmdsFromJSON(data)})
+        }
+    });
+     $('#claveclik').click(function(){
+            $.getJSON(urlAjax+"reiniciarpass/ci/"+ $ci, function(data){executeCmdsFromJSON(data)})
+    });    
+    });
+    
+   
+</script>

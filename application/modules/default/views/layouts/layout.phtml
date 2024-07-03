@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title><?php echo $this->escape($this->title); ?></title>
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=1.0; maximum-scale=1.0; user-scalable=1;" />
+        <?php if (Zend_Auth::getInstance()->hasIdentity()) {?>
+<!--            <script type="text/javascript" src='<?php echo $this->baseUrl() ?>/js/jquery-1.6.2.min.js'></script>-->
+            <script type="text/javascript" src='<?php echo $this->baseUrl() ?>/js/jquery.min.js'></script>
+            <script type="text/javascript" src='<?php echo $this->baseUrl() ?>/js/generics.js'></script>
+            <script type="text/javascript" src='<?php echo $this->baseUrl() ?>/js/menu.js'></script>
+            <link rel='stylesheet' type='text/css' href='<?php echo $this->baseUrl() ?>/css/menu.css'/>
+        <?php } ?>
+        <?php echo $this->headScript(); ?>
+        <?php echo $this->headStyle(); ?>
+        <?php echo $this->headLink(); ?>
+        <link rel='stylesheet' type='text/css' href='<?php echo $this->baseUrl() ?>/css/body.css'/>
+        <link rel='stylesheet' type='text/css' href='<?php echo $this->baseUrl() ?>/css/ajax.css'/>
+        <link rel='stylesheet' type='text/css' href='<?php echo $this->baseUrl() ?>/css/text.css'/>
+    </head>
+    <body>
+    	<div class="shadow"><div id='ellipsis' class='ellipsis' style='transform:scale(1);'><div class="ib"><div class="circle"><div></div></div><div class="circle"><div></div></div><div class="circle"><div></div></div><div class="circle"><div></div></div></div><div class="txt" id="loadingTxt"></div></div></div>
+        <?php
+        if(getenv('APPLICATION_ENV') == 'development') {
+        ?>
+            <div id="site_development">En Desarrollo</div>
+        <?php
+        }
+        ?>
+        <table id="full_background" width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr valign="top" height="70px">
+                <td>
+                    <?php
+                    echo $this->render('header.phtml');
+
+                    // Verificamos si el usuario se encuentra autentificado
+                    // para mostrar el menu de acceso.
+                    if (Zend_Auth::getInstance()->hasIdentity()) {
+                        Zend_Loader::loadClass('Models_DbTable_Accesos');
+                        Zend_Loader::loadClass('Models_DbTable_Usuarios');
+                        $Request = new Zend_Controller_Request_Http();
+                        $AuthSpace = new Zend_Session_Namespace('Zend_Auth');
+                        $Accesos = new Models_DbTable_Accesos();
+                        //$Usuarios = new Models_DbTable_Usuarios();
+                        $SwapBytes_Menu = new SwapBytes_Menu();
+                        $AuthSpace->lastLoadPage = Zend_Date::now();
+                        $applicationID = 1231;
+                        $htmlMenu = $Accesos->getMenu($AuthSpace->userId, $applicationID);
+                        
+                        
+                    ?>
+
+                </td>
+            </tr>
+            <tr valign="top" height="28px;">
+                <td>
+
+                <?php $SwapBytes_Menu->render($htmlMenu); }?>
+
+                </td>
+            </tr>
+            <tr valign="top">
+                <td>
+                    <?php echo $this->layout()->content ?>
+                    
+                </td>
+            </tr>
+            <tr height="45px">
+                <td>
+                    <?php echo $this->render('footer.phtml') ?>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
+<?php
+// Cuando el usuario está autentificado, se ira verificando cada minuto para
+// detectar si la sesión se a vencido y redireccionar la pagina al login.
+//if (Zend_Auth::getInstance()->hasIdentity() && getenv('APPLICATION_ENV') == 'production') {
+?>
+<!-- <script type='text/javascript'>
+});
+</script> -->
+<?php
+//}
+?>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listadoestudiantesmasivo" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="1000" leftMargin="4" rightMargin="4" topMargin="4" bottomMargin="4" uuid="69536a1c-b432-4388-b0b3-05d188c027c4">
+	<property name="ireport.zoom" value="0.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Periodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[122]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Escuela" class="java.lang.String">
+		<defaultValueExpression><![CDATA[11]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Sede" class="java.lang.String">
+		<defaultValueExpression><![CDATA[7]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/Users/nieldm/Documents/Work-UNE/iReport/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Semestre" class="java.lang.String">
+		<defaultValueExpression><![CDATA[873]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Pensum" class="java.lang.String">
+		<defaultValueExpression><![CDATA[7]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT  ag.fk_materia, aon.fk_semestre, aon.fk_seccion, pe.fk_escuela, pe.codigopropietario as fk_codigo
+FROM tbl_asignaturas ag
+JOIN vw_materias ma ON ma.pk_atributo = ag.fk_materia
+JOIN tbl_asignaciones aon ON aon.fk_asignatura = ag.pk_asignatura
+JOIN tbl_estructuras est ON est.pk_estructura = aon.fk_estructura
+JOIN tbl_estructuras est1 ON est1.pk_estructura = est.fk_estructura
+JOIN tbl_pensums pe ON pe.pk_pensum = ag.fk_pensum
+JOIN tbl_recordsacademicos ra ON ra.fk_asignacion = aon.pk_asignacion
+JOIN vw_semestres sem ON sem.pk_atributo = aon.fk_semestre
+where est1.fk_estructura = $P!{Sede}
+  AND aon.fk_periodo = $P!{Periodo}
+  AND sem.pk_atributo >= $P!{Semestre}
+  AND pe.fk_escuela = $P!{Escuela}
+  AND ag.fk_materia != 1701
+  AND ag.fk_pensum = $P!{Pensum}
+  order by 4,2,3,1;]]>
+	</queryString>
+	<field name="fk_materia" class="java.lang.Integer"/>
+	<field name="fk_semestre" class="java.lang.Long"/>
+	<field name="fk_seccion" class="java.lang.Integer"/>
+	<field name="fk_escuela" class="java.lang.Long"/>
+	<field name="fk_codigo" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="572" splitType="Stretch">
+			<subreport>
+				<reportElement uuid="91eeb5c7-5b4b-42c8-92bb-9306eee31095" x="0" y="0" width="1000" height="572"/>
+				<subreportParameter name="Seccion">
+					<subreportParameterExpression><![CDATA[$F{fk_seccion}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Materia">
+					<subreportParameterExpression><![CDATA[$F{fk_materia}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Sede">
+					<subreportParameterExpression><![CDATA[$P{Sede}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Escuela">
+					<subreportParameterExpression><![CDATA[$F{fk_escuela}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Periodo">
+					<subreportParameterExpression><![CDATA[$P{Periodo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Pensum">
+					<subreportParameterExpression><![CDATA[$F{fk_codigo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Semestre">
+					<subreportParameterExpression><![CDATA[$F{fk_semestre}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ListadoEstudiantesSeleccionMasivo.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

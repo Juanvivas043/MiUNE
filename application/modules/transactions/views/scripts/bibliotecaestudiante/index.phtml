@@ -1,0 +1,75 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/pagination.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/bibliotecaestudiante.css');
+?>
+<meta charset="utf-8">
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" style="padding: 0px 0px 0px 10px; margin-left:auto; margin-right:auto;">
+
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <div id="mensaje">
+               
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="tableData">
+            </div>
+        </td>
+    </tr>
+</table>
+
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+?>   
+
+   
+   
+   $('#btnListar').click(function(){
+           $.getJSON(urlAjax+"list/tipo/"+$('#Tipo').val()+"/autor/"+$('#Autor').val()+"/materia/"+$('#Materia').val()+"/sede/"+$('#Sede').val()+"/buscar/"+$('#txtBuscar').val(), function(data){executeCmdsFromJSON(data)})
+    });
+    
+    $('#btnSolicitar').click(function(){
+        $var = "";
+        $cont = 0;
+        for(i= 0 ; i< $( "input" ).length ;i++){
+           if($('#checkiten'+$cont).attr("checked")==true){
+                 $var = $('#checkiten'+$cont).val() + "," +$var;
+            }
+           $cont = $cont +1;
+	 
+        }
+
+           $.getJSON(urlAjax+"solicitar/pk/"+$var, function(data){executeCmdsFromJSON(data)})
+    });
+     $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+     
+   
+    });
+  
+   
+    
+    
+</script>

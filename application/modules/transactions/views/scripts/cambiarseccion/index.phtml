@@ -1,0 +1,138 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<meta charset="utf-8">
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<style type="text/css">
+    #selPeriodo{
+        pointer-events:none;
+        color: #333; opacity: 0.5;
+    }
+
+</style>
+<table border="0" cellpadding="0" cellspacing="0" style="padding: 0px 0px 0px 10px; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="tblEstudiantes" align="center">&nbsp;</div>
+        </td>
+    </tr>
+</table>
+
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+<script type='text/javascript'>
+
+    $(document).ready(function(){
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+    echo $this->filters->getJavaScript('tblEstudiantes', $this->SwapBytes_Jquery_Ui_Form->buttonDisable('btnAdd', true));
+?>
+
+    });
+
+    function llenar(){
+        var periodo = $(selPeriodo).val();
+        var pensum  = $(selPensum).val();
+        var sede    = $(selSede).val();
+        var materia = $(selMateria).val();
+        var seccion = $(selSeccion).val();
+                $.getJSON(urlAjax + "llenar",{periodo : periodo,
+                pensum  : pensum,
+                sede    : sede,
+                materia : materia,
+                seccion : seccion}, function(data){  executeCmdsFromJSON(data) });
+    }    
+
+    function coincidencia(){
+        var periodo = $(selPeriodo).val();
+        var pensum  = $(selPensum).val();
+        var sede    = $(selSede).val();
+        var materia = $(selMateria).val();
+        var seccion = $(selSeccion).val();
+        var secciones = [];
+        var cedulas = [];
+        $('input:checkbox:checked').each(function(){
+            cedulas.push($(this).closest('tr').find('.cedula').html());
+            secciones.push($(this).closest('tr').find('.select,.selMaster').val());
+            var clase = $(this).closest('tr').find('.cedula').html();
+            $(this).closest('tr').addClass(clase);
+        });
+                $.getJSON(urlAjax + "coincidencia",{periodo : periodo,
+                pensum  : pensum,
+                sede    : sede,
+                materia : materia,
+                seccion : seccion,
+                secciones: secciones,
+                cedulas : cedulas}, function(data){  executeCmdsFromJSON(data) });
+    }     
+
+    function coincidenciamaster(){
+        var periodo = $(selPeriodo).val();
+        var pensum  = $(selPensum).val();
+        var sede    = $(selSede).val();
+        var materia = $(selMateria).val();
+        var seccion = $(selSeccion).val();
+        var secciones = [];
+        var cedulas = [];
+        $('input:checkbox:checked').each(function(){
+            cedulas.push($(this).closest('tr').find('.cedula').html());
+            secciones.push($(this).closest('tr').find('.select,.selMaster').val());
+            var clase = $(this).closest('tr').find('.cedula').html();
+            $(this).closest('tr').addClass(clase);
+        });
+                $.getJSON(urlAjax + "coincidenciamaster",
+                    {periodo : periodo,
+                    pensum  : pensum,
+                    sede    : sede,
+                    materia : materia,
+                    seccion : seccion,
+                    secciones: secciones,
+                    cedulas : cedulas},
+                    function(data){  executeCmdsFromJSON(data) });
+    }     
+
+    $("#btnCambiar").click( function() {
+
+        var arreglo = [];
+        var periodo = $(selPeriodo).val();
+        var pensum  = $(selPensum).val();
+        var sede    = $(selSede).val();
+        var materia = $(selMateria).val();
+
+      $('input:checkbox:checked').each(function(){
+            var group = [];
+            group.push( $(this).closest('tr').find('.chkEstudiante').val(),$(this).closest('tr').find('.select,.selEsbirro').val());
+            arreglo.push(group);
+        });
+      
+        $.getJSON(urlAjax + "cambiar",{periodo : periodo,
+                arreglo : arreglo,
+                periodo : periodo,
+                pensum  : pensum,
+                sede    : sede,
+                materia : materia}, function(data){  executeCmdsFromJSON(data);
+        });
+
+      }); 
+
+
+
+    
+        
+</script>

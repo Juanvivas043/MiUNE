@@ -1,0 +1,49 @@
+@CHARSET "ISO-8859-1";
+
+body, li, td, input, select, p {
+    font-family: arial;
+    font-size: 12px;
+}
+
+dl.zend_form {
+    margin: 10px 0;
+    padding: 0;
+}
+
+.zend_form dt {
+    width: 140px;
+    float: left;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    text-align:right;
+    font-family:arial, helvetica;
+    font-size:12px;
+}
+
+dt { clear: both; }
+
+.zend_form dd {
+    float: left;
+    margin: 0 0 0 0;
+    padding: 0 0 4 4;
+}
+
+dl.zend_form dd ul.errors {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color:#FE2E2E;
+    font-family:arial, helvetica;
+    font-size:11px;
+}
+
+
+.ui-button {
+    outline: 0;
+    margin:0;
+    padding: .4em 1em .5em;
+    text-decoration:none;
+    cursor:pointer;
+    position: relative;
+    text-align: center;
+}

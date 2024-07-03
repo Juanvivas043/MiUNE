@@ -1,0 +1,222 @@
+<?php
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+?>
+
+<h2>
+<?php  echo $this->title; ?>	
+</h2>
+
+
+<div align="center">
+
+    <table  id="tblFiltro" align="center">
+        <tr>
+            
+        </tr>
+        <tr>
+            <td>
+                <input  type="text" onkeypress="return isNumberKey(event)" id="cedula" class="valid"   name="cedula" style="width:140px; required">
+            </td>
+            <td style="font-weight:bolder;text-align:center">
+                <input type="submit" id="btnGenerate" value="Buscar"/>
+            </td>
+       </tr> 
+
+    </table> 
+
+            <div id="plantilla" align="margin-left"></div>
+
+
+
+
+
+    <div id="tableData" align="center">
+    </div> 
+</div>
+
+<style>
+    #tblFiltro{
+        margin-top: 10px;
+    }
+
+    #tableData tr td:hover{
+        background: #F5F5BC;
+    }
+
+    #tableData tr td [value = 1]{
+        padding: 10px 2px;
+        background: #fff
+    }
+
+    #tableData tr td [value = 2 or value = 3]{
+        padding: 10px 2px;
+        background: #F78181
+    }
+
+    #tableData tr td [value = 4]{
+        padding: 10px 2px;
+        background: #A9F5A9
+    }
+
+    .bck_red {
+        background: #F78181;
+    }
+
+    .bck_green {
+        background: #A9F5A9;
+    }
+
+    .bck_white {
+        background: #fff;
+    }
+
+    #tblFiltro{
+        margin-top: 25px;
+    }
+    #tableData tr td:hover{
+        background: #F5F5BC;
+    }
+
+    #tableData tr td [value = 1]{
+        padding: 10px 2px;
+        background: #fff
+    }
+
+    #tableData tr td [value = 2 or value = 3]{
+        padding: 10px 2px;
+        background: #F78181
+    }
+
+    #tableData tr td [value = 4]{
+        padding: 10px 2px;
+        background: #A9F5A9
+    }
+
+    .bck_red {
+        background: #F78181;
+    }
+
+    .bck_orange {
+        background: #e6a556;
+    }
+
+    .bck_green {
+        background: #A9F5A9;
+    }
+
+    .bck_white {
+        background: #fff;
+    }
+    .datosEstudiante{
+        font-size: 13px;
+        margin-left: 15.5%;
+        top: 10px;
+        color: rgb(102,102,102);
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        text-align: justify;
+    }
+    .textBlue{
+        color: rgb(28,152,172);
+        font-size: 14px;
+    }
+    .textRed{
+        color: rgb(255,0,0);
+        font-size: 14px;
+    }
+    .textGray{
+        color: rgb(102,102,102);
+        font-size: 13px;
+    }
+    .textBlack{
+        color: rgb(68,68,68);
+        font-size: 14px;
+    }
+    .strong{
+        font-weight: bold;
+    }
+    .btn-orden{
+        margin-top: 5px;
+    }
+    .textAzul{
+        color: rgb(91, 117, 254);
+    }
+ #est_nombre{
+    font-size: 13px;
+ }
+ 
+</style>
+
+<script type="text/javascript">
+    <?php
+        //echo $this->SwapBytes_Jquery->getLoading('loading');
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+        echo $this->filters->getJavaScript('tableData');
+    ?>
+    $(document).ready(function(){
+                
+        function list(){            
+            $.getJSON();
+            $(".estado").each(function(){
+                var texto = $(this).text();
+                if(texto == 'Pendiente') { 
+                    $(this).parent().addClass("bck_white"); 
+                }
+                if(texto == "Inscrita") { 
+                    $(this).parent().addClass("bck_green");  
+                }
+                if(texto == "Retirada" || texto == "Reprobada") { 
+                    $(this).parent().addClass("bck_red"); 
+                }
+            });
+        };
+        function changeColor(){
+            $(".estado").ajaxStop(function(){
+                $(".estado").each(function(){
+                    var texto = $(this).text();
+                    if(texto == 'Pendiente') { 
+                        $(this).parent().addClass("bck_white"); 
+                    }
+                    if(texto == "Inscrita") { 
+                        $(this).parent().addClass("bck_green");  
+                    }
+                    if(texto == "Retirada" || texto == "Reprobada") { 
+                        $(this).parent().addClass("bck_red"); 
+                    }
+                });
+            });
+        };
+        $('#btnGenerate').click(function(){
+            $.ajax({
+                url: urlAjax + "list",
+                data: {cedula: $("#cedula").val()},
+                dataType: "json",
+                async: false,
+                success: function(data) {
+            //changeColor();
+            //list();
+                    executeCmdsFromJSON(data);
+                },
+            });
+            changeColor();
+            list();
+        });
+
+    });
+
+      function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+
+</script>
+

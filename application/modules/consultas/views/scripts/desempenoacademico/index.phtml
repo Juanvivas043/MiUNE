@@ -1,0 +1,52 @@
+<?php
+/**  Añado Recursos Css y Js al Header */ 
+$this->headScript()->appendFile($this->baseUrl(). '/js/jquery-ui-1.8.14.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+?>
+
+<div class="container">
+    <h1><?php echo $this->escape($this->title); ?></h1>
+    <div class="filtros">
+            <?php include_once('filtros.phtml'); ?>
+    </div>
+    <div class="inner">
+        <div id="tblDesempeno"></div>
+    <div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready( function () {
+<?php
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+	echo $this->SwapBytes_Crud_Action->getJavaScript('tblDesempeno');
+	echo $this->filters->getJavaScript('tblDesempeno');
+    //echo $this->SwapBytes_Jquery->fillSelect('selLapso', 'lapso');
+?>
+});
+</script>
+<style> 
+    .container {
+        padding:20px;
+        width: 1200px; 
+    }
+    
+    .filtros {
+        margin: 20px;
+    }
+
+    .inner {
+        position: relative;
+    }
+
+    #tblDesempeno {
+        margin: auto;  
+        position: relative;
+        left:10;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+</style/

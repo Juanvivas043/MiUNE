@@ -1,0 +1,92 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/transactions.accesosip');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+<div id ="marco">
+    <table id ="busqueda"align="center">
+        <tr>
+           <td>
+                <select id="accesosbox" style ="width: 300px">
+           </td>
+           <td>
+                <input id="botomclik" type="button" value="ver" >
+           </td>
+        </tr>
+    </table>
+    
+    <br></br>
+    
+    <table id ="agregarIP">
+        <tr>
+            <td>
+                <input id="iptxt" type="text" value="0.0.0.0" style ="width: 85px">
+            </td>
+            <td>
+                 <input id="agregar" type="button" value="Agregar" >
+            </td>
+            <td>
+                 <input id="eliminar" type="button" value="Eliminar" >
+            </td>
+        </tr>
+       
+    </table>
+
+    <p id ="mensaje" align="center"></p>    
+    
+    <table id ="Misip" align="center"></table>
+           
+    
+    
+</div>   
+
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        <?php
+           echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        ?>              
+           
+      $('#eliminar').hide();
+      $('#agregarIP').hide();
+      $acc="";
+      $.getJSON(urlAjax+"acceso/", function(data){executeCmdsFromJSON(data)})
+     
+     $('#botomclik').click(function(){
+         $acc = $('#accesosbox').val();
+       $.getJSON(urlAjax+"misip/acc/"+ $acc, function(data){executeCmdsFromJSON(data)})
+
+     });
+     
+      $('#agregar').click(function(){
+       $.getJSON(urlAjax+"agregarip/acc/"+ $acc + "/ip/"+ $('#iptxt').val(), function(data){executeCmdsFromJSON(data)})
+       
+     });
+     
+     
+    $('#eliminar').click(function(){
+        
+    //buscar insertarlo en el servidor
+    $var="";    
+    $cont = 0;
+    while($('#valor'+$cont).val()!=undefined){
+        if($('#valor'+$cont).attr("checked")==true){
+        $var = $('#valor'+$cont).val() + "," +$var;
+        }
+        $cont = $cont +1;   
+    }
+     //_____________________________________   
+    $.getJSON(urlAjax+"eliminarip/acc/"+  $acc+ "/t/"+ $var, function(data){executeCmdsFromJSON(data)})
+    
+});
+     
+    });
+    
+    
+    
+   
+</script>

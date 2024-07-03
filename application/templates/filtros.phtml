@@ -1,0 +1,121 @@
+<?php
+$properties = $this->filters->getProperties();
+?>
+<?php $width = $this->filters->getWidth() <= 100 ? 'auto' : $this->filters->getWidth(); ?>
+
+<table id="tblFiltros" border="0" cellpadding="0" cellspacing="0" width="<?php echo $width ?>">
+    <tr><td colspan="4"><div id="filtro"></div></td></tr>
+	<?php if((isset($properties['display']['periodo']) ||
+                  isset($properties['display']['sede'])    ||
+                  isset($properties['display']['escuela']) ||
+                  isset($properties['display']['pensum'])  ||
+                  isset($properties['display']['semestre'])||
+                  isset($properties['display']['materia']) ||
+                  isset($properties['display']['turno'])   ||
+                  isset($properties['display']['seccion']) ||
+                  isset($properties['display']['dia'])) && (
+                        $properties['display']['periodo']  ||
+		        $properties['display']['sede']     ||
+			$properties['display']['escuela']  ||
+			$properties['display']['pensum']   ||
+			$properties['display']['semestre'] ||
+                        $properties['display']['materia']  ||
+			$properties['display']['turno']    ||
+			$properties['display']['seccion']  ||
+			$properties['display']['dia']) || isset($properties['custom'])) { ?>
+    <tr id="nombres">
+        <td id="filtericon" width="<?php echo $properties['width']['label']; ?>px" style="font-weight:bolder;text-align:right" rowspan="2" height="40px">
+			<img src="<?php echo $this->baseUrl()?>/images/icons/table_go.png">&nbsp;Filtro:
+                        
+		</td>
+        <?php if($properties['display']['periodo']) {?><td id="periodo" align="center" style="font-weight:bolder;">Per&iacute;odo</td><?php } ?>
+        <?php if($properties['display']['sede'])    {?><td id="sede" align="center" style="font-weight:bolder;">Sede</td><?php } ?>
+        <?php if($properties['display']['escuela']) {?><td id="escuela" align="center" style="font-weight:bolder;">Escuela</td><?php } ?>
+        <?php if($properties['display']['pensum'])  {?><td id="pensum" align="center" style="font-weight:bolder;">Pensum</td><?php } ?>
+        <?php if($properties['display']['semestre']){?><td id="semestre" align="center" style="font-weight:bolder;">Semestre</td><?php } ?>
+        <?php if($properties['display']['materia']) {?><td id="materia" align="center" style="font-weight:bolder;">Materia</td><?php } ?>
+        <?php if($properties['display']['turno'])   {?><td id="turno" align="center" style="font-weight:bolder;">Turno</td><?php } ?>
+        <?php if($properties['display']['seccion']) {?><td id="seccion" align="center" style="font-weight:bolder;">Secci&oacute;n</td><?php } ?>
+        <?php if($properties['display']['dia'])     {?><td id="dia" align="center" style="font-weight:bolder;">D&iacute;a</td><?php } ?>
+         
+        <?php if(isset($properties['custom'])) { 
+          foreach($properties['custom'] as $filter) {?> 
+            <td id="customfiltername" align="center" style="font-weight:bolder;"><?php echo $filter['label']?>  </td>
+        <?php }} ?>
+    </tr>
+    <tr id="selects">
+        <?php if($properties['display']['periodo']) {?>
+        <td id="tdperiodo" width="<?php echo $properties['width']['periodo']; ?>" align="center">
+            <select name="selPeriodo" style="width:<?php echo $properties['width']['periodo']; ?>;" id="selPeriodo" <?php if($properties['disabled']['periodo']) { echo 'disabled'; } ?>><?php $this->filters->getHtml('periodo') ?></select>
+        </td>
+        <?php } if($properties['display']['sede']) {?>
+        <td id="tdsede" width="<?php echo $properties['width']['sede']; ?>" align="center">
+            <select name="selSede" style="width:<?php echo $properties['width']['sede']; ?>;" id="selSede" <?php if($properties['disabled']['sede']) { echo 'disabled'; } ?>></select>
+        </td>
+        <?php } if($properties['display']['escuela']) {?>
+        <td id="tdescuela" width="<?php echo $properties['width']['escuela']; ?>" align="center">
+            <select name="selEscuela" style="width:<?php echo $properties['width']['escuela']; ?>;" id="selEscuela" <?php if($properties['disabled']['escuela']) { echo 'disabled'; } ?>></select>
+        </td>
+        <?php } if($properties['display']['pensum']) {?>
+        <td id="tdpensum" width="<?php echo $properties['width']['pensum']; ?>" align="center">
+            <select name="selPensum" style="width:<?php echo $properties['width']['pensum']; ?>;" id="selPensum" <?php if($properties['disabled']['pensum']) { echo 'disabled'; } ?>></select>
+        </td>
+        <?php } if($properties['display']['semestre']) {?>
+        <td id="tdsemestre" width="<?php echo $properties['width']['semestre']; ?>" align="center">
+            <select name="selSemestre" style="width:<?php echo $properties['width']['semestre']; ?>;" id="selSemestre" <?php if($properties['disabled']['semestre']) { echo 'disabled'; } ?>><?php $this->filters->getHtml('semestre') ?></select>
+        </td>
+        <?php } if($properties['display']['materia']) {?>
+        <td id="tdmateria" width="<?php echo $properties['width']['materia']; ?>" align="center">
+            <select name="selMateria" style="width:<?php echo $properties['width']['materia']; ?>;" id="selMateria" <?php if($properties['disabled']['materia']) { echo 'disabled'; } ?>></select>
+        </td>
+        <?php } if($properties['display']['turno']) {?>
+        <td id="tdturno" width="<?php echo $properties['width']['turno']; ?>" align="center">
+            <select name="selTurno" style="width:<?php echo $properties['width']['turno']; ?>;" id="selTurno" <?php if($properties['disabled']['turno']) { echo 'disabled'; } ?>><?php $this->filters->getHtml('turno') ?></select>
+        </td>
+        <?php } if($properties['display']['seccion']) {?>
+        <td id="tdseccion" width="<?php echo $properties['width']['seccion']; ?>" align="center">
+            <select name="selSeccion" style="width:<?php echo $properties['width']['seccion']; ?>;" id="selSeccion" <?php if($properties['disabled']['seccion']) { echo 'disabled'; } ?>><?php $this->filters->getHtml('seccion') ?></select>
+        </td>
+        <?php } if($properties['display']['dia']) {?>
+        <td id="tddia" width="<?php echo $properties['width']['dia']; ?>" align="center">
+            <select name="selDia" style="width:<?php echo $properties['width']['dia']; ?>;" id="selDia" <?php if($properties['disabled']['dia']) { echo 'disabled'; } ?>><?php $this->filters->getHtml('dia') ?></select>
+        </td>
+        <?php } ?>
+        <?php if(isset($properties['custom'])) { 
+          // ForEach Custom Filter
+          foreach ($properties['custom'] as $id => $filter) { ?>
+          <td id="customfilterselect" width="<?php echo $filter['width'] ?>" align="center">
+            <select <?php if(isset($filter['disabled'])) echo 'disabled' ?>
+                name="<?php echo $filter['name']?>" id="<?php echo 'sel' . ucfirst($id) ?>" >  
+              <?php if (isset($filter['options'])) foreach($filter['options'] as $option) {?>
+              <option <?php if(isset($option['disabled'])) echo 'disabled' ?> 
+                  value="<?php echo $option['value']?>"> <?php echo $option['label']?></option>
+              <?php } ?>
+            </select> 
+        </td>  
+        <?php // END Foreach Custom
+            }} ?>
+    </tr>
+	<?php } ?>
+	<?php if($this->SwapBytes_Crud_Search->getDisplay()) { ?>
+	<tr>
+		<td width="<?php echo $properties['width']['label']; ?>px" align="right" style="text-align:right;font-weight:bolder;"><img src="<?php echo $this->baseUrl()?>/images/icons/find.png">&nbsp;Buscar:&nbsp;</td>
+		<td colspan="<?php echo isset($this->search_span) ? '2' : '3'; ?>" align="left">
+			<?php echo $this->SwapBytes_Crud_Search->getHtml(); ?>
+		</td>
+	</tr>
+	<?php } ?>
+        <?php if($this->SwapBytes_Crud_Action->getDisplay()) { ?>
+        <tr>
+            <td width="<?php echo $properties['width']['label']; ?>px" align="right" style="text-align:right;font-weight:bolder;"><img src="<?php echo $this->baseUrl()?>/images/icons/table_gear.png">&nbsp;Acciones:&nbsp;</td>
+            <td  colspan="<?php echo isset($this->button_span) ? '2' : '3';   ?>" align="left" height="40px" ><?php echo $this->SwapBytes_Crud_Action->getHtml(); ?></td>
+    </tr>
+        <?php } ?>
+	<tr>
+            <td colspan="<?php echo $this->filters->getColspan() + 4 ?>"><div id="lblMessage" colspan="4" width="100%" style="display: none;" class="alert"></div></td>
+	</tr>
+	<tr>
+            <td colspan="<?php echo $this->filters->getColspan() + 1 ?>">&nbsp;</td>
+        </tr>
+</table>
+

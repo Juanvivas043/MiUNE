@@ -1,0 +1,397 @@
+<?php
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/validator.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+	$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/validator.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+	$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+?>
+<h2><?php echo $this->titulo; ?></h2>
+<style>
+    #contact label{
+        display: inline-block;
+        width: 100px;
+        text-align: right;
+    }
+    #contact_submit{
+        padding-left: 100px;
+    }
+    #contact div{
+        margin-top: 1em;
+    }
+    textarea{
+        vertical-align: top;
+        height: 5em;
+    }
+    .error{
+        display: none;
+        margin-left: 10px;
+    }       
+    
+    .error_show{
+        color: red;
+        margin-left: 10px;
+    }
+    div.ui-dialog{
+        top: 50%;
+        left: 37%;
+    }
+    div.alert{
+    	text-align: center;
+    }
+    .title{
+    	text-align: center;
+    	font-size: 125%;
+    	font-weight: bold;
+    }
+    .tooltip{
+    	display: none;
+    	min-width: 100px;
+    	position: absolute;
+    	right: -105px;
+    	top: -37.5px;
+    	background: #00787A;
+    	color: #FFF;
+    	font-size: 110%;
+    	padding: 5px;
+    	border: 1px solid #006778;
+    	border-radius: 5px;
+    	box-shadow: 0px 0px 5px #666;
+    	z-index: 1000;
+    }
+    .tooltip:after{
+    	content: "";
+		position: relative;
+		top: 30px;
+		right: 105px;
+		border-bottom: 10px solid transparent;
+		border-left: 7.5px solid transparent;
+		border-right: 7.5px solid transparent;
+		border-top: 10px solid #006778;
+    }
+    .display{ display: block; }
+    .no-display{ display: none; }
+    form#update_profile{
+    	background: rgba(255,255,255,0.8);
+    	border: 0.5px solid #CCC;
+    	border-radius: 5px;
+    	box-shadow: 0px 0px 5px #666;
+    	width: 100%;
+    	padding: 10px;
+    	margin: 5px auto;
+    	-webkit-box-sizing: border-box;
+    	-moz-box-sizing: border-box
+    	box-sizing: border-box;
+    }
+    form#update_profile .group-form{
+    	display: block;
+    	margin: 5px auto;
+    	position: relative;
+    }
+    form#update_profile .group-form label{
+    	width: 25%;
+    	float: left;
+    	font-weight: bold;
+    	font-size: 120%;
+    }
+    form#update_profile .group-form label.required:after{
+    	content: "*";
+    	color: red;
+    	margin: 0px 5px;
+    }
+    form#update_profile .group-form input[type="text"]{
+    	width: 70%;
+    	padding: 2.5px;
+    }
+    form#update_profile .group-form .sel{
+    	width: 75%;
+    	float: right;
+    }
+    form#update_profile .group-form textarea{
+    	width: 70%;
+    	max-width: 70%;
+    	min-width: 70%;
+    }
+    form#update_profile .group-form .check{
+    	width: 5%;
+		position: absolute;
+		right: -10px;
+		top: 2.5px;
+		cursor: pointer;
+    }
+    form#update_profile .group-form label:after, form#update_profile .group-form input:after, form#update_profile .group-form .sel:after, .clear{
+    	content: "";
+    	clear: both;
+    	overflow: hidden;
+    }
+    form#update_profile .btn{
+    	display: block;
+    	background: #00787A;
+    	text-align: center;
+    	font-size: 125%;
+    	color: #FFF;
+    	padding: 5px;
+    	margin: 5px auto;
+    	border: 0.5px solid #666;
+    	border-radius: 5px;
+    	box-shadow: 0px 0px 2.5px #CCC;
+    	cursor: pointer;
+    	-webkit-transition: 300ms all ease;
+    	-o-transition: 300ms all ease;
+    	transition: 300ms all ease;
+    }
+    form#update_profile .btn:hover{
+    	box-shadow: 0px 0px 5px #CCC;
+    }
+    form#update_profile .btn-disabled{
+    	background: #666;
+    	cursor: inherit;
+    }
+</style> 
+<table border="0" cellpadding="0" cellspacing="0" width="700px" style="padding: 0 0 0 10; margin: 5px auto;">
+    <tr>
+        <td align="center">
+			<div class="alert">           
+				Para  actualizar su perfil no debe dejar ningun espacio en blanco y los campos en rojo estan incorrectos.
+			</div>
+			<div class="title">
+				Datos Personales
+			</div>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+    	<td>
+    		<form action="" method="post" id="update_profile">
+    			<div class="group-form">
+    				<label for="cedula" class="required">Cedula: </label>
+    				<input type="text" class="val" name="cedula" id="pk_usuario" required>
+    				<input type="checkbox" class="check" id="checkCedula">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<label for="primerNombre" class="required">Primer Nombre: </label>
+    				<input type="text" class="val" name="primerNombre" id="primer_nombre" required>
+    				<input type="checkbox" class="check" id="checkPrimerNombre">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<label for="segundoNombre">Segundo Nombre: </label>
+    				<input type="text" class="val" name="segundoNombre" id="segundo_nombre" required>
+    				<input type="checkbox" class="check" id="checkSegundoNombre">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<label for="primerApellido" class="required">Primer Apellido: </label>
+    				<input type="text" class="val" name="primerApellido" id="primer_apellido" required>
+    				<input type="checkbox" class="check" id="checkPrimerApellido">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<label for="segundoApellido">Segundo Apellido: </label>
+    				<input type="text" class="val" name="segundoApellido" id="segundo_apellido" required>
+    				<input type="checkbox" class="check" id="checkSegundoApellido">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="group-form">
+    				<label for="fechaNacimiento" class="required">Fecha Nacimiento: </label>
+    				<input type="text" class="val" name="fechaNacimiento" id="fechanacimiento" required>
+    				<input type="checkbox" class="check" id="checkFechaNacimiento">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<label for="sexo" class="required">Sexo: </label>
+	    			<div class="sel">		
+	    				<input type="radio" class="val" name="sexo" value="0" required>Femenino
+	    			</div>
+	    			<div class="sel">
+	    				<input type="radio" class="val" name="sexo" value="1" required>Masculino
+    				</div>
+    				<input type="checkbox" class="check" id="checkSexo">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<label for="nacionalidad" class="required">Nacionalidad: </label>
+	    			<div class="sel">		
+	    				<input type="radio" class="val" name="nacionalidad" value="0" required>Venezolano
+	    			</div>
+	    			<div class="sel">
+	    				<input type="radio" class="val" name="nacionalidad" value="1" required>Extranjero
+    				</div>
+    				<input type="checkbox" class="check" id="checkNacionalidad">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<label for="direccion">Direccion: </label>
+    				<textarea name="direccion" class="val" id="direccion"></textarea>
+    				<input type="checkbox" class="check" id="checkDireccion">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<label for="correo" class="required">Correo: </label>
+    				<input type="text" class="val" name="correo" id="correo" required>
+    				<input type="checkbox" class="check" id="checkCorreo">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<label for="telefono">Telefono: </label>
+    				<input type="text" class="val" name="telefono" id="telefono" size="16" maxlength="15" required>
+    				<input type="checkbox" class="check" id="checkTelefono">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<label for="telefonoMovil">Telefono Movil: </label>
+    				<input type="text" class="val" name="telefonoMovil" id="telefono_movil" size="16" maxlength="15" required>
+    				<input type="checkbox" class="check" id="checkTelefonoMovil">
+    				<div class="tooltip">¿ Esto es Correcto ?</div>
+    			</div>
+    			<div class="clear"></div>
+    			<div class="group-form">
+    				<button class="btn btn-disabled" id="update" disabled="disabled">Actualizar</button>
+    			</div>
+    			<div class="group-form">
+    				<label class="required"><p style="color: red; display: inline-block;">Requisitos</p></label>
+    			</div>
+    			<div class="clear"></div>
+    		</form>
+    	</td>
+    </tr>
+</table>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        <?php 
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Form->getJavaScript();
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->data; 
+        ?>
+        var objectToValidations =   [   
+                                        {input: "pk_usuario",       type:   "numeric",      fn: function(){}},
+                                        {input: "primer_nombre",    type:   "alphabetic",   fn: function(){}},
+                                        {input: "segundo_nombre",   type:   "alphabetic",   fn: function(){}},
+                                        {input: "primer_apellido",  type:   "alphabetic",   fn: function(){}},
+                                        {input: "segundo_apellido", type:   "alphabetic",   fn: function(){}},
+                                        {input: "direccion",        type:   "empty",        fn: function(){}},
+                                        {input: "telefono",         type:   "phone",        fn: function(){}},
+                                        {input: "telefono_movil",   type:   "phone",        fn: function(){}},
+                                        {input: "correo",           type:   "mail",         fn: function(){}}
+                                    ];
+        //llamamos al validator 
+        validator.insertValidation(objectToValidations);
+    	$("#fechanacimiento").datepicker({changeYear: true, changeMonth: true, dateFormat: 'yy-mm-dd' });
+		var check = false;
+		$(".check").each(function(){
+			var id = $(this).parent().children('.val').attr("id");
+			if(id == undefined){ $(this).parent().find('input[type=radio]').attr("disabled","disabled"); }
+			else{ $("#" + id).attr("disabled","disabled"); }
+			if(!check){
+				check = true;
+				var tool = $(this).parent().children('.tooltip');
+				tool.removeClass("no-display");
+				tool.addClass("display");
+			}
+			else{ $(this).attr("disabled","disabled"); }
+		});
+		$(".check").click(function(){
+			var tip = false, btn = true;
+			$(".check").each(function(){
+				var id = $(this).parent().children('.val').attr("id");
+				var tool = $(this).parent().children('.tooltip');
+				if($(this).is(':checked')){
+					if(id == undefined){ $(this).parent().find('input[type=radio]').attr("disabled","disabled"); }
+					else{ $("#" + id).attr("disabled","disabled"); }
+					tool.removeClass("display");
+					tool.addClass("no-display");
+					$(this).attr("disabled","disabled");
+				}
+				else{
+					$(this).attr("disabled","disabled");
+					if(!tip){
+						if(id == undefined){ $(this).parent().find('input[type=radio]').attr("disabled",""); }
+						else{ $("#" + id).attr("disabled",""); }
+						$(this).attr("disabled","");
+						tool.addClass("display");
+						tool.removeClass("no-display");
+						tip = true;
+					}
+					btn = false;
+				}
+			});
+			if(btn){
+				$("#update").attr("disabled","");
+				$("#update").removeClass("btn-disabled");
+			}
+		});
+        $("#update").click(function(e){
+        	//VALIDO EMPTY
+        	var control = true, tip = false;
+        	$(".check").each(function(){
+	        	var id = $(this).parent().children('.val').attr("id"),
+	        		tool = $(this).parent().children('.tooltip'),
+	        		rq = $(this).parent().children('label.required');
+				if(rq.hasClass("required")){
+					if(id == undefined){ var val = $(this).parent().find('input[type=radio]').val().length; }
+					else{ var val = $("#" + id).val().length; }
+					if(val <= 0){
+						control = false;
+						if(id == undefined){ $(this).parent().find('input[type=radio]').attr("disabled",""); }
+						else{ $("#" + id).attr("disabled",""); }
+						$(this).attr("disabled","");
+						$(this).attr("checked","");
+						if(!tip){
+							tool.addClass("display");
+							tool.removeClass("no-display");
+							tip = true;
+						}
+					}
+				}
+			});
+        	e.preventDefault();
+        	if(control){
+	        	$.ajax({
+	                  dataType: 'json',
+	                  type: 'POST',
+	                  url: urlAjax + 'update/',
+	                  data: { 
+	                    primer_nombre:      $("#primer_nombre").val(),
+	                    segundo_nombre:     $("#segundo_nombre").val(),
+	                    primer_apellido:    $("#primer_apellido").val(),
+	                    segundo_apellido:   $("#segundo_apellido").val(),
+	                    fechanacimiento:    $("#fechanacimiento").val(),
+	                    nacionalidad:       $("input[name=nacionalidad]:checked").val(),
+	                    sexo:               $("input[name=sexo]:checked").val(),
+	                    direccion:          $("#direccion").val(),
+	                    correo:             $("#correo").val(),
+	                    telefono:           $("#telefono").val(),
+	                    telefono_movil:     $("#telefono_movil").val()
+	                },
+	                  success: function(data){ executeCmdsFromJSON(data); }
+	                });
+        	}
+        	else{
+        		<?php echo $this->sweetalert->setBasicAlert("error","Error","No pueden haber campos vacios"); ?>
+        	}
+        })
+  		<?php 
+            echo $this->SwapBytes_Jquery_Mask->phone("telefono") . ";";
+            echo $this->SwapBytes_Jquery_Mask->phone("telefono_movil") . ";";
+        ?>
+    });
+</script>

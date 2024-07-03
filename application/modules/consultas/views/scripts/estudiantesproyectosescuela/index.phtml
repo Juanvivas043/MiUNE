@@ -1,0 +1,128 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<meta charset="utf-8">
+<h2 id="title"><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table id="main_table">
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml'); ?> 
+        </td>
+        <td align="right" id="Download">
+            <span>
+                <b>Formatos para descargar:</b>
+            </span>
+            <br><br>
+            <input type="radio" id="rdbFormatXLS" name="rdbFormat" value="XLS" disabled>&nbsp;XLS<br>
+            <input type="radio" id="rdbFormatPDF" name="rdbFormat" value="PDF" disabled>&nbsp;PDF<br><br>
+            <button type="button" name="btnDescargar" id="btnDescargar" disabled>Descargar</button>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">&nbsp;</td>
+    </tr>
+    <tr>
+        <td align="center" width="1200px" colspan="3">
+            <div id="tblServicioComunitario"></div>
+        </td>
+    </tr>
+</table>
+
+<style type="text/css">
+    
+    #main_table {
+        border-spacing: 0;
+        cellpadding: 0;
+        cellspacing: 0;
+        padding: 0 0 0 10;
+        margin: 0px auto;
+        width: 1000px;
+    }
+
+    #Download {
+        margin: 10px; 
+        padding: 10px;
+    }
+
+    #Downlaod span {
+        width: 30px;
+    }
+    
+    @media print {
+        
+        #tblFiltros, #Download, #title, #body_username_bar, #menucontainer, #copy_right {
+            display: none;
+            visibility: hidden;
+        }
+
+        #main_table {
+            position: absolute;
+            top: 30px;
+            left: 0px;
+            display: block;
+            width: 1275px;
+            margin: 0px auto;
+        }
+
+        #tblServicioComunitario table {
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 100%;
+            margin: 0px auto;
+            padding: 0px 5px;
+            border: 1px solid #000;
+            border-collapse: collapse;
+        }
+
+        #tblServicioComunitario table tr {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            margin: 0px;
+        }
+
+        #tblServicioComunitario table tr td {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            text-align: center;
+            vertical-align: center;
+            padding: 5px;
+            margin: 0px;
+        }
+
+    }
+
+</style>
+
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $("#loading").ajaxStart(function(){       
+            $('#btnDescargar').attr('disabled', true); 
+            $('#btnPrinter').attr('disabled', true);       
+         });
+        $("#loading").ajaxStop(function(){
+            $('#btnDescargar').attr('disabled', false);
+            $('#btnPrinter').attr('disabled', false);
+        });  
+        <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Action->getJavaScript('tblServicioComunitario');
+            echo $this->filters->getJavaScript('tblServicioComunitario', "$('#btnDescargar').attr('disabled',true);$('#rdbFormatXLS').attr('disabled', true);$('#rdbFormatPDF').attr('disabled', true);");
+            $function = "window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize();";
+            echo $this->SwapBytes_Jquery->setClick('btnDescargar', $function);
+        ?> 
+        $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+    });
+</script>

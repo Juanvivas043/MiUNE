@@ -1,0 +1,27 @@
+<h2><?php echo $this->escape($this->title); ?></h2>
+<table border="0" cellpadding="0" cellspacing="0" width="600px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="left">
+            <b>Consideraciones al subir el archivo:</b>
+			<ul>
+				<li>Cada archivo debe estar comprimido en formato zip</li>
+				<li>Cada archivo debe ser de un maximo de 200 Mb.</li>
+				<li>Cada foto debe tener como nombre del archivo la C.I.</li>
+				<li>Cada foto debe ser del formato JPG.</li>
+				<li>Subir el archivo desde la red local, por el tamaño del archivo el servidor puede interrumpir la conexion por su demora y la operación no se completara.</li>
+			</ul>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><b>Archivo:</b><?php echo $this->form; ?></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td><b>Resultado:</b><textarea cols="100" rows="30"><?php echo $this->report; ?></textarea></td>
+    </tr>
+</table>

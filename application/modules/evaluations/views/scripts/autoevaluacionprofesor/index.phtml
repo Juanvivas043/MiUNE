@@ -1,0 +1,467 @@
+<?php
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/evaluation.profesores.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/chartjs/Chart.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');    
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/chartjs/Chart.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+?>
+
+<h4>
+<?php  echo $this->title; ?>  
+</h4>
+    <div align="center" id="infoProf">
+        <div id="fotoDiv" align="center"><input id="foto" width="120" type="image" height="161" disabled="disabled" alt="Foto:" name="foto" style="-moz-box-shadow: 0 0 10px black;"></div>
+        <table class="inforProf">
+            <tr>
+                <td>
+                    <p>C.I.:</p>
+                </td>
+                <td>
+                    <span id="cedula"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>Nombre:</p>
+                </td>
+                <td>
+                    <span id="nombre">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>Apellido:</p>
+                </td>
+                <td>
+                    <span id="apellido">
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div align="center" id="tableData">
+       <!-- <canvas id="chart" class="chart"></canvas>-->
+    </div>
+    <div align="center">
+        <input type="button" name="Autoevaluar" id="Autoevaluar" class="btn btn-default" hidden="true" align="center" value="Autoevaluar" onclick="evaluacion()">
+    </div>
+
+
+    <div id="autoeval" hidden="true">
+        <div align="center">
+            <p class="titulo" id="headTitulo"> Evaluación Docente</p>
+        </div>
+            <div align="center" id="tableData"></div>
+
+        <div align="center" id="formulario" hidden="true">
+        <form name= "formulario" id="formForm">
+
+        <table class="tableData" id="tableForm" width="900px"><tbody><tr>
+        <th name= "#" width="10px">#</th>
+            <th name= "Preguntas" width="700px">Preguntas</th>
+            <th name= "Siempre" width="50px">Siempre</th>
+            <th name= "Casi Siempre" width="50px">Casi Siempre</th>
+            <th name= "Algunas Veces" width="50px">Algunas Veces</th>
+            <th name= "Nunca" width="50px">Nunca</th>
+        </tr>
+        <tr>
+            <td style="text-align:center">1</td>
+            <td style="text-align:left">Asisto regular y puntualmete a clases</td>
+            <td style="text-align:center"><input name="99"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="99"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="99"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="99"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">2</td>
+            <td style="text-align:left">Soy objetivo e imparcial en el trato con los estudiantes</td>
+            <td style="text-align:center"><input name="100"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="100"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="100"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="100"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">3</td>
+            <td style="text-align:left">Permito la expresión de acuerdos y desacuerdos en un ambiente de libertad y respeto</td>
+            <td style="text-align:center"><input name="101"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="101"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="101"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="101"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">4</td>
+            <td style="text-align:left">Promuevo el respeto mediante el ejemplo durante mi participación y la de los estudiantes</td>
+            <td style="text-align:center"><input name="102"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="102"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="102"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="102"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">5</td>
+            <td style="text-align:left">Incentivo el sentido de solidaridad entre mis estudiantes apoyando el trabajo de equipos</td>
+            <td style="text-align:center"><input name="103"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="103"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="103"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="103"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">6</td>
+            <td style="text-align:left">Muestro en mi actuación docente identidad y sentido de pertenencia con la Universidad</td>
+            <td style="text-align:center"><input name="104"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="104"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="104"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="104"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">7</td>
+            <td style="text-align:left">Propicio un ambiente favorable para que los estudiantes conozcan sus derechos y responsabilidades</td>
+            <td style="text-align:center"><input name="105"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="105"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="105"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="105"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">8</td>
+            <td style="text-align:left">Demuestro responsabilidad en mi trabajo</td>
+            <td style="text-align:center"><input name="106"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="106"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="106"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="106"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">9</td>
+            <td style="text-align:left">Evalúo y califico con justicia, equidad y transparencia</td>
+            <td style="text-align:center"><input name="107"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="107"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="107"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="107"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">1</td>
+            <td style="text-align:left">Estimulo y refuerzo la participación activa, las conductas positivas y fortalezas de los estudiantes</td>
+            <td style="text-align:center"><input name="92"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="92"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="92"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="92"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">2</td>
+            <td style="text-align:left">Promuevo la expresión de ideas y muestro respeto por la opinión de los estudiantes</td>
+            <td style="text-align:center"><input name="93"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="93"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="93"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="93"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">3</td>
+            <td style="text-align:left">Me comunico fácilmente con mis estudiantes ( dialogo, presto atención, escucho, ayudo a que los estudiantes se sientan valorados, etc)</td>
+            <td style="text-align:center"><input name="94"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="94"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="94"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="94"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">4</td>
+            <td style="text-align:left">Utilizo un vocabulario ajustado al trabajo de aula y al nivel de los estudiantes</td>
+            <td style="text-align:center"><input name="95"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="95"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="95"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="95"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">5</td>
+            <td style="text-align:left">Tomo en cuenta las necesidades individuales y colectivas de los estuidantes para obtener mejores resultados</td>
+            <td style="text-align:center"><input name="96"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="96"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="96"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="96"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">6</td>
+            <td style="text-align:left">Manifiesto entusiasmo y buen humor durante el desarrollo de las actividades académicas</td>
+            <td style="text-align:center"><input name="97"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="97"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="97"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="97"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">7</td>
+            <td style="text-align:left">Propicio en los estudiantes el trabajo en equipo y el diálogo en el aula</td>
+            <td style="text-align:center"><input name="98"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="98"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="98"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="98"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">1</td>
+            <td style="text-align:left">Informo sobre la Planificación de la asignatura en el MIUNE CRONOGRAMA y el contenido de las clases se desarrollas según esta planificación</td>
+            <td style="text-align:center"><input name="84"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="84"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="84"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="84"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">2</td>
+            <td style="text-align:left">Estimulo de entrada a los estudiantes para que comprendan el valor de la asignatura para su formación</td>
+            <td style="text-align:center"><input name="85"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="85"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="85"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="85"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">3</td>
+            <td style="text-align:left">Motivo, hago mi trabajo dinámico e interesante y explico las duda que se me formulan</td>
+            <td style="text-align:center"><input name="86"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="86"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="86"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="86"  value="1" type="radio" required="true"></td>
+         </tr>
+         <tr>
+            <td style="text-align:center">4</td>
+            <td style="text-align:left">Durante el desarrollo de la actividad de clases, comunico mis ideas de manera clara, precisa y demuestro que preparo las actividades de clase</td>
+            <td style="text-align:center"><input name="87"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="87"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="87"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="87"  value="1" type="radio" required="true"></td>
+         </tr>
+         <tr>
+            <td style="text-align:center">5</td>
+            <td style="text-align:left">Combino la clase magistral con dinámicas en las que participan los estudiantes en forma colectiva</td>
+            <td style="text-align:center"><input name="88"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="88"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="88"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="88"  value="1" type="radio" required="true"></td>
+         </tr>
+         <tr>
+            <td style="text-align:center">6</td>
+            <td style="text-align:left">Las evaluaciones se realizan de acuerdo a las fechas programadas en el plan de evaluación discutido con los estudiantes al inicio del período lectivo</td>
+            <td style="text-align:center"><input name="89"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="89"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="89"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="89"  value="1" type="radio" required="true"></td>
+         </tr>
+         <tr>
+            <td style="text-align:center">7</td>
+            <td style="text-align:left">Informo oportunamente a mis estudiantes los resultados de las evaluaciones y, presento en términos generales, los problemas encontrados durante las actividades de evaluación</td>
+            <td style="text-align:center"><input name="90"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="90"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="90"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="90"  value="1" type="radio" required="true"></td>
+         </tr>
+         <tr>
+            <td style="text-align:center">8</td>
+            <td style="text-align:left">Oriento a través de guiaturas o instructivos los criterios o aspectos que deben orientar la elaboración de los trabajos de investigación, proyectos, ensayos, informes, entre otros</td>
+            <td style="text-align:center"><input name="91"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="91"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="91"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="91"  value="1" type="radio" required="true"></td>
+         </tr>
+         <tr>
+            <td style="text-align:center">1</td>
+            <td style="text-align:left">Poseo dominio sobre los contenidos que debo desarrollar en cada una de las asignaturas que imparto.</td>
+            <td style="text-align:center"><input name="118"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="118"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="118"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="118"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">2</td>
+            <td style="text-align:left">Los contenidos que desarrollo durante las sesiones de clases son pertinentes a las particularidades de cada carrera</td>
+            <td style="text-align:center"><input name="119"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="119"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="119"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="119"  value="1" type="radio" required="true"></td>
+        </tr>
+        <tr>
+            <td style="text-align:center">3</td>
+            <td style="text-align:left">Conozco el Modelo Educativo de la UNE, los fundamentos de la Reforma Curricular, los perfiles generales y especificos de los egresados y el Programa Analítico de las Unidades Curriculares que administro.</td>
+            <td style="text-align:center"><input name="120"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="120"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="120"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="120"  value="1" type="radio" required="true"></td>
+         </tr>
+         <tr>
+            <td style="text-align:center">4</td>
+            <td style="text-align:left">Conozco el proceso de investigación y sus metodologíoas para brindar asesoría y apoyo a los estudiantes que realizan pasantías, servicio comunitario o elaboran trabajos de grado.</td>
+            <td style="text-align:center"><input name="121"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="121"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="121"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="121"  value="1" type="radio" required="true"></td>
+         </tr>
+         <tr>
+            <td style="text-align:center">5</td>
+            <td style="text-align:left">Conozco las competencias y desempeños descritos para cada una de las unidades curriculares que administro.</td>
+            <td style="text-align:center"><input name="122"  value="4" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="122"  value="3" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="122"  value="2" type="radio" required="true"></td>
+            <td style="text-align:center"><input name="122"  value="1" type="radio" required="true"></td>
+         </tr>
+         </tbody>
+         </table>
+            <div align="center" id="Navigation">
+                <input type="button" id="Anterior" name= "Anterior" class="btn btn-default" value="Anterior" hidden="true">
+                <input type="button" id="Siguiente" name=  "Siguiente" class="btn btn-default" value="Siguiente" hidden="true">
+                <input type="button" id="Finalizar" name= "Finalizar" class="btn btn-default" value="Finalizar" hidden="true" onclick="finalizar()">
+            </div>
+
+        </form>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        <?php
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+            echo $this->filters->getJavaScript('tableData');
+        ?>
+
+        $.getJSON(urlAjax + "tabla", function(data){
+            executeCmdsFromJSON(data)
+        });
+        $('#tableForm tr:gt(9)').hide();
+        $('#Finalizar').hide();
+
+
+/*
+
+    new Chart(document.getElementById("chart"), {
+    type: 'radar',
+    data: {
+      labels: ["Desempeño Pedagógico", "Conocimiento", "Relaciones Interpersonales", "Valores"],
+      datasets: [{
+        label: "Resultados",
+        backgroundColor: ["rgba(119,44,70,0.8)"],
+        data: [3.4,4,3.6,3.1],
+
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Resultados'
+      },
+      scale: {
+          ticks: {
+            beginAtZero: true
+          }
+        },
+    }
+});
+
+*/
+        var parte = 0;
+        $('#Siguiente').click(function(){
+            console.log(parte);
+            switch(parte) {
+                case 0:
+                        parte++;
+                        $('#tableForm tr:gt(9)').show();
+                        $('#tableForm tr:gt(0):lt(9)').hide();
+                        $('#tableForm tr:gt(16)').hide();
+                        $('#Anterior').show();
+                        $('#headTitulo').text('Valores');
+                    //console.log(parte);
+                    break;
+                case 1:
+                        //$('#tableForm tr:gt(0)').show();
+                        $('#tableForm tr:gt(0):lt(16)').hide();
+                        $('#tableForm tr:gt(16):lt(24)').show();
+                        $('#tableForm tr:gt(24)').hide();
+                        $('#Anterior').show();
+                        $('#headTitulo').text('Desempeño Pedagógico');
+                        parte++;
+                    break;
+                case 2:
+                        //$('#tableForm tr:gt(0)').show();
+                        $('#tableForm tr:gt(0):lt(24)').hide();
+                        $('#tableForm tr:gt(24)').show();
+                        $('#Siguiente').hide();
+                        $('#Finalizar').show();
+                        $('#headTitulo').text('Conocimiento');
+                        parte++;
+                    break;
+
+            } 
+        });
+
+        $('#Anterior').click(function(){
+            switch(parte) {
+                case 1:
+                        parte--;
+                        $('#tableForm tr:gt(9)').hide();
+                        $('#tableForm tr:lt(10)').show();
+                        $('#Anterior').hide();
+                        $('#headTitulo').text('Relaciones Interpersonales');
+                    //console.log(parte);
+                    break;
+                case 2:
+                        //$('#tableForm tr:gt(0)').show();
+                        $('#tableForm tr:gt(9):lt(16)').show();
+                        $('#tableForm tr:gt(16)').hide();
+                        $('#headTitulo').text('Valores');
+                        parte--;
+                    break;
+                case 3:
+                        //$('#tableForm tr:gt(0)').show();
+                        $('#tableForm tr:gt(16):lt(24)').show();
+                        $('#tableForm tr:gt(24)').hide();
+                        $('#Siguiente').show();
+                        $('#Finalizar').hide();
+                        $('#headTitulo').text('Desempeño Pedagógico');
+                        parte--;
+                    break;
+            } 
+        });
+
+    });
+
+    function finalizar(){
+
+        $('#formForm').submit(function(evt){
+            evt.preventDefault();
+        });
+        var x = document.getElementById("formForm");
+        var results = {};
+        var i;
+        var j = 0;
+
+        for (i = 0; i < x.length; i++) {
+
+            if (x.elements[i].checked) {
+
+                results[j] = {
+                    pk:  x.elements[i].name,
+                    value: x.elements[i].value
+                }
+                j++; 
+            }
+        } 
+        if (x.checkValidity()) {
+
+            $.getJSON(urlAjax + "finalizar" ,{ results:results }, function(data){executeCmdsFromJSON(data)});
+        } else{
+            
+            
+            swal({ title: "Error", text: "Llene todos los campos", type: "error"});
+        }
+    }
+
+    function evaluacion(){
+
+        $.getJSON(urlAjax + "evaluacion/", function(data){executeCmdsFromJSON(data)});
+        $('#headTitulo').text('Relaciones Interpersonales');
+        $('#Anterior').hide();
+        
+    }
+
+</script>

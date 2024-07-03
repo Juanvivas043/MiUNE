@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="renunciatutor" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="77f1c0ad-6647-42df-af18-09242d41ff24">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<parameter name="id" class="java.lang.String"/>
+	<parameter name="cedula" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select sqt.*,
+		(case when
+			(select u.pk_usuario
+			from tbl_datostesis	dt
+			join tbl_autorestesis	at	on	at.fk_datotesis 	=	dt.pk_datotesis and at.renuncia = false
+			join tbl_usuariosgrupos	ug	on	ug.pk_usuariogrupo	=	at.fk_usuariogrupo
+			join tbl_usuarios	u	on	u.pk_usuario		=	ug.fk_usuario
+			where dt.pk_datotesis = $P{id}::integer
+			and u.pk_usuario not in ($P{cedula}::integer)) is not null then (select u.pk_usuario
+																			from tbl_datostesis	dt
+																			join tbl_autorestesis	at	on	at.fk_datotesis 	=	dt.pk_datotesis and at.renuncia = false
+																			join tbl_usuariosgrupos	ug	on	ug.pk_usuariogrupo	=	at.fk_usuariogrupo
+																			join tbl_usuarios	u	on	u.pk_usuario		=	ug.fk_usuario
+																			where dt.pk_datotesis = $P{id}::integer
+																			and u.pk_usuario not in ($P{cedula}::integer))::text
+														else 'N/A'
+		end)::text as cedula_compa,
+		(case when
+			(select (u.nombre||' '||u.apellido)
+			from tbl_datostesis	dt
+			join tbl_autorestesis	at	on	at.fk_datotesis 	=	dt.pk_datotesis and at.renuncia = false
+			join tbl_usuariosgrupos	ug	on	ug.pk_usuariogrupo	=	at.fk_usuariogrupo
+			join tbl_usuarios	u	on	u.pk_usuario		=	ug.fk_usuario
+			where dt.pk_datotesis = $P{id}::integer
+			and u.pk_usuario not in ($P{cedula}::integer)) is not null then (select (u.nombre||' '||u.apellido)
+																			from tbl_datostesis	dt
+																			join tbl_autorestesis	at	on	at.fk_datotesis 	=	dt.pk_datotesis and at.renuncia = false
+																			join tbl_usuariosgrupos	ug	on	ug.pk_usuariogrupo	=	at.fk_usuariogrupo
+																			join tbl_usuarios	u	on	u.pk_usuario		=	ug.fk_usuario
+																			where dt.pk_datotesis = $P{id}::integer
+																			and u.pk_usuario not in ($P{cedula}::integer))::text
+														else 'N/A'
+		end)::text as compa
+from (
+select dt.pk_datotesis,dt.titulo,u.pk_usuario as cedula_reti,(u.nombre||' '||u.apellido) as reti, u.correo, current_date
+from tbl_datostesis	dt
+join tbl_autorestesis	at	on	at.fk_datotesis 	=	dt.pk_datotesis
+join tbl_usuariosgrupos	ug	on	ug.pk_usuariogrupo	=	at.fk_usuariogrupo
+join tbl_usuarios	u	on	u.pk_usuario		=	ug.fk_usuario
+where dt.pk_datotesis = $P{id}::integer
+and u.pk_usuario = $P{cedula}::integer
+
+) as sqt]]>
+	</queryString>
+	<field name="pk_datotesis" class="java.lang.Long"/>
+	<field name="titulo" class="java.lang.String"/>
+	<field name="cedula_reti" class="java.lang.Long"/>
+	<field name="reti" class="java.lang.String"/>
+	<field name="correo" class="java.lang.String"/>
+	<field name="date" class="java.sql.Date"/>
+	<field name="cedula_compa" class="java.lang.String"/>
+	<field name="compa" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="752">
+			<textField>
+				<reportElement uuid="eaa94d61-beb4-42ba-bb7e-38e5e8e6e423" x="17" y="131" width="536" height="268"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Caracas,  "+ $F{date} +
+"<br><br>" +
+"Ciudadano.-"+
+"<br>" +
+"Coordinación de Trabajo de Grado."+
+"<br><br> "+
+"Por la presente comunico a Usted, que por medios personales no podré defender el Trabajo de Grado cuyo Titulo es <b>" + $F{titulo} +"</b>,"+
+
+" y que compartí con el(la) bachiller <i>"+ $F{compa} +"</i> C.I. <i>"+ $F{cedula_compa} + "</i>. Por tanto el(la) mencionado(a) Bachiller podrá defender en forma individual, y no tendré derecho a  presentarla o defenderla posteriormente. "+
+
+"Para cumplir con el requisito de aprobar un Trabajo de Grado, deberé elaborar otro trabajo distinto." +
+"<br><br>" +
+"Atentamente,"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="b1e6e5c4-f434-466f-a853-87444ab1593e" x="68" y="96" width="443" height="18"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RENUNCIA A DEFENSA DE TRABAJO DE GRADO TESISTA]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="569174cb-52b7-4ac5-af54-3efdce244189" x="17" y="473" width="536" height="147"/>
+				<textElement markup="html">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reti} +
+"<br> "+
+"C.I: " + $F{cedula_reti} +
+"<br>" +
+"Email: "+ $F{correo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="28085f92-5c12-428a-b49b-1d047ad5cc28" x="17" y="399" width="536" height="74"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[_________________________
+Firma]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="6be22107-ea84-4f07-9e81-3727a6078fcc" x="17" y="14" width="100" height="68"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</summary>
+</jasperReport>

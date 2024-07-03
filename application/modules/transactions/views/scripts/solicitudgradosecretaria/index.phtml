@@ -1,0 +1,60 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+
+<h2><?php echo $this->escape($this->title); ?></h2>
+
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center" colspan="2">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <tr valign="top">
+        <td align="center" width="700px">
+            <div id="tblEstudiantes">&nbsp;</div>
+        </td>
+    </tr>
+</table> 
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        
+        <?php
+
+            echo $this->SwapBytes_Jquery->getLoading('loading');
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+            echo $this->SwapBytes_Crud_Form->getJavaScript();
+            echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+            echo $this->filters->getJavaScript('tblEstudiantes', "$('#btnDescargar').attr('disabled', true);$('#rdbFormatXLS').attr('disabled', true);$('#rdbFormatPDF').attr('disabled', true);");
+
+        ?>
+        
+        $("#loading").ajaxStart(function(){$(this).show();});
+        $("#loading").ajaxStop(function(){$(this).hide();}); 
+        
+        <?php
+            echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        ?>
+                
+    });
+
+    function load(id){
+        $.getJSON(urlAjax+"addoreditload/id/"+ id, function(data){
+            executeCmdsFromJSON(data);
+        });
+    } 
+
+</script>

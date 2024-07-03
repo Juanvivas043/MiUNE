@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listadoevaluacionpasantias" language="groovy" pageWidth="1080" pageHeight="595" orientation="Landscape" columnWidth="1040" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="363"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="sede" class="java.lang.String"/>
+	<parameter name="escuela" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT u.pk_usuario, u.apellido||','||u.nombre as estudiante, ins.nombre as empresa,
+               ins.direccion, ui.apellido||', '||ui.nombre as tutor_ins, ua.apellido||','||ua.nombre as tutor_a
+    ,(case when moodle.nota is null then 'Sin Rezlizar'else moodle.nota end) as nota
+    ,(case when academico.nota is null then 'Sin Rezlizar'else academico.nota end) as evacademica
+    ,(case when empresarial.nota is null then 'Sin Rezlizar'else empresarial.nota end) as evempresarial
+    FROM tbl_recordsacademicos ra
+    JOIN tbl_inscripciones i ON ra.fk_inscripcion = i.pk_inscripcion
+    JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = i.fk_usuariogrupo
+    JOIN tbl_usuarios u ON  u.pk_usuario = ug.fk_usuario
+    JOIN tbl_asignaturas ag ON ag.pk_asignatura = ra.fk_asignatura
+    JOIN vw_materiasestados me on me.pk_atributo = ra.fk_atributo
+    JOIN tbl_inscripcionespasantias ip on ip.fk_recordacademico = ra.pk_recordacademico
+               JOIN vw_escuelas esc ON esc.pk_atributo = i.fk_atributo
+               JOIN tbl_contactos c on c.pk_contacto = ip.fk_tutor_institucion
+               JOIN tbl_usuariosgrupos ugi on ugi.pk_usuariogrupo = c.fk_usuariogrupo
+               join tbl_usuarios ui on ui.pk_usuario = ugi.fk_usuario
+               join tbl_usuariosgrupos uga on uga.pk_usuariogrupo = ip.fk_tutor_academico
+               join tbl_usuarios ua on ua.pk_usuario = uga.fk_usuario
+               join tbl_instituciones ins on ins.pk_institucion  = ip.fk_institucion
+    LEFT OUTER JOIN( SELECT qp.*
+                    FROM dblink('dbname=Moodle_CGV port=5432 host=192.168.14.200 user=Moodle_CGV password=c4r4c4s', '
+                              SELECT DISTINCT u.username, a.sumgrades/5, q.name, q.grade
+        from mdl_quiz_attempts a
+        join mdl_quiz q on q.id = a.quiz
+        join mdl_course c on c.id = q.course
+        join mdl_quiz_question_instances qqi on qqi.quiz = q.id
+        join mdl_question qu on qu.id = qqi.question
+        join mdl_question_answers qa on qa.question = qu.id
+        join mdl_user u on u.id = a.userid
+        where shortname = ''129-CPLE''
+        and q.intro ilike ''%11%''' ) AS qp(usr varchar, nota text, nombre varchar, sobre integer) ) AS moodle ON moodle.usr = ug.fk_usuario::text
+
+         LEFT OUTER JOIN( SELECT qp.*
+                    FROM dblink('dbname=Moodle_CGV port=5432 host=192.168.14.200 user=Moodle_CGV password=c4r4c4s', '
+                              select  DISTINCT a.id, qs.answer as usuario, q.sumgrades as nota
+        from mdl_quiz_attempts a
+        join mdl_quiz q on q.id = a.quiz
+        join mdl_course c on c.id = q.course
+        join mdl_quiz_question_instances qqi on qqi.quiz = q.id
+        join mdl_question qu on qu.id = qqi.question
+        join mdl_question_states qs on qs.question = qu.id
+        where shortname ilike ''%129-TAPLE%''
+        and intro ilike ''%11%''
+        and qu.name ilike ''%Cedula Estudiante%''
+        and answer not in ('''')'
+         ) AS qp(id integer, usuario bigint, nota text) ) AS academico ON academico.usuario = ug.fk_usuario
+         LEFT OUTER join ( SELECT qp.*
+                    FROM dblink('dbname=Moodle_CGV port=5432 host=192.168.14.200 user=Moodle_CGV password=c4r4c4s', '
+                               select DISTINCT  qs.answer as usuario, q.sumgrades
+        from mdl_quiz_attempts a
+        join mdl_quiz q on q.id = a.quiz
+        join mdl_course c on c.id = q.course
+        join mdl_quiz_question_instances qqi on qqi.quiz = q.id
+        join mdl_question qu on qu.id = qqi.question
+        join mdl_question_states qs on qs.question = qu.id
+        where shortname ilike ''%129-TEPLE%''
+        and qu.name ilike ''%Cedula Estudiante%''
+        and answer not in ('''')' ) AS qp( usuario bigint, nota text) ) AS empresarial ON empresarial.usuario = u.pk_usuario
+
+    WHERE
+    ag.fk_materia IN (716,717,848,9859)
+    and i.fk_periodo = 129
+    and esc.pk_atributo = 11
+    and i.fk_estructura = 7]]>
+	</queryString>
+	<field name="pk_usuario" class="java.lang.Long"/>
+	<field name="estudiante" class="java.lang.String"/>
+	<field name="empresa" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="tutor_ins" class="java.lang.String"/>
+	<field name="tutor_a" class="java.lang.String"/>
+	<field name="nota" class="java.lang.String">
+		<fieldDescription><![CDATA[Nota referente para la asignatura, su funcion principal es de poner una breve descripcion de la seccion, por ejemplo: Se ofrece una optativa en una determinada carrera, en esta asignatura existen varias secciones que hablan de un determinado tema, en este campo se puede mencionar cual es el tema.]]></fieldDescription>
+	</field>
+	<field name="evacademica" class="java.lang.String"/>
+	<field name="evempresarial" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="41" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[C.I. N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="41" width="137" height="20"/>
+				<textElement/>
+				<text><![CDATA[Apellidos y Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="41" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Empresa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="41" width="134" height="20"/>
+				<textElement/>
+				<text><![CDATA[Dirección]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="471" y="41" width="119" height="20"/>
+				<textElement/>
+				<text><![CDATA[Tutor Empresarial]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="590" y="41" width="127" height="20"/>
+				<textElement/>
+				<text><![CDATA[Tutor Académico]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="717" y="41" width="70" height="20"/>
+				<textElement/>
+				<text><![CDATA[Cuestionario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="786" y="41" width="121" height="20"/>
+				<textElement/>
+				<text><![CDATA[Evaluación Académica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="906" y="41" width="121" height="20"/>
+				<textElement/>
+				<text><![CDATA[Evaluación Empresarial]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pk_usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="137" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estudiante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{empresa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="337" y="0" width="134" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="471" y="0" width="119" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tutor_ins}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="590" y="1" width="127" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tutor_a}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="717" y="1" width="70" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="786" y="1" width="121" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evacademica}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="906" y="1" width="121" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{evempresarial}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

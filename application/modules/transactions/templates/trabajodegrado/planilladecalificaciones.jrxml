@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="planilladecalificaciones" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f512a2a5-a2ba-4151-b4f8-ea7dfa5f5f6b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="New Dataset 1" whenResourceMissingType="Error" uuid="5b9c77e0-06e7-4aff-bd67-80cf7906db44">
+		<parameter name="periodo" class="java.lang.String"/>
+		<parameter name="sede" class="java.lang.String"/>
+		<parameter name="escuela" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[select distinct dt.pk_datotesis,
+                  dt.titulo,
+                  atri.valor as mencion,
+                  (select btrim(array_agg(sqt_sub.nombre)::varchar,'{}')
+                      from(
+                      select u_sub.pk_usuario,(u_sub.primer_apellido ||' '||u_sub.primer_nombre) as nombre
+                      from tbl_usuariosgrupos   ug_sub
+                      join tbl_autorestesis     at_sub    on  at_sub.fk_usuariogrupo  = ug_sub.pk_usuariogrupo  and at_sub.renuncia = false
+                      join tbl_usuarios         u_sub     on  u_sub.pk_usuario        = ug_sub.fk_usuario
+                      where at_sub.fk_datotesis = dt.pk_datotesis
+                      order by 1 asc)as sqt_sub) as autor,
+                  (select btrim(array_agg(sqt_sub.pk_usuario)::varchar,'{}')
+                      from(
+                      select distinct u_sub.pk_usuario
+                      from tbl_usuariosgrupos   ug_sub
+                      join tbl_autorestesis     at_sub    on  at_sub.fk_usuariogrupo  = ug_sub.pk_usuariogrupo  and at_sub.renuncia = false
+                      join tbl_usuarios         u_sub     on  u_sub.pk_usuario        = ug_sub.fk_usuario
+                      where at_sub.fk_datotesis = dt.pk_datotesis
+                      order by 1 asc)as sqt_sub) as cedula,
+                  te.calificacion
+              from tbl_datostesis         dt
+              join tbl_tesis              te      on      te.fk_datotesis     =   dt.pk_datotesis
+              join tbl_autorestesis       at      on      at.fk_datotesis     =   dt.pk_datotesis     and at.renuncia = false
+              join tbl_tutorestesis       tt      on      tt.fk_datotesis     =   dt.pk_datotesis     and tt.renuncia = false
+              join tbl_mencionestesis     mt      on      mt.fk_datotesis     =   dt.pk_datotesis
+              join tbl_usuariosgrupos     ug      on      ug.pk_usuariogrupo  =   at.fk_usuariogrupo
+              join tbl_atributos 		  atri 	  on 	  atri.pk_atributo 	  =   mt.fk_mencion
+              where te.fk_escuela =   $P{escuela}::integer
+              and te.fk_sede = $P{sede}::integer
+              and dt.fk_estado = 19962
+              and tt.fk_estado = 19969
+              and ug.fk_usuario in (
+
+                select  ug_sub2.fk_usuario
+                from tbl_asignaturas        asi_sub2
+                join tbl_recordsacademicos  ra_sub2     on  ra_sub2.fk_asignatura   = asi_sub2.pk_asignatura
+                join tbl_inscripciones      i_sub2      on  i_sub2.pk_inscripcion   = ra_sub2.fk_inscripcion
+                join tbl_usuariosgrupos     ug_sub2     on  ug_sub2.pk_usuariogrupo = i_sub2.fk_usuariogrupo
+                where ug_sub2.fk_usuario = ug.fk_usuario
+                and asi_sub2.fk_materia in (
+                9724,
+                834
+                )
+                and ra_sub2.fk_atributo in( 862,1699)
+                and ra_sub2.calificacion >= 0
+                and i_sub2.fk_periodo = $P{periodo}::integer
+                and i_sub2.fk_atributo = $P{escuela}::integer
+                and i_sub2.fk_estructura = $P{sede}::integer
+
+              )]]>
+		</queryString>
+		<field name="pk_datotesis" class="java.lang.Long"/>
+		<field name="titulo" class="java.lang.String"/>
+		<field name="mencion" class="java.lang.String"/>
+		<field name="autor" class="java.lang.String"/>
+		<field name="cedula" class="java.lang.String"/>
+		<field name="calificacion" class="java.lang.Long"/>
+	</subDataset>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="sede" class="java.lang.String"/>
+	<parameter name="escuela" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 'Universidad Nueva Esparta' as universidad,
+	'Defensa de Trabajo de Grado' as materia,
+	ve.escuela,
+	e.nombre as sede,
+	pk_periodo as periodo,
+	current_date as date
+from tbl_estructuras	e
+join vw_escuelas	ve	on	ve.pk_atributo = $P{escuela}::integer
+join tbl_periodos	pe	on	pe.pk_periodo  = $P{periodo}::integer
+where e.pk_estructura = $P{sede}::integer]]>
+	</queryString>
+	<field name="universidad" class="java.lang.String"/>
+	<field name="materia" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="sede" class="java.lang.String"/>
+	<field name="periodo" class="java.lang.Integer"/>
+	<field name="date" class="java.sql.Date"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="154">
+			<textField>
+				<reportElement x="0" y="70" width="388" height="37" uuid="5c2cbdd0-2953-4cd9-b024-1889912d75e9"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{universidad} + "<br>" +
+"Escuela: " + $F{escuela} + "<br>" +
+$F{materia} + "<br>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="669" y="13" width="133" height="37" uuid="51fdf72e-8d9e-4ff1-a1e0-9d20de0e1a5c"/>
+				<textElement textAlignment="Justified" markup="html"/>
+				<textFieldExpression><![CDATA["Periodo: " + $F{periodo} + "<br>" +
+"Fecha: " + $F{date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="321" y="128" width="214" height="26" uuid="a8ff4047-4526-4ae6-b252-ef438abc7e43"/>
+				<textElement textAlignment="Justified" markup="html">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PLANILLA DE CALIFICACIONES]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="100" height="60" uuid="7b827a49-2ec1-4741-9513-217c9889fafe"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="164">
+			<componentElement>
+				<reportElement key="table" x="0" y="30" width="802" height="44" isPrintWhenDetailOverflows="true" uuid="628f56c3-19d8-4b94-bce0-bb4aa21ae80e"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="New Dataset 1" uuid="5a8b143e-0e39-4bee-9e6f-fc94d735601e">
+						<datasetParameter name="periodo">
+							<datasetParameterExpression><![CDATA[$P{periodo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="sede">
+							<datasetParameterExpression><![CDATA[$P{sede}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="escuela">
+							<datasetParameterExpression><![CDATA[$P{escuela}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="322" uuid="db62dfe5-e344-40f0-ac58-9d8029564f01">
+						<jr:tableHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="322" height="30" uuid="a2aa2b50-610f-4142-a828-eb3a7fd80cb3"/>
+								<textElement textAlignment="Justified">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[TITULO]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:columnFooter height="0" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="322" height="0" uuid="ae680a69-396d-44ba-933e-79cae9174264"/>
+								<textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="322" height="30" uuid="f934894a-ddd3-407e-a534-b8e2ff63cc3f"/>
+								<textElement markup="styled"/>
+								<textFieldExpression><![CDATA[$F{titulo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="143" uuid="7708927a-d318-4250-ba2f-3e4214be95f4">
+						<jr:tableHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="143" height="30" uuid="c03aff44-7b8d-4b58-bde8-6eff4a9a802f"/>
+								<textElement textAlignment="Justified">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[CEDULA(S)]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:columnFooter height="0" rowSpan="1"/>
+						<jr:detailCell height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="143" height="30" uuid="e760f529-52ae-4686-9ec0-65ef098491a3"/>
+								<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="152" uuid="1bee22cb-65cb-4ec2-b9cc-b416252f065f">
+						<jr:tableHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="152" height="30" uuid="2825927c-440c-426b-9447-61232cc557dc"/>
+								<textElement textAlignment="Justified">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[AUTOR(ES)]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:columnFooter height="0" rowSpan="1"/>
+						<jr:detailCell height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="152" height="30" uuid="9d613202-1fc3-4857-b04d-c6dce17e8664"/>
+								<textFieldExpression><![CDATA[$F{autor}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="101" uuid="c1aa9039-c201-4761-b7f6-6377f6ec06e7">
+						<jr:tableHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="101" height="30" uuid="91170eb3-b91d-47ad-af45-8e4d452fe535"/>
+								<textElement textAlignment="Justified">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[MENCION]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:columnFooter height="0" rowSpan="1"/>
+						<jr:detailCell height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="101" height="30" uuid="a079c443-9a93-41b7-9648-543548aaae19"/>
+								<textFieldExpression><![CDATA[$F{mencion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="91" uuid="a59d30b4-2b62-49b1-bcad-edfcd3bf92e2">
+						<jr:tableHeader height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="90" height="30" uuid="a770bec8-9205-456e-92a5-3f665fce6e9e"/>
+								<textElement textAlignment="Justified">
+									<font isBold="true"/>
+								</textElement>
+								<text><![CDATA[CALIFICACION]]></text>
+							</staticText>
+						</jr:tableHeader>
+						<jr:columnFooter height="0" rowSpan="1"/>
+						<jr:detailCell height="30" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="91" height="30" uuid="1c9b4a6b-0a35-437b-bd20-6924bb403dc0"/>
+								<textFieldExpression><![CDATA[$F{calificacion}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<summary>
+		<band height="80">
+			<line>
+				<reportElement x="86" y="24" width="187" height="1" uuid="51766d56-3a14-4768-bc75-db24d5de131e"/>
+			</line>
+			<staticText>
+				<reportElement x="133" y="36" width="100" height="43" uuid="9c91eb50-f589-4b22-bac0-456be63bee2c"/>
+				<text><![CDATA[Coordinacion de Trabajo de grado]]></text>
+			</staticText>
+			<line>
+				<reportElement x="523" y="24" width="187" height="1" uuid="3d0895c9-0d99-4a66-8e46-259f03735de1"/>
+			</line>
+			<staticText>
+				<reportElement x="569" y="37" width="100" height="43" uuid="83af30fe-db6c-439d-b49f-3a10bc95d382"/>
+				<text><![CDATA[Control de Estudios]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,47 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<meta charset="utf-8">
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="1000px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml'); ?> 
+        </td>
+    </tr>
+   
+</table>
+
+   
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        
+        <?php
+           echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+           echo $this->SwapBytes_Jquery->getLoading('loading');
+           echo $this->SwapBytes_Crud_Form->getJavaScript();
+           echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+           echo $this->filters->getJavaScript('tableData', $this->SwapBytes_Jquery_Ui_Form->buttonDisable('btnAdd', true));
+          $function = "window.location.href = urlAjax + 'imprimir/filters/' + escape($('#filtro').find(':input').serialize())";
+           
+           echo $this->SwapBytes_Jquery->setClick('btnImprimir', $function);
+        ?>              
+                
+      $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+   
+    
+//  $('#btnImprimir').click(function (){
+//           $.getJSON(urlAjax+"imprimir/filters/"+escape($('#filtro').find(':input').serialize()), function(data){executeCmdsFromJSON(data)}) 
+//      });
+//     
+           });
+    
+  // $.getJSON(urlAjax+"retornar/id/"+ id, function(data){executeCmdsFromJSON(data)});
+</script>

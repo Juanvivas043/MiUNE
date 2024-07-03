@@ -1,0 +1,67 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+
+<div align="center">
+
+        <table  align="center">
+            <tr >
+                <td align="center" >
+                    <?php include_once('filtros.phtml'); ?>
+                </td>
+                <td style="padding-bottom:33px"align="center" >
+                        <div id="check" style="width:135px;height:22px;display:none;">   
+                           <input id="todos" value="todos"type="checkbox" name="filtro" class="fill">Todos                             
+                           <input id="aplaz" value="aplaz" type="checkbox" name="filtro" class="fill">30%Aplaz 
+                        </div>
+                 </td>
+                
+                                
+            </tr>
+            
+        </table>
+        <div id="tblEstudiantes"></div>
+</div>
+<script type='text/javascript'>
+
+$(document).ready(function(){
+    <?php
+        echo $this->SwapBytes_Jquery->getLoading('loading');
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+        echo $this->SwapBytes_Crud_Action->getJavaScript('tblEstudiantes');
+        echo $this->filters->getJavaScript('tblEstudiantes', "$('#btnDescargar').attr('disabled', true);$('#rdbFormatXLS').attr('disabled',true);$('#rdbFormatPDF').attr('disabled', true);");
+        $function = "window.location.href = urlAjax + 'descargar/data/' + $(':input').serialize();";
+        echo $this->SwapBytes_Jquery->setClick('btnDescargar', $function);
+
+    ?>
+   
+      $("#selTipo").change(function(){
+        if ($("#selTipo").val() == "20109" || $("#selTipo").val() =="20110"){
+
+            $("#check").fadeIn();
+
+            $("#btnList").unbind("click");
+            $('#btnList').click(function(){$.getJSON(urlAjax + "list/buscar/"+encodeURIComponent($('#txtBuscar').val())+"/filters/"+escape($('#tblFiltros').find(':input').serialize())+"/checkbox/"+escape($('input[type=checkbox]').serialize()), function(d){executeCmdsFromJSON(d)});
+        });
+
+        }else{
+
+            $("#check").fadeOut();
+        } 
+        
+    });
+
+    $("#selPeriodo,#selSede,#selEscuela").change(function(){
+
+              $("#check").fadeOut();    
+
+    });
+
+});
+
+</script>

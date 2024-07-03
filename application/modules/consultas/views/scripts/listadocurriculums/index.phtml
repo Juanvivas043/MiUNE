@@ -1,0 +1,91 @@
+<?php
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.9.1.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/bootstrap.min.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/bootstrap.min.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/paginator.css');
+?>
+<style>
+    .title{
+        font-size: 16px;
+        margin: 2.5px!important;
+    }
+    .ui-button{
+        padding: 10px!important;
+    }
+    .tableData{
+        margin: 0px auto;
+    }
+    div.pagination{
+        display: block;
+        margin: 10px auto;
+    }
+    .cv { 
+        display: block; 
+        width: 100%; 
+        height: 50em; 
+        margin: 10px auto; 
+        border: 0.5px solid #666; 
+        border-radius: 5px; 
+        box-shadow: 0px 0px 5px #CCC; 
+        -webkit-box-sizing: border-box; 
+        -moz-box-sizing: border-box; 
+        box-sizing: border-box; 
+    }
+    #btnCV, #btnCV:hover, #btnCV:focus, #btnCV:active, #btnCV:visited{
+        text-decoration: none!important;
+        padding: 8px 12px!important;
+        font-size: 12px!important;
+        font-weight: normal!important;
+        border: none!important;
+        line-height: 1.42857!important;
+    }
+</style>
+<h2 class="title"><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="900px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center" colspan="2">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="tblUsuarios"></div>
+        </td>
+    </tr>
+</table>
+<!-- Modal -->
+<div class="modal fade" id="modalCV" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Curriculum Vitae</h4>
+            </div>
+            <div class="modal-body">
+                <iframe id="cv" src="" class="cv"></iframe>
+            </div>
+            <div class="modal-footer">
+                <a type="button" href="#" target="_blank" class="btn btn-primary" id="btnCV" style="background: #00787A;">Abrir</a>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" style="background: #00787A;">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type='text/javascript'>
+$(document).ready(function(){
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tblUsuarios');;
+    // echo $this->filters->getJavaScript('tblUsuarios');
+
+?>
+});
+</script>

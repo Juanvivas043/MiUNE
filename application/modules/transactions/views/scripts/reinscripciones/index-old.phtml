@@ -1,0 +1,735 @@
+<?php
+    //$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+    //$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.hotkeys.min.js');
+    //$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.md5.js');
+    //$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.6.2.min.js');
+    //$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.qtip-1.0.0-rc3.min');
+    //$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.showLoading.js');
+    //$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.showLoading.min.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-1.12.4.min.js');
+    //$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui-1.8.18.custom.min.js');
+    //$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.easyAccordion.js');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/bootstrap-3.3.7.min.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/bootstrap-3.3.7.min.css');
+   // $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery.wijmo.wijsplitter.css');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/css/reinscripcion.css');
+    $this->headScript()->appendFile($this->baseUrl() . '/js/sweetalert/sweetalert.min.js');
+    $this->headLink()->appendStylesheet($this->baseUrl() . '/js/sweetalert/sweetalert.css');
+?>
+<b class="titulo_pag"><?php echo $this->escape($this->title);?></b>
+<h2 id="phptit"><?php echo $this->Ci;?></h2>
+<div id="padreCaja" align="center">
+<div id="caja">
+<!--        <div class="line_separator">Re-inscripcion </div>-->
+        <input type="hidden" name="seltxtCI" id="seltxtCI" value="<?php echo $_SESSION["UID"];?>">
+         <div class="membrete" >
+            <pre><strong>UNIVERSIDAD NUEVA ESPARTA - CONSTANCIA DE REINSCRIPCI&Oacute;N</strong></pre>
+         </div> 
+        <div id="materiasSemestres"></div>
+        <div id="infoestudiante"><div class="arrow"></div></div> <!-- CAMBIAR AQUI LA FECHA EN LA QUE DEBEN VENIR LOS ESTUDIANTES IRREGULARES-->
+            <!--<div id="mensajeprob" class="disable prob"><p>USTED REPROB&Oacute; M&Aacute;S DEL 50% DE SUS MATERIAS INSCRITAS EN EL PERÍODO ANTERIOR, DEBER&Aacute; VENIR EL D&Iacute;A 19/01/2018 PARA REALIZAR SU INSCRIPCI&Oacute;N</p></div> -->
+            <div id="mensajeprob" class="disable prob"><p>USTED REPROB&Oacute; M&Aacute;S DEL 50% DE SUS MATERIAS INSCRITAS EN EL PERÍODO ANTERIOR, DEBER&Aacute; INSCRIBIRSE A PARTIR DEL D&Iacute;A 11/05/2020 A TRAVÉS DE SU DIRECTOR DE ESCUELA</p></div> 
+            <div id="informacion" >
+              <div id="titulo"><h4>Informacion del Estudiante<h4></div>
+                <div class="group">
+                    <p>Per&iacute;odo:</p>
+                    <h2 id="periodoinfo" ></h2>
+                </div>
+                <div class="clear"></div>
+                <div class="group">
+                    <p >C&eacute;dula del estudiante:</p>
+                    <h2 id="ciinfo" ></h2>
+                </div>
+                <div class="clear"></div>
+                <div class="group">
+                    <p >Nombre del Estudiante:</p>
+                    <h2 id="nombreinfo" ></h2>
+                </div>
+                <div class="clear"></div>
+                <div class="group">
+                    <p >Cr&eacute;ditos adicionales a inscribir:</p>
+                    <h2 id="cainfo" ></h2>
+                </div>
+                <div class="clear"></div>
+                <div class="group">
+                    <p >Sede:</p>
+                    <h2 id="sedeinfo" ></h2>
+                </div>
+                <div class="clear"></div>
+                <div class="group">
+                    <p >Escuela:</p>
+                    <h2 id="escuelainfo" ></h2>
+                </div>
+                <div class="clear"></div>
+                <div class="group">
+                    <p >Pensum:</p>
+                    <h2 id="pensuminfo" ></h2>
+                </div>
+                <div class="clear"></div>
+                <div class="group">
+                    <p >N&uacute;mero del Comprobante de Pago:</p>
+                    <h2 id="numcompinfo" ></h2>
+                </div>
+                <div class="clear"></div>
+                <div id="btn"></div>
+            </div>
+        </div>
+        <div id="erromsg">   
+            
+        </div>
+        <div id = "datosEstudiante" >
+                <div id = "datoscarrera">
+                    <h3>Datos de la carrera</h3>
+                    <div class="group">
+                        <p>Estudiante: </p>
+                        <h2 id = "nombrere"></h2>
+                    </div>
+                    <div class="group">
+                        <p>Sede: </p>
+                        <h2 id = "sedere"></h2>
+                    </div>
+                    <div class="group">
+                        <p>Escuela: </p>
+                        <h2 id = "escuelainfore"></h2>
+                    </div>
+                    <div class="group">
+                        <p>Estado de estudiante: </p>
+                        <h2 id = "estadoes"></h2> 
+                    </div>
+                    <div class="group">
+                        <p>Indice Acumulado:</p>
+                        <h2 id = "indeceacu"></h2>
+                    </div>
+                    <div class="group">
+                        <p>Indice del período pasado:</p>
+                        <h2 id = "indicepasa"></h2>
+                    </div>
+                    <div class="group">
+                        <p>Unidades de crédito aprobadas:</p>
+                        <h2 id = "uca"></h2> 
+                    </div>
+                </div>
+                <div id = "datosreinscripcion">
+                    <h3> Datos Re-inscripción</h3>
+                    <div class="group">
+                        <p>Período de Re-inscripción: </p>
+                        <h2 id ="periodore"></h2>
+                    </div>
+                    <div class="group">
+                        <p>Cantidad de materias seleccionadas: </p>
+                        <h2 id = "cantidadm">0</h2>
+                    </div>
+                    <div class="group">
+                        <p>Unidades de crédito del semestre de ubicación: </p>
+                        <h2 id = "UCU">0</h2>
+                    </div>
+                    <div class="group">
+                        <p>Créditos adicionales: </p>
+                        <h2 id = "creditoa"></h2>
+                    </div>
+                    <div class="group">
+                        <p>Unidades de crédito a inscribir: </p>
+                        <h2 id = "UCI">0 de 0   </h2>
+                    </div>
+                    <div class="group">
+                        <p>Pesum a re-inscribir: </p>
+                        <h2 id = "pensumre"></h2>
+                    </div>
+                    <div class="group">
+                        <p>Materias Faltantes: </p>
+                        <h2 id = "materiasfs"></h2> 
+                    </div>
+                </div>
+                <div id="semestre_ubicacion">
+                    <h3>Semestre Ubicacion</h3>
+                    <div id="ubicacion">0°</div>
+                    <input type="submit" id="btnInscribir" class="btnUnvisible finale" value="Finalizar" disabled></input>
+                </div>
+            </div>
+            <div id='msg' class='msgs'><p> Has excedido tus créditos </p></div>
+            <div class="clear"></div>
+           
+            <div id = "tblMaterias"></div>
+            <div class="firmasello">
+                <p class="obs">Observaciones:</p>
+
+            </div> 
+             <div id="firmas">
+                <span class="firmaselloest">Firma del estudiante</span>
+                <span class="firmasellodir">Firma del director de escuela</span>
+            </div> 
+            <br>
+            <div class="firmasello">
+                <span class="sello">Sello</span>
+            </div> 
+            <div id="footer" class="footer">
+                <div id="titulo">
+                    <h4>
+                        Leyenda
+                    </h4>
+                </div>
+                <div class="row">
+                    <div class="txt">
+                        Materia a Cursar
+                        <div class="circle white"></div>
+                    </div>
+                    <div class="txt">
+                        Materia Prelada
+                        <div class="circle grey"></div>
+                    </div>
+                    <div class="txt">
+                        Materia Reprobada
+                        <div class="circle red"></div>
+                    </div>
+                    <div class="txt">
+                        Materia Coincidente
+                        <div class="circle orange"></div>
+                    </div>
+                    <div class="txt">
+                        Materia Seleccionada
+                        <div class="circle acuamarine"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="bar">
+                <ul>
+                    <li>
+                        <a id="modalHorario" class="blue" data-toggle="modal" data-target="#horarioModal"><p>Horario</p></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="clear"></div>     
+    </div>
+    </div>
+ 
+    <!-- horarioModal -->
+    <div class="modal fade" id="horarioModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Horario</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="tblhoras">
+                         <table id="horas" class="shadowth">
+                             
+                              <div id="ths">
+                                  <tr>
+                                      <th class="">Horas</th>
+                                      <th class="lunes shadowth">Lunes</th>
+                                      <th class="martes shadowth">Martes</th>
+                                      <th class="miercoles shadowth">Miercoles</th>
+                                      <th class="jueves shadowth">Jueves</th>
+                                      <th class="viernes shadowth">Viernes</th>
+                                      <th class="sabado shadowth">Sabado</th>
+                                  </tr>
+                             </div>
+                              <tr id="1">
+                                <td class="shadowd h">7:00 - 8:30</td>
+                                <td class="lunes"></td>
+                                <td class="martes"></td>
+                                <td class="miercoles"></td>
+                                <td class="jueves"></td>
+                                <td class="viernes"></td>
+                                <td class="sabado"></td>
+                              </tr>
+                              <tr id="2" >
+                                <td class="shadowd h">8:40 - 10:10</td>
+                                <td class="lunes"></td>
+                                <td class="martes"></td>
+                                <td class="miercoles"></td>
+                                <td class="jueves"></td>
+                                <td class="viernes"></td>
+                                <td class="sabado"></td>
+                              </tr>
+                              <tr id="3" >
+                                <td class="shadowd h">10:15 - 11:45</td>
+                                <td class="lunes"></td>
+                                <td class="martes"></td>
+                                <td class="miercoles"></td>
+                                <td class="jueves"></td>
+                                <td class="viernes"></td>
+                                <td class="sabado"></td>
+                              </tr>
+
+                              <tr id="4" >
+                                <td class="shadowd h">12:00 - 1:30</td>
+                                <td class="lunes"></td>
+                                <td class="martes"></td>
+                                <td class="miercoles"></td>
+                                <td class="jueves"></td>
+                                <td class="viernes"></td>
+                                <td class="sabado"></td>
+                              </tr>
+                              <tr id="5" >
+                                <td class="shadowd h">1:35 - 3:05</td>
+                                <td class="lunes"></td>
+                                <td class="martes"></td>
+                                <td class="miercoles"></td>
+                                <td class="jueves"></td>
+                                <td class="viernes"></td>
+                                <td class="sabado"></td>
+                              </tr>
+                              <tr id="6" >
+                                <td class="shadowd fc h">3:10 - 4:40</td>
+                                <td class="lunes"></td>
+                                <td class="martes"></td>
+                                <td class="miercoles"></td>
+                                <td class="jueves"></td>
+                                <td class="viernes"></td>
+                                <td class="sabado"></td>
+                              </tr>
+                              <tr id="7" >
+                                <td class="shadowd h">5:00 - 6:30</td>
+                                <td class="lunes"></td>
+                                <td class="martes"></td>
+                                <td class="miercoles"></td>
+                                <td class="jueves"></td>
+                                <td class="viernes"></td>
+                                <td class="sabado"></td>
+                              </tr>
+                              <tr id="8" >
+                                <td class="shadowd h">6:40 - 8:00</td>
+                                <td class="lunes"></td>
+                                <td class="martes"></td>
+                                <td class="miercoles"></td>
+                                <td class="jueves"></td>
+                                <td class="viernes"></td>
+                                <td class="sabado"></td>
+                              </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<style>
+    @media print {
+        #tblMaterias .hor,.ins,.cal,.tur, #btnInscribir,#semestre_ubicacion, #mensajeprob,#last,#h2,.modal, #titulo,.row,#modalHorario,.thhor, .thins,.thcal,.thtur,#copy_right, #phptit ,#body_username_bar,#menucontainer, #tblMaterias .disponible,.prelada, .titulo_pag{
+            display: none;
+        }
+        .firmaselloest, .firmasellodir {
+            border-top: 3px solid #000;
+        }
+        .firmaselloest{
+            margin-top: 12%;
+            float: left;
+            margin-left: 20%;
+            width: 20%;
+            font-size: 16px;
+        }
+        .firmasellodir{
+            margin-top: 12%;
+            float: right;
+            margin-right: 20%;
+            width: 20%;
+            font-size: 16px;
+        }
+        .firmasello{
+            margin-top: 20%;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+        }
+        .membrete{
+            margin-top: -8%;
+            display: block;
+            margin-bottom: 5%;
+        }
+        #tblMaterias {
+            margin-top: 10%;
+            margin-left: 6%;
+            margin-bottom: 10%;
+            font-size: 15px;
+            display : table;
+       }
+
+        #tblMaterias select {
+            background: transparent;
+            border-color: transparent;
+        }
+        #tblMaterias .materiaSelect{
+            display: table-row;
+        }
+        #datosreinscripcion {
+            border: 1px solid #000;
+            max-width: 350px;
+            min-width: 350px;
+            height: 170px;
+            font-size: 15;
+            text-align: left;
+            padding:15px;
+            margin-left: 33%;
+        }
+        #datoscarrera {
+            float: left;
+            max-width: 350px;
+            min-width: 350px;
+            margin-left: 18%;
+            border: 1px solid #000;
+            height: 170px;
+            font-size: 15;
+            text-align: left;
+            padding:15px;
+            padding-left: -30px;
+        }
+        div.group{
+            width: 100%;
+            float: right;
+            margin: 0%;
+        }
+      
+        #datoscarrera > *, #datosreinscripcion > *{
+            display: table-row;
+
+        }
+        .materia{
+            width: 350px;
+            margin-right: 2%;
+        }
+        .secciones,.prel,.semestres,.uc,.cod{
+           text-align: center;
+          
+        }
+        .obs{
+            position: absolute;
+            left: 20%;
+        }
+        .semestres{
+            position: relative;
+            left: 1%;
+        }
+        .secciones{
+            position: relative;
+            right: 6%;
+        }
+        .prel{
+            width: 130px;
+            position: relative;
+            right: 5%;
+        }
+        .threq{
+            position: relative;
+            left: 7.5%;
+        }
+        .thsec{
+            position: relative;
+            left: 3%;
+        }
+        .thsem{
+            position: relative;
+            left: 1.5%;
+        }
+
+       
+        .group {
+            display: block;
+            margin: 5px 0px;
+        }
+        .group p {
+            float: left;
+            text-align: left;
+        }
+        .group h2 {
+            float: right;
+            text-align: right;
+        }
+        
+   
+     /*semestres secciones hor prel*/ 
+    }
+</style>
+<script type='text/javascript'>
+    <?php
+        echo $this->SwapBytes_Jquery->getLoading('loading');
+        echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    ?>
+    var datos=0;
+    /*function horario(id){
+        var element = document.getElementById(id);
+        var father = element.parentElement;
+        var childs = father.children;
+        var horario = childs[6];
+
+        $.getJSON(urlAjax + "horarios", {codigo: childs[1].val()} ,function(data){
+            //executeCmdsFromJSON(data);
+            // $("#horario").load("horario", {nombre: "Pepe", edad: 45}, function(){
+            //    alert("recibidos los datos por ajax");
+            // }); 
+            //horario.innerHTML = data;
+        }); 
+    }*/
+    //.
+   
+     function modalhorario(){
+        $('.lunes,.martes,.miercoles,.jueves,.viernes,.sabado').hide();
+        $('td.lunes,td.martes,td.miercoles,td.jueves,td.viernes,td.sabado').html('').removeClass('shadowhora');
+        $('td.lunes,td.martes,td.miercoles,td.jueves,td.viernes,td.sabado').html('').removeClass('modalcon');
+
+        $('#horas .shadowhora').hover(function() {
+                $('#horas th').eq($(this).index()).css('background-color', 'rgba(214,231,55, 0.15)');
+            }, function() {
+                $('#horas th').eq($(this).index()).css('background-color', 'rgb(171,188,14)');
+        });
+        
+        var codigo        = [],
+            turno         = [],
+            seccion       = [],
+            semestre      = [] ;
+         $.each($("#tblMaterias tr.materiaSelect"),function(agregar){
+            codigo.push(this.id);
+            turno.push($(this).find("td.turnos").find("select").val());
+            seccion.push($(this).find("td.secciones").find("select").val());
+            semestre.push($(this).find("td.semestres").find("select").val());
+        });
+        $.ajax({type:'POST',
+                dataType:'json',              
+                url: urlAjax + 'gethoras/',
+                data: { codigo   : codigo,
+                        turno    : turno,
+                        semestre : semestre,
+                        seccion  : seccion
+                },
+                success: function(data){
+                   executeCmdsFromJSON(data);
+                }
+        });
+        
+            
+    }
+     function postAccepted(){ 
+    
+        $('#tblMaterias tr.disponible, tr.apta').click(function(event){
+            if($(this).hasClass('disponible')){
+                var codigo        = [],
+                    cod1          =  this.id,
+                    sem1          =  $(this).find("td.semestres").find("select").val(),
+                    tur1          =  $(this).find("td.turnos").find("select").val(),
+                    turno         = [],
+                    seccion       = [],
+                    semestre      = [],
+                    creditos      = [],
+                    semestres     = [],
+                    cantidadm     = [],
+                    pk_asignatura = [],
+                    codigoret     = [],
+                    touch    = {codigo:     this.id,
+                                semestre:   $(this).find("td.semestres").find("select").val(),
+                                turno:      $(this).find("td.turnos").find("select").val(),
+                                seccion:    $(this).find("td.secciones").find("select").val(),  
+                                creditos:   $(this).find("td.uc").find("select").val(),
+                                cantidadm:  $(this).find("td.cantidadm").html(),
+                                semestres:  $(this).find("td.semestres").find("select").find("option").val()};
+                var target = $( event.target );
+                //Make Data
+            
+
+                $.each($("#tblMaterias tr.materiaSelect"),function(agregar){
+                    codigo.push(this.id);
+                    turno.push($(this).find("td.turnos").find("select").val());
+                    seccion.push($(this).find("td.secciones").find("select").val());
+                    semestre.push($(this).find("td.semestres").find("select").val());
+                    creditos.push($(this).find("td.uc").html());
+                    cantidadm.push($(this).find("td.cantidadm").html());
+                    semestres.push($(this).find("td.semestres").find("select").find("option").html());
+                    pk_asignatura.push($(this).find("td").eq(0).attr('id'));
+                    if ($(this).hasClass('ret')){
+                        codigoret.push(this.id);
+                    }
+                });
+                //Request
+                    
+                    $.ajax({type:'POST',
+                            dataType:'json',
+                            url: urlAjax + 'secciones/',
+                            data: {
+                                cod1 : cod1,
+                                sem1 : sem1,
+                                tur1 : tur1,
+                            },
+                            success: function(data){
+                               executeCmdsFromJSON(data);
+                            }, async : true
+
+                    });
+                if (touch['seccion']!= null && target.is('.tur')==false) { 
+
+                        $.ajax({type:'POST',
+                                dataType:'json',
+                                url: urlAjax + 'unidadescreditoestudiante/',
+                                data: {
+                                    touch    : touch,
+            
+                                    semestre : semestre,
+                                    creditos : creditos,
+                                    codigo   : codigo,
+                                    cantidadm: cantidadm
+                                },
+                                success: function(data){
+                                   executeCmdsFromJSON(data);
+                                }, async : true
+                        });
+                        $.ajax({type:'POST',
+                                dataType:'json',
+                                url: urlAjax + 'semestreubicacion/',
+                                data: {
+                                    codigo : codigo,
+                                },
+                                success: function(data){
+                                   executeCmdsFromJSON(data);
+                                },async : true
+                        });
+                        
+                        $.ajax({type:'POST',
+                                dataType:'json',              
+                                url: urlAjax + 'horariosinscritos/',
+                                data: {
+                                    codigo   : codigo,
+                                    semestre : semestre,
+                                    turno    : turno,
+                                    seccion  : seccion,
+                                    codigoret: codigoret,
+                                    touch    : touch
+                                },
+                                success: function(data){
+                                   executeCmdsFromJSON(data);
+                                },async : true
+                        });
+
+                        $.ajax({type:'POST',
+                                dataType:'json',              
+                                url: urlAjax + 'coincidencia/',
+                                data: {
+                                    codigo   : codigo,
+                                    semestre : semestre,
+                                    turno    : turno,
+                                    seccion  : seccion,
+                                    touch    : touch
+                                },
+                                success: function(data){
+                                   executeCmdsFromJSON(data);
+                                },async : true
+                        });
+                        
+                    
+
+                    if($(this).hasClass('ret')){
+                        $.ajax({type:'POST',
+                            dataType:'json',              
+                            url: urlAjax + 'simultaneos/',
+                            data: {
+                                codigoret: codigoret,
+                                touch    : touch,
+                                codigo   : codigo,
+                            },
+                            success: function(data){
+                               executeCmdsFromJSON(data);
+                            },async : true
+                        });
+                    }
+                       
+                         
+                }
+                //datos = [codigo, turno, seccion, semestre, creditos, semestres, cantidadm, pk_asignatura];
+            }
+        });
+        
+    };
+
+    $(document).ready(function(){
+        $.getJSON(urlAjax + "acceso", function(data){
+            executeCmdsFromJSON(data);
+            $("#datosEstudiante").hide();
+            $("#materiasSemestres").hide();
+            $("#tblMaterias").hide();
+            $("#msg").hide();
+            $("#footer").hide();
+
+            if(data == 145){
+                infoEstudiante();
+            }
+            else if(data != 1){
+                $("#btnCi").click(function(){
+                    ci = $('#txtBuscar').val();
+                    $.getJSON(urlAjax + "pedirCi/id/"+ci, function(data){ 
+                        executeCmdsFromJSON(data); 
+                        infoEstudiante(); 
+                    }); 
+                });
+            }
+        });
+
+
+        function infoEstudiante(){
+            $.getJSON(urlAjax + "infoestudiante", function(data){
+                executeCmdsFromJSON(data);
+                $('#btnValidar').click(function() {
+                    $("#informacion").hide();
+                    $("#footer").fadeIn();
+                    $(".prob").hide();
+                    $("#datosEstudiante").show();
+                    $("#tblMaterias").show();
+                    $('.bar').css('display','block');   
+                    $('select').attr('disabled', false);
+                    $.getJSON(urlAjax + "inforeinscripcion", function(data){executeCmdsFromJSON(data);});
+                });
+            });
+        }; 
+
+
+
+        function datosReinscripcion(){
+            $('#cantidadm').click(function(){
+                $.getJSON(urlAjax + "datosreinscripcion", function(data){executeCmdsFromJSON(data);});
+            });       
+        }
+
+      /*  function seccionesfiltros(){
+                $.getJSON(urlAjax + "seccionesfiltros", function(data){executeCmdsFromJSON(data);});     
+        }*/
+
+    });
+
+    $('#btnInscribir').click(function(){ 
+        var pk_asignatura         = [];
+        var turno                 = [];
+        var seccion               = [];
+        var semestre              = [];
+        var periodo               = [];
+
+        $('tbody tr .materiaSelect').each(function(){ pk_asignatura.push($(this).find("td").eq(0).attr('id'));}); 
+        $('tbody tr .materiaSelect').each(function(){ turno.push($(this).find("td.turnos").find("select").val())});
+        $('tbody tr .materiaSelect').each(function(){ seccion.push($(this).find("td.secciones").find("select").val())});
+        $('tbody tr .materiaSelect').each(function(){ semestre.push($(this).find("td.semestres").find("select").val())});
+        $('tbody tr .materiaSelect').each(function(){ periodo.push($('#periodore').html())});
+
+        
+        $.ajax({
+            type:'POST',
+            dataType:'json',
+            url: urlAjax + 'inscribirmaterias/',
+            data: {
+                pk_asignatura         : pk_asignatura,
+                turno                 : turno,
+                seccion               : seccion,
+                semestre              : semestre,
+                periodo               : periodo
+            },
+            success: function(data){
+               executeCmdsFromJSON(data);
+            }
+        });
+   /* $('#tblMaterias').click(function(){
+        seccionesfiltros();
+    });*/
+
+
+    });
+</script> 

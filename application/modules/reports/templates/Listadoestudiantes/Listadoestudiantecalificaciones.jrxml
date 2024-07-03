@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listadoestudiantecalificaciones" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.3310000000000113"/>
+	<property name="ireport.x" value="78"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFBFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1"/>
+	<parameter name="Periodo" class="java.lang.String">
+		<defaultValueExpression><![CDATA[122]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Sede" class="java.lang.String">
+		<defaultValueExpression><![CDATA[7]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Escuela" class="java.lang.String">
+		<defaultValueExpression><![CDATA[11]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Semestre" class="java.lang.String">
+		<defaultValueExpression><![CDATA[873]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Materia" class="java.lang.String">
+		<defaultValueExpression><![CDATA[481]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Seccion" class="java.lang.String">
+		<defaultValueExpression><![CDATA[865]]></defaultValueExpression>
+	</parameter>
+	<parameter name="CIs" class="java.lang.String">
+		<defaultValueExpression><![CDATA["24219168,24278508,19505877,20653226,21537450"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Pensum" class="java.lang.String"/>
+	<parameter name="image" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT ac.pk_asignacion, ra.pk_recordacademico, u.pk_usuario, LTRIM(TO_CHAR(pk_usuario, '99"."999"."999')::varchar, '0. ') as ci, u.apellido, u.nombre, COALESCE((ra.calificacion::VARCHAR),'N/T') AS calificacion, ra.fk_atributo as estado, es.escuela, sed.nombre AS sede, sem.valor AS semestre, mat.materia, sec.valor AS seccion, i.fk_periodo
+                FROM tbl_recordsacademicos ra
+                JOIN tbl_inscripciones      i ON  i.pk_inscripcion   = ra.fk_inscripcion
+                JOIN tbl_asignaciones      ac ON ac.pk_asignacion    = ra.fk_asignacion
+                JOIN tbl_asignaturas       ag ON ag.pk_asignatura    = ra.fk_asignatura
+                JOIN tbl_estructuras       e1 ON e1.pk_estructura    = ac.fk_estructura
+                JOIN tbl_estructuras       e2 ON e2.pk_estructura    = e1.fk_estructura
+                JOIN tbl_estructuras       e3 ON e3.pk_estructura    = e2.fk_estructura
+                JOIN tbl_usuariosgrupos    ug ON ug.pk_usuariogrupo  =  i.fk_usuariogrupo
+                JOIN tbl_usuarios           u ON  u.pk_usuario       = ug.fk_usuario
+                JOIN tbl_pensums            p ON  p.pk_pensum        = ag.fk_pensum
+	      JOIN vw_escuelas	  es ON es.pk_atributo      = p.fk_escuela
+	      JOIN vw_sedes             sed ON sed.pk_estructura   = e2.fk_estructura
+	      JOIN vw_semestres	 sem ON sem.pk_atributo     = ac.fk_semestre
+	      JOIN vw_materias	 mat ON mat.pk_atributo     = ag.fk_materia
+	      JOIN vw_secciones	 sec ON sec.pk_atributo     = ac.fk_seccion
+                WHERE (ra.fk_atributo    = 864
+                       OR ra.fk_atributo = 862)
+                 AND ac.fk_periodo    = $P!{Periodo}
+                 AND e3.pk_estructura = $P!{Sede}
+                 AND  p.fk_escuela    = $P!{Escuela}
+	       AND ac.fk_semestre   = $P!{Semestre}
+                 AND ag.fk_materia    = $P!{Materia}
+                 AND ac.fk_seccion    = $P!{Seccion}
+	       AND p.pk_pensum      = $P!{Pensum}
+	       AND u.pk_usuario IN ($P!{CIs})
+                 ORDER BY u.apellido, u.nombre;]]>
+	</queryString>
+	<field name="pk_asignacion" class="java.lang.Long"/>
+	<field name="pk_recordacademico" class="java.lang.Integer"/>
+	<field name="pk_usuario" class="java.lang.Long"/>
+	<field name="ci" class="java.lang.String"/>
+	<field name="apellido" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="calificacion" class="java.lang.Integer"/>
+	<field name="estado" class="java.lang.Integer"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="sede" class="java.lang.String"/>
+	<field name="semestre" class="java.lang.String"/>
+	<field name="materia" class="java.lang.String"/>
+	<field name="seccion" class="java.lang.String"/>
+	<field name="fk_periodo" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="162" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="129" width="572" height="21"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte Listado de Estudiantes con Calificación]]></text>
+			</staticText>
+			<image>
+				<reportElement x="30" y="34" width="159" height="87"/>
+				<imageExpression><![CDATA[$P{image}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="212" y="22" width="43" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="37" width="43" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sede:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="52" width="43" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Escuela:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="67" width="50" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Semestre:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="82" width="50" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Materia:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="97" width="50" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sección:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="263" y="37" width="279" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{sede}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="263" y="52" width="279" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{escuela}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="263" y="67" width="279" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{semestre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="263" y="82" width="279" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{materia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="263" y="97" width="279" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{seccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="263" y="22" width="279" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{fk_periodo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="50" y="7" width="79" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[C.I]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="478" y="7" width="68" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Calificación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="131" y="7" width="172" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="7" width="172" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="7" width="23" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[#]]></text>
+			</staticText>
+			<line>
+				<reportElement x="48" y="7" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="129" y="7" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="303" y="7" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="477" y="7" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="546" y="7" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="24" y="6" width="1" height="16"/>
+			</line>
+			<line>
+				<reportElement x="25" y="6" width="521" height="1"/>
+			</line>
+			<line>
+				<reportElement x="25" y="22" width="521" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement x="50" y="4" width="79" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ci}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="25" y="4" width="23" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="305" y="3" width="172" height="13"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="131" y="4" width="172" height="13"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="478" y="3" width="68" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{calificacion}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="48" y="0" width="1" height="17"/>
+			</line>
+			<line>
+				<reportElement x="129" y="0" width="1" height="17"/>
+			</line>
+			<line>
+				<reportElement x="303" y="0" width="1" height="17"/>
+			</line>
+			<line>
+				<reportElement x="477" y="0" width="1" height="17"/>
+			</line>
+			<line>
+				<reportElement x="546" y="0" width="1" height="17"/>
+			</line>
+			<line>
+				<reportElement x="24" y="0" width="1" height="17"/>
+			</line>
+			<line>
+				<reportElement x="25" y="17" width="521" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="30" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="39" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="418" y="0" width="128" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="202" y="2" width="166" height="19"/>
+				<textElement/>
+				<text><![CDATA[Reporte generado por D.D.T.I.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

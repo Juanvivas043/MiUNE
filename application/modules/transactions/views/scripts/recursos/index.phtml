@@ -1,0 +1,101 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui-1.8.14.custom.min.js');
+//$this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+//$this->headScript()->appendFile($this->baseUrl() . '/js/video.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/flowplayer-3.2.6.min.js');
+
+//$this->headLink()->appendStylesheet($this->baseUrl() . '/css/video-js.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/flowplayer.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/form.css');
+$this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui.custom.css');
+
+//$this->SwapBytes_Jquery->endLine(true);
+?>
+<h2><?php echo $this->escape($this->title); ?></h2>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" width="1000px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+    <tr>
+        <td align="center">
+            <?php include_once('filtros.phtml'); ?>
+        </td>
+    </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="1000px" style="padding: 0 0 0 10; margin-left:auto; margin-right:auto;">
+   <tr>
+       <td><table border="1">
+         <div id="infoclase"></div>
+      </table></td>
+   </tr>
+</table>
+<br>
+<div id="tableData" align="center"></div>
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<script type='text/javascript'>
+    $(document).ready(function(){
+<?php
+    echo $this->SwapBytes_Jquery->getLoading('loading');
+    echo $this->SwapBytes_Ajax->getUrlAjaxJS();
+    echo $this->SwapBytes_Crud_Form->getJavaScript();
+    echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
+	 echo $this->filters->getJavaScript('tableData');
+?>
+$.getJSON(urlAjax + "list/filters/"+escape($('#tblFiltros').find(':input').serialize())+"", function(d){executeCmdsFromJSON(d)});
+$.getJSON(urlAjax + "infoclase", function (d) {executeCmdsFromJSON(d)});
+
+
+    });
+function startTinyMCE(){
+    tinyMCE.init({
+             mode : "exact"
+        ,elements : "contenido_html"
+,theme : 'advanced'
+,width : "580"
+,height: "300"
+,plugins : 'paste, table'
+,theme_advanced_resizing : true
+,theme_advanced_toolbar_location : "top"
+,theme_advanced_buttons1 : "link, bold, italic, underline, strikethrough, |, justifyleft, justifycenter, justifyright, justifyfull, |, bullist, numlist,|, undo, redo, cleanup, removeformat, pasteword, code "
+,theme_advanced_buttons2 : "link, unlink|, image, hr , sub, sup, charmap, |, forecolor, backcolor, |, tablecontrols"
+,theme_advanced_buttons3 : ""
+,theme_advanced_blockformats : "p,h1,h2,h3,blockquote,dt,dd"
+//         ,  setup : function(ed) {
+//      ed.onChange.add(function(ed, l) {
+//          $('#contenido_html').text(tinyMCE.get('contenido_html').getContent());
+//          console.log($('#contenido_html').text());
+//          chtml = $('#contenido_html').text();
+//          $.post('<?= $this->baseUrl() ?>/transactions/recursos/savecontenido/', {'chtml' : chtml});
+//          });
+//      ed.onKeyUp.add(function(ed, e) {
+//          $('#contenido_html').text(tinyMCE.get('contenido_html').getContent());
+//          console.log($('#contenido_html').text());
+//          chtml = $('#contenido_html').text();
+//          $.post('<?= $this->baseUrl() ?>/transactions/recursos/savecontenido/', {'chtml' : chtml});
+//      });
+//   }
+    });
+}
+function startFileUploader(exts){
+var uploader = new qq.FileUploader({
+   multiple: false,
+    element: document.getElementById('file-uploader'),
+    allowedExtensions: exts,
+     action: '<?= $this->baseUrl() ?>/transactions/recursos/upload/',
+      debug: true,
+   onSubmit: function(id, fileName){ 
+            nelement = $('ul.qq-upload-list').children().length;
+            if(nelement == 1){
+                alert('Solo puede subir un(1) archivo a la vez');
+                return false;
+            }
+    },
+   onComplete: function(id, fileName){
+       tipo = $("#frmModal").parent().find('#fk_tipo').val();
+       $("#frmModal").parent().find('#fk_tipo').attr('disabled', 'disabled')
+       $("#frmModal").parent().find('#fk_tipo_alt').val(tipo);
+   }
+});
+};
+</script>

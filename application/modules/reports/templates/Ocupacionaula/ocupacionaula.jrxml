@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ocupacionaula" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a783fc4-2d6f-46ce-ab9a-90aac3b46b2e">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="286"/>
+	<property name="ireport.y" value="0"/>
+	<style name="barras" fill="Solid" isBlankWhenNull="true">
+		<pen lineStyle="Double" lineColor="#050505"/>
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<pen lineWidth="0.5"/>
+			<topPen lineWidth="0.5"/>
+			<leftPen lineWidth="0.5"/>
+			<bottomPen lineWidth="0.5"/>
+			<rightPen lineWidth="0.5"/>
+		</box>
+		<paragraph lineSpacing="1_1_2"/>
+	</style>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="dia" class="java.lang.String"/>
+	<parameter name="horario" class="java.lang.String"/>
+	<parameter name="estructura" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT  asignatura,
+        profesor,
+        curso,
+        aula,
+        dia,
+        horainicio,
+        CASE WHEN aula ILIKE '%Edif. 1 - 1%' THEN 1
+        WHEN aula ILIKE '%Edif. 1 - 2%' THEN 2
+        WHEN aula ILIKE '%Edif. 2 - LA%' THEN 3
+        WHEN aula ILIKE '%Edif. 2 - 1' THEN 4
+        WHEN aula ILIKE '%Edif. 2 - 2' THEN 5
+        WHEN aula ILIKE '%Edif. 2 - 3' THEN 6
+        WHEN aula ILIKE '%Edif. 2 - 4' THEN 7
+        WHEN aula ILIKE '%Edif. 2 - L%' THEN 8
+        WHEN aula ILIKE '%Edif. 2 - 1%' THEN 9
+        WHEN aula ILIKE '%Edif. 2 - 2%' THEN 10
+        WHEN aula ILIKE '%Edif. 2 - %' THEN 11
+        WHEN aula ILIKE 'Edif. Admin. - Salon Las Trinitarias' THEN 12
+        WHEN aula ILIKE 'Esp. Interactivo - Piso 3' THEN 13
+        WHEN aula ILIKE 'Canchas' THEN 14
+        WHEN aula ILIKE 'CDT PC' THEN 15
+        WHEN aula ILIKE 'CDT PC 2' THEN 16
+        WHEN aula ILIKE 'CDT MAC' THEN 17
+        WHEN aula ILIKE 'CPT' THEN 18
+        WHEN aula ILIKE 'CRC - CRC' THEN 19
+        WHEN aula ILIKE 'CRC - AULA' THEN 20
+        WHEN aula ILIKE 'CRC - AULA 2' THEN 21
+        WHEN aula ILIKE 'CRC - CRC LAB.' THEN 22
+        WHEN aula ILIKE 'Lab. Ingles' THEN 23
+        END AS ordinal,
+        pk_estructura
+      FROM(SELECT DISTINCT (array_to_string(sqt2.asignatura, ' / ')) AS asignatura,
+                            array_to_string(sqt2.profesor, ' / ') AS profesor,
+                            array_to_string(sqt2.curso, ' / ') AS curso,
+                            sqt2.dia AS dia, sqt2.horainicio AS horainicio,
+                            CASE WHEN sqt2.aula='Edif. 1 - CDT MAC' THEN 'CDT MAC'
+                            WHEN sqt2.aula='Edif. 1 - CDT PC' THEN 'CDT PC'
+                            WHEN sqt2.aula='Edif. 1 - CDT PC 2' THEN 'CDT PC 2'
+                            WHEN sqt2.aula='Edif. 1 - CPT' THEN 'CPT'
+                            WHEN sqt2.aula='Edif. 1 - Lab. Ingles' THEN 'Lab. Ingles'
+                            WHEN sqt2.aula='Areas Comunes - Canchas' THEN 'Canchas'else sqt2.aula END AS aula, pk_estructura
+            FROM (SELECT sqt.dia AS dia,
+          sqt.horainicio AS horainicio ,
+          sqt.aula AS aula,
+                      array_agg(DISTINCT profesor) AS profesor,
+                      array_agg(DISTINCT asignatura) AS asignatura,
+                      array_agg(distinct curso)AS curso, sqt.pk_estructura
+                  FROM (SELECT DISTINCT m.materia AS asignatura,
+              d.dia AS dia ,
+              h.horainicio AS horainicio,
+              edf.nombre || ' - ' || sal.nombre AS aula,
+              u.primer_apellido || ',' || u.primer_nombre AS profesor,
+              a2.codigopropietario||sec.valor AS curso, sal.pk_estructura
+                         FROM vw_dias d
+                         CROSS JOIN tbl_horarios h
+                         CROSS JOIN tbl_estructuras sal
+                         JOIN tbl_estructuras edf ON edf.pk_estructura = sal.fk_estructura
+                         JOIN tbl_estructuras sed ON sed.pk_estructura = edf.fk_estructura
+                         LEFT OUTER JOIN tbl_asignaciones a1 ON a1.fk_estructura = sal.pk_estructura
+                                 and  a1.fk_horario = h.pk_horario
+                                 and  a1.fk_dia = d.pk_atributo
+                                 and a1.fk_periodo = $P{periodo}::integer
+                         LEFT OUTER JOIN tbl_asignaturas a2 ON a1.fk_asignatura = a2.pk_asignatura
+                         LEFT OUTER JOIN vw_materias m ON m.pk_atributo = a2.fk_materia
+                         LEFT OUTER JOIN tbl_usuariosgrupos ug ON ug.pk_usuariogrupo = a1.fk_usuariogrupo
+                         LEFT OUTER JOIN tbl_usuarios u ON u.pk_usuario = ug.fk_usuario
+                         LEFT OUTER JOIN vw_secciones sec ON sec.pk_atributo = a1.fk_seccion
+                         WHERE sed.pk_estructura = $P{estructura}::integer
+             AND sal.pk_estructura NOT IN (105,65,55,100,108,44,50,69,51)
+             AND d.id = $P{dia}::integer
+             AND h.pk_horario = $P{horario}::integer
+             ) AS sqt
+          GROUP BY sqt.dia, sqt.aula, sqt.horainicio, sqt.pk_estructura
+          ) AS sqt2
+      )AS orden
+      ORDER BY ordinal, aula ASC]]>
+	</queryString>
+	<field name="asignatura" class="java.lang.String"/>
+	<field name="profesor" class="java.lang.String"/>
+	<field name="curso" class="java.lang.String"/>
+	<field name="aula" class="java.lang.String"/>
+	<field name="dia" class="java.lang.String"/>
+	<field name="horainicio" class="java.sql.Time"/>
+	<field name="ordinal" class="java.lang.Integer"/>
+	<field name="pk_estructura" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement mode="Transparent" x="136" y="20" width="68" height="15" uuid="0bcc6ee0-3b41-4161-9507-96d038bb9619"/>
+				<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="201" y="0" width="124" height="20" uuid="c6a2cf68-a4cb-45f9-9f90-038c5e778d9a"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Aulas Ocupadas]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="241" y="20" width="100" height="15" uuid="f28474a0-fc9c-4aaf-8289-c84e783774f1"/>
+				<textFieldExpression><![CDATA[$F{dia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="428" y="20" width="100" height="15" uuid="617d227d-4ed4-4b79-b063-9fbd0a57036a"/>
+				<textFieldExpression><![CDATA[$F{horainicio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="51" y="20" width="85" height="15" uuid="5940c524-9f7b-4c70-909f-f94f4357f125"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Periodo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="201" y="20" width="40" height="15" uuid="80c86ebd-6548-4849-b7e7-20a5f8ff87a7"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Día]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="377" y="20" width="51" height="15" uuid="cbe0f571-ea4a-4cf9-91cb-a949d21de64e"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="0" width="100" height="20" uuid="0755fc2d-d8f3-40bb-a54a-5a6f6b935d8a"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement style="barras" x="0" y="0" width="100" height="15" uuid="d0917b75-73a4-4442-9fab-a18afffc58d8"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Aula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="barras" x="100" y="0" width="141" height="15" uuid="4bb93806-2a08-4a3e-9569-fc6b1775d28d"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Curso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="barras" x="241" y="0" width="124" height="15" uuid="74df9ba2-d1b5-41a2-b53b-82ff502d774f"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Profesor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="barras" x="365" y="0" width="196" height="15" uuid="0c00e367-d2d5-4f25-95e9-007e074e45e2"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ Asignatura]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="barras" x="100" y="0" width="141" height="12" uuid="8c29a389-6cc3-40f0-9036-501ffc440bc1"/>
+				<textElement>
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{curso}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="barras" x="241" y="0" width="124" height="12" uuid="821d207b-54d3-4c34-b113-dc316d258eb0"/>
+				<textElement>
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{profesor}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="barras" x="0" y="0" width="100" height="12" uuid="6a44b1ec-29bc-454d-b1b1-8de9baf993b9"/>
+				<textElement>
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{aula}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="barras" x="365" y="0" width="196" height="12" uuid="3389643c-ccd2-4f9f-94a6-4ba1ff16225f"/>
+				<textElement>
+					<font size="10"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{asignatura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

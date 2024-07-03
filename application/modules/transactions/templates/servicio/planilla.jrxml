@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="planilla" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="42fe2d61-3531-4624-9d23-e3fb0538437b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ci" class="java.lang.String"/>
+	<parameter name="Imagen" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select DISTINCT u.pk_usuario as cedula, u.apellido||','|| u.nombre as estudiante, u.direccion as direccionusuario, u.telefono as telefonousuario,
+u.telefono_movil as celular, u.correo as mail, es.escuela as escuela, p.nombre as proyecto,  ins.nombre as institucion,
+
+(case when ins.direccion is null then 'Dirección no cargada' else ins.direccion end) as direccionins
+
+, ins.telefono as telefonoinstitucion, per.fechainicio as fechainicio,per.fechafin as fechafin,
+fn_xrxx_estudiante_sem_ubicacion_periodod2(u.pk_usuario,pen.fk_escuela,i.fk_periodo,pen.pk_pensum) as semestre, subj.fecha_taller as fecha_taller, u.foto as foto,
+ua.nombre||','||ua.apellido as tutora,
+(case when ua.correo is null then 'N/A' else ua.correo end) as correotutora,
+(case when ua.telefono_movil is null then 'N/A' else ua.telefono_movil end) as telefonotutora,
+ui.nombre||','||ui.apellido as tutori,
+(case when ui.correo is null then 'N/A' else ui.correo end) as correotutori,
+(case when ui.telefono_movil is null then 'N/A' else ui.telefono_movil end) as telefonotutori
+from tbl_inscripcionespasantias ip
+join tbl_recordsacademicos ra on ra.pk_recordacademico = ip.fk_recordacademico
+join tbl_asignacionesproyectos ap on ap.pk_asignacionproyecto = ip.fk_asignacionproyecto
+join tbl_inscripciones i on i.pk_inscripcion = ra.fk_inscripcion
+join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = i.fk_usuariogrupo
+join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
+join tbl_proyectos p on p.pk_proyecto = ap.fk_proyecto
+join tbl_instituciones ins on ins.pk_institucion = p.fk_institucion
+join tbl_asignaturas a on a.pk_asignatura = ra.fk_asignatura
+join tbl_pensums pen on pen.pk_pensum = a.fk_pensum
+join vw_escuelas es on es.pk_atributo = pen.fk_escuela
+join tbl_periodos per on per.pk_periodo = ap.fk_periodo
+join tbl_usuariosgrupos uga on uga.pk_usuariogrupo = ip.fk_tutor_academico
+join tbl_usuarios ua on ua.pk_usuario = uga.fk_usuario
+join tbl_contactos con on con.pk_contacto = ip.fk_tutor_institucion
+join tbl_usuariosgrupos ugi on ugi.pk_usuariogrupo = con.fk_usuariogrupo
+join tbl_usuarios ui on ui.pk_usuario = ugi.fk_usuario
+join (select DISTINCT u.pk_usuario, i.fk_periodo as fecha_taller
+		from vw_materias m
+		join tbl_asignaturas a on a.fk_materia = m.pk_atributo
+		join tbl_recordsacademicos ra on ra.fk_asignatura = a.pk_asignatura
+		join tbl_inscripciones i on i.pk_inscripcion = ra.fk_inscripcion
+		join tbl_periodos p on p.pk_periodo = i.fk_periodo
+		join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = i.fk_usuariogrupo
+		join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
+		where a.fk_materia in (8219,9737)
+		and u.pk_usuario = $P{ci}::integer
+		and ra.fk_atributo = 862
+		and ra.calificacion > 10
+)as subj
+on subj.pk_usuario = u.pk_usuario
+
+where u.pk_usuario = $P{ci}::integer]]>
+	</queryString>
+	<field name="cedula" class="java.lang.Long"/>
+	<field name="estudiante" class="java.lang.String"/>
+	<field name="direccionusuario" class="java.lang.String"/>
+	<field name="telefonousuario" class="java.lang.String"/>
+	<field name="celular" class="java.lang.String"/>
+	<field name="mail" class="java.lang.String"/>
+	<field name="escuela" class="java.lang.String"/>
+	<field name="proyecto" class="java.lang.String"/>
+	<field name="institucion" class="java.lang.String"/>
+	<field name="direccionins" class="java.lang.String"/>
+	<field name="telefonoinstitucion" class="java.lang.String"/>
+	<field name="fechainicio" class="java.sql.Date"/>
+	<field name="fechafin" class="java.sql.Date"/>
+	<field name="semestre" class="java.lang.Integer"/>
+	<field name="fecha_taller" class="java.lang.Long"/>
+	<field name="foto" class="java.lang.Object"/>
+	<field name="tutora" class="java.lang.String"/>
+	<field name="correotutora" class="java.lang.String"/>
+	<field name="telefonotutora" class="java.lang.String"/>
+	<field name="tutori" class="java.lang.String"/>
+	<field name="correotutori" class="java.lang.String"/>
+	<field name="telefonotutori" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="721" splitType="Stretch">
+			<textField>
+				<reportElement uuid="155da311-c5d6-4ac4-99a5-f3367a6cd302" x="68" y="161" width="430" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{direccionusuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2467770e-594f-4af5-9076-7ceea8d5b715" x="10" y="110" width="181" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL (LA) ESTUDIANTE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f4d3b2a7-aba2-4325-8634-6c4621116468" x="252" y="347" width="100" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Firma del Estudiante]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="6a844f35-c3b1-4892-bca8-6125d58b35e2" x="10" y="201" width="488" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Escuela: "+$F{escuela}+" Período Lectivo: "+$F{semestre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3c718b16-dfc6-4c2f-8c83-47eacb429b88" x="121" y="316" width="231" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["_________________________________________"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1748d446-12c3-43d9-a0d4-534e1f6d8f78" x="7" y="438" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Dirección: " + $F{direccionins}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f981d92b-9da6-4b34-aa2f-459475c3e451" x="6" y="398" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Título del Proyecto: " + $F{proyecto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e8ae46a1-2dbf-4a8c-9c7b-adb35c008734" x="6" y="367" width="138" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL PROYECTO : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b088f6be-32a6-4315-a9cc-c5337d8d7f4f" x="10" y="241" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Observaciones :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="932c5f06-a685-47da-aaa5-7a23af1c3bf2" x="10" y="220" width="488" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Período en el que curso el Taller de Servicio Comunitario: "+$F{fecha_taller}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="23e8e79b-a5bd-44a0-9337-bf81b0e15a6b" x="28" y="284" width="464" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["__________________________________________________________________________________________"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f8b7d93b-2fea-444b-9758-6c7f73479383" x="28" y="265" width="464" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["__________________________________________________________________________________________"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2748d8cf-9521-455c-b5b8-8c669dfb1470" x="7" y="418" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Comunidad o Institución " + $F{institucion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a8413fd9-b245-44bb-9bc2-b243ad546485" x="10" y="181" width="488" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Telf.Celular: "+$F{celular}+" Telf. Ofic: "+$F{telefonousuario}+" Email: "+$F{mail}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2beb42f3-527b-4487-aa86-1cc5fbce02e1" x="10" y="161" width="58" height="20"/>
+				<textElement/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="50629e25-6c80-4da6-a44e-ee4afa104190" x="10" y="140" width="488" height="21"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Apellidos y Nombres: "+$F{estudiante}+ " C.I: "+$F{cedula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4dbe3896-a4a0-4921-8cd0-956feb8230a2" x="8" y="458" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Telf: " + $F{telefonoinstitucion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="e67b4381-20fc-4a8f-8e4b-ac4e6fd39b2d" x="8" y="503" width="217" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL TUTOR ACADEMICO]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="65a9c92e-4169-4a4a-ba2a-fbe74a0ac89b" x="8" y="563" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Teléfono Celular: " + $F{telefonotutora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8cc63860-fb9c-487f-b4a2-ca27eaf4bed8" x="8" y="543" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Correo Electrónico  " + $F{correotutora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7795735b-bc20-4895-b2ec-ce261857d78a" x="8" y="523" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Nombre del tutor " + $F{tutora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6e445532-4f66-4b79-99e9-05618ce9e2ad" x="10" y="641" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Correo Electrónico  " + $F{correotutori}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8c9d22ed-4141-46c5-adf4-f50694577077" x="10" y="661" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Teléfono Celular: " + $F{telefonotutori}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="55c7ef27-fcd2-45b0-8858-40141314516f" x="10" y="601" width="217" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL TUTOR INSTITUCIONAL]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="0be834c7-49a0-4347-958e-0c612aee523b" x="10" y="621" width="452" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Nombre del tutor " + $F{tutori}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="65bdaed5-f56c-406a-8c1a-c1f7c282142d" x="6" y="0" width="159" height="59"/>
+				<imageExpression><![CDATA[$P{Imagen}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="66915b0b-046c-4c03-b893-1a01fd4721c1" x="136" y="83" width="316" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Periodo desde "+ $F{fechainicio}+ " hasta "+ $F{fechafin}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="636c68a6-fd73-4df4-b582-8694142c3c96" x="136" y="63" width="244" height="20"/>
+				<textElement/>
+				<text><![CDATA[PRE-INSCRIPCIÓN DE SERVICIO COMUNITARIO]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="7a9feef5-8c91-4e43-8fca-b3ca19a23ce6" x="438" y="0" width="120" height="110"/>
+				<imageExpression><![CDATA[new ByteArrayInputStream((byte[])$F{foto})]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
