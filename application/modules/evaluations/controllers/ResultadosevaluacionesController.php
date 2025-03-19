@@ -188,10 +188,6 @@ class Evaluations_ResultadosevaluacionesController extends Zend_Controller_Actio
                                array('name'     => 'CDV',
                                      'column'   => 'peso4_2',
                                      'width'    => '40px',
-                                     'rows'     => array('style' => 'text-align:center')),
-                               array('name'     => 'Total',
-                                     'column'   => 'total',
-                                     'width'    => '40px',
                                      'rows'     => array('style' => 'text-align:center'))
                
                                );                        

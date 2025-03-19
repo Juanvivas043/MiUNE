@@ -766,4 +766,13 @@ class Models_DbTable_Profit extends Zend_Db_Table
         die;
     }
 
+    public function obtenerArticulosEstudiantes($cedula, $periodo)
+    {
+        $SQL = "select CI, Articulos from dbo.fn_lista_articulos_de_estudiantes('$cedula', '$periodo')";
+
+        $results = $this->fetchAllRows($SQL);
+        return $results;
+
+    }
+
 }

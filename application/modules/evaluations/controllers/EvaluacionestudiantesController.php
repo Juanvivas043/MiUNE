@@ -169,9 +169,12 @@ $ci= $this->authSpace->userId;
           $this->SwapBytes_Ajax->setHeader();
 
           $this->record = $this->_getParam('pk');
+
           $_SESSION['record'] =  $this->_getParam('pk');
           $this->ugprofesore = $this->evaluacion->getUsuariogrupoProfesorByRecord($this->record)[0]['pk_usuariogrupo'];
           $infoie = $this->evaluacion->getInscripcionEncuestaEstudiante($this->record);
+          // var_dump($this->record);die();
+
           $json[] = "$('#formulario').show();
                       $('#tableData').hide();
                       $('#Siguiente').show();";
@@ -181,7 +184,7 @@ $ci= $this->authSpace->userId;
           
             $this->evaluacion->insertPreEvaluacion($infoie[0]['pk_inscripcionencuesta'],$infoie[0]['pk_recordacademico'], $infoie[0]['fk_usuariogrupo'], $infoie[0]['fk_encuesta'], $this->ugprofesore);
           }
-          //var_dump($this->record);die;
+          // var_dump($this->record);die;
           /*if (is_null($parte)) {
             $parte = 20254;
           }
@@ -195,11 +198,7 @@ $ci= $this->authSpace->userId;
           }else{
             $json[] = "$('#Anterior').hide();";
           }*/
-          //$this->_getParam('pk')
-          //var_dump($this->_getParam('pk'));die;
-          /*
-          $this->record = $this->_getParam('pk');
-          
+
           $preguntas = $this->evaluacion->getPreguntasEstudiantes( $this->record, $parte);
 
 
@@ -253,7 +252,7 @@ $ci= $this->authSpace->userId;
           $HTML   = $this->SwapBytes_Crud_List->fill($table, $preguntas, $columns);
 
            
-          $json[] = $this->SwapBytes_Jquery->setHtml('tableData', $HTML);*/
+          $json[] = $this->SwapBytes_Jquery->setHtml('tableData', $HTML);
           $this->getResponse()->setBody(Zend_Json::encode($json));
       }    
                     

@@ -115,7 +115,7 @@ class Consultas_NominaprofesoresController extends Zend_Controller_Action {
             $json = array();
             if($this->_params['filters']["selEscuela"] == "0"){//verificamos si el valor del filtro es 'Todas'
 
-                $valorescuela="11,12,13,14,15,16";  //le asignamos el valor de todas las escuelas
+                $valorescuela="11,12,13,14,15,16, 20325, 20384";  //le asignamos el valor de todas las escuelas
 
             }else{
 

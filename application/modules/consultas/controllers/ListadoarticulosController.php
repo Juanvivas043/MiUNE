@@ -6,7 +6,7 @@
 *
 */
 
-class Consultas_ListadobecadosController extends Zend_Controller_Action {
+class Consultas_ListadoarticulosController extends Zend_Controller_Action {
 
 
     /*Funcion donde se inicializan las librerias*/
@@ -158,11 +158,7 @@ class Consultas_ListadobecadosController extends Zend_Controller_Action {
               }
 
             }
-            
-            foreach ($articulos as $key => $value) {
-              $trim[$key]["co_cli"]=rtrim($value["co_cli"]);
-              $trim[$key]["co_art"]=rtrim($value["co_art"]);
-            }
+
             //SI QUEREMOS PAGINACION, DESCOMENTAR ESTO
             //$pageNumber       = $this->_getParam('page', 1);        
             //$itemPerPage      =  10;

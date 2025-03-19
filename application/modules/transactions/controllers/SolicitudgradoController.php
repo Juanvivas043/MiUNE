@@ -303,6 +303,8 @@ class Transactions_SolicitudgradoController extends Zend_Controller_Action {
                             $json[] = '$("#generarsolicitud").hide()';
                             $SolvenciaDocumentos = $this->Solicitudgrado->getSolvenciaDocumentos($documento);
                             $solvenciaAdministrativa = $this->verificarSolvenciaAdministrativa($ci, $verificacion);
+                            print_r($solvenciaAdministrativa); die();
+
                             $solvnciaAcademico = $this->Solicitudgrado->getSolvenciaAcademica($ci,false);
                             $solvnciaAcademico = $solvnciaAcademico[0]['resul'];
                             if (empty($SolvenciaDocumentos) && $solvenciaAdministrativa && $solvnciaAcademico) {
@@ -365,7 +367,7 @@ public function TableRequisitos($documento){
     $tecnico = $this->Solicitudgrado->getValorEstadoSolicitud($documento,$this->Tsuperior);
             if ($tecnico){      //$var==TRUE ? 'TRUE' : 'FALSE';
                 //traer todos los requisitos de tsu
-            $consulta['exist'] = $this->Solicitudgrado->getTecnicoReq($documento);
+            $consulta['exist'] = $this->Solicitudgrado->getTecnicoReq($documento, true);
             $consulta['faltantes'] = $this->Solicitudgrado->getRequisitosTecfaltante($documento);
                 //var_dump($consulta);die;
             $i = 0;

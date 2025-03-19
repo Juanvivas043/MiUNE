@@ -738,7 +738,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
       AND i.fk_periodo = {$periodo}
       AND i.fk_estructura = te.fk_estructura
       AND i.fk_atributo = te.fk_atributo
-      AND i.fk_pensum in (20,21,22,23,24,25,26)
+      AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
       GROUP BY a.valor, i.fk_atributo
       ORDER BY i.fk_atributo), 0)) AS Administrativo,
       /*Academico*/
@@ -769,7 +769,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
       AND i.fk_periodo = {$periodo}
       AND i.fk_estructura = te.fk_estructura
       AND i.fk_atributo = te.fk_atributo
-      AND i.fk_pensum in (20,21,22,23,24,25,26)
+      AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
       GROUP BY a.valor, i.fk_atributo
       ORDER BY i.fk_atributo),0)) AS Academico,
       /*Diferencia*/        
@@ -799,7 +799,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
       AND i.fk_periodo = {$periodo}
       AND i.fk_estructura = te.fk_estructura
       AND i.fk_atributo = te.fk_atributo
-      AND i.fk_pensum in (20,21,22,23,24,25,26)
+      AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
       GROUP BY a.valor, i.fk_atributo
       ORDER BY i.fk_atributo),0))
       -
@@ -819,7 +819,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
       AND i.fk_periodo = {$periodo}
       AND i.fk_estructura = te.fk_estructura
       AND i.fk_atributo = te.fk_atributo
-      AND i.fk_pensum in (20,21,22,23,24,25,26)
+      AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
       GROUP BY a.valor, i.fk_atributo
       ORDER BY i.fk_atributo),0))) AS Diferencia,
       /*Nuevo Ingreso Administrativo*/
@@ -837,7 +837,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
       AND i.fk_periodo = {$periodo}
       AND i.fk_estructura = te.fk_estructura
       AND i.fk_atributo = te.fk_atributo
-      AND i.fk_pensum in (20,21,22,23,24,25,26)
+      AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
       GROUP BY a.valor, i.fk_atributo
       ORDER BY i.fk_atributo),0)) AS NIAdministrativo,
       /*Nuevo Ingreso Academico*/
@@ -856,7 +856,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
       AND i.fk_periodo = {$periodo}
       AND i.fk_estructura = te.fk_estructura
       AND i.fk_atributo = te.fk_atributo
-      AND i.fk_pensum in (20,21,22,23,24,25,26)
+      AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
       GROUP BY a.valor, i.fk_atributo
       ORDER BY i.fk_atributo),0)) AS NIAcademico,
       /*Nuevo Ingreso Administrativo*/
@@ -874,7 +874,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
       AND i.fk_periodo = {$periodo}
       AND i.fk_estructura = te.fk_estructura
       AND i.fk_atributo = te.fk_atributo
-      AND i.fk_pensum in (20,21,22,23,24,25,26)
+      AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
       GROUP BY a.valor, i.fk_atributo
       ORDER BY i.fk_atributo),0))
       -
@@ -894,7 +894,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
       AND i.fk_periodo = {$periodo}
       AND i.fk_estructura = te.fk_estructura
       AND i.fk_atributo = te.fk_atributo
-      AND i.fk_pensum in (20,21,22,23,24,25,26)
+      AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
       GROUP BY a.valor, i.fk_atributo
       ORDER BY i.fk_atributo),0)) AS NIDiferencia,
       /*Administrativo Online*/
@@ -961,7 +961,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
           AND i.fk_periodo = {$periodo}
           AND i.fk_estructura = te.fk_estructura
           AND i.fk_atributo = te.fk_atributo
-          AND i.fk_pensum in (20,21,22,23,24,25,26)
+          AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
           GROUP BY a.valor, i.fk_atributo
           ORDER BY i.fk_atributo),0)) AS Administrativo,
           /*Academico*/
@@ -992,7 +992,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
           AND i.fk_periodo = {$periodo}
           AND i.fk_estructura = te.fk_estructura
           AND i.fk_atributo = te.fk_atributo
-          AND i.fk_pensum in (20,21,22,23,24,25,26)
+          AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
           GROUP BY a.valor, i.fk_atributo
           ORDER BY i.fk_atributo), 0))  AS Academico,
           /*Diferencia*/
@@ -1022,7 +1022,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
           AND i.fk_periodo = {$periodo}
           AND i.fk_estructura = te.fk_estructura
           AND i.fk_atributo = te.fk_atributo
-          AND i.fk_pensum in (20,21,22,23,24,25,26)
+          AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
           GROUP BY a.valor, i.fk_atributo
           ORDER BY i.fk_atributo),0))
           -
@@ -1042,7 +1042,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
           AND i.fk_periodo = {$periodo}
           AND i.fk_estructura = te.fk_estructura
           AND i.fk_atributo = te.fk_atributo
-          AND i.fk_pensum in (20,21,22,23,24,25,26)
+          AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
           GROUP BY a.valor, i.fk_atributo
           ORDER BY i.fk_atributo),0))) AS Diferencia,
         /*Nuevo Ingreso Administrativo*/
@@ -1060,7 +1060,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
         AND i.fk_periodo = {$periodo}
         AND i.fk_estructura = te.fk_estructura
         AND i.fk_atributo = te.fk_atributo
-        AND i.fk_pensum in (20,21,22,23,24,25,26)
+        AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
         GROUP BY a.valor, i.fk_atributo
         ORDER BY i.fk_atributo),0)) AS NIAdministrativo,
         /*Nuevo Ingreso Academico*/
@@ -1079,7 +1079,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
         AND i.fk_periodo = {$periodo}
         AND i.fk_estructura = te.fk_estructura
         AND i.fk_atributo = te.fk_atributo
-        AND i.fk_pensum in (20,21,22,23,24,25,26)
+        AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
         GROUP BY a.valor, i.fk_atributo
         ORDER BY i.fk_atributo),0)) AS NIAcademico,
         /*Nuevo Ingreso Administrativo*/
@@ -1097,7 +1097,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
         AND i.fk_periodo = {$periodo}
         AND i.fk_estructura = te.fk_estructura
         AND i.fk_atributo = te.fk_atributo
-        AND i.fk_pensum in (20,21,22,23,24,25,26)
+        AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
         GROUP BY a.valor, i.fk_atributo
         ORDER BY i.fk_atributo),0))
         -
@@ -1117,7 +1117,7 @@ class Models_DbTable_Inscripciones extends Zend_Db_Table {
         AND i.fk_periodo = {$periodo}
         AND i.fk_estructura = te.fk_estructura
         AND i.fk_atributo = te.fk_atributo
-        AND i.fk_pensum in (20,21,22,23,24,25,26)
+        AND i.fk_pensum in (20,21,22,23,24,25,26,38,39)
         GROUP BY a.valor, i.fk_atributo
         ORDER BY i.fk_atributo),0)) AS NIDiferencia,
         /*Administrativo Online*/
@@ -1911,6 +1911,18 @@ public function getMatriculaSemestre($iPeriodo,$iSede){
 
       $results = $this->_db->query($SQL);
       return $results->fetchAll();
+      }
+
+      public function getInscritos($periodo){
+        $SQL = "SELECT u.pk_usuario AS cedula, concat(u.nombre, ' ', u.apellido) AS nombre, u.correo, u.telefono, u.telefono_movil, escuela.valor as escuela
+                    FROM tbl_inscripciones i 
+                    JOIN tbl_usuariosgrupos ug ON i.fk_usuariogrupo = ug.pk_usuariogrupo
+                    JOIN tbl_usuarios u ON ug.fk_usuario = u.pk_usuario
+                    JOIN tbl_atributos escuela ON i.fk_atributo = escuela.pk_atributo
+                    WHERE i.fk_periodo = $periodo;";
+        $results = $this->_db->query($SQL);
+    
+        return (array)$results->fetchAll();
       }
 
 

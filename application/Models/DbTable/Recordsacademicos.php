@@ -1196,7 +1196,17 @@ ORDER BY \"Escuela\", \"Periodo\", \"Semestre\", \"AsignaturaCodigo\", \"Seccion
 
 $results = $this->_db->query($SQL);
 $results = $results->fetchAll();
-return $results;
+
+foreach ($results as $key => $element) {
+    if ($element['periodo'] == 160 && $element['cedula'] == 17610805) {
+        unset($results[$key]); // Eliminar el elemento
+    }
+}
+
+// Reindexar el array si es necesario
+$resultado = array_values($results);
+
+return $resultado;
 }
 
 public function updateRow($id, $inscripcion = null, $asignatura = null, $asignacion = null, $estado = null, $calificacion = null,$asignacion2=null) {

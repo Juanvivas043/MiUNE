@@ -29,10 +29,8 @@ class Models_DbView_Materias extends Zend_Db_Table {
 
         $results = $this->_db->query($sql);
         $results = $results->fetchAll();
-
+        
         return $results;
-
-
     }
 
 
@@ -86,10 +84,5 @@ class Models_DbView_Materias extends Zend_Db_Table {
 
         return $results;
   }
-
-
-
-  
-  
 }
 

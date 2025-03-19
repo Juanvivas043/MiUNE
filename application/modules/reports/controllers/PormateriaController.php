@@ -129,10 +129,10 @@
           if ($this->_request->isXmlHttpRequest()) {
             $this->SwapBytes_Ajax->setHeader();
             $params  = $this->Une_Filtros->getParams();
+
             $html = $this->horarioMateria($params['periodo'], $params['sede'], $params['materia']);
             $json[] = $this->SwapBytes_Jquery->setHtml('tblHorarios',addslashes($html));
             $this->getResponse()->setBody(Zend_Json::encode($json));
-
 
           }
     }
@@ -211,6 +211,9 @@
                   break;
                 case '19:00:00':
                   $time = "7:00 pm"; 
+                  break;
+                case '20:00:00':
+                  $time = "8:00 pm"; 
                   break;
               }
               $HTML .= '<td class="time">'.$time.'</td>';

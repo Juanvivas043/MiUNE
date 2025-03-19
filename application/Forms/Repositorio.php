@@ -13,14 +13,15 @@ class Forms_Repositorio extends Zend_Form {
         $this->setMethod('post');
         $this->setName('recurso');
 	    $this->setOptions(array('escape' => true));
+        $this->setAttrib('enctype', 'multipart/form-data');
 
 
-        $id = new Zend_Form_Element_Hidden('pk_recurso');
+        $id = new Zend_Form_Element_Hidden('id');
         $id->removeDecorator('label')
            ->removeDecorator('HtmlTag');
 
-        $ci = new Zend_Form_Element_Text('fk_estudiante');
-        $ci->setLabel('C.I: ')
+        $cedula = new Zend_Form_Element_Text('cedula');
+        $cedula->setLabel('C.I: ')
             ->setRequired(true)
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
@@ -38,82 +39,106 @@ class Forms_Repositorio extends Zend_Form {
             ->addValidator('NotEmpty')
             ->setAttrib('size', 25)
             ->setAttrib('style', 'height: 70px;
-                                  width: 500px;
+                                  width: 400px;
                                   wordwrap: break-word;
                                   resize: none;')
             ->setAttrib('maxlength', 150);
 
-        $resumen = new Zend_Form_Element_Textarea('resumen');
-        $resumen->setLabel('Resumen:')
+        // $resumen = new Zend_Form_Element_Textarea('resumen');
+        // $resumen->setLabel('Resumen:')
+        //     ->setRequired(true)
+        //     ->addFilter('StripTags')
+        //     ->addFilter('StringTrim')
+        //     ->addValidator('NotEmpty')
+        //     ->setAttrib('size', 25)
+        //     ->setAttrib('style', 'height: 70px;
+        //                           width: 400px;
+        //                           wordwrap: break-word;
+        //                           resize: none;')
+        //     ->setAttrib('maxlength', 250);
+
+        $palabrasclave = new Zend_Form_Element_Textarea('palabrasclave');
+        $palabrasclave->setLabel('Palabras Claves:')
             ->setRequired(true)
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
             ->addValidator('NotEmpty')
             ->setAttrib('size', 25)
             ->setAttrib('style', 'height: 70px;
-                                  width: 500px;
+                                  width: 200px;
                                   wordwrap: break-word;
                                   resize: none;')
-            ->setAttrib('maxlength', 400);
-        
+            ->setAttrib('maxlength', 100);
+    
         $cota = new Zend_Form_Element_Text('cota');
         $cota->setLabel('Cota:')
             ->setRequired(true)
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
             ->addValidator('NotEmpty')
-            ->setAttrib('size', 20)
-            ->setAttrib('maxlength', 10);
+            ->setAttrib('size', 5)
+            ->addValidator('StringLength', true, array(2, 5))
+            ->setAttrib('maxlength', 5);
         
-        $nota = new Zend_Form_Element_Text('nota');
-        $nota->setLabel('Nota: ')
+        $calificacion = new Zend_Form_Element_Text('calificacion');
+        $calificacion->setLabel('Nota: ')
             ->setRequired(true)
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
             ->addValidator('NotEmpty')
-            ->addValidator('StringLength', true, array(2, 5))
-            ->setAttrib('size', 20)
-            ->setAttrib('maxlength', 5);
+            ->addValidator('Digits')
+            ->setAttrib('size', 2)
+            ->setAttrib('maxlength', 2);
 
         
-        $tutor = new Zend_Form_Element_Select('fk_tutor');
+        $tutor = new Zend_Form_Element_Text('tutor');
         $tutor->setLabel('Tutor: ')
-              ->setAttrib('style', 'width: 150px');
+            ->setRequired(true)
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
+            ->addValidator('Digits')
+            ->addValidator('StringLength', true, array(4, 8))
+            ->setAttrib('size', 9)
+            ->setAttrib('maxlength', 8);
         
-        $periodo = new Zend_Form_Element_Select('fk_periodo');
+        $periodo = new Zend_Form_Element_Select('periodo');
         $periodo->setLabel('Periodo: ')
-                ->setAttrib('style', 'width: 150px');
+                ->setAttrib('style', 'width: 175px');
     
-        $tiporecurso = new Zend_Form_Element_Select('fk_tiporecurso');
-        $tiporecurso->setLabel('Tipo de recurso: ')
-                    ->setAttrib('style', 'width: 150px');
+        // $tiporecurso = new Zend_Form_Element_Select('fk_tiporecurso');
+        // $tiporecurso->setLabel('Tipo de recurso: ')
+        //             ->setAttrib('style', 'width: 150px');
 
-        $escuela = new Zend_Form_Element_Select('fk_escuela');
+        $escuela = new Zend_Form_Element_Select('escuela');
         $escuela->setLabel('Escuela: ')
-                ->setAttrib('style', 'width: 150px');
+                ->setAttrib('style', 'width: 275px');
 
-        $lineainvestigacion = new Zend_Form_Element_Select('fk_lineainvestigacion');
-        $lineainvestigacion->setLabel('Linea de Investigacion: ')
-                ->setAttrib('style', 'width: 150px');
+        // $lineainvestigacion = new Zend_Form_Element_Select('fk_lineatematesis');
+        // $lineainvestigacion->setLabel('Linea: ')
+        //         ->setAttrib('style', 'width: 150px');
 
-        $estado = new Zend_Form_Element_Select('fk_estado');
+        $estado = new Zend_Form_Element_Select('publicado');
         $estado->setLabel('Estado: ')
-                  ->setAttrib('style', 'width: 150px');
+               ->setAttrib('style', 'width: 150px');
 
-        $rutarecurso = new Zend_Form_Element_Hidden('rutarecurso');
-        $rutarecurso->removeDecorator('label')
-                    ->removeDecorator('HtmlTag');
-         
-        // $rutarecurso->setLabel('Recurso: ')
-        //            ->setAttrib('style', 'width: 200px');
+//         $rutarecurso = new Zend_Form_Element_File('rutarecurso');
+//         $rutarecurso->setLabel('Archivo: ')
+//              ->setRequired(true)
+//              ->setAttrib('style', 'width: 250px');
+// /* 			 ->addValidator('Extension', false, 'pdf')
+// 			 ->addValidator('Count', false, 1)
+// 			 ->addValidator('Size', false, 15728640) // 200Mb.
+//              ->addValidator('NotEmpty'); */
 
        $this->addElements(array($id,
+                                 $cedula,
                                  $titulo,
-                                 $descripcion,
-                                 $ci,
-                                 $rutarecurso,
-                                 $tiporecurso,
-                                 $coleccion,
+                                 $palabrasclave,
+                                 $cota,
+                                 $calificacion,
+                                 $tutor,
+                                 $periodo,
+                                 $escuela,
                                  $estado
                                  ));
 

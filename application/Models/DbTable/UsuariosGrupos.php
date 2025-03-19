@@ -476,15 +476,5 @@ class Models_DbTable_UsuariosGrupos extends Zend_Db_Table {
         }
       }
 
-    public function getTutores() {
-
-        $SQL = "SELECT u.pk_usuario, concat(u.nombre, ' ', u.apellido) FROM tbl_usuariosgrupos ug 
-                JOIN tbl_usuarios u ON ug.fk_usuario = u.pk_usuario
-                WHERE fk_grupo = 19976;";
-
-        return $this->_db->fetchOne($SQL);
-    }
-
-
     
 }

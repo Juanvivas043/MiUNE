@@ -141,6 +141,7 @@ class Reports_ActadecalificacionesController extends Zend_Controller_Action {
             $this->getResponse()->setBody(Zend_Json::encode($json));
         }
     }
+    
     public function listaverdeAction () {
        $this->SwapBytes_Ajax->setHeader();
        $id = $this->_getParam('id');
@@ -154,7 +155,11 @@ class Reports_ActadecalificacionesController extends Zend_Controller_Action {
                         'pensum' => $data['fk_pensum']
                     );
        $outstream = $this->calificacionesParciales->generarReporte($params);
-       $this->getResponse()->setBody(base64_decode($outstream));
+       echo '<pre>';
+       var_dump($outstream);
+       echo '<pre/>';
+        die();
+       //$this->getResponse()->setBody(base64_decode($outstream));
     }
 
     public function descargarAction() {

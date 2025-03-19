@@ -125,7 +125,7 @@ class Models_DbTable_Horarios extends Zend_Db_Table {
                                                                         FROM vw_secciones sec
                                                                         WHERE sec.pk_atributo = {$seccion})
                                                   AND pe.fk_escuela = {$escuela}
-                                                  AND pe.pk_pensum IN (20, 21, 22, 23, 24, 25, 38)
+                                                  AND pe.pk_pensum IN (20, 21, 22, 23, 24, 25, 38, 39)
                                                   AND est1.fk_estructura = {$sede}
                                                 ORDER by 3 ASC
                                 )as sqt
@@ -261,7 +261,7 @@ class Models_DbTable_Horarios extends Zend_Db_Table {
                            from vw_dias
                            CROSS JOIN tbl_horarios ho1
                            where ho1.fk_atributo < 892
-                           and pk_horario not in(9,10,12,13)
+                           and pk_horario not in(10,12,13)
                            and pk_atributo < 7
                            order by pk_atributo, ho1.horainicio) as foo2 full outer join
                           (
@@ -291,7 +291,7 @@ class Models_DbTable_Horarios extends Zend_Db_Table {
                              from vw_dias
                              CROSS JOIN tbl_horarios ho
                              where ho.fk_atributo < 892
-                             and pk_horario not in(9,10,12,13)
+                             and pk_horario not in(10,12,13)
                              and pk_atributo < 7
                              order by pk_atributo, ho.horainicio) as foo1 full outer join
                             (
@@ -322,7 +322,7 @@ class Models_DbTable_Horarios extends Zend_Db_Table {
                      CROSS JOIN tbl_horarios ho
                      where ho.fk_atributo < 892
                        and pk_atributo < 7
-                       and pk_horario not in(9,10,12,13)
+                       and pk_horario not in(10,12,13)
                      order by pk_atributo, ho.horainicio
                      ) as foo1 left outer join
                      (
@@ -395,7 +395,7 @@ class Models_DbTable_Horarios extends Zend_Db_Table {
                 from vw_dias
                 CROSS JOIN tbl_horarios ho
                 where ho.fk_atributo < 892
-                and pk_horario not in(9,10,12,13)
+                and pk_horario not in(10,12,13)
                 and pk_atributo < 7
                 order by pk_atributo, ho.horainicio
                 ) as foo1 
@@ -467,7 +467,8 @@ ra incluso las personas que hayan retirado o que tengan equivalencias de la mate
 
     public function getAllHoras(){
       $SQL="SELECT * from tbl_horarios 
-            Where pk_horario <9;";
+            Where pk_horario <10
+            order by pk_horario asc;";
       $results = $this->_db->query($SQL);
       $results = $results->fetchAll();
       return $results;

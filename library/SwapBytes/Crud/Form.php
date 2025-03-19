@@ -235,7 +235,7 @@ class SwapBytes_Crud_Form extends SwapBytes_Form {
             $json[] = $this->SwapBytes_Jquery_Ui_Form->open($this->_nameModal);
             $json[] = $this->SwapBytes_Jquery_Ui_Form->changeTitle($this->_nameModal, $this->_title);
             $json[] = $this->SwapBytes_Jquery_Ui_Form->setDraggable($this->_nameModal, true);
-            $json[] = $this->SwapBytes_Jquery_Ui_Form->buttonShow($this->_nameModal, 'Guardar');
+            $json[] = $this->SwapBytes_Jquery_Ui_Form->buttonShow($this->_nameModal, 'Guardar', 'Guardar');
             $json[] = $this->SwapBytes_Jquery_Ui_Form->buttonShow($this->_nameModal, 'Cancelar');
             $json[] = $this->SwapBytes_Jquery_Ui_Form->buttonHide($this->_nameModal, 'Aceptar');
             $json[] = $this->SwapBytes_Jquery_Ui_Form->buttonHide($this->_nameModal, 'Eliminar');

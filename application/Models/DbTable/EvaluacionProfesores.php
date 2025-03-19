@@ -456,21 +456,7 @@ class Models_DbTable_EvaluacionProfesores extends Zend_Db_Table {
                 (u.nombre ||' '||u.apellido) as nombre, 
                 estudiantes.peso1_1, 
                 estudiantes.peso1_2, 
-                estudiantes.peso1_3, 
-                profesores.peso2_1,
-                profesores.peso2_2,
-                profesores.peso2_3,
-                profesores.peso2_4,
-                directores.peso3_1,
-                directores.peso3_2,
-                directores.peso3_3,
-                directores.peso3_4,
-                coordinadores.peso4_1,
-                coordinadores.peso4_2,
-                round(((COALESCE(estudiantes.peso1_1+estudiantes.peso1_2+estudiantes.peso1_3,0))/3)+
-                ((COALESCE(profesores.peso2_1+profesores.peso2_2+profesores.peso2_3+profesores.peso2_4,0))/4)+
-                ((COALESCE(directores.peso3_1+directores.peso3_2+directores.peso3_3+directores.peso3_4,0))/4)+
-                ((COALESCE(coordinadores.peso4_1+coordinadores.peso4_2,0))/2),2) as total
+                estudiantes.peso1_3
             from tbl_usuarios u
             join tbl_usuariosgrupos ug on u.pk_usuario = ug.fk_usuario
             join tbl_asignaciones asi on asi.fk_usuariogrupo = ug.pk_usuariogrupo
@@ -487,7 +473,7 @@ class Models_DbTable_EvaluacionProfesores extends Zend_Db_Table {
                     join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
                     join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
                     join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 33
+                    where ae.fk_encuesta = 37
                     and pe.fk_parte = 20259
                     group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
                  ) as parte1
@@ -499,7 +485,7 @@ class Models_DbTable_EvaluacionProfesores extends Zend_Db_Table {
                     join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
                     join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
                     join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 33
+                    where ae.fk_encuesta = 37
                     and pe.fk_parte = 20260
                     group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
                  ) as parte2 on parte1.pk_usuario = parte2.pk_usuario
@@ -511,146 +497,16 @@ class Models_DbTable_EvaluacionProfesores extends Zend_Db_Table {
                 join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
                 join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
                 join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                where ae.fk_encuesta = 33
+                where ae.fk_encuesta = 37
                 and pe.fk_parte = 20261
                 group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
              ) as parte3 on parte3.pk_usuario = parte2.pk_usuario
             ) estudiantes on u.pk_usuario = estudiantes.pk_usuario
-            left join (
-                select parte1.pk_usuario, parte1.nombre,parte1.apellido, parte1.peso2_1, parte2.peso2_2, parte3.peso2_3, parte4.peso2_4
-                from (
-                    select u.pk_usuario, u.nombre,u.apellido, round(avg(po.peso),2) as peso2_1, pe.fk_parte 
-                    from tbl_respuestas r
-                    join tbl_preguntasopciones po on po.pk_preguntaopcion = r.fk_preguntaopcion
-                    join tbl_preguntasencuestas pe on pe.pk_preguntaencuesta = po.fk_preguntaencuesta
-                    join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
-                    join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
-                    join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 34
-                    and pe.fk_parte = 20259
-                    group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
-                 ) as parte1
-                 join (
-                    select u.pk_usuario, u.nombre,u.apellido, round(avg(po.peso),2) as peso2_2, pe.fk_parte 
-                    from tbl_respuestas r
-                    join tbl_preguntasopciones po on po.pk_preguntaopcion = r.fk_preguntaopcion
-                    join tbl_preguntasencuestas pe on pe.pk_preguntaencuesta = po.fk_preguntaencuesta
-                    join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
-                    join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
-                    join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 34
-                    and pe.fk_parte = 20260
-                    group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
-                 ) as parte2 on parte1.pk_usuario = parte2.pk_usuario
-                 join (
-                    select u.pk_usuario, u.nombre,u.apellido, round(avg(po.peso),2) as peso2_3, pe.fk_parte 
-                    from tbl_respuestas r
-                    join tbl_preguntasopciones po on po.pk_preguntaopcion = r.fk_preguntaopcion
-                    join tbl_preguntasencuestas pe on pe.pk_preguntaencuesta = po.fk_preguntaencuesta
-                    join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
-                    join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
-                    join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 34
-                    and pe.fk_parte = 20261
-                    group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
-                 ) as parte3 on parte3.pk_usuario = parte2.pk_usuario
-                join (
-                    select u.pk_usuario, u.nombre,u.apellido, round(avg(po.peso),2) as peso2_4, pe.fk_parte 
-                    from tbl_respuestas r
-                    join tbl_preguntasopciones po on po.pk_preguntaopcion = r.fk_preguntaopcion
-                    join tbl_preguntasencuestas pe on pe.pk_preguntaencuesta = po.fk_preguntaencuesta
-                    join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
-                    join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
-                    join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 34
-                    and pe.fk_parte = 20262
-                    group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
-                 ) as parte4 on parte4.pk_usuario = parte2.pk_usuario
-            ) profesores on profesores.pk_usuario = u.pk_usuario
-            left join (
-                select parte1.pk_usuario, parte1.nombre,parte1.apellido, parte1.peso3_1, parte2.peso3_2, parte3.peso3_3, parte4.peso3_4
-                from (
-                    select u.pk_usuario, u.nombre,u.apellido, round(avg(po.peso),2) as peso3_1, pe.fk_parte 
-                    from tbl_respuestas r
-                    join tbl_preguntasopciones po on po.pk_preguntaopcion = r.fk_preguntaopcion
-                    join tbl_preguntasencuestas pe on pe.pk_preguntaencuesta = po.fk_preguntaencuesta
-                    join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
-                    join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
-                    join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 35
-                    and pe.fk_parte = 20259
-                    group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
-                 ) as parte1
-                 join (
-                    select u.pk_usuario, u.nombre,u.apellido, round(avg(po.peso),2) as peso3_2, pe.fk_parte 
-                    from tbl_respuestas r
-                    join tbl_preguntasopciones po on po.pk_preguntaopcion = r.fk_preguntaopcion
-                    join tbl_preguntasencuestas pe on pe.pk_preguntaencuesta = po.fk_preguntaencuesta
-                    join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
-                    join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
-                    join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 35
-                    and pe.fk_parte = 20260
-                    group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
-                 ) as parte2 on parte1.pk_usuario = parte2.pk_usuario
-                  join (
-                    select u.pk_usuario, u.nombre,u.apellido, round(avg(po.peso),2) as peso3_3, pe.fk_parte 
-                    from tbl_respuestas r
-                    join tbl_preguntasopciones po on po.pk_preguntaopcion = r.fk_preguntaopcion
-                    join tbl_preguntasencuestas pe on pe.pk_preguntaencuesta = po.fk_preguntaencuesta
-                    join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
-                    join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
-                    join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 35
-                    and pe.fk_parte = 20261
-                    group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
-                 ) as parte3 on parte3.pk_usuario = parte2.pk_usuario
-                  join (
-                select u.pk_usuario, u.nombre,u.apellido, round(avg(po.peso),2) as peso3_4, pe.fk_parte 
-                from tbl_respuestas r
-                join tbl_preguntasopciones po on po.pk_preguntaopcion = r.fk_preguntaopcion
-                join tbl_preguntasencuestas pe on pe.pk_preguntaencuesta = po.fk_preguntaencuesta
-                join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
-                join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
-                join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                where ae.fk_encuesta = 35
-                and pe.fk_parte = 20262
-                group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
-             ) as parte4 on parte4.pk_usuario = parte2.pk_usuario
-            ) directores on directores.pk_usuario = u.pk_usuario
-            left join (
-                select parte1.pk_usuario, parte1.nombre,parte1.apellido, parte1.peso4_1, parte2.peso4_2
-                from (
-                    select u.pk_usuario, u.nombre,u.apellido, round(avg(po.peso),2) as peso4_1, pe.fk_parte 
-                    from tbl_respuestas r
-                    join tbl_preguntasopciones po on po.pk_preguntaopcion = r.fk_preguntaopcion
-                    join tbl_preguntasencuestas pe on pe.pk_preguntaencuesta = po.fk_preguntaencuesta
-                    join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
-                    join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
-                    join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 36
-                    and pe.fk_parte = 20259
-                    group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
-                 ) as parte1
-                 join (
-                    select u.pk_usuario, u.nombre,u.apellido, round(avg(po.peso),2) as peso4_2, pe.fk_parte 
-                    from tbl_respuestas r
-                    join tbl_preguntasopciones po on po.pk_preguntaopcion = r.fk_preguntaopcion
-                    join tbl_preguntasencuestas pe on pe.pk_preguntaencuesta = po.fk_preguntaencuesta
-                    join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
-                    join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
-                    join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 36
-                    and pe.fk_parte = 20260
-                    group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
-                 ) as parte2 on parte1.pk_usuario = parte2.pk_usuario
-            ) coordinadores on coordinadores.pk_usuario = u.pk_usuario
             where asi.fk_periodo = {$periodo}
             and e.pk_sede in ({$sede})
             and p.fk_escuela in ({$escuela})
             and u.pk_usuario != 0
-            group by u.pk_usuario,u.nombre,u.apellido,estudiantes.peso1_1,estudiantes.peso1_2,estudiantes.peso1_3,profesores.peso2_1,profesores.peso2_2,profesores.peso2_3,profesores.peso2_4,
-            directores.peso3_1,directores.peso3_2,directores.peso3_3,directores.peso3_4,coordinadores.peso4_1,coordinadores.peso4_2
+            group by u.pk_usuario,u.nombre,u.apellido,estudiantes.peso1_1,estudiantes.peso1_2,estudiantes.peso1_3
             order by pk_usuario";
         $results = $this->_db->query($SQL);
         $results = $results->fetchAll();
@@ -696,7 +552,7 @@ class Models_DbTable_EvaluacionProfesores extends Zend_Db_Table {
                     join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
                     join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
                     join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 33
+                    where ae.fk_encuesta = 37
                     and pe.fk_parte = 20259
                     group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
                  ) as parte1
@@ -708,7 +564,7 @@ class Models_DbTable_EvaluacionProfesores extends Zend_Db_Table {
                     join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
                     join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
                     join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                    where ae.fk_encuesta = 33
+                    where ae.fk_encuesta = 37
                     and pe.fk_parte = 20260
                     group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
                  ) as parte2 on parte1.pk_usuario = parte2.pk_usuario
@@ -720,7 +576,7 @@ class Models_DbTable_EvaluacionProfesores extends Zend_Db_Table {
                 join tbl_asignacionesencuestas ae on ae.pk_asignacionencuesta = r.fk_asignacionencuesta
                 join tbl_usuariosgrupos ug on ug.pk_usuariogrupo = ae.comentario::int
                 join tbl_usuarios u on u.pk_usuario = ug.fk_usuario
-                where ae.fk_encuesta = 33
+                where ae.fk_encuesta = 37
                 and pe.fk_parte = 20261
                 group by u.pk_usuario, u.nombre,u.apellido, pe.fk_parte
              ) as parte3 on parte3.pk_usuario = parte2.pk_usuario

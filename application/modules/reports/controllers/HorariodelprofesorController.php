@@ -131,6 +131,10 @@
   public function horarioProfesor($profesor,$periodo,$sede){
     $ci = $profesor;
     $this->result = $this->Horario->getHorarioPersona($ci,$periodo,'prof',$sede);
+    echo '<pre>';
+    var_dump($this->result);
+    echo '</pre>';
+    die();
     $prof = $this->Usuarios->getUsuario($ci);
     $dias = array();
     $midia = 0;
@@ -162,7 +166,7 @@
         "<div></div>";
         $HTML.= '<table><tr><th>Horas</th><th>Lunes</th><th>Martes</th><th>Miercoles</th><th>Jueves</th><th>Viernes</th><th>Sabado</th></tr>';
         $HTML.='<tr><td class="h">7:00 - 8:30</td>';
-        for ($i=0; $i < 41; $i=$i+8) { 
+        for ($i=0; $i < 46; $i=$i+9) { 
             if($this->result[$i]['materia']==''){
                 $HTML.='<td class="stripe" ><p></p></td>';
             }else{
@@ -179,7 +183,7 @@
         $HTML.='</tr>';
 
         $HTML.='<tr><td class="h">8:40 - 10:10</td>';
-        for ($i=1; $i < 42; $i=$i+8) { 
+        for ($i=1; $i < 47; $i=$i+9) { 
             if($this->result[$i]['materia']==''){
                 $HTML.='<td class="stripe" ><p></p></td>';
             }else{
@@ -196,7 +200,7 @@
         $HTML.='</tr>';
 
         $HTML.='<tr><td class="h">10:15 - 11:45</td>';
-        for ($i=2; $i < 43; $i=$i+8) { 
+        for ($i=2; $i < 48; $i=$i+9) { 
             if($this->result[$i]['materia']==''){
                 $HTML.='<td class="stripe" ><p></p></td>';
             }else{
@@ -213,7 +217,7 @@
         $HTML.='</tr>';
 
         $HTML.='<tr><td class="h">12:00 - 1:30</td>';
-        for ($i=3; $i < 44; $i=$i+8) { 
+        for ($i=3; $i < 49; $i=$i+9) { 
             if($this->result[$i]['materia']==''){
                 $HTML.='<td class="stripe" ><p></p></td>';
             }else{
@@ -230,7 +234,7 @@
         $HTML.='</tr>';
 
         $HTML.='<tr><td class="h">1:35 - 3:05</td>';
-        for ($i=4; $i < 45; $i=$i+8) { 
+        for ($i=4; $i < 50; $i=$i+9) { 
             if($this->result[$i]['materia']==''){
                 $HTML.='<td class="stripe" ><p></p></td>';
             }else{
@@ -247,7 +251,7 @@
         $HTML.='</tr>';
 
         $HTML.='<tr><td class="h">3:10 - 4:40</td>';
-        for ($i=5; $i < 46; $i=$i+8) { 
+        for ($i=5; $i < 51; $i=$i+9) { 
             if($this->result[$i]['materia']==''){
                 $HTML.='<td class="stripe" ><p></p></td>';
             }else{
@@ -264,7 +268,7 @@
         $HTML.='</tr>';
 
         $HTML.='<tr><td class="h">5:00 - 6:30</td>';
-        for ($i=6; $i < 47; $i=$i+8) { 
+        for ($i=6; $i < 52; $i=$i+9) { 
             if($this->result[$i]['materia']==''){
                 $HTML.='<td class="stripe" ><p></p></td>';
             }else{
@@ -281,7 +285,24 @@
         $HTML.='</tr>';
 
         $HTML.='<tr><td class="h">6:30 - 8:00</td>';
-        for ($i=7; $i < 48; $i=$i+8) { 
+        for ($i=7; $i < 53; $i=$i+9) { 
+            if($this->result[$i]['materia']==''){
+                $HTML.='<td class="stripe" ><p></p></td>';
+            }else{
+                $mat = $this->result[$i]['materia'];
+                if(strpos($mat, ",")==true){
+                    $mat =  str_replace(',', '<br>', $mat);
+                    $HTML.='<td class="coincidencias"><p>COINCIDENCIA DE:</p><p>'.$mat.'</p></td>';  
+                }
+                else{
+                    $HTML.='<td class="clases"><p>'.$mat.'</p></td>';
+                }
+            }
+        }
+        $HTML.='</tr>';
+
+        $HTML.='<tr><td class="h">8:00 - 9:30</td>';
+        for ($i=8; $i < 54; $i=$i+9) { 
             if($this->result[$i]['materia']==''){
                 $HTML.='<td class="stripe" ><p></p></td>';
             }else{
@@ -298,7 +319,6 @@
         $HTML.='</tr>';
 
 
-        
         $HTML.='</table>';
         $HTML.='<div class="horas"><p>TOTAL DE HORAS:'. $horas[0]['cant_horas'] .'</p></div>';
         $HTML .= "<div class='clear'><br></div>";

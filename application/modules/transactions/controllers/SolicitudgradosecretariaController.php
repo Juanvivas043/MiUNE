@@ -228,7 +228,11 @@ public function addoreditresponseAction() {
                 }
             }
         }  
-        //var_dump($dataRow);die;
+        // echo '<pre>';
+        // print_r($dataRow);
+        // echo '<pre\>';
+        // die;
+
         if ($dataRow['tecnico']){
            $tecnico = $this->solicitudgrado->getValorEstadoSolicitud($dataRow['id'],$this->Tsuperior);
            if (!$tecnico){
@@ -238,8 +242,8 @@ public function addoreditresponseAction() {
             else{
 
             }
-
-           $tecreq = $this->solicitudgrado->getTecnicoReq($dataRow['id']);
+           //mod
+           $tecreq = $this->solicitudgrado->getTecnicoReq($dataRow['id'], true);
                 //var_dump($tecnico);die;
            $solvente1 = true;
            foreach ($tecreq as $req) {
@@ -273,17 +277,18 @@ public function addoreditresponseAction() {
         }else{
 
           $this->solicitudgrado->updateEstadoReq($tecnico,'Solicitado');  
-      }
+        }
 
-  }else{
+        }else{
 
-    $this->solicitudgrado->DeleteTecnicoReqs($dataRow['id']);
-}
+         $this->solicitudgrado->DeleteTecnicoReqs($dataRow['id']);
+        }
             //var_dump($dataRow);
-}  
+        }  
 
-$this->getResponse()->setBody(Zend_Json::encode($json));
-$this->SwapBytes_Crud_Form->getAddOrEditEnd();
+        //mod
+
+        $this->SwapBytes_Crud_Form->getAddOrEditEnd();
 
 }
 

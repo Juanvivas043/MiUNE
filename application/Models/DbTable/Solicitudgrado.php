@@ -559,12 +559,13 @@ LIMIT 1)
         return (array)$results->fetchAll();
 	}
 
+	//mod
 	public function updateEstadoReq($id, $string)
 	{
 		$SQL = "UPDATE tbl_documentosrequisitos
 			set fk_estado = (SELECT pk_atributo FROM tbl_atributos WHERE valor ilike '{$string}' AND fk_atributotipo = 46) 
 			WHERE pk_documentorequisito ={$id};";
-		$results = $this->_db->fetchOne($SQL);
+		$results = $this->_db->fetchAll($SQL);
 		return $results;
 	}
 
@@ -625,6 +626,7 @@ LIMIT 1)
 		return $results;
 	}
 
+	//mod
 	public function DeleteTecnicoReqs($pk)
 	{
 
@@ -632,12 +634,12 @@ LIMIT 1)
 			JOIN tbl_atributos atr ON atr.pk_atributo = fk_documento AND atr.fk_atributo = $this->tecnico AND fk_atributotipo = 81
 			WHERE fk_solicitud = {$pk})";
 
-		$results = $this->_db->fetchOne($SQL);
+		$results = $this->_db->fetchAll($SQL);
 
 		$SQL = "DELETE FROM tbl_documentosrequisitos WHERE pk_documentorequisito IN (SELECT pk_documentorequisito FROM tbl_documentosrequisitos dc
 			JOIN tbl_atributos atr ON atr.pk_atributo = fk_documento AND atr.fk_atributo = $this->secretaria AND fk_atributotipo = 81 AND fk_documento = $this->tecnico
 			WHERE fk_solicitud = {$pk})";
-		$results2 = $this->_db->fetchOne($SQL);
+		$results2 = $this->_db->fetchAll($SQL);
 
 		return $results2;
 	}

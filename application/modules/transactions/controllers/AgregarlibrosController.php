@@ -1202,6 +1202,8 @@ class Transactions_AgregarlibrosController extends Zend_Controller_Action {
               $v5 = strpos(strtolower($row['autor_otro']), strtolower($search));
               if(is_numeric($v1) || is_numeric($v2) || is_numeric($v3) || is_numeric($v4) || is_numeric($v5)){
                     $rows[$i]['find']= true; 
+                    var_dump($rows);
+                    die;
                     
               }else{
                   unset($rows[$i]);

@@ -7,15 +7,13 @@ class Forms_Bibliotecatesis extends Zend_Form {
      * umna al elemento del formulario.
      */
   public function init() {
-        
-       
-                
-        $this->setMethod('post');
-        $this->setName('bibliotecatesis');
+             
+     $this->setMethod('post');
+     $this->setName('bibliotecatesis');
 	$this->setOptions(array('escape' => true));
+     $this->setAttrib('enctype', 'multipart/form-data');
 
         $SwapBytes_Jquery = new SwapBytes_Jquery();
-         
          
         $changecota    = "$.getJSON(urlAjax + 'exists/data/' + escape($('#bibliotecatesis').find(':input').serialize()) , function(data){executeCmdsFromJSON(data)});";
         $addAutor      = "$.getJSON(urlAjax + 'autoradd/data/' + escape($('#bibliotecatesis').find(':input').serialize()), function(data){executeCmdsFromJSON(data)});";
@@ -28,9 +26,14 @@ class Forms_Bibliotecatesis extends Zend_Form {
       $id->removeDecorator('label')
          ->removeDecorator('HtmlTag');
 
+
       $fk_sede = new Zend_Form_Element_Select('fk_sede'); 
       $fk_sede->setLabel('Sede')
               ->setRegisterInArrayValidator(false);  
+
+     $fk_periodo = new Zend_Form_Element_Select('fk_periodo');
+     $fk_periodo->setLabel('Periodo: ')
+             ->setAttrib('style', 'width: 175px');
         
       $cota = new Zend_Form_Element_Text('cota');
       $cota->setLabel('Cota :')
@@ -42,6 +45,16 @@ class Forms_Bibliotecatesis extends Zend_Form {
             ->setAttrib('size', 30)
             ->setAttrib('maxlength', 50)
             ->setAttrib('onchange', $changecota);
+
+      $serialrecurso = new Zend_Form_Element_Text('serialrecurso');
+      $serialrecurso->setLabel('Serial :')
+            ->setRequired(true)
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
+            ->addValidator('NotEmpty')
+            ->addValidator('StringLength', true, array(4, 20))
+            ->setAttrib('size', 30)
+            ->setAttrib('maxlength', 50);
       
                 
         $titulo = new Zend_Form_Element_Textarea('titulo');
@@ -52,36 +65,53 @@ class Forms_Bibliotecatesis extends Zend_Form {
             ->setAttrib('cols', 35)
             ->setAttrib('rows', 4)    
             ->setAttrib('maxlength', 300);
-       
-       $autor = new Zend_Form_Element_Select('fk_autor'); 
-       $autor->setLabel('Autor:')
-        ->setAttrib('style', 'width: 300px')
-        ->setRegisterInArrayValidator(false)
-        ->addDecorator('HtmlTag', array('tag' => 'dd',
-                 'id'  => 'fk_autor' . '-element'))
-                  ->addDecorator('Label', array('tag' => 'dt')); 
-       
-       $agregar_autor = new Zend_Form_Element_Button('agregar_autor');
-       $agregar_autor->setLabel('+') 
-        ->setDecorators(array( 'ViewHelper', array('HtmlTag', array('tag' => 'dd')) ))
-        ->setAttrib('onclick', $addAutor);
 
+       $resumen = new Zend_Form_Element_Textarea('resumen');
+       $resumen->setLabel('Resumen :')
+           ->addFilter('StripTags')
+           ->addFilter('StringTrim')   
+           ->setAttrib('cols', 35)
+           ->setAttrib('rows', 4)  
+           ->setAttrib('maxlength', 500);
+
+       $palabrasclaves = new Zend_Form_Element_Textarea('palabrasclaves');
+       $palabrasclaves->setLabel('Palabras claves:')
+           ->addFilter('StripTags')
+           ->addFilter('StringTrim')   
+           ->setAttrib('cols', 35)
+           ->setAttrib('rows', 4)  
+           ->setAttrib('maxlength', 150);
        
-       $jurado = new Zend_Form_Element_Select('fk_jurado'); 
-       $jurado->setLabel('Jurado :')
-                 ->setAttrib('style', 'width: 300px')
-                 ->addDecorator('HtmlTag', array('tag' => 'dd',
-                 'id'  => 'fk_autor' . '-element'))
-                  ->addDecorator('Label', array('tag' => 'dt')); 
-       
-       $agregar_jurado = new Zend_Form_Element_Button('agregar_jurado');
-       $agregar_jurado->setLabel('+') 
-        ->setDecorators(array( 'ViewHelper', array('HtmlTag', array('tag' => 'dd')) ))
-        ->setAttrib('onclick', $addJurado);
-      
-       $tutor = new Zend_Form_Element_Select('fk_tutor'); 
-       $tutor->setLabel('Tutor:')
-                 ->setAttrib('style', 'width: 300px');
+
+           $autor = new Zend_Form_Element_Select('fk_autor'); 
+           $autor->setLabel('Autor:')
+            ->setAttrib('style', 'width: 300px')
+            ->setRegisterInArrayValidator(false)
+            ->addDecorator('HtmlTag', array('tag' => 'dd',
+                     'id'  => 'fk_autor' . '-element'))
+                      ->addDecorator('Label', array('tag' => 'dt')); 
+           
+           $agregar_autor = new Zend_Form_Element_Button('agregar_autor');
+           $agregar_autor->setLabel('+') 
+            ->setDecorators(array( 'ViewHelper', array('HtmlTag', array('tag' => 'dd')) ))
+            ->setAttrib('onclick', $addAutor);
+    
+           
+           $jurado = new Zend_Form_Element_Select('fk_jurado'); 
+           $jurado->setLabel('Jurado :')
+                     ->setAttrib('style', 'width: 300px')
+                     ->addDecorator('HtmlTag', array('tag' => 'dd',
+                     'id'  => 'fk_autor' . '-element'))
+                      ->addDecorator('Label', array('tag' => 'dt')); 
+           
+           $agregar_jurado = new Zend_Form_Element_Button('agregar_jurado');
+           $agregar_jurado->setLabel('+') 
+            ->setDecorators(array( 'ViewHelper', array('HtmlTag', array('tag' => 'dd')) ))
+            ->setAttrib('onclick', $addJurado);
+          
+           $tutor = new Zend_Form_Element_Select('fk_tutor'); 
+           $tutor->setLabel('Tutor:')
+                     ->setAttrib('style', 'width: 300px');
        
        $institucion = new Zend_Form_Element_Select('fk_institucion'); 
        $institucion->setLabel('Institucion:') 
@@ -92,11 +122,19 @@ class Forms_Bibliotecatesis extends Zend_Form {
                  ->setAttrib('style', 'width: 300px')
                  // ->setAttrib('onchange', $changeEscuela)
                  ->setAttrib('onclick', $deleteAutores);
+
+       $fk_tiporecurso = new Zend_Form_Element_Select('fk_tiporecurso'); 
+       $fk_tiporecurso->setLabel('Tipo Recurso:') 
+                 ->setAttrib('style', 'width: 300px'); 
        
        
        $calificacion = new Zend_Form_Element_Select('fk_calificacion'); 
        $calificacion->setLabel('Calificacion :')
                  ->setAttrib('style', 'width: 300px');
+     
+       $publicacion = new Zend_Form_Element_Select('fk_publicado'); 
+       $publicacion->setLabel('Publicacion:')
+                   ->setAttrib('style', 'width: 300px');
        
        $pagina = new Zend_Form_Element_Text('pagina');
        $pagina->setLabel('Pagina:')
@@ -119,23 +157,43 @@ class Forms_Bibliotecatesis extends Zend_Form {
             ->addFilter('StringTrim')
             ->setAttrib('size', 35)
             ->setAttrib('maxlength', 80); 
-        
+
+       $archivo = new Zend_Form_Element_Text('archivo');
+       $archivo->setLabel('Archivo:')
+               ->setAttrib('id', 'archivo')
+               ->setAttrib('style', 'width: 254px');
+       
+     
+       $boton_subir = new Zend_Form_Element_Button('boton_subir');
+       $boton_subir->setLabel('Subir Archivo')  // Establece la etiqueta del botón
+             ->setAttrib('id', 'boton')  // Establece un ID para el botón
+             ->setAttrib('class', 'btn btn-primary')  // Establece una clase para los estilos CSS
+             ->setAttrib('type', 'button');  // Establece el tipo del botón
+               
         
        $this->addElements(array($id,
                                 $fk_sede,
+                                $fk_periodo,
+                                $serialrecurso,
                                  $titulo,
-                                 $escuela,   
+                                 $resumen,
+                                 $palabrasclaves,
                                  $autor,
-                                 $agregar_autor,
-                                 $jurado,
-                                 $agregar_jurado,
-                                 $tutor,
+                                $agregar_autor,
+                                $jurado,
+                                $agregar_jurado,
+                                $tutor,
+                                 $escuela, 
+                                 $fk_tiporecurso,  
                                  $institucion,
                                  $calificacion,
+                                 $publicacion,
                                  $ubicacion,
                                  $pagina,
                                  $observacion,
-                                 $cota     
+                                 $cota,
+                                 $archivo, 
+                                 $boton_subir
                                 ));
 
     }

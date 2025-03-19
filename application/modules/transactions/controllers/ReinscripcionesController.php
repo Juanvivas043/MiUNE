@@ -1095,8 +1095,7 @@ class Transactions_ReinscripcionesController extends Zend_Controller_Action {
             $aSede           = $this->reinscripciones->sedeUltimo($ci);
             $aPeriodo        = $this->reinscripciones->ultimoperiodo();
             $coincidencia    = array();
-
-
+        
             /*$json[] = "$('.lunes,.martes,.miercoles,.jueves,.viernes,.sabado').hide();
                         $('td.lunes,td.martes,td.miercoles,td.jueves,td.viernes,td.sabado').html('').removeClass('shadowhora,modalcon');";*/
             /*se utilizan los codigos, secciones y turnos, si la seccion es -- generaria un error en el query por ende se saltaria a la siguiente materia*/
@@ -1123,7 +1122,7 @@ class Transactions_ReinscripcionesController extends Zend_Controller_Action {
                                 );
                         array_push($coincidencia,$tmp);
                     }
-
+                   
                 }
             }
             //para revisar si hay coincidencia de horario debe realizarse el mismo proceso que en la seccion de horarios

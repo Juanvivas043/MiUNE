@@ -1,6 +1,11 @@
 <?php
 $this->headScript()->appendFile($this->baseUrl() . '/js/jquery-ui.custom.min.js');
 $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2.min.js');
+// $this->headScript()->appendFile($this->baseUrl() . '/js/file-uploader/client/fileuploader.js');
+
+$this->headScript()->appendFile($this->baseUrl() . '/js/file-uploader/client/fileuploader.js');
+$this->headScript()->appendFile($this->baseUrl() . '/js/tiny_mce/tiny_mce.js');
+
 
 $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
 $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
@@ -28,46 +33,102 @@ $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui
     </tr>
 </table>
 
-<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
+<!-- Modal -->
+<div id="errorModal" class = 'ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable' style="display:none; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; border-radius: 10px; z-index: 1004; text-align: center; min-width: 300px;">
+    <p id="modalMessage" style="margin-bottom: 20px; font-size: 16px;"></p>
+    <button onclick="closeModal()">Aceptar</button>
+</div>
 
+
+<?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
 <script type='text/javascript'>
     $(document).ready(function(){
         
-         $('#btnList').click(function(){
-         $buscar = $('#txtBuscar').val();
-          for ($i = 0 ; $i<50 ; $i++){
-               $buscar = $buscar.replace('/','~');
-          }
-         $('#txtBuscar').val($buscar);
+        $('#btnList').click(function(){
+            $buscar = $('#txtBuscar').val();
+            for ($i = 0 ; $i<50 ; $i++){
+                $buscar = $buscar.replace('/','~');
+            }
+            $('#txtBuscar').val($buscar);
         })
-        
     
 <?php
     echo $this->SwapBytes_Jquery->getLoading('loading');
     echo $this->SwapBytes_Ajax->getUrlAjaxJS();
     echo $this->SwapBytes_Crud_Form->getJavaScript();
     echo $this->SwapBytes_Crud_Action->getJavaScript('tableData');
-    
-//    echo $this->filters->getJavaScript('tableData', $this->SwapBytes_Jquery_Ui_Form->buttonDisable('btnAdd', true));
 ?>
 
-$.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
+        $.getJSON(urlAjax + "filter", function(data){executeCmdsFromJSON(data)});
 
-        $('#selEstado').change(function(){
-            $.getJSON(urlAjax + "estado/val/"+$('#selEstado').val(), function(data){executeCmdsFromJSON(data)});
+        $('#btnList').click(function(){
+            $rempl = $('#txtBuscar').val();
+            for ($i = 0 ; $i<50 ; $i++){
+                $rempl = $rempl.replace('~','/');
+            }
+            $('#txtBuscar').val($rempl);
         })
-        
-         $('#btnList').click(function(){
-         $rempl = $('#txtBuscar').val();
-          for ($i = 0 ; $i<50 ; $i++){
-               $rempl = $rempl.replace('~','/');
-          }
-         $('#txtBuscar').val($rempl);
-        })
+
          
     });
-   
-    function detalle(id){
-      $.getJSON(urlAjax + "detalle/pk/" + id, function(data){executeCmdsFromJSON(data)});  
+
+    function startFileUploader(){
+
+    var uploader = new qq.FileUploaderBasic({
+        button: document.getElementById('boton'),
+        action: '<?= $this->baseUrl() ?>/transactions/bibliotecatesis/upload/',
+        debug: false,
+        params: {
+            cota: document.getElementById("cota").value,
+            id: document.getElementById("id").value
+
+        },
+        onComplete: function(id, fileName, responseJSON){
+
+            // Si la respuesta contiene "message"
+            if (responseJSON && responseJSON.message) {
+
+                // Si la respuesta es un error (success == false), mostrar el modal
+                if (!responseJSON.success) {
+                    openModal(responseJSON.message); // Abre el modal con el mensaje de error
+                }
+
+                if (responseJSON.success) {
+                    openModal(responseJSON.message); // Abre el modal con el mensaje de error
+                    let inputArchivo = document.getElementById("archivo");
+                    if (inputArchivo) {
+                        inputArchivo.value = fileName;
+                    }
+                }
+            }
+        }
+    });
+};
+
+function openModal(message) {
+    // Cambiar mensaje del modal
+    document.getElementById("modalMessage").innerText = message;
+
+    // Mostrar el modal
+    document.getElementById("errorModal").style.display = "block";
+
+    // Seleccionar el overlay y cambiar su z-index
+    let overlay = document.querySelector(".ui-widget-overlay");
+    if (overlay) {
+        overlay.dataset.originalZIndex = overlay.style.zIndex; // Guardar el valor original
+        overlay.style.zIndex = "1003"; // Asignar un z-index mayor
     }
+}
+
+function closeModal() {
+    // Ocultar el modal
+    document.getElementById("errorModal").style.display = "none";
+
+    // Restaurar el z-index original del overlay
+    let overlay = document.querySelector(".ui-widget-overlay");
+    if (overlay && overlay.dataset.originalZIndex) {
+        overlay.style.zIndex = overlay.dataset.originalZIndex;
+    }
+}
+
 </script>

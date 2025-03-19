@@ -198,6 +198,7 @@ class Une_Filtros {
      * @param boolean $seccion
      * @param boolean $dia
      */
+    
     public function setDisabled($periodo = false, $sede = false, $escuela = false, $pensum = false, $semestre = false, $materia = false, $turno = false, $seccion = false, $dia = false) {
         $this->properties['disabled']['periodo'] = $periodo;
         $this->properties['disabled']['sede'] = $sede;

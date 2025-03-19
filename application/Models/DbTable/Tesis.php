@@ -3485,7 +3485,18 @@ public function horario_evaluadores($periodo,$pk_evaluadortesis,$dia){
                 and a.valor ilike 'De Investigacion'";
 
         return $this->_db->fetchOne($SQL);
-     }     
+     }    
+     
+     
+
+     public function getLineaInvestigacion($escuela){
+
+      $SQL = "SELECT DISTINCT lt.fk_lineainvestigacion, li.valor, lt.fk_escuela  FROM tbl_lineastemastesis lt
+                JOIN tbl_atributos li ON lt.fk_lineainvestigacion = li.pk_atributo
+                WHERE lt.fk_escuela = $escuela ";
+
+       return $this->_db->fetchAll($SQL);
+    }  
 
 
 

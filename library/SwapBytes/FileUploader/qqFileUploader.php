@@ -32,6 +32,7 @@ class SwapBytes_FileUploader_qqFileUploader {
         }
     }
     
+
     private function checkServerSettings(){        
         $postSize = $this->toBytes(ini_get('post_max_size'));
         $uploadSize = $this->toBytes(ini_get('upload_max_filesize'));        
@@ -106,7 +107,68 @@ class SwapBytes_FileUploader_qqFileUploader {
                 'The upload was cancelled, or server error encountered');
         }
         
-    }  
+    } 
+    
+    function handleUploadTesis($uploadDirectory, $replaceOldFile = FALSE, $with_unique_id = false, $cota = null) {
+        if (!is_writable($uploadDirectory)) {
+            mkdir($uploadDirectory, 0777, true);
+            if (!is_writable($uploadDirectory))
+                return array('error' => "Server error. Upload directory isn't writable.");
+        }
+    
+        if (!$this->file) {
+            return array('error' => 'No files were uploaded.');
+        }
+    
+        $size = $this->file->getSize();
+        if ($size == 0) {
+            return array('error' => 'File is empty');
+        }
+    
+        if ($size > $this->sizeLimit) {
+            return array('error' => 'File is too large');
+        }
+    
+        // Obtener información del archivo
+        $pathinfo = pathinfo($this->file->getName());
+        $filename = $pathinfo['filename'];
+        $ext = strtolower($pathinfo['extension']); // Extensión en minúscula
+    
+        if ($cota) {
+            $filename = $cota;
+        }
+    
+        if ($with_unique_id) {
+            $filename .= '-' . substr(md5(uniqid(rand(), true)), 0, 5);
+        }
+    
+        // Agregar la extensión al nombre del archivo
+        $filenameWithExt = $filename . '.' . $ext;
+    
+        // Verificar si la extensión es válida
+        if ($this->allowedExtensions && !in_array($ext, $this->allowedExtensions)) {
+            $these = implode(', ', $this->allowedExtensions);
+            return array('error' => 'File has an invalid extension, it should be one of '. $these . '.');
+        }
+    
+        if (!$replaceOldFile) {
+            while (file_exists($uploadDirectory . $filenameWithExt)) {
+                $filenameWithExt = $filename . rand(10, 99) . '.' . $ext;
+            }
+        }
+    
+        if ($this->file->save($uploadDirectory . $filenameWithExt)) {
+            return array(
+                'success' => true, 
+                'filename' => $filenameWithExt, // Guardar con la extensión
+                'filedir' => $uploadDirectory, 
+                'fileext' => $ext // También guardar la extensión aparte si es necesario
+            );
+        } else {
+            return array('error' => 'Could not save uploaded file.');
+        }
+    }
+    
 }
 
 ?>

@@ -111,6 +111,8 @@ class Transactions_BibliotecalibrosController extends Zend_Controller_Action {
             // los valores necesarios de las variables que se utilizaran mas adelante.
             $pageNumber  = $this->_getParam('page', 1);
             $searchData  = $this->_getParam('buscar');
+            $bolas  = $this->_getParams();
+            var_dump($bolas);
             $itemPerPage = 15;
             $pageRange   = 10;
 

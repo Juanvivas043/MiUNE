@@ -63,5 +63,47 @@ class SwapBytes_Crud_Db_Table {
         
         return $SQL;
     }
+
+    public function getSearchFixed($searchParams, $searchData, $hasWhere = false) {
+        if (!isset($searchParams) || !is_array($searchParams) || empty($searchParams)) {
+            return ''; // Si no hay parámetros de búsqueda, no se genera SQL.
+        }
+    
+        if (!isset($searchData) || !is_string($searchData) || strlen(trim($searchData)) === 0) {
+            return ''; // Si no hay datos de búsqueda válidos, no se genera SQL.
+        }
+    
+        $conditions = []; // Arreglo para acumular condiciones.
+        $Search = explode('+', $searchData); // Divide los términos por el carácter '+'.
+    
+        foreach ($Search as $Value) {
+            $Value = trim($Value);
+    
+            if (strlen($Value) > 0) { // Sólo procesar términos válidos.
+                $Value = str_replace("'", "", $Value); // Elimina apóstrofes.
+                $Value = str_replace(" ", "%", $Value); // Reemplaza espacios por '%'.
+                $Value = "'%{$Value}%'"; // Envuelve el término con comodines.
+    
+                foreach ($searchParams as $param) {
+                    // Genera una condición para cada parámetro.
+                    $conditions[] = "{$param}::text ILIKE {$Value}";
+                }
+            }
+        }
+    
+        if (!empty($conditions)) {
+            // Si hay condiciones, únelas con OR.
+            $SQL = implode(" OR ", $conditions);
+    
+            // Si la consulta original no tiene WHERE, prepende WHERE, si no, prepende AND.
+            $SQL = ($hasWhere ? " AND " : " WHERE ") . $SQL . "";
+        } else {
+            // Si no hay condiciones válidas, no se genera SQL.
+            $SQL = '';
+        }
+    
+        return $SQL;
+    }
+    
 }
 ?>

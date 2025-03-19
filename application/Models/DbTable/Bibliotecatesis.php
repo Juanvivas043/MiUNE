@@ -4,7 +4,7 @@ class Models_DbTable_Bibliotecatesis extends Zend_Db_Table {
     private $institucion = 79; // $instucion local 75 , $instucion 79
     private $resumen = 80; // $resumen local 76 , omicron 80
     private $current = 'CURRENT_DATE'; // $current local '2011-06-01'   , omicron CURRENT_DATE
-    private $searchParams = array('pk_tesis', 'cota', 'titulo','escuela','ubicacion');
+    private $searchParams = array('cota', 'titulo', 'palabrasclaves', 'autor');
     
     public function init() {
         $this->AuthSpace = new Zend_Session_Namespace('Zend_Auth');
@@ -16,11 +16,189 @@ class Models_DbTable_Bibliotecatesis extends Zend_Db_Table {
      public function setSearch($searchData) {
         $this->searchData = $searchData;
     }
-    public function getSQLCount($sede) {
+
+    public function getMime($ext){
+        if(!is_string($ext)) return null;
+       $SQL = " 
+          SELECT * FROM tbl_mimes WHERE extension ilike '$ext' LIMIT 1;
+          
+          ";
+ 
+         $results = $this->_db->query($SQL);
+ 
+     return (array)$results->fetchAll();
+    }
+    public function getSQLCount() {
+        $whereSearch = $this->SwapBytes_Crud_Db_Table->getSearchFixed($this->searchParams, $this->searchData, false);        
         
-        $SQL = "SELECT COUNT(pk_tesis)
-		FROM tbl_tesis
-        where fk_sede = {$sede}";
+        $SQL = "SELECT COUNT (pk_tesis)
+                    FROM(
+                        SELECT t.pk_tesis,t.cota,dt.titulo,t.palabrasclaves,t.fk_escuela,ve.escuela,
+                            t.fk_institucion,a2.valor as institucion,t.calificacion,
+                            t.pagina,t.ubicacion,t.observacion, ep.estado,
+                            (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                             from tbl_datostesis     dt_sub
+                             join tbl_tutorestesis   tt_sub      on      tt_sub.fk_datotesis     =   dt_sub.pk_datotesis and tt_sub.renuncia = false and tt_sub.fk_estado = (select distinct a.pk_atributo
+                                                                                                                                                                           from tbl_atributos      a 
+                                                                                                                                                                           join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                                                                                                                                           where at.nombre ilike '%Estado Tutores%'
+                                                                                                                                                                           and a.valor ilike 'Aprobado%')
+                             join tbl_usuariosgrupos ug_sub      on      ug_sub.pk_usuariogrupo  =   tt_sub.fk_usuariogrupo
+                             join tbl_usuarios       u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                             where dt_sub.pk_datotesis = dt.pk_datotesis) as tutor,
+                            (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                             from tbl_datostesis     dt_sub
+                             join tbl_autorestesis   at_sub      on      at_sub.fk_datotesis     =   dt_sub.pk_datotesis and at_sub.renuncia = false
+                             join tbl_usuariosgrupos ug_sub      on      ug_sub.pk_usuariogrupo  =   at_sub.fk_usuariogrupo
+                             join tbl_usuarios       u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                             where dt_sub.pk_datotesis = dt.pk_datotesis) as autor,
+                            (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                             from tbl_datostesis         dt_sub
+                             join tbl_evaluadorestesis   et_sub      on      et_sub.fk_datotesis     =   dt_sub.pk_datotesis and et_sub.fk_tipo = (select distinct a.pk_atributo
+                                                                                                                                                 from tbl_atributos      a 
+                                                                                                                                                 join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                                                                                                                 where at.nombre ilike 'Tipo Evaluadores'
+                                                                                                                                                 and a.valor ilike 'Principal')
+                             join tbl_usuariosgrupos     ug_sub      on      ug_sub.pk_usuariogrupo  =   et_sub.fk_usuariogrupo
+                             join tbl_usuarios           u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                             where dt_sub.pk_datotesis = dt.pk_datotesis) as jurado
+                    from tbl_tesis                  t
+                    join tbl_datostesis             dt      on      dt.pk_datotesis     =       t.fk_datotesis
+                    left outer join vw_escuelas     ve      on      ve.pk_atributo      =       t.fk_escuela    
+                    left outer join tbl_atributos   a2      on      a2.pk_atributo      =       t.fk_institucion
+                    left outer join tbl_tutorestesis tt     on      tt.fk_datotesis     =       dt.pk_datotesis
+                    join vw_estadospublicacionestesis ep on t.fk_publicado = ep.pk_atributo
+                    where dt.fk_estado = (SELECT distinct a.pk_atributo
+                                            from tbl_atributos      a 
+                                            join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                            where at.pk_atributotipo = (select pk_atributotipo from tbl_atributostipos where nombre ilike 'Estado Tesis' )
+                                            and a.valor ilike 'Aprobado')
+                    and tt.fk_estado = (select distinct a.pk_atributo
+                                          from tbl_atributos      a 
+                                          join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                          where at.nombre ilike '%Estado Tutores%'
+                                          and a.valor ilike 'Aprobado%'))as sqt {$whereSearch};";
+
+        return $this->_db->fetchOne($SQL);
+    }
+
+    public function getSQLCountFiltered($periodo, $sede, $escuela, $estado) {
+        $whereSearch = $this->SwapBytes_Crud_Db_Table->getSearchFixed($this->searchParams, $this->searchData, false);        
+        
+        $SQL = "SELECT COUNT (pk_tesis)
+                    FROM(
+                        SELECT t.pk_tesis,t.cota,dt.titulo,t.palabrasclaves,t.fk_escuela,ve.escuela,
+                           t.fk_institucion,a2.valor as institucion,t.calificacion,
+                           t.pagina,t.ubicacion,t.observacion, ep.estado,
+                           (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                                from tbl_datostesis     dt_sub
+                                join tbl_tutorestesis   tt_sub      on      tt_sub.fk_datotesis     =   dt_sub.pk_datotesis and tt_sub.renuncia = false and tt_sub.fk_estado = (select distinct a.pk_atributo
+                                                                                                                                                                                    from tbl_atributos      a 
+                                                                                                                                                                                    join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                                                                                                                                                    where at.nombre ilike '%Estado Tutores%'
+                                                                                                                                                                                    and a.valor ilike 'Aprobado%')
+                                join tbl_usuariosgrupos ug_sub      on      ug_sub.pk_usuariogrupo  =   tt_sub.fk_usuariogrupo
+                                join tbl_usuarios       u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                                where dt_sub.pk_datotesis = dt.pk_datotesis) as tutor,
+                    
+                           (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                                from tbl_datostesis     dt_sub
+                                join tbl_autorestesis   at_sub      on      at_sub.fk_datotesis     =   dt_sub.pk_datotesis and at_sub.renuncia = false
+                                join tbl_usuariosgrupos ug_sub      on      ug_sub.pk_usuariogrupo  =   at_sub.fk_usuariogrupo
+                                join tbl_usuarios       u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                                where dt_sub.pk_datotesis = dt.pk_datotesis) as autor,
+                    
+                           (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                                from tbl_datostesis         dt_sub
+                                join tbl_evaluadorestesis   et_sub      on      et_sub.fk_datotesis     =   dt_sub.pk_datotesis and et_sub.fk_tipo = (select distinct a.pk_atributo
+                                                                                                                                                    from tbl_atributos      a 
+                                                                                                                                                    join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                                                                                                                    where at.nombre ilike 'Tipo Evaluadores'
+                                                                                                                                                    and a.valor ilike 'Principal')
+                                join tbl_usuariosgrupos     ug_sub      on      ug_sub.pk_usuariogrupo  =   et_sub.fk_usuariogrupo
+                                join tbl_usuarios           u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                                where dt_sub.pk_datotesis = dt.pk_datotesis) as jurado
+                    
+                            from tbl_tesis                  t
+                            join tbl_datostesis             dt      on      dt.pk_datotesis     =       t.fk_datotesis
+                            left outer join vw_escuelas     ve      on      ve.pk_atributo      =       t.fk_escuela    
+                            left outer join tbl_atributos   a2      on      a2.pk_atributo      =       t.fk_institucion
+                            left outer join tbl_tutorestesis tt     on      tt.fk_datotesis     =       dt.pk_datotesis
+                            join vw_estadospublicacionestesis ep on t.fk_publicado = ep.pk_atributo
+                            where dt.fk_estado = (SELECT distinct a.pk_atributo
+                                                    from tbl_atributos      a 
+                                                    join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                    where at.pk_atributotipo = (select pk_atributotipo from tbl_atributostipos where nombre ilike 'Estado Tesis' )
+                                                    and a.valor ilike 'Aprobado')
+                            and tt.fk_estado = (select distinct a.pk_atributo
+                                                  from tbl_atributos      a 
+                                                  join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                  where at.nombre ilike '%Estado Tutores%'
+                                                  and a.valor ilike 'Aprobado%')
+                            and t.fk_sede = {$sede}
+                            and t.fk_escuela = {$escuela}
+                            and t.fk_periodo = {$periodo}
+                            and t.fk_publicado = {$estado})as sqt 
+                        {$whereSearch};";
+
+        return $this->_db->fetchOne($SQL);
+    }
+
+    public function getSQLCountFilteredByEstado($estado) {
+        $whereSearch = $this->SwapBytes_Crud_Db_Table->getSearchFixed($this->searchParams, $this->searchData, false);        
+        
+        $SQL = "SELECT COUNT (pk_tesis)
+        FROM(
+            SELECT t.pk_tesis,t.cota,dt.titulo,t.palabrasclaves,t.fk_escuela,ve.escuela,
+               t.fk_institucion,a2.valor as institucion,t.calificacion,
+               t.pagina,t.ubicacion,t.observacion, ep.estado,
+               (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                    from tbl_datostesis     dt_sub
+                    join tbl_tutorestesis   tt_sub      on      tt_sub.fk_datotesis     =   dt_sub.pk_datotesis and tt_sub.renuncia = false and tt_sub.fk_estado = (select distinct a.pk_atributo
+                                                                                                                                                                        from tbl_atributos      a 
+                                                                                                                                                                        join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                                                                                                                                        where at.nombre ilike '%Estado Tutores%'
+                                                                                                                                                                        and a.valor ilike 'Aprobado%')
+                    join tbl_usuariosgrupos ug_sub      on      ug_sub.pk_usuariogrupo  =   tt_sub.fk_usuariogrupo
+                    join tbl_usuarios       u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                    where dt_sub.pk_datotesis = dt.pk_datotesis) as tutor,
+
+               (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                    from tbl_datostesis     dt_sub
+                    join tbl_autorestesis   at_sub      on      at_sub.fk_datotesis     =   dt_sub.pk_datotesis and at_sub.renuncia = false
+                    join tbl_usuariosgrupos ug_sub      on      ug_sub.pk_usuariogrupo  =   at_sub.fk_usuariogrupo
+                    join tbl_usuarios       u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                    where dt_sub.pk_datotesis = dt.pk_datotesis) as autor,
+
+               (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                    from tbl_datostesis         dt_sub
+                    join tbl_evaluadorestesis   et_sub      on      et_sub.fk_datotesis     =   dt_sub.pk_datotesis and et_sub.fk_tipo = (select distinct a.pk_atributo
+                                                                                                                                        from tbl_atributos      a 
+                                                                                                                                        join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                                                                                                        where at.nombre ilike 'Tipo Evaluadores'
+                                                                                                                                        and a.valor ilike 'Principal')
+                    join tbl_usuariosgrupos     ug_sub      on      ug_sub.pk_usuariogrupo  =   et_sub.fk_usuariogrupo
+                    join tbl_usuarios           u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                    where dt_sub.pk_datotesis = dt.pk_datotesis) as jurado
+
+                        from tbl_tesis                  t
+                        join tbl_datostesis             dt      on      dt.pk_datotesis     =       t.fk_datotesis
+                        left outer join vw_escuelas     ve      on      ve.pk_atributo      =       t.fk_escuela    
+                        left outer join tbl_atributos   a2      on      a2.pk_atributo      =       t.fk_institucion
+                        left outer join tbl_tutorestesis tt     on      tt.fk_datotesis     =       dt.pk_datotesis
+                        join vw_estadospublicacionestesis ep on t.fk_publicado = ep.pk_atributo
+                        where dt.fk_estado = (SELECT distinct a.pk_atributo
+                                                from tbl_atributos      a 
+                                                join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                where at.pk_atributotipo = (select pk_atributotipo from tbl_atributostipos where nombre ilike 'Estado Tesis' )
+                                                and a.valor ilike 'Aprobado')
+                        and tt.fk_estado = (select distinct a.pk_atributo
+                                              from tbl_atributos      a 
+                                              join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                              where at.nombre ilike '%Estado Tutores%'
+                                              and a.valor ilike 'Aprobado%')
+                        and t.fk_publicado = {$estado})as sqt
+                    {$whereSearch};";
 
         return $this->_db->fetchOne($SQL);
     }
@@ -67,50 +245,20 @@ class Models_DbTable_Bibliotecatesis extends Zend_Db_Table {
 
 
     
-    public function get_tesis($itemPerPage, $pageNumber,$sede,$busqueda){
+    public function get_tesis($itemPerPage, $pageNumber){
         $pageNumber = ($pageNumber - 1) * $itemPerPage;
-         $whereSearch = $this->SwapBytes_Crud_Db_Table->getSearch($this->searchParams, $this->searchData);
-
-         if(!empty($sede)){
-            $filtro_sede = " and t.fk_sede = {$sede} ";
-         }else{
-            $filtro_sede = " ";
-         }
-
-         if(!empty($busqueda)){
-
-            $CotaCount = $this->getCotaExiste($busqueda);
-
-            if($CotaCount >= 1){
-                $filtro_busqueda = " and t.cota ilike '{$busqueda}' ";    
-            }else{
-
-                $TituloCount = $this->getTituloExiste($busqueda);
-
-                if($TituloCount >= 1){
-                    $filtro_busqueda = " and dt.titulo ilike '%{$busqueda}%' ";      
-                }else{
-                    $filtro_busqueda = " ";
-                }
-            }
-
-            
-         }else{
-            $filtro_busqueda = " ";
-         }
-
-        
+         $whereSearch = $this->SwapBytes_Crud_Db_Table->getSearchFixed($this->searchParams, $this->searchData, false);        
 
  
-        $SQL = "SELECT pk_tesis,cota, titulo, fk_escuela, escuela,
-fk_institucion, calificacion, pagina, ubicacion, observacion,
-(case when tutor is null then 'Tutor sin aprobar' else tutor end) as tutor, 
- (case when autor is null then 'Autor sin asignar' else autor end) as autor,
-  (case when jurado is null then 'Jurado sin asignar' else jurado end) as jurado
-FROM(
-SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
+        $SQL = "SELECT DISTINCT pk_tesis,cota, titulo, palabrasclaves,fk_escuela, escuela,
+            fk_institucion, calificacion, pagina,ubicacion, observacion, estado as estado,
+            (case when tutor is null then 'Tutor sin aprobar' else tutor end) as tutor, 
+             (case when autor is null then 'Autor sin asignar' else autor end) as autor,
+              (case when jurado is null then 'Jurado sin asignar' else jurado end) as jurado
+            FROM(
+            SELECT t.pk_tesis,t.cota,dt.titulo,t.palabrasclaves,t.fk_escuela,ve.escuela,
                t.fk_institucion,a2.valor as institucion,t.calificacion,
-               t.pagina,t.ubicacion,t.observacion,
+               t.pagina,t.ubicacion,t.observacion, ep.estado,
                (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
                 from tbl_datostesis     dt_sub
                 join tbl_tutorestesis   tt_sub      on      tt_sub.fk_datotesis     =   dt_sub.pk_datotesis and tt_sub.renuncia = false and tt_sub.fk_estado = (select distinct a.pk_atributo
@@ -145,6 +293,7 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
         left outer join vw_escuelas     ve      on      ve.pk_atributo      =       t.fk_escuela    
         left outer join tbl_atributos   a2      on      a2.pk_atributo      =       t.fk_institucion
         left outer join tbl_tutorestesis tt     on      tt.fk_datotesis     =       dt.pk_datotesis
+        join vw_estadospublicacionestesis ep on t.fk_publicado = ep.pk_atributo
         where dt.fk_estado = (SELECT distinct a.pk_atributo
                                 from tbl_atributos      a 
                                 join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
@@ -154,11 +303,154 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
                               from tbl_atributos      a 
                               join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
                               where at.nombre ilike '%Estado Tutores%'
-                              and a.valor ilike 'Aprobado%')
-        ".$filtro_sede.$filtro_busqueda."
-        GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14
-        ORDER BY 2 DESC LIMIT {$itemPerPage} OFFSET {$pageNumber})as sqt;";
+                              and a.valor ilike 'Aprobado%'))as sqt 
+        {$whereSearch}
+        ORDER BY 2 DESC
+        LIMIT {$itemPerPage} OFFSET {$pageNumber};";
         
+        
+        $results = $this->_db->query($SQL);
+        return (array) $results->fetchAll();        
+        
+    }
+
+    public function get_tesisFiltered($itemPerPage, $pageNumber, $periodo, $sede, $escuela, $estado){
+        $pageNumber = ($pageNumber - 1) * $itemPerPage;
+         $whereSearch = $this->SwapBytes_Crud_Db_Table->getSearchFixed($this->searchParams, $this->searchData, false);        
+
+ 
+        $SQL = "SELECT DISTINCT pk_tesis,cota, titulo, palabrasclaves, fk_escuela, escuela,
+        fk_institucion, calificacion, pagina, ubicacion, observacion, estado as estado,
+        (case when tutor is null then 'Tutor sin aprobar' else tutor end) as tutor, 
+        (case when autor is null then 'Autor sin asignar' else autor end) as autor,
+        (case when jurado is null then 'Jurado sin asignar' else jurado end) as jurado
+                FROM(
+                    SELECT t.pk_tesis,t.cota,dt.titulo,t.palabrasclaves,t.fk_escuela,ve.escuela,
+                       t.fk_institucion,a2.valor as institucion,t.calificacion,
+                       t.pagina,t.ubicacion,t.observacion, ep.estado,
+                       (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                            from tbl_datostesis     dt_sub
+                            join tbl_tutorestesis   tt_sub      on      tt_sub.fk_datotesis     =   dt_sub.pk_datotesis and tt_sub.renuncia = false and tt_sub.fk_estado = (select distinct a.pk_atributo
+                                                                                                                                                                                from tbl_atributos      a 
+                                                                                                                                                                                join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                                                                                                                                                where at.nombre ilike '%Estado Tutores%'
+                                                                                                                                                                                and a.valor ilike 'Aprobado%')
+                            join tbl_usuariosgrupos ug_sub      on      ug_sub.pk_usuariogrupo  =   tt_sub.fk_usuariogrupo
+                            join tbl_usuarios       u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                            where dt_sub.pk_datotesis = dt.pk_datotesis) as tutor,
+
+                       (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                            from tbl_datostesis     dt_sub
+                            join tbl_autorestesis   at_sub      on      at_sub.fk_datotesis     =   dt_sub.pk_datotesis and at_sub.renuncia = false
+                            join tbl_usuariosgrupos ug_sub      on      ug_sub.pk_usuariogrupo  =   at_sub.fk_usuariogrupo
+                            join tbl_usuarios       u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                            where dt_sub.pk_datotesis = dt.pk_datotesis) as autor,
+
+                       (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                            from tbl_datostesis         dt_sub
+                            join tbl_evaluadorestesis   et_sub      on      et_sub.fk_datotesis     =   dt_sub.pk_datotesis and et_sub.fk_tipo = (select distinct a.pk_atributo
+                                                                                                                                                from tbl_atributos      a 
+                                                                                                                                                join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                                                                                                                where at.nombre ilike 'Tipo Evaluadores'
+                                                                                                                                                and a.valor ilike 'Principal')
+                            join tbl_usuariosgrupos     ug_sub      on      ug_sub.pk_usuariogrupo  =   et_sub.fk_usuariogrupo
+                            join tbl_usuarios           u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                            where dt_sub.pk_datotesis = dt.pk_datotesis) as jurado
+
+                                from tbl_tesis                  t
+                                join tbl_datostesis             dt      on      dt.pk_datotesis     =       t.fk_datotesis
+                                left outer join vw_escuelas     ve      on      ve.pk_atributo      =       t.fk_escuela    
+                                left outer join tbl_atributos   a2      on      a2.pk_atributo      =       t.fk_institucion
+                                left outer join tbl_tutorestesis tt     on      tt.fk_datotesis     =       dt.pk_datotesis
+                                join vw_estadospublicacionestesis ep on t.fk_publicado = ep.pk_atributo
+                                where dt.fk_estado = (SELECT distinct a.pk_atributo
+                                                        from tbl_atributos      a 
+                                                        join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                        where at.pk_atributotipo = (select pk_atributotipo from tbl_atributostipos where nombre ilike 'Estado Tesis' )
+                                                        and a.valor ilike 'Aprobado')
+                                and tt.fk_estado = (select distinct a.pk_atributo
+                                                      from tbl_atributos      a 
+                                                      join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                      where at.nombre ilike '%Estado Tutores%'
+                                                      and a.valor ilike 'Aprobado%')
+                                and t.fk_sede = {$sede}
+	                            and t.fk_escuela = {$escuela}
+	                            and t.fk_periodo = {$periodo}
+                                and t.fk_publicado = {$estado})as sqt
+                            {$whereSearch}
+                            ORDER BY cota DESC
+                            LIMIT {$itemPerPage} OFFSET {$pageNumber};";
+
+        
+        $results = $this->_db->query($SQL);
+        return (array) $results->fetchAll();        
+        
+    }
+
+    public function get_tesisFilteredByEstado($itemPerPage, $pageNumber, $estado){
+        $pageNumber = ($pageNumber - 1) * $itemPerPage;
+         $whereSearch = $this->SwapBytes_Crud_Db_Table->getSearchFixed($this->searchParams, $this->searchData, false);        
+
+ 
+        $SQL = "SELECT DISTINCT pk_tesis,cota, titulo, palabrasclaves, fk_escuela, escuela,
+        fk_institucion, calificacion, pagina, ubicacion, observacion, estado as estado,
+        (case when tutor is null then 'Tutor sin aprobar' else tutor end) as tutor, 
+        (case when autor is null then 'Autor sin asignar' else autor end) as autor,
+        (case when jurado is null then 'Jurado sin asignar' else jurado end) as jurado
+                FROM(
+                    SELECT t.pk_tesis,t.cota,dt.titulo,t.palabrasclaves,t.fk_escuela,ve.escuela,
+                       t.fk_institucion,a2.valor as institucion,t.calificacion,
+                       t.pagina,t.ubicacion,t.observacion, ep.estado,
+                       (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                            from tbl_datostesis     dt_sub
+                            join tbl_tutorestesis   tt_sub      on      tt_sub.fk_datotesis     =   dt_sub.pk_datotesis and tt_sub.renuncia = false and tt_sub.fk_estado = (select distinct a.pk_atributo
+                                                                                                                                                                                from tbl_atributos      a 
+                                                                                                                                                                                join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                                                                                                                                                where at.nombre ilike '%Estado Tutores%'
+                                                                                                                                                                                and a.valor ilike 'Aprobado%')
+                            join tbl_usuariosgrupos ug_sub      on      ug_sub.pk_usuariogrupo  =   tt_sub.fk_usuariogrupo
+                            join tbl_usuarios       u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                            where dt_sub.pk_datotesis = dt.pk_datotesis) as tutor,
+
+                       (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                            from tbl_datostesis     dt_sub
+                            join tbl_autorestesis   at_sub      on      at_sub.fk_datotesis     =   dt_sub.pk_datotesis and at_sub.renuncia = false
+                            join tbl_usuariosgrupos ug_sub      on      ug_sub.pk_usuariogrupo  =   at_sub.fk_usuariogrupo
+                            join tbl_usuarios       u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                            where dt_sub.pk_datotesis = dt.pk_datotesis) as autor,
+
+                       (select btrim(array_agg(u_sub.primer_nombre ||' '|| u_sub.primer_apellido)::varchar,'NULL{}')
+                            from tbl_datostesis         dt_sub
+                            join tbl_evaluadorestesis   et_sub      on      et_sub.fk_datotesis     =   dt_sub.pk_datotesis and et_sub.fk_tipo = (select distinct a.pk_atributo
+                                                                                                                                                from tbl_atributos      a 
+                                                                                                                                                join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                                                                                                                where at.nombre ilike 'Tipo Evaluadores'
+                                                                                                                                                and a.valor ilike 'Principal')
+                            join tbl_usuariosgrupos     ug_sub      on      ug_sub.pk_usuariogrupo  =   et_sub.fk_usuariogrupo
+                            join tbl_usuarios           u_sub       on      u_sub.pk_usuario        =   ug_sub.fk_usuario
+                            where dt_sub.pk_datotesis = dt.pk_datotesis) as jurado
+
+                                from tbl_tesis                  t
+                                join tbl_datostesis             dt      on      dt.pk_datotesis     =       t.fk_datotesis
+                                left outer join vw_escuelas     ve      on      ve.pk_atributo      =       t.fk_escuela    
+                                left outer join tbl_atributos   a2      on      a2.pk_atributo      =       t.fk_institucion
+                                left outer join tbl_tutorestesis tt     on      tt.fk_datotesis     =       dt.pk_datotesis
+                                join vw_estadospublicacionestesis ep on t.fk_publicado = ep.pk_atributo
+                                where dt.fk_estado = (SELECT distinct a.pk_atributo
+                                                        from tbl_atributos      a 
+                                                        join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                        where at.pk_atributotipo = (select pk_atributotipo from tbl_atributostipos where nombre ilike 'Estado Tesis' )
+                                                        and a.valor ilike 'Aprobado')
+                                and tt.fk_estado = (select distinct a.pk_atributo
+                                                      from tbl_atributos      a 
+                                                      join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                      where at.nombre ilike '%Estado Tutores%'
+                                                      and a.valor ilike 'Aprobado%')
+                                and t.fk_publicado = {$estado})as sqt
+                            {$whereSearch}
+                            ORDER BY 2 DESC
+                            LIMIT {$itemPerPage} OFFSET {$pageNumber};";
+
         
         $results = $this->_db->query($SQL);
         return (array) $results->fetchAll();        
@@ -166,10 +458,16 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
     }
     
     public function getRowTesis($pk){
-         $SQL = "SELECT     t.pk_tesis,
+         $SQL = "SELECT t.pk_tesis,
                         t.cota,
+                        t.serialrecurso,
+                        t.fk_periodo,
                         dt.titulo,
+                        t.resumen,
+                        t.palabrasclaves,
                         t.fk_escuela,
+                        t.fk_tiporecurso,
+                        t.fk_publicado,
                         (select distinct pk_usuario
                         from tbl_datostesis     dt_sub
                         join tbl_tutorestesis   tt_sub      on      tt_sub.fk_datotesis     =   dt_sub.pk_datotesis and tt_sub.renuncia = false and tt_sub.fk_estado = (select distinct a.pk_atributo
@@ -186,7 +484,8 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
                         t.pagina,
                         t.ubicacion,
                         t.observacion, 
-                        t.fk_sede
+                        t.fk_sede,
+                        t.archivo
                 FROM tbl_tesis          t
                 join tbl_datostesis     dt          on          dt.pk_datotesis     =   t.fk_Datotesis
                 where t.pk_tesis = {$pk}";
@@ -219,7 +518,7 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
     }
     
     public function getRowJurado($pk){
-         $SQL = "select pk_evaluadortesis as pk_juradotesis, ug.fk_usuario as fk_jurado, t.pk_tesis
+         $SQL = "select pk_evaluadortesis as pk_evaluadortesis, ug.fk_usuario as fk_jurado, t.pk_tesis
                 from tbl_tesis              t 
                 join tbl_datostesis         dt      on      dt.pk_datotesis     =   t.fk_datotesis           
                 join tbl_evaluadorestesis   et      on      et.fk_datotesis     =   dt.pk_datotesis
@@ -236,11 +535,28 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
 
         return (array) $results->fetchAll(); 
     }
+
+    public function getRowTutor($pk){
+        $SQL = "select pk_tutortesis as pk_tutortesis, ug.fk_usuario as fk_tutor, t.pk_tesis
+        from tbl_tesis              t 
+        join tbl_datostesis         dt      on      dt.pk_datotesis     =   t.fk_datotesis           
+        join tbl_tutorestesis   tt      on      tt.fk_datotesis     =   dt.pk_datotesis
+        join tbl_usuariosgrupos     ug      on      ug.pk_usuariogrupo  =   tt.fk_usuariogrupo
+        where t.pk_tesis = {$pk} and tt.fk_estado = (select distinct a.pk_atributo
+                                                        from tbl_atributos      a 
+                                                           join tbl_atributostipos at      on      at.pk_atributotipo = a.fk_atributotipo
+                                                        where at.nombre ilike '%Estado Tutores%'
+                                                        and a.valor ilike 'Aprobado%')";
+                   
+       $results = $this->_db->query($SQL);
+
+       return (array) $results->fetchAll(); 
+   }
     
     public function getDatatesis($cota){
         
-        $SQL = "SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,u1.pk_usuario as fk_tutor,(u1.nombre || ' '||u1.apellido)as nombre,  
-                t.fk_institucion,a2.valor as institucion,t.calificacion,t.pagina,t.ubicacion,t.observacion, t.fk_sede,tt.fk_estado
+        $SQL = "SELECT t.pk_tesis,t.cota,t.fk_periodo,t.serialrecurso,dt.titulo,t.resumen,t.fk_escuela,ve.escuela,t.fk_tiporecurso,u1.pk_usuario as fk_tutor,(u1.nombre || ' '||u1.apellido)as nombre,  
+                t.fk_institucion,a2.valor as institucion,t.calificacion,t.pagina,t.ubicacion,t.observacion, t.fk_sede,tt.fk_publicado, palabrasclaves, t.archivo
                 FROM tbl_tesis                      t
                 join  tbl_datostesis                dt      on      dt.pk_datotesis     =   t.fk_datotesis
                 left outer join tbl_tutorestesis    tt      on      tt.fk_Datotesis     =   dt.pk_Datotesis
@@ -304,6 +620,27 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
 
         return (array) $results->fetchAll();
     }
+
+    public function get_publicacion(){
+       $SQL = "SELECT pk_atributo, estado  
+               FROM vw_estadospublicacionestesis
+               ORDER BY 2";
+                   
+       $results = $this->_db->query($SQL);
+
+       return (array) $results->fetchAll();
+   }
+
+   public function get_tiporecurso(){
+    $SQL = "SELECT pk_atributo, tipo  
+            FROM vw_tiporecurso
+            ORDER BY 2";
+                
+    $results = $this->_db->query($SQL);
+
+    return (array) $results->fetchAll();
+}
+   
    
     public function get_jurado(){
          $SQL = "SELECT pk_usuario , (nombre || ' ' || apellido) as nombre
@@ -407,7 +744,7 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
                 
     }
     
-    public function Updatetesis($pk,$cota,$fk_escuela,$fk_institucion,$calificacion,$pagina,$ubicacion,$observacion){
+    public function Updatetesis($pk,$fk_sede,$fk_periodo,$cota,$serialrecurso,$resumen,$palabrasclaves,$fk_escuela,$fk_tiporecurso,$fk_institucion,$calificacion,$pagina,$fk_publicado,$ubicacion,$observacion){
         if($pagina == NULL){
             $pagina = 0;
         }
@@ -419,8 +756,8 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
         }
         
         $SQL = "UPDATE tbl_tesis
-        SET cota='{$cota}', fk_escuela={$fk_escuela}, 
-            fk_institucion={$fk_institucion}, calificacion={$calificacion}, pagina={$pagina}, ubicacion='{$ubicacion}', observacion='{$observacion}'
+        SET fk_sede={$fk_sede}, fk_periodo={$fk_periodo}, cota='{$cota}', serialrecurso='{$serialrecurso}', resumen='{$resumen}' ,palabrasclaves='{$palabrasclaves}', fk_escuela={$fk_escuela}, fk_tiporecurso={$fk_tiporecurso},
+            fk_institucion={$fk_institucion}, calificacion={$calificacion}, fk_publicado={$fk_publicado},pagina={$pagina}, ubicacion='{$ubicacion}', observacion='{$observacion}'
             WHERE pk_tesis ={$pk} ;";
         
                 
@@ -448,6 +785,12 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
 
         return $this->_db->fetchOne($SQL);
     }
+
+    public function getPKAutorTesis($fk_usuariogrupo = null, $fk_datotesis){
+       $SQL =  "SELECT pk_autortesis FROM tbl_autorestesis
+                WHERE fk_usuariogrupo = {$fk_usuariogrupo} AND fk_datotesis = {$fk_datotesis}";
+       return $this->_db->fetchAll($SQL);
+    }
     
     public function DeleteAutor($pk_autortesis){
          //eliminar el autor
@@ -456,25 +799,41 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
         $this->_db->query($SQL);
     }
 
+
+    public function getPKEvaluadorTesis($fk_usuariogrupo, $fk_datotesis){
+        $SQL =  "SELECT pk_evaluadortesis FROM tbl_evaluadorestesis
+                 WHERE fk_usuariogrupo = {$fk_usuariogrupo} AND fk_datotesis = {$fk_datotesis}";
+        return $this->_db->fetchAll($SQL);
+     }
+
     public function DeleteJurado($pk_juradotesis){
          //eliminar el autor
-        $SQL =  "DELETE FROM tbl_juradotesis
-                 WHERE pk_juradotesis = {$pk_juradotesis}";
+        $SQL =  "DELETE FROM tbl_evaluadorestesis
+                 WHERE pk_evaluadortesis = {$pk_juradotesis}";
         $this->_db->query($SQL);
     }
     
-    public function Updateautor($pk_autortesis,$fk_autor,$fk_tesis){
+    public function UpdateAutor($pk_autortesis,$fk_usuariogrupoautor,$fk_datotesis){
         $SQL = "UPDATE tbl_autorestesis
-                SET fk_autor={$fk_autor}, fk_tesis={$fk_tesis}
+                SET fk_usuariogrupo = {$fk_usuariogrupoautor}, fk_datotesis = {$fk_datotesis}
                 WHERE pk_autortesis ={$pk_autortesis};";
              
         $this->_db->query($SQL);          
     }
     
-    public function Updatejurado($pk_juradotesis,$fk_jurado,$fk_tesis){
-        $SQL = "UPDATE tbl_juradotesis
-                SET fk_jurado={$fk_jurado}, fk_tesis={$fk_tesis}
-                WHERE pk_juradotesis ={$pk_juradotesis};";
+    public function UpdateJurado($pk_juradotesis,$fk_usuariogrupojurado,$fk_datotesis){
+        $SQL = "UPDATE tbl_evaluadorestesis
+                SET fk_usuariogrupo={$fk_usuariogrupojurado}, fk_datotesis={$fk_datotesis}
+                WHERE pk_evaluadortesis ={$pk_juradotesis};";
+             
+              
+        $this->_db->query($SQL);          
+    }
+
+    public function UpdateTutor($pk_tutortesis,$fk_usuariogrupotutor,$fk_datotesis){
+        $SQL = "UPDATE tbl_tutorestesis
+                SET fk_usuariogrupo={$fk_usuariogrupotutor}, fk_datotesis={$fk_datotesis}
+                WHERE pk_tutortesis ={$pk_tutortesis};";
              
               
         $this->_db->query($SQL);          
@@ -497,10 +856,9 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
         return (array) $results->fetchAll();         
     }
 
-    public function getsedeform($pk){
+    public function getsedeform(){
         $SQL = "SELECT pk_estructura , nombre as sede 
-                FROM vw_sedes
-                WHERE pk_estructura = {$pk};";
+                FROM vw_sedes;";
         
        
          $results = $this->_db->query($SQL);
@@ -534,6 +892,16 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
         $results = $this->_db->query($SQL);
         return  $results->fetchAll();
   } 
+
+  public function updateArchivoTesis($ruta_archivo, $pk_tesis){
+        
+
+    $SQL ="UPDATE tbl_tesis SET archivo = '$ruta_archivo' WHERE pk_tesis = $pk_tesis;";
+
+    $results = $this->_db->query($SQL);
+    return  $results->fetchAll();
+
+} 
 
    public function getTesisByTitulo($titulo){
         
@@ -569,17 +937,24 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
 
   public function addTesista($tesis,$usuario,$periodo){
         
-        if(empty($tesis))return;
-        if(empty($usuario))return;
-
         $SQL ="INSERT INTO tbl_autorestesis(
                         fk_datotesis, fk_usuariogrupo,renuncia,fk_periodo)
-                VALUES ({$tesis}, {$usuario},false,{$periodo});
-               ";
+                VALUES ({$tesis}, {$usuario},false,{$periodo});";
 
         $results = $this->_db->query($SQL);
         return  $results->fetchAll();
   }
+
+
+  public function addJurado($fk_datotesis,$fk_usuariogrupo,$fk_periodo){
+
+    $SQL ="INSERT INTO tbl_evaluadorestesis(
+                    fk_datotesis, fk_usuariogrupo,fk_tipo,fk_periodo, fk_rol)
+            VALUES ({$fk_datotesis}, {$fk_usuariogrupo},19965,{$fk_periodo}, null);";
+
+    $results = $this->_db->query($SQL);
+    return  $results->fetchAll();
+}
 
   public function addEvaluadoresTesis($cod,$evaluador,$periodo){
           
@@ -607,21 +982,27 @@ SELECT t.pk_tesis,t.cota,dt.titulo,t.fk_escuela,ve.escuela,
     }
 
 
-      public function addTesisBiblioteca($fk_datotesis,$periodo,$fk_institucion,$calificacion,$ubicacion,$pagina,$observacion,$cota,$sede,$escuela){
+      public function addTesisBiblioteca($fk_datotesis,$periodo,$fk_tiporecurso,$resumen,$serialrecurso,$palabrasclaves,$fk_institucion,$calificacion,$ubicacion,$pagina,$fk_publicado,$observacion,$cota,$sede,$escuela){
             
             if(empty($fk_datotesis))return;
 
             $SQL ="INSERT INTO tbl_tesis(
-                          fk_datotesis,fk_periodo,fk_institucion,calificacion,ubicacion,pagina,observacion,cota,fk_sede,fk_escuela)
-                  VALUES ({$fk_datotesis},{$periodo},{$fk_institucion}
+                          fk_datotesis,fk_periodo,fk_tiporecurso,resumen,serialrecurso,palabrasclaves,fk_institucion,calificacion,ubicacion,pagina,fk_publicado,observacion,cota,fk_sede,fk_escuela)
+                  VALUES ({$fk_datotesis}
+                            ,{$periodo}
+                            ,{$fk_tiporecurso}
+                            ,'{$resumen}'
+                            ,'{$serialrecurso}'
+                            ,'{$palabrasclaves}'
+                            ,{$fk_institucion}
                             ,{$calificacion}
                             ,'{$ubicacion}'
                             ,{$pagina}
+                            ,{$fk_publicado}
                             ,'{$observacion}'
                             ,'{$cota}'
                             ,{$sede}
                             ,{$escuela}
-
                             );";
             
             $results = $this->_db->query($SQL);

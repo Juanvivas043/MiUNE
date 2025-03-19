@@ -11,7 +11,8 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
       Zend_Loader::loadClass('Models_DbTable_Repositorio');
       Zend_Loader::loadClass('Forms_Repositorio');
       Zend_Loader::loadClass('Models_DbTable_Atributos');
-
+      Zend_Loader::loadClass('Models_DbTable_Periodos');
+      Zend_Loader::loadClass('Models_DbTable_Tesis');
 
 
       //Instancia de clases
@@ -20,6 +21,11 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
       $this->repositorio         = new Models_DbTable_Repositorio();
       $this->view->form          = new Forms_Repositorio();
       $this->atributo            = new Models_DbTable_Atributos();
+      $this->periodos         = new Models_DbTable_Periodos();
+      $this->tesis         = new Models_DbTable_Tesis();
+      $this->uploader = new SwapBytes_FileUploader_qqFileUploader(array('pdf'), 15728640);
+
+
 
 
       $this->SwapBytes_Form->set($this->view->form);
@@ -27,10 +33,12 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
       $this->_params['modal']   = $this->SwapBytes_Crud_Form->getParams();
 
       //Rellena los select de los formularios de coleccion y tipo de recurso
-      $this->SwapBytes_Form->fillSelectBox('fk_tutor', $this->grupo->getTutores() , 'pk_usuario', 'nombre');
-      $this->SwapBytes_Form->fillSelectBox('fk_tiporecurso', $this->atributo->getTipes(110, null) , 'pk_atributo', 'valor');
-      $this->SwapBytes_Form->fillSelectBox('fk_coleccion', $this->atributo->getTipes(3, 920) , 'pk_atributo', 'valor');
-      $this->SwapBytes_Form->fillSelectBox('fk_estado', $this->atributo->getTipes(111, null) , 'pk_atributo', 'valor');
+      $this->SwapBytes_Form->fillSelectBox('periodo', $this->periodos->getSelect() , 'pk_periodo', 'nombre');
+      //this->SwapBytes_Form->fillSelectBox('fk_tiporecurso', $this->atributo->getTipes(110, null) , 'pk_atributo', 'valor');
+      $this->SwapBytes_Form->fillSelectBox('escuela', $this->atributo->getTipes(3, 920) , 'pk_atributo', 'valor');
+      //$this->SwapBytes_Form->fillSelectBox('fk_lineainvestigacion', $this->tesis->getLineaInvestigacion(12) , 'fk_lineainvestigacion', 'valor');
+      $this->SwapBytes_Form->fillSelectBox('publicado', $this->atributo->getTipes(111, null) , 'pk_atributo', 'valor');
+
 
 
 
@@ -39,16 +47,16 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
       Zend_Loader::loadClass('Models_DbTable_Usuarios');
       Zend_Loader::loadClass('Models_DbTable_UsuariosGrupos');
       Zend_Loader::loadClass('Models_DbTable_Recordsacademicos');
-      Zend_Loader::loadClass('Models_DbTable_Periodos');
       Zend_Loader::loadClass('Models_DbTable_Inscripciones');
       Zend_Loader::loadClass('Models_DbTable_Profit');
       Zend_Loader::loadClass('Models_DbTable_Usuariosdatos');
-      Zend_Loader::loadClass('Models_DbView_Grupos');
       Zend_Loader::loadClass('Models_DbView_Sedes');
       Zend_Loader::loadClass('Models_DbView_Escuelas');
       Zend_Loader::loadClass('Models_DbTable_Inscripciones');
       Zend_Loader::loadClass('Models_DbTable_Pensums');
       Zend_Loader::loadClass('Models_DbTable_Cargacarnets');
+      Zend_Loader::loadClass('Models_DbView_Grupos');
+
       $this->Usuarios         = new Models_DbTable_Usuarios();
       $this->usuariosdatos    = new Models_DbTable_Usuariosdatos();
       $this->grupo            = new Models_DbTable_UsuariosGrupos();
@@ -60,7 +68,6 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
       $this->profit           = new Models_DbTable_Profit();
       $this->inscripciones    = new Models_DbTable_Inscripciones();
       $this->vw_sedes         = new Models_DbView_Sedes();
-      $this->periodos         = new Models_DbTable_Periodos();
       $this->inscripciones    = new Models_DbTable_Inscripciones();
       $this->pensum           = new Models_DbTable_Pensums();
       $this->CargaCarnets     = new Models_DbTable_CargaCarnets();
@@ -79,12 +86,18 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
       $this->Request = Zend_Controller_Front::getInstance()->getRequest();
       $this->AuthSpace                = new Zend_Session_Namespace('Zend_Auth');
       $this->CmcBytes_Filtros = new CmcBytes_Filtros();
-      $this->tablas = Array('Recurso' =>Array('vw_tiporecursos', null,
-                                        Array('pk_atributo', 'tiporecurso'), '1 DESC'),
+      $this->tablas = Array('Periodo'  => Array('tbl_periodos', null, 
+                                          Array('pk_periodo', 'lpad(pk_periodo::text, 4, \'0\') || \', \' || to_char(fechainicio, \'MM-yyyy\') || \' / \' ||  to_char(fechafin, \'MM-yyyy\')'), 'DESC'),
 
-                            'Escuela' =>Array('vw_escuelas', 'pk_atributo<>920',
-                                        Array('pk_atributo','escuela'),'1 ASC'),
-                            );
+                            // 'Recurso'  =>Array('vw_tiporecursos', null,
+                            //              Array('pk_atributo', 'tiporecurso'), '1 DESC'),
+
+                            'Escuela'  =>Array('vw_escuelas', 'pk_atributo<>920',
+                                         Array('pk_atributo','escuela'),'1 ASC'),
+
+                            'Estado'   =>Array('vw_estadosrecursos', null,
+                                         Array('pk_atributo','estadorecurso'),'1 ASC')
+                            ); 
 
 
       $this->_params['filters'] = $this->SwapBytes_Uri->queryToArray($this->Request->getParam('filters'));
@@ -162,9 +175,11 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
             $this->SwapBytes_Ajax->setHeader();
 
             //recibe los valores de los filtros
-              $coleccion = $this->_params['filters']['Escuela'];
-              $tiporecurso = $this->_params['filters']['Recurso'];
-
+              $periodo = $this->_params['filters']['Periodo'];
+              //$tiporecurso = $this->_params['filters']['Recurso'];
+              $escuela = $this->_params['filters']['Escuela'];
+              $estado = $this->_params['filters']['Estado'];
+              
             //Buscador
               //Recibe los valores del buscador
               $searchData  = $this->_getParam('buscar');
@@ -180,20 +195,15 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
               $json = array();
 
             //Se agrega la logica para listar segun los valores que lleguen de los filtros
-              if($coleccion == null && $tiporecurso == null){
+              if($periodo == null && $tiporecurso == null && $escuela == null && $estado == null){
 
-                $paginatorCount = $this->repositorio->getCountRecursos();
-                $rows = $this->repositorio->getRecursos($itemPerPage, $pageNumber);
-
-              } else if ($coleccion == null) {
-
-                $paginatorCount = $this->repositorio->getCountRecursosTipo($tiporecurso);
-                $rows = $this->repositorio->getRecursosTipo($itemPerPage, $pageNumber, $tiporecurso);
+                $paginatorCount = $this->repositorio->getCountRecursosAll();
+                $rows = $this->repositorio->getRecursosAll($itemPerPage, $pageNumber);
 
               } else {
 
-                $paginatorCount = $this->repositorio->getCountRecursosTipoEscuela($tiporecurso, $coleccion);
-                $rows = $this->repositorio->getRecursosTipoEscuela($itemPerPage, $pageNumber, $tiporecurso, $coleccion);
+                $paginatorCount = $this->repositorio->getCountRecursos($periodo, $tiporecurso, $escuela, $estado);
+                $rows = $this->repositorio->getRecursos($itemPerPage, $pageNumber, $periodo, $tiporecurso, $escuela, $estado);
 
               }
 
@@ -204,37 +214,48 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
 
               //Se define la tabla y se definen los atributos
                 $table = array('class' => 'tableData',
-                             'width' => '1300px');
+                             'width' => '1325px');
 
               //Se definen las columnas y los atributos
-                $columns = array(array('column'  => 'pk_recurso',
-                                       'primary' => true,
-                                       'hide'    => true,
-                                       'name' => 'pk_recurso'),
-                                 array('name'    => 'titulo',
-                                           'width'   => '500px',
-                                           'column'  => 'titulo',
-                                           'rows'    => array('style' => 'text-align:center')),
-                                 array('name'    => 'cedula',
-                                       'width'   => '100px',
-                                       'rows'    => array('style' => 'text-align:center'),
-                                       'column'  => 'cedula'),
-                                 array('name'    => 'nombre',
-                                       'width'   => '150px',
-                                       'rows'    => array('style' => 'text-align:center'),
-                                       'column'  => 'nombre'),
-                                 array('name'    => 'tipo de recurso',
-                                       'width'   => '80px',
-                                       'rows'    => array('style' => 'text-align:center'),
-                                       'column'  => 'tiporecurso'),
-                                 array('name'    => 'escuela',
-                                       'width'   => '80px',
-                                       'rows'    => array('style' => 'text-align:center'),
-                                       'column'  => 'coleccion'),
-                                       array('name'    => 'estado',
-                                       'width'   => '80px',
-                                       'rows'    => array('style' => 'text-align:center'),
-                                       'column'  => 'estado')
+                $columns = array(   array('name'  => 'id',
+                                              'primary' => true,
+                                              'hide'    => true,
+                                              'column' => 'id'),
+                                    array('name'    => 'titulo',
+                                             'width'   => '350px',
+                                             'rows'    => array('style' => 'text-align:center'),
+                                             'column'  => 'titulo'),
+                                    array('name'    => 'cota',
+                                             'width'   => '50px',
+                                             'rows'    => array('style' => 'text-align:center'),
+                                             'column'  => 'cota'),
+                                    array('name'  => 'palabrasclave',
+                                             'hide'    => true,
+                                             'column' => 'palabrasclave'),
+                                    array('name'    => 'cedula',
+                                             'width'   => '70px',
+                                             'rows'    => array('style' => 'text-align:center'),
+                                             'column'  => 'cedula'),
+                                    array('name'    => 'autor',
+                                             'width'   => '150px',
+                                             'rows'    => array('style' => 'text-align:center'),
+                                             'column'  => 'autor'),
+                                    array('name'    => 'periodo',
+                                             'width'   => '80px',
+                                             'rows'    => array('style' => 'text-align:center'),
+                                             'column'  => 'periodo'),
+                                    array('name'    => 'tutor',
+                                             'width'   => '150px',
+                                             'rows'    => array('style' => 'text-align:center'),
+                                             'column'  => 'tutor'),
+                                    array('name'    => 'escuela',
+                                             'width'   => '80px',
+                                             'rows'    => array('style' => 'text-align:center'),
+                                             'column'  => 'escuela'),
+                                    array('name'    => 'publicado',
+                                             'width'   => '80px',
+                                             'rows'    => array('style' => 'text-align:center'),
+                                             'column'  => 'publicado')
 
                     );
 
@@ -242,9 +263,9 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
                 $HTML = $this->SwapBytes_Crud_List->fillWithPaginator($table, $rows, $columns, $itemPerPage, $pageNumber, $pageRange, $paginatorCount[0]["count"], 'VUDR');
 
                 $json[] = $this->SwapBytes_Jquery->setHtml('tableData', $HTML);
-                $json[] = $this->SwapBytes_Jquery->checkOrUncheckAll('chkSelectDeselect', 'chkRecurso');
 
             } else {
+
             $HTML  = $this->SwapBytes_Html_Message->alert("No existen recursos cargados.");
             $json[] = $this->SwapBytes_Jquery->setHtml('tableData', $HTML);
 
@@ -258,16 +279,30 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
 
   public function viewAction() {
 
-      $dataRow = $this->repositorio->getRow($this->_params['modal']['id']);
+      // echo $this->_params['modal']['id'];
+      // die;
+      $tesis = $this->repositorio->getRow($this->_params['modal']['id']);
 
-      $dataRow['fk_usuariogrupo'] = $this->repositorio->getCedula($this->_params['modal']['id']);
+      //revisar para agregar n/A
+    //   public function escuelaAction() {
+    //     $dataRows = $this->escuelas->getSelect($this->Request->getParam('sede'));
+    //     array_unshift($dataRows, array("pk_atributo"=>"0","escuela"=>"Todas"));
+    //     $this->SwapBytes_Ajax_Action->fillSelect($dataRows);
+    // }
 
+      // echo '<pre>';
+      // var_dump($tesis[0]);
+      // echo '</pre>';
+      // die();
+      // $dataRow['fk_autor'] = $this->repositorio->getCedula($this->_params['modal']['id']);
+      // $dataRow['fk_tutor'] = $this->repositorio->getCedulaTutor($this->_params['modal']['id']);
+      
       #$json[] = $this->SwapBytes_Jquery_Ui_Form->buttonShow('frmModal', 'Eliminar');
-      #$json[] = $this->SwapBytes_Jquery_Ui_Form->displayError('frmModal', 'Me gustan los penes');
+      #$json[] = $this->SwapBytes_Jquery_Ui_Form->displayError('frmModal', '');
       #$json[] = $this->SwapBytes_Jquery_Ui_Form->setCenter('frmModal');
       #$json[] = $this->SwapBytes_Jquery_Ui_Form->setWidth('frmModal', 1000);
 
-      $this->SwapBytes_Crud_Form->setProperties($this->view->form, $dataRow, 'Ver recurso');
+      $this->SwapBytes_Crud_Form->setProperties($this->view->form, $tesis, 'Ver recurso');
       $this->SwapBytes_Crud_Form->getView();
 
   }
@@ -280,10 +315,12 @@ public function addoreditloadAction() {
 
       $title = 'Editar Recurso';
 
-      $this->SwapBytes_Form->readOnlyElement('fk_usuariogrupo', true);
+      // $this->SwapBytes_Form->readOnlyElement('fk_autor', true);
 
       $dataRow = $this->repositorio->getRow($this->_params['modal']['id']);
-      $dataRow['fk_usuariogrupo'] = $this->repositorio->getCedula($this->_params['modal']['id']);
+      // $dataRow['fk_autor'] = $this->repositorio->getCedula($this->_params['modal']['id']);
+      // $dataRow['fk_tutor'] = $this->repositorio->getCedulaTutor($this->_params['modal']['id']);
+
 
     } else {
 
@@ -291,7 +328,8 @@ public function addoreditloadAction() {
 
 	  }
 
-  $this->SwapBytes_Crud_Form->setProperties($this->view->form, $dataRow, $title);
+  
+  $this->SwapBytes_Crud_Form->setProperties($this->view->form, $dataRow[0], $title);
 	$this->SwapBytes_Crud_Form->getAddOrEditLoad();
 
   }
@@ -305,14 +343,13 @@ public function addoreditconfirmAction() {
 
     $this->SwapBytes_Ajax->setHeader();
 
-    // $dataRow = $this->_params['modal'];
+    $dataRow = $this->_params['modal'];
+
     // $exists = $this->repositorio->isUserEstudiante($dataRow['fk_usuariogrupo']);
 
     //  $json[] = $this->SwapBytes_Jquery_Ui_Form->addJscript("console.log('$exists');");
 
     // $this->SwapBytes_Crud_Form->setJson($json);
-
-
 
     // $error = $this->view->form->getMessages('fk_usuariogrupo');
     // $errorJson = Zend_Json::encode($error);
@@ -333,25 +370,36 @@ public function addoreditconfirmAction() {
       $this->SwapBytes_Ajax->setHeader();
 
       $dataRow = $this->_params['modal'];
+      
+      $directorio = '/var/www/http/MiUNE2/public/uploads/recursos/';
+
 
       if(isset($dataRow['pk_recurso']) && $dataRow['pk_recurso'] > 0) {
 
-        $dataRow['fk_usuariogrupo'] = $this->grupo->getPK($dataRow['fk_usuariogrupo']);
+        $dataRow['fk_autor'] = $this->grupo->getPK($dataRow['fk_autor']);
+        $dataRow['fk_tutor'] = $this->grupo->getPK($dataRow['fk_tutor']);
+        
         $this->repositorio->updateRow($dataRow['pk_recurso'], $dataRow);
 
 
 
       } else {
 
+
+        //$result = $this->uploader->handleUpload($directorio, false, true);
+        
         $dataRow['pk_recurso'] = (int)$dataRow['pk_recurso'];
-        $dataRow['rutarecurso'] = '/var/www/http/MiUNE/public/repositorio/recursos/pasantia' . $dataRow['pk_recurso'] . '.pdf';
-        $dataRow['fk_usuariogrupo'] = $this->grupo->getPK($dataRow['fk_usuariogrupo']);
+        #$dataRow['rutarecurso'] = '/var/www/http/MiUNE/public/repositorio/recursos/pasantia' . $dataRow['pk_recurso'] . '.pdf';
+        $dataRow['fk_autor'] = $this->grupo->getPK($dataRow['fk_autor']);
+        $dataRow['fk_tutor'] = $this->grupo->getPK($dataRow['fk_tutor']);
+
 
         $this->repositorio->addRow($dataRow);
 
 
 
       }
+
     
     $this->SwapBytes_Crud_Form->getAddOrEditEnd();
      
@@ -365,11 +413,11 @@ public function addoreditconfirmAction() {
     $permit = true;
 
     $dataRow = $this->repositorio->getRow($this->_params['modal']['id']);
-    $dataRow['fk_usuariogrupo'] = $this->repositorio->getCedula($this->_params['modal']['id']);
-
+    $dataRow['fk_autor'] = $this->repositorio->getCedula($this->_params['modal']['id']);
+    $dataRow['fk_tutor'] = $this->repositorio->getCedulaTutor($this->_params['modal']['id']);
 
     $this->SwapBytes_Crud_Form->setProperties($this->view->form, $dataRow, 'Eliminar recurso', $message);
-    $this->SwapBytes_Crud_Form->setWidthLeft('120px');
+    $this->SwapBytes_Crud_Form->setWidthLeft('100px');
     $this->SwapBytes_Crud_Form->getDeleteLoad($permit);
 
   }
