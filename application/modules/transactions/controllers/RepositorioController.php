@@ -23,7 +23,6 @@ class Transactions_RepositorioController extends Zend_Controller_Action {
       $this->atributo            = new Models_DbTable_Atributos();
       $this->periodos         = new Models_DbTable_Periodos();
       $this->tesis         = new Models_DbTable_Tesis();
-      $this->uploader = new SwapBytes_FileUploader_qqFileUploader(array('pdf'), 15728640);
 
 
 

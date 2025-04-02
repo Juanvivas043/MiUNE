@@ -7,9 +7,8 @@
 
 //problema con las tesis que no tienen autores sale dos veces
 //validaciones al agregar
-//subir el archivo
 //descargar el archivo
-//agregar nuevos campos de busqueda para el buscador de texto
+//modal al subir un archivo
 
 class Transactions_BibliotecatesisController extends Zend_Controller_Action
 {
@@ -55,12 +54,17 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
         $this->view->form = new Forms_Bibliotecatesis();
         $this->SwapBytes_Form->set($this->view->form);
 
-        //$this->uploader = new SwapBytes_FileUploader_qqFileUploader(array('pdf'), 15728640);
-
         $this->tablas = array(
 
             'Publicacion' =>array('vw_estadospublicacionestesis', null,
-                array('pk_atributo','estado'),'1 ASC'),   
+                array('pk_atributo','estado'),'1 ASC'),
+            
+            'Modalidad' => array(
+                'vw_tiporecurso',
+                null,
+                array('pk_atributo', 'tipo'),
+                'DESC'
+            ),
 
             'Periodo' => array(
                 'tbl_periodos',
@@ -95,9 +99,10 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
         } else {
             $permiso = false;
         }
+        $this->SwapBytes_Crud_Action->addCustum($Información);
 
-        $this->SwapBytes_Crud_Action->setDisplay(true, true, $permiso);
-        $this->SwapBytes_Crud_Action->setEnable(true, true, $permiso);
+        $this->SwapBytes_Crud_Action->setDisplay(true, true, $permiso, false, false, false, true);
+        $this->SwapBytes_Crud_Action->setEnable(true, true, $permiso, false, false, false, true);
 
         $this->SwapBytes_Form->fillSelectBox('fk_sede', $this->agregar->getsedeform(), 'pk_estructura', 'sede');
         $this->SwapBytes_Form->fillSelectBox('fk_escuela', $this->agregar->get_escuela(), 'pk_atributo', 'escuela');
@@ -195,25 +200,43 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
             $sede = $this->_params['filters']['Sede'];
             $escuela = $this->_params['filters']['Escuela'];
             $estado = $this->_params['filters']['Publicacion'];
-
+            $modalidad = $this->_params['filters']['Modalidad'];
 
             // Definimos los valores
 
-            if ($periodo == null && $escuela == null && $sede == null && $estado == null) {
+            if ($periodo == null && $escuela == null && $sede == null && $estado == null && $modalidad == null) {
                 $paginatorCount = $this->agregar->getSQLCount();
                 $rows = $this->agregar->get_tesis($itemPerPage, $pageNumber);
                 $rows = $this->mejorar_data($rows);
 
-            } else if ($periodo == null && $escuela == null && $sede == null && !$estado == null) {
+            } else if ($modalidad == null && $periodo == null && $escuela == null && $sede == null && !$estado == null) {
 
                 $paginatorCount = $this->agregar->getSQLCountFilteredByEstado($estado);
                 $rows = $this->agregar->get_tesisFilteredByEstado($itemPerPage, $pageNumber, $estado);
                 $rows = $this->mejorar_data($rows);
 
+            } else if ($periodo == null && $escuela == null && $sede == null && !$estado == null && !$modalidad == null) {
+
+                $paginatorCount = $this->agregar->getSQLCountFilteredByEstadoxModalidad($estado, $modalidad);
+                $rows = $this->agregar->get_tesisFilteredByEstadoxModalidad($itemPerPage, $pageNumber, $estado, $modalidad);
+                $rows = $this->mejorar_data($rows);
+
+            }  else if ($escuela == null && $sede == null && !$estado == null && !$modalidad == null && !$periodo == null) {
+
+                $paginatorCount = $this->agregar->getSQLCountFilteredByEstadoxModalidadxPeriodo($estado, $modalidad, $periodo);
+                $rows = $this->agregar->get_tesisFilteredByEstadoxModalidadxPeriodo($itemPerPage, $pageNumber, $estado, $modalidad, $periodo);
+                $rows = $this->mejorar_data($rows);
+
+            }  else if ($escuela == null && !$estado == null && !$modalidad == null && !$periodo == null && !$sede == null) {
+
+                $paginatorCount = $this->agregar->getSQLCountFilteredByEstadoxModalidadxPeriodoxSede($estado, $modalidad, $periodo, $sede);
+                $rows = $this->agregar->get_tesisFilteredByEstadoxModalidadxPeriodoxSede($itemPerPage, $pageNumber, $estado, $modalidad, $periodo, $sede);
+                $rows = $this->mejorar_data($rows);
+
             } else {
 
-                $paginatorCount = $this->agregar->getSQLCountFiltered($periodo, $sede, $escuela, $estado);
-                $rows = $this->agregar->get_tesisFiltered($itemPerPage, $pageNumber, $periodo, $sede, $escuela, $estado);
+                $paginatorCount = $this->agregar->getSQLCountFiltered($periodo, $sede, $escuela, $estado, $modalidad);
+                $rows = $this->agregar->get_tesisFiltered($itemPerPage, $pageNumber, $periodo, $sede, $escuela, $estado, $modalidad);
                 $rows = $this->mejorar_data($rows);
 
             }
@@ -315,12 +338,6 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
         $autor = $this->agregar->getNumAutores($this->_params['modal']['id']);
         $jurado = $this->agregar->getRowJurado($this->_params['modal']['id']);
 
-        // echo '<pre>';
-        // var_dump($tesis);
-        // echo '</pre>';
-        // die();   
-
-
         // recreamos el formulario
         $cantidad_autores = count($autor);
         $cantidad_jurado = count($jurado);
@@ -356,27 +373,34 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
         }
 
 
-        // $dataRow  = $this->transformarNull($dataRow);
         $dataRow['id'] = $this->_params['modal']['id'];
         $dataRow['cota'] = $tesis[0]['cota'];
+        $dataRow['fecha'] = $tesis[0]['fecha'];
+        $dataRow['fk_sede'] = $tesis[0]['fk_sede'];
         $dataRow['fk_periodo'] = $tesis[0]['fk_periodo'];
         $dataRow['serialrecurso'] = $tesis[0]['serialrecurso'];
         $dataRow['titulo'] = $tesis[0]['titulo'];
         $dataRow['resumen'] = $tesis[0]['resumen'];
         $dataRow['palabrasclaves'] = $tesis[0]['palabrasclaves'];
+        $dataRow['fk_tutor'] = $tesis[0]['fk_tutor'];
         $dataRow['fk_escuela'] = $tesis[0]['fk_escuela'];
         $dataRow['fk_tiporecurso'] = $tesis[0]['fk_tiporecurso'];
-        $dataRow['fk_tutor'] = $tesis[0]['fk_tutor'];
         $dataRow['fk_institucion'] = $tesis[0]['fk_institucion'];
         $dataRow['fk_calificacion'] = $tesis[0]['calificacion'];
+        $dataRow['fk_publicado'] = $tesis[0]['fk_publicado'];
         $dataRow['ubicacion'] = $tesis[0]['ubicacion'];
         $dataRow['pagina'] = $tesis[0]['pagina'];
-        $dataRow['fk_publicado'] = $tesis[0]['fk_publicado'];
         $dataRow['observacion'] = $tesis[0]['observacion'];
-        //$dataRow['fk_sede'] = $tesis[0]['fk_sede'];
-        //$this->SwapBytes_Form->fillSelectBox('fk_sede', $this->agregar->getsedeform($tesis[0]['fk_sede']), 'pk_estructura', 'sede');
-        //$this->SwapBytes_Form->fillSelectBox('fk_publicado', $this->agregar->getRowTesis($this->_params['modal']['id']), 'pk_atributo', 'estado');
+        $dataRow['archivo'] = $tesis[0]['archivo'];
 
+        if ($dataRow['archivo'] == null) {
+            $json[] = "document.getElementById('archivo-nombre').textContent = 'No Tiene Archivo Adjunto';";
+        } else {
+            $json[] = "document.getElementById('archivo-nombre').textContent = '" . basename($dataRow['archivo']) . "'";
+        }
+
+        $json[] = "document.getElementById('boton').style.display = 'none';";
+        $this->SwapBytes_Crud_Form->setJson($json);
         $this->SwapBytes_Crud_Form->setProperties($this->view->form, $dataRow, 'Ver Tesis');
         $this->SwapBytes_Crud_Form->getView();
 
@@ -384,100 +408,81 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
     }
 
 
-    public function addoreditloadAction($queryArray = null)
-    {
-        $queryString = $this->_getParam('filters');
-        $filtros = $this->SwapBytes_Uri->queryToArray($queryString);
-
-        if ($queryArray != NULL) {
-            $json = $this->llenar_form($queryArray);
-            $this->SwapBytes_Crud_Form->setJson($json);
-
-            $filtros['Sede'] = $queryArray['fk_sede'];
-        }
-
-
+    public function addoreditloadAction() {
 
         if (is_numeric($this->_params['modal']['id']) && $this->_params['modal']['id'] > 0) {
 
             $tesis = $this->getData($this->_params['modal']['id']);
 
+            $autor = $this->agregar->getNumAutores($this->_params['modal']['id']);
+            $jurado = $this->agregar->getRowJurado($this->_params['modal']['id']);
+
+            // recreamos el formulario
+            $cantidad_autores = count($autor);
+            $cantidad_jurado = count($jurado);
+
+            $pos_jurado = 9 + ($cantidad_autores) * 2;
+            $pos_autor = 8;
+
+            $this->SwapBytes_Form->fillSelectBox('fk_autor', $this->agregar->getAutor(), 'pk_usuario', 'nombre');
 
 
-            if ($queryArray == NULL) {
-
-                $autor = $this->agregar->getNumAutores($this->_params['modal']['id']);
-                $jurado = $this->agregar->getRowJurado($this->_params['modal']['id']);
-
-                // recreamos el formulario
-                $cantidad_autores = count($autor);
-                $cantidad_jurado = count($jurado);
-
-                $pos_jurado = 9 + ($cantidad_autores) * 2;
-                $pos_autor = 8;
-
-                $this->SwapBytes_Form->fillSelectBox('fk_autor', $this->agregar->getAutor(), 'pk_usuario', 'nombre');
-
-
-                if ($cantidad_autores > 1) {
-                    $this->crearCampo($cantidad_autores - 1, 'autor', $pos_autor, $tesis[0]['fk_escuela']); // creamos el autor  
-                }
-
-                if ($cantidad_jurado > 1) {
-                    $this->crearCampo($cantidad_jurado - 1, 'jurado', $pos_jurado, $escuela); // creamos el jurado  
-                }
-
-                // llenamos el formulario.
-                //autores
-                $pos = -1;
-                foreach ($autor as $au) {
-                    if ($pos < 0) {
-                        $dataRow['fk_autor'] = $au['fk_autor'];
-                    } else {
-                        $dataRow['fk_autor' . $pos] = $au['fk_autor'];
-                    }
-                    $pos++;
-                }
-
-                $pos = -1;
-                foreach ($jurado as $jut) {
-                    if ($pos < 0) {
-                        $dataRow['fk_jurado'] = $jut['fk_jurado'];
-                    } else {
-                        $dataRow['fk_jurado' . $pos] = $jut['fk_jurado'];
-                    }
-                    $pos++;
-                }
-
-
-                // $dataRow  = $this->transformarNull($dataRow);
-                $dataRow['id'] = $this->_params['modal']['id'];
-                $dataRow['cota'] = $tesis[0]['cota'];
-                $dataRow['fk_periodo'] = $tesis[0]['fk_periodo'];
-                $dataRow['serialrecurso'] = $tesis[0]['serialrecurso'];
-                $dataRow['titulo'] = $tesis[0]['titulo'];
-                $dataRow['resumen'] = $tesis[0]['resumen'];
-                $dataRow['palabrasclaves'] = $tesis[0]['palabrasclaves'];
-                $dataRow['fk_escuela'] = $tesis[0]['fk_escuela'];
-                $dataRow['fk_tiporecurso'] = $tesis[0]['fk_tiporecurso'];
-                $dataRow['fk_tutor'] = $tesis[0]['fk_tutor'];
-                $dataRow['fk_institucion'] = $tesis[0]['fk_institucion'];
-                $dataRow['fk_calificacion'] = $tesis[0]['calificacion'];
-                $dataRow['fk_resumen'] = $tesis[0]['fk_resumen'];
-                $dataRow['ubicacion'] = $tesis[0]['ubicacion'];
-                $dataRow['pagina'] = $tesis[0]['pagina'];
-                $dataRow['fk_publicado'] = $tesis[0]['fk_publicado'];
-                $dataRow['observacion'] = $tesis[0]['observacion'];
-                $dataRow['fk_sede'] = $tesis[0]['fk_sede'];
-                //$dataRow['archivo'] = $tesis[0]['archivo'];
-
-                //$this->SwapBytes_Form->fillSelectBox('fk_sede', $this->agregar->getsedeform($tesis[0]['fk_sede']), 'pk_estructura', 'sede');
-
-                //$this->SwapBytes_Form->enableElement('cota', false);
-            } else {
-                $this->SwapBytes_Form->fillSelectBox('fk_autor', $this->agregar->getAutor($this->periodo, $tesis[0]['fk_escuela']), 'pk_usuario', 'nombre');
+            if ($cantidad_autores > 1) {
+                $this->crearCampo($cantidad_autores - 1, 'autor', $pos_autor, $tesis[0]['fk_escuela']); // creamos el autor  
             }
 
+            if ($cantidad_jurado > 1) {
+              $this->crearCampo($cantidad_jurado - 1, 'jurado', $pos_jurado, $escuela); // creamos el jurado  
+            }
+
+            // llenamos el formulario.
+            //autores
+            $pos = -1;
+            foreach ($autor as $au) {
+                if ($pos < 0) {
+                    $dataRow['fk_autor'] = $au['fk_autor'];
+                } else {
+                    $dataRow['fk_autor' . $pos] = $au['fk_autor'];
+                }
+                $pos++;
+            }
+
+            $pos = -1;
+            foreach ($jurado as $jut) {
+                if ($pos < 0) {
+                    $dataRow['fk_jurado'] = $jut['fk_jurado'];
+                } else {
+                    $dataRow['fk_jurado' . $pos] = $jut['fk_jurado'];
+                }
+                $pos++;
+            }
+
+            $dataRow['id'] = $this->_params['modal']['id'];
+            $dataRow['cota'] = $tesis[0]['cota'];
+            $dataRow['fk_sede'] = $tesis[0]['fk_sede'];
+            $dataRow['fecha'] = $tesis[0]['fecha'];
+            $dataRow['fk_periodo'] = $tesis[0]['fk_periodo'];
+            $dataRow['serialrecurso'] = $tesis[0]['serialrecurso'];
+            $dataRow['titulo'] = $tesis[0]['titulo'];
+            $dataRow['resumen'] = $tesis[0]['resumen'];
+            $dataRow['palabrasclaves'] = $tesis[0]['palabrasclaves'];
+            $dataRow['fk_tutor'] = $tesis[0]['fk_tutor'];
+            $dataRow['fk_escuela'] = $tesis[0]['fk_escuela'];
+            $dataRow['fk_tiporecurso'] = $tesis[0]['fk_tiporecurso'];
+            $dataRow['fk_institucion'] = $tesis[0]['fk_institucion'];
+            $dataRow['fk_calificacion'] = $tesis[0]['calificacion'];
+            $dataRow['fk_publicado'] = $tesis[0]['fk_publicado'];
+            $dataRow['ubicacion'] = $tesis[0]['ubicacion'];
+            $dataRow['pagina'] = $tesis[0]['pagina'];
+            $dataRow['observacion'] = $tesis[0]['observacion']; 
+            $dataRow['archivo'] = $tesis[0]['archivo'];
+
+            if ($dataRow['archivo'] == null) {
+                $json[] = "document.getElementById('archivo-nombre').textContent = 'No Tiene Archivo Adjunto';";
+            } else {
+                $json[] = "document.getElementById('archivo-nombre').textContent = '" . basename($dataRow['archivo']) . "'";
+            }
+            
             $title = 'Editar Tesis';
 
         } else {
@@ -488,18 +493,15 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
             $ultimacota = $ultimacota + 1;
             $cota = 'TG' . $ultimacota;
             $dataRow['cota'] = $cota;
-
-
-            //$this->SwapBytes_Form->fillSelectBox('fk_sede', $this->agregar->getsedeform($tesis[0]['fk_sede']), 'pk_estructura', 'sede');
+            
             $this->SwapBytes_Form->fillSelectBox('fk_autor', $this->agregar->getAutor(), 'pk_usuario', 'nombre');
-
-
-
+            
             $title = 'Agregar Tesis';
 
 
         }
 
+        $json[] = '$("#fecha").datepicker({dateFormat: "yy-mm-dd"});';   
         $json[] = "startFileUploader()";
 
         $this->SwapBytes_Crud_Form->setJson($json);
@@ -564,6 +566,7 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
                     $id,
                     $dataRow['fk_sede'],
                     $dataRow['fk_periodo'],
+                    $dataRow['fecha'],
                     $dataRow['cota'],
                     $dataRow['serialrecurso'],
                     $dataRow['resumen'],
@@ -698,8 +701,6 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
                 $pk_datotesis = $this->agregar->getTesisByTitulo($dataRow['titulo']);
                 $this->agregar->addMencionTesis($pk_datotesis);
 
-                //$result = $this->uploader->handleUpload($directorio, false, true);
-
                 // Agregar Autor
                 foreach ($autor as $valor) {
                     $pk_usuariogrupo = $this->agregar->getUsuariogrupo($valor, 855);
@@ -717,13 +718,13 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
                 $this->agregar->addTutor($pk_datotesis, $pk_usuariogrupo, $dataRow['fk_periodo']);
 
                 //AGREGAR TESIS
-                $this->agregar->addTesisBiblioteca($pk_datotesis, $dataRow['fk_periodo'],  $dataRow['fk_tiporecurso'], $dataRow['resumen'], $dataRow['serialrecurso'], $dataRow['palabrasclaves'], $dataRow['fk_institucion'],  $dataRow['fk_calificacion'], $dataRow['ubicacion'], $dataRow['pagina'], $dataRow['fk_publicado'], $dataRow['observacion'], $dataRow['cota'], $dataRow['fk_sede'], $dataRow['fk_escuela']);
+                $this->agregar->addTesisBiblioteca($pk_datotesis, $dataRow['fk_periodo'], $dataRow['fecha'] ,$dataRow['fk_tiporecurso'], $dataRow['resumen'], $dataRow['serialrecurso'], $dataRow['palabrasclaves'], $dataRow['fk_institucion'],  $dataRow['fk_calificacion'], $dataRow['ubicacion'], $dataRow['pagina'], $dataRow['fk_publicado'], $dataRow['observacion'], $dataRow['cota'], $dataRow['fk_sede'], $dataRow['fk_escuela']);
 
 
             }
 
             $this->getResponse()->setBody(Zend_Json::encode($json));
-            $this->SwapBytes_Crud_Form->getAddOrEditEnd($data);
+            $this->SwapBytes_Crud_Form->getAddOrEditEnd();
 
         }
     }
@@ -757,45 +758,62 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
         }
     }
 
-
-    public function downloadAction(){
-
+    public function downloadAction()
+    {
         $pk_tesis = $this->_request->getParam('id');
         $tesis = $this->getData($pk_tesis);
     
-        if (!empty($tesis[0]['archivo'] && !file_exists($filePath))) {
+        if (!empty($tesis[0]['archivo'])) {
             $filePath = $tesis[0]['archivo']; 
             $fileExt = ltrim(substr($filePath, strrpos($filePath, '.')), '.');
-            $fileName = $tesis[0]['cota'];
-        
-            $mime = $this->agregar->getMime($fileExt);
+    
+            if (!file_exists($filePath)) {
+                $this->SwapBytes_Crud_Form->getDialog('Error', 'No se encontro el archivo en el servidor');
 
+            }
+            
+
+
+            $mime = $this->agregar->getMime($fileExt);
+            
             if (!empty($mime)) {
                 Zend_Layout::getMvcInstance()->disableLayout();
                 Zend_Controller_Front::getInstance()->setParam('noViewRenderer', true);
+    
+                $response = Zend_Controller_Front::getInstance()->getResponse();
+                $response->setHeader('Content-Description', 'File Transfer')
+                    ->setHeader('Content-Type', $mime[0]['mime_type'])
+                    ->setHeader('Content-Disposition', 'attachment; filename="' . basename($filePath) . '"')
+                    ->setHeader('Content-Length', filesize($filePath));
                 
-                Zend_Controller_Front::getInstance()->getResponse()
-                    ->setHeader('Content-Type', $mime[0]['mime_type']) 
-                    ->setHeader('Content-Disposition', "attachment; filename=\"{$fileName}\"")
-                    ->setHeader('Content-Length', filesize($filePath)); 
-
                 readfile($filePath);
-
             } else {
-                echo 'El archivo solicitado no es soportado';
+
+                $this->SwapBytes_Crud_Form->getDialog('Error', 'Error al descargar el archivo');
+                
             }
         } else {
-            echo 'Archivo no encontrado';
+
+            $this->SwapBytes_Crud_Form->getDialog('Error', 'Esta tesis no tiene archivo adjunto');
+
+
         }
-        
+    
         $this->view->layout()->disableLayout();
         $this->_helper->viewRenderer->setNoRender(true);
     }
     
-    
-    
-    
+    public function infoAction()
+    {
+        if ($this->_request->isXmlHttpRequest()) {
+            $this->SwapBytes_Ajax->setHeader();
+            
 
+            $this->SwapBytes_Crud_Form->getDialog('Información', 'Este modulo esta en desarrollo');
+
+        }
+    }
+    
     public function existsAction() 
     {
 
@@ -1075,6 +1093,10 @@ class Transactions_BibliotecatesisController extends Zend_Controller_Action
         if ($this->_request->isXmlHttpRequest()) {
             $this->SwapBytes_Ajax->setHeader();
             $dataRow = $this->agregar->getAutor($this->periodo, $this->_getParam('escuela'));
+            echo '<pre>';
+            var_dump($dataRow);
+            echo '</pre>';
+            die();
             $this->SwapBytes_Ajax_Action->fillSelect($dataRow);
         }
 

@@ -5,18 +5,20 @@
  * @todo Definir las variables de sesion en el momento de usar este modulo.
  */
 
-class Transactions_ImportphotosController extends Zend_Controller_Action {
+class Transactions_ImportphotosController extends Zend_Controller_Action
+{
 
     private $_title = 'Transacciones \ Importar fotos';
     private $_targetDir = '/tmp/importphotos';
 
-    public function init() {
+    public function init()
+    {
         Zend_Loader::loadClass('Models_DbTable_Usuarios');
         Zend_Loader::loadClass('Forms_Importphotos');
         Zend_Loader::loadClass('Models_DbTable_UsuariosGrupos');
 
         $this->usuario = new Models_DbTable_Usuarios();
-        $this->grupo   = new Models_DbTable_UsuariosGrupos();
+        $this->grupo = new Models_DbTable_UsuariosGrupos();
     }
 
     /**
@@ -36,7 +38,8 @@ class Transactions_ImportphotosController extends Zend_Controller_Action {
     /**
      * Crea la estructura base de la pagina principal.
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $this->view->title = $this->_title;
         $this->view->form = new Forms_Importphotos();
 
@@ -59,13 +62,15 @@ class Transactions_ImportphotosController extends Zend_Controller_Action {
                     $size = $upload->getFileSize('file');
                     $type = $upload->getMimeType('file');
 
-                    $decompress = new Zend_Filter_Decompress(array('adapter' => 'Zip',
-                                'options' => array('target' => $this->_targetDir)));
+                    $decompress = new Zend_Filter_Decompress(array(
+                        'adapter' => 'Zip',
+                        'options' => array('target' => $this->_targetDir)
+                    ));
 
                     $decompress->filter($name);
 
                     $files = $this->_getFiles($this->_targetDir);
-                    $ok    = 0;
+                    $ok = 0;
                     $total = 0;
 
                     foreach ($files as $file) {
@@ -77,7 +82,7 @@ class Transactions_ImportphotosController extends Zend_Controller_Action {
                             $image = file_get_contents(realpath($file));
                             $affected = $this->usuario->setPhoto($name, $image);
                             $status = ($affected == 1) ? '[ OK ]' : '[FAIL]';
-                            $ok += ( $affected == 1) ? 1 : 0;
+                            $ok += ($affected == 1) ? 1 : 0;
                             $total++;
 
                             $this->view->report .= "{$name}.{$extension}\t{$status}\n";
@@ -94,7 +99,8 @@ class Transactions_ImportphotosController extends Zend_Controller_Action {
         }
     }
 
-    private function _getFiles($path = '.', $level = 0) {
+    private function _getFiles($path = '.', $level = 0)
+    {
         $list = array();
         $ignore = array('.', '..');
         $handle = @opendir($path);
@@ -113,7 +119,8 @@ class Transactions_ImportphotosController extends Zend_Controller_Action {
         return $list;
     }
 
-    private function _deleteAll($directory, $empty = false) {
+    private function _deleteAll($directory, $empty = false)
+    {
         if (substr($directory, -1) == "/") {
             $directory = substr($directory, 0, -1);
         }

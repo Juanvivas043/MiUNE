@@ -5,7 +5,7 @@ $this->headScript()->appendFile($this->baseUrl() . '/js/jquery.maskedinput-1.2.2
 
 $this->headScript()->appendFile($this->baseUrl() . '/js/file-uploader/client/fileuploader.js');
 $this->headScript()->appendFile($this->baseUrl() . '/js/tiny_mce/tiny_mce.js');
-
+$this->headLink()->appendStylesheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
 
 $this->headLink()->appendStylesheet($this->baseUrl() . '/css/table.css');
 $this->headLink()->appendStylesheet($this->baseUrl() . '/css/alert.css');
@@ -34,7 +34,7 @@ $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui
 </table>
 
 <!-- Modal -->
-<div id="errorModal" class = 'ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable' style="display:none; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; border-radius: 10px; z-index: 1004; text-align: center; min-width: 300px;">
+<div id="errorModal" class = 'ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable' style="display:none; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; border-radius: 10px; text-align: center; min-width: 300px;">
     <p id="modalMessage" style="margin-bottom: 20px; font-size: 16px;"></p>
     <button onclick="closeModal()">Aceptar</button>
 </div>
@@ -43,7 +43,8 @@ $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui
 <?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
 <script type='text/javascript'>
     $(document).ready(function(){
-        
+
+    
         $('#btnList').click(function(){
             $buscar = $('#txtBuscar').val();
             for ($i = 0 ; $i<50 ; $i++){
@@ -67,11 +68,11 @@ $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui
                 $rempl = $rempl.replace('~','/');
             }
             $('#txtBuscar').val($rempl);
-        })
-
-         
+        }) 
+    
     });
-
+        
+ 
     function startFileUploader(){
 
     var uploader = new qq.FileUploaderBasic({
@@ -95,40 +96,66 @@ $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui
 
                 if (responseJSON.success) {
                     openModal(responseJSON.message); // Abre el modal con el mensaje de error
-                    let inputArchivo = document.getElementById("archivo");
-                    if (inputArchivo) {
-                        inputArchivo.value = fileName;
-                    }
-                }
+                    let archivoContainer = document.getElementById("archivo-container");
+                    let archivoNombre = document.getElementById("archivo-nombre");
+                    let archivoHidden = document.getElementById("archivo"); // Campo oculto
+                        
+                    if (archivoContainer && archivoNombre) {
+                        archivoHidden.value = fileName; // Guardar valor en el campo oculto
+                        archivoNombre.textContent = fileName; // Mostrar nombre en el div
+                        archivoContainer.style.display = "flex"; // Mostrar el div
+                        }
             }
-        }
+        }}
     });
 };
-
 function openModal(message) {
     // Cambiar mensaje del modal
     document.getElementById("modalMessage").innerText = message;
 
     // Mostrar el modal
-    document.getElementById("errorModal").style.display = "block";
+    let modal = document.getElementById("errorModal");
+    modal.style.display = "block";
 
-    // Seleccionar el overlay y cambiar su z-index
+    // Seleccionar todos los formularios abiertos (por si hay varios)
+    let forms = document.querySelectorAll(".ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-draggable");
+    
+    let highestZIndex = 0;
+
+    // Buscar el formulario con el z-index más alto
+    forms.forEach(form => {
+        let zIndex = window.getComputedStyle(form).zIndex;
+        if (zIndex && !isNaN(zIndex)) {
+            zIndex = parseInt(zIndex, 10);
+            if (zIndex > highestZIndex) {
+                highestZIndex = zIndex;
+            }
+        }
+    });
+
+    // Seleccionar el overlay
     let overlay = document.querySelector(".ui-widget-overlay");
+
     if (overlay) {
-        overlay.dataset.originalZIndex = overlay.style.zIndex; // Guardar el valor original
-        overlay.style.zIndex = "1003"; // Asignar un z-index mayor
+        // Asignar el z-index al overlay (formulario con mayor z-index +1)
+        overlay.style.zIndex = highestZIndex + 1;
     }
+
+    // Asignar el z-index al modal (overlay +1)
+    modal.style.zIndex = highestZIndex + 2;
 }
 
 function closeModal() {
     // Ocultar el modal
-    document.getElementById("errorModal").style.display = "none";
+    let modal = document.getElementById("errorModal");
+    modal.style.display = "none";
 
     // Restaurar el z-index original del overlay
     let overlay = document.querySelector(".ui-widget-overlay");
-    if (overlay && overlay.dataset.originalZIndex) {
-        overlay.style.zIndex = overlay.dataset.originalZIndex;
+    if (overlay) {
+        overlay.style.zIndex = "";
     }
 }
+
 
 </script>

@@ -18,6 +18,8 @@ class SwapBytes_Crud_Action {
         $this->properties['copy']['id'] = 'btnCopy';
         $this->properties['paste']['name'] = 'Pegar';
         $this->properties['paste']['id'] = 'btnPaste';
+        $this->properties['info']['name'] = 'Información';
+        $this->properties['info']['id'] = 'btnInfo';
         
         $this->javascript = null;
     }
@@ -39,7 +41,7 @@ class SwapBytes_Crud_Action {
      * @param boolean $Copy
      * @param boolean $Paste
      */
-    public function setDisplay($List = true, $Clear = true, $Add = false, $Delete = false, $Copy = false, $Paste = false) {
+    public function setDisplay($List = true, $Clear = true, $Add = false, $Delete = false, $Copy = false, $Paste = false, $Info = false) {
         if (!is_bool($List))
             return;
         if (!is_bool($Clear))
@@ -59,6 +61,7 @@ class SwapBytes_Crud_Action {
         $this->properties['delete']['display'] = $Delete;
         $this->properties['copy']['display'] = $Copy;
         $this->properties['paste']['display'] = $Paste;
+        $this->properties['info']['display'] = $Info;
     }
 
     public function getDisplay() { // Habilita el html de acciones (true), de ser false deshabilita(false)
@@ -76,7 +79,7 @@ class SwapBytes_Crud_Action {
      * @param boolean $Copy
      * @param boolean $Paste
      */
-    public function setEnable($List = true, $Clear = true, $Add = false, $Delete = false, $Copy = false, $Paste = false) {
+    public function setEnable($List = true, $Clear = true, $Add = false, $Delete = false, $Copy = false, $Paste = false, $Info = false) {
         if (!is_bool($List))
             return;
         if (!is_bool($Clear))
@@ -89,6 +92,8 @@ class SwapBytes_Crud_Action {
             return;
         if (!is_bool($Paste))
             return;
+        if (!is_bool($Info))
+            return;
 
         $this->properties['list']['enable'] = $List;
         $this->properties['clear']['enable'] = $Clear;
@@ -96,6 +101,8 @@ class SwapBytes_Crud_Action {
         $this->properties['delete']['enable'] = $Delete;
         $this->properties['copy']['enable'] = $Copy;
         $this->properties['paste']['enable'] = $Paste;
+        $this->properties['info']['enable'] = $Info;
+
     }
 
     /**
@@ -144,6 +151,11 @@ class SwapBytes_Crud_Action {
             $js .= $this->SwapBytes_Jquery->setClick($this->properties['paste']['id'], $function);
         }
 
+        if ($this->properties['info']['display']) {
+            $function = $this->SwapBytes_Jquery->getJSON('info', null, array('filters' => $this->SwapBytes_Jquery->serializeForm('tblFiltros')));
+            $js .= $this->SwapBytes_Jquery->setClick($this->properties['info']['id'], $function);
+        }
+
         /*
          * Habilitamos los botones necesarios definidos:
          */
@@ -164,6 +176,9 @@ class SwapBytes_Crud_Action {
         }
         if (!$this->properties['paste']['enable']) {
             $js .= $this->SwapBytes_Jquery_Ui_Form->buttonDisable($this->properties['paste']['id'], true);
+        }
+        if (!$this->properties['info']['enable']) {
+            $js .= $this->SwapBytes_Jquery_Ui_Form->buttonDisable($this->properties['info']['id'], true);
         }
 
         /*
@@ -205,6 +220,8 @@ class SwapBytes_Crud_Action {
             $html .= "<button id='{$this->properties['paste']['id']}' name='{$this->properties['paste']['id']}' class='{$class}'>{$this->properties['paste']['name']}</button>";
         if ($this->properties['delete']['display'])
             $html .= "<button id='{$this->properties['delete']['id']}' name='{$this->properties['delete']['id']}' class='{$class}'>{$this->properties['delete']['name']}</button>";
+        if ($this->properties['info']['display'])
+            $html .= "<button id='{$this->properties['info']['id']}' name='{$this->properties['info']['id']}' class='{$class}'>{$this->properties['info']['name']}</button>";
 
         if (isset($this->properties['custom']) && is_array($this->properties['custom'])) {
             foreach ($this->properties['custom'] as $custom) {

@@ -8,10 +8,10 @@ class Forms_Bibliotecatesis extends Zend_Form {
      */
   public function init() {
              
-     $this->setMethod('post');
-     $this->setName('bibliotecatesis');
+    $this->setMethod('post');
+    $this->setName('bibliotecatesis');
 	$this->setOptions(array('escape' => true));
-     $this->setAttrib('enctype', 'multipart/form-data');
+    $this->setAttrib('enctype', 'multipart/form-data');
 
         $SwapBytes_Jquery = new SwapBytes_Jquery();
          
@@ -34,6 +34,12 @@ class Forms_Bibliotecatesis extends Zend_Form {
      $fk_periodo = new Zend_Form_Element_Select('fk_periodo');
      $fk_periodo->setLabel('Periodo: ')
              ->setAttrib('style', 'width: 175px');
+
+    $fecha = new Zend_Form_Element_Text('fecha');
+    $fecha->setLabel('Fecha')
+          ->setAttrib('class', 'fechas')
+          ->setAttrib('id', 'fecha')
+          ->setAttrib('readonly', 'true');
         
       $cota = new Zend_Form_Element_Text('cota');
       $cota->setLabel('Cota :')
@@ -55,7 +61,7 @@ class Forms_Bibliotecatesis extends Zend_Form {
             ->addValidator('StringLength', true, array(4, 20))
             ->setAttrib('size', 30)
             ->setAttrib('maxlength', 50);
-      
+            
                 
         $titulo = new Zend_Form_Element_Textarea('titulo');
         $titulo->setLabel('Titulo:')
@@ -83,36 +89,35 @@ class Forms_Bibliotecatesis extends Zend_Form {
            ->setAttrib('maxlength', 150);
        
 
-           $autor = new Zend_Form_Element_Select('fk_autor'); 
-           $autor->setLabel('Autor:')
-            ->setAttrib('style', 'width: 300px')
-            ->setRegisterInArrayValidator(false)
-            ->addDecorator('HtmlTag', array('tag' => 'dd',
-                     'id'  => 'fk_autor' . '-element'))
-                      ->addDecorator('Label', array('tag' => 'dt')); 
-           
-           $agregar_autor = new Zend_Form_Element_Button('agregar_autor');
-           $agregar_autor->setLabel('+') 
-            ->setDecorators(array( 'ViewHelper', array('HtmlTag', array('tag' => 'dd')) ))
-            ->setAttrib('onclick', $addAutor);
-    
-           
-           $jurado = new Zend_Form_Element_Select('fk_jurado'); 
-           $jurado->setLabel('Jurado :')
-                     ->setAttrib('style', 'width: 300px')
-                     ->addDecorator('HtmlTag', array('tag' => 'dd',
-                     'id'  => 'fk_autor' . '-element'))
-                      ->addDecorator('Label', array('tag' => 'dt')); 
-           
-           $agregar_jurado = new Zend_Form_Element_Button('agregar_jurado');
-           $agregar_jurado->setLabel('+') 
-            ->setDecorators(array( 'ViewHelper', array('HtmlTag', array('tag' => 'dd')) ))
-            ->setAttrib('onclick', $addJurado);
-          
-           $tutor = new Zend_Form_Element_Select('fk_tutor'); 
-           $tutor->setLabel('Tutor:')
-                     ->setAttrib('style', 'width: 300px');
-       
+        $autor = new Zend_Form_Element_Select('fk_autor'); 
+        $autor->setLabel('Autor:')
+         ->setAttrib('style', 'width: 300px')
+         ->setRegisterInArrayValidator(false)
+         ->addDecorator('HtmlTag', array('tag' => 'dd',
+                  'id'  => 'fk_autor' . '-element'))
+                   ->addDecorator('Label', array('tag' => 'dt')); 
+        
+        $agregar_autor = new Zend_Form_Element_Button('agregar_autor');
+        $agregar_autor->setLabel('+') 
+         ->setDecorators(array( 'ViewHelper', array('HtmlTag', array('tag' => 'dd')) ))
+         ->setAttrib('onclick', $addAutor);       
+        
+        $jurado = new Zend_Form_Element_Select('fk_jurado'); 
+        $jurado->setLabel('Jurado :')
+                  ->setAttrib('style', 'width: 300px')
+                  ->addDecorator('HtmlTag', array('tag' => 'dd',
+                  'id'  => 'fk_autor' . '-element'))
+                   ->addDecorator('Label', array('tag' => 'dt')); 
+        
+        $agregar_jurado = new Zend_Form_Element_Button('agregar_jurado');
+        $agregar_jurado->setLabel('+') 
+         ->setDecorators(array( 'ViewHelper', array('HtmlTag', array('tag' => 'dd')) ))
+         ->setAttrib('onclick', $addJurado);
+   
+        $tutor = new Zend_Form_Element_Select('fk_tutor'); 
+        $tutor->setLabel('Tutor:')
+                  ->setAttrib('style', 'width: 300px');
+   
        $institucion = new Zend_Form_Element_Select('fk_institucion'); 
        $institucion->setLabel('Institucion:') 
                  ->setAttrib('style', 'width: 300px'); 
@@ -158,22 +163,32 @@ class Forms_Bibliotecatesis extends Zend_Form {
             ->setAttrib('size', 35)
             ->setAttrib('maxlength', 80); 
 
-       $archivo = new Zend_Form_Element_Text('archivo');
-       $archivo->setLabel('Archivo:')
-               ->setAttrib('id', 'archivo')
-               ->setAttrib('style', 'width: 254px');
+       $archivo = new Zend_Form_Element_Hidden('archivo'); // Campo oculto para almacenar el valor del archivo
+       $archivo->setAttrib('id', 'archivo'); // Mantiene el ID para referencia en JS
        
+       $archivoDiv = new Zend_Form_Element_Note('archivo_div'); // Elemento que solo muestra contenido
+       $archivoDiv->setValue('<div id="archivo-container" style="display: none; padding: 6px; border: 1px solid #ccc; border-radius: 5px; width: 260px; display: flex; align-items: center; justify-content: space-between;">
+                                   <span id="archivo-nombre" style="flex-grow: 1;">Nombre del archivo</span>
+                                   <i class="fas fa-file-alt"></i>
+                               </div>');
+                  
+            
+
      
        $boton_subir = new Zend_Form_Element_Button('boton_subir');
-       $boton_subir->setLabel('Subir Archivo')  // Establece la etiqueta del botón
-             ->setAttrib('id', 'boton')  // Establece un ID para el botón
-             ->setAttrib('class', 'btn btn-primary')  // Establece una clase para los estilos CSS
-             ->setAttrib('type', 'button');  // Establece el tipo del botón
+       $boton_subir->setLabel('Subir Archivo')
+           ->setAttrib('id', 'boton')
+           ->setAttrib('class', 'ui-button ui-widget ui-state-default ui-button-text-only')
+           ->setAttrib('type', 'button')
+           ->setAttrib('style', 'padding: 8px; margin: 10px 0;');
+
                
         
        $this->addElements(array($id,
+                                $cota,
                                 $fk_sede,
                                 $fk_periodo,
+                                $fecha,
                                 $serialrecurso,
                                  $titulo,
                                  $resumen,
@@ -191,9 +206,9 @@ class Forms_Bibliotecatesis extends Zend_Form {
                                  $ubicacion,
                                  $pagina,
                                  $observacion,
-                                 $cota,
-                                 $archivo, 
-                                 $boton_subir
+                                 $boton_subir,
+                                 $archivo,
+                                 $archivoDiv
                                 ));
 
     }

@@ -62,7 +62,6 @@ class Forms_Mensaje extends Zend_Form {
                 )
             )
         );
-        $this->dummy->clearValidators();
         
         $usuario = new Zend_Form_Element_Textarea('usuarios');
         $usuario->setLabel('Usuarios:')
