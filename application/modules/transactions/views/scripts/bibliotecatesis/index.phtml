@@ -43,15 +43,6 @@ $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui
 <?php echo $this->SwapBytes_Crud_Form->getHtml(); ?>
 <script type='text/javascript'>
     $(document).ready(function(){
-
-    
-        $('#btnList').click(function(){
-            $buscar = $('#txtBuscar').val();
-            for ($i = 0 ; $i<50 ; $i++){
-                $buscar = $buscar.replace('/','~');
-            }
-            $('#txtBuscar').val($buscar);
-        })
     
 <?php
     echo $this->SwapBytes_Jquery->getLoading('loading');
@@ -81,8 +72,6 @@ $this->headLink()->appendStylesheet($this->baseUrl() . '/css/jquery-ui/jquery-ui
         debug: false,
         params: {
             cota: document.getElementById("cota").value,
-            id: document.getElementById("id").value
-
         },
         onComplete: function(id, fileName, responseJSON){
 

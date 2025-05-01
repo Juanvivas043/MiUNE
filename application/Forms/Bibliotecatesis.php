@@ -18,22 +18,36 @@ class Forms_Bibliotecatesis extends Zend_Form {
         $changecota    = "$.getJSON(urlAjax + 'exists/data/' + escape($('#bibliotecatesis').find(':input').serialize()) , function(data){executeCmdsFromJSON(data)});";
         $addAutor      = "$.getJSON(urlAjax + 'autoradd/data/' + escape($('#bibliotecatesis').find(':input').serialize()), function(data){executeCmdsFromJSON(data)});";
         $addJurado     = "$.getJSON(urlAjax + 'juradoadd/data/' + escape($('#bibliotecatesis').find(':input').serialize()), function(data){executeCmdsFromJSON(data)});";
-        $changeEscuela = $SwapBytes_Jquery->fillSelect('fk_autor','cescuela',array('escuela'=>'fk_escuela'));
+        $changeEscuela = $SwapBytes_Jquery->fillSelect('fk_autor','cescuela', array('escuela'=>'fk_escuela'));
+        $changeLinea   = $SwapBytes_Jquery->fillSelect('fk_lineainvestigacion','clinea', array('escuela'=>'fk_escuela'));
+        $changeTema    = $SwapBytes_Jquery->fillSelect('fk_tema','ctema', array('escuela'=>'fk_escuela','linea'=>'fk_lineainvestigacion'));
         $deleteAutores = "$.getJSON(urlAjax + 'deleteallautores/data/' + escape($('#bibliotecatesis').find(':input').serialize()), function(data){executeCmdsFromJSON(data)});";      
-                
-      $id   = new Zend_Form_Element_Hidden('id');
+        $deleteLineas  = "$.getJSON(urlAjax + 'deletealllineas/data/' + escape($('#bibliotecatesis').find(':input').serialize()), function(data){executeCmdsFromJSON(data)});";      
+        $deletetemas = "$.getJSON(urlAjax + 'deletealltemas/data/' + escape($('#bibliotecatesis').find(':input').serialize()), function(data){executeCmdsFromJSON(data)});";      
+
+
+    $id   = new Zend_Form_Element_Hidden('id');
       
-      $id->removeDecorator('label')
-         ->removeDecorator('HtmlTag');
+    $id->removeDecorator('label')
+        ->removeDecorator('HtmlTag');
 
+    $fk_sede = new Zend_Form_Element_Select('fk_sede'); 
+    $fk_sede->setLabel('Sede')
+            ->setRegisterInArrayValidator(false);  
 
-      $fk_sede = new Zend_Form_Element_Select('fk_sede'); 
-      $fk_sede->setLabel('Sede')
-              ->setRegisterInArrayValidator(false);  
-
-     $fk_periodo = new Zend_Form_Element_Select('fk_periodo');
-     $fk_periodo->setLabel('Periodo: ')
-             ->setAttrib('style', 'width: 175px');
+    $fk_periodo = new Zend_Form_Element_Select('fk_periodo');
+    $fk_periodo->setLabel('Periodo: ')
+            ->setAttrib('style', 'width: 175px');
+    
+    $fk_lineainvestigacion = new Zend_Form_Element_Select('fk_lineainvestigacion'); 
+    $fk_lineainvestigacion->setLabel('Linea:') 
+            ->setAttrib('style', 'width: 300px')
+            ->setAttrib('onchange', $changeTema)
+            ->setAttrib('onclick', $deletetemas);
+    
+    $fk_tema = new Zend_Form_Element_Select('fk_tema'); 
+    $fk_tema->setLabel('Tema:') 
+            ->setAttrib('style', 'width: 300px'); 
 
     $fecha = new Zend_Form_Element_Text('fecha');
     $fecha->setLabel('Fecha')
@@ -41,41 +55,30 @@ class Forms_Bibliotecatesis extends Zend_Form {
           ->setAttrib('id', 'fecha')
           ->setAttrib('readonly', 'true');
         
-      $cota = new Zend_Form_Element_Text('cota');
-      $cota->setLabel('Cota :')
-            ->setRequired(true)
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
-            ->addValidator('NotEmpty')
-            ->addValidator('StringLength', true, array(4, 50))
-            ->setAttrib('size', 30)
-            ->setAttrib('maxlength', 50)
-            ->setAttrib('onchange', $changecota);
+    $cota = new Zend_Form_Element_Text('cota');
+    $cota->setLabel('Cota :')
+          ->setRequired(true)
+          ->addFilter('StripTags')
+          ->addFilter('StringTrim')
+          ->addValidator('NotEmpty')
+          ->addValidator('StringLength', true, array(4, 50))
+          ->setAttrib('size', 30)
+          ->setAttrib('maxlength', 50)
+          ->setAttrib('onchange', $changecota);
+                       
+    $titulo = new Zend_Form_Element_Textarea('titulo');
+    $titulo->setLabel('Titulo:')
+        ->setRequired(true)
+        ->addFilter('StripTags')
+        ->addFilter('StringTrim')
+        ->setAttrib('cols', 35)
+        ->setAttrib('rows', 4)    
+        ->setAttrib('maxlength', 300);
 
-      $serialrecurso = new Zend_Form_Element_Text('serialrecurso');
-      $serialrecurso->setLabel('Serial :')
-            ->setRequired(true)
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
-            ->addValidator('NotEmpty')
-            ->addValidator('StringLength', true, array(4, 20))
-            ->setAttrib('size', 30)
-            ->setAttrib('maxlength', 50);
-            
-                
-        $titulo = new Zend_Form_Element_Textarea('titulo');
-        $titulo->setLabel('Titulo:')
-            ->setRequired(true)
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
-            ->setAttrib('cols', 35)
-            ->setAttrib('rows', 4)    
-            ->setAttrib('maxlength', 300);
-
-       $resumen = new Zend_Form_Element_Textarea('resumen');
-       $resumen->setLabel('Resumen :')
-           ->addFilter('StripTags')
-           ->addFilter('StringTrim')   
+     $resumen = new Zend_Form_Element_Textarea('resumen');
+     $resumen->setLabel('Resumen :')
+         ->addFilter('StripTags')
+         ->addFilter('StringTrim')   
            ->setAttrib('cols', 35)
            ->setAttrib('rows', 4)  
            ->setAttrib('maxlength', 500);
@@ -118,15 +121,15 @@ class Forms_Bibliotecatesis extends Zend_Form {
         $tutor->setLabel('Tutor:')
                   ->setAttrib('style', 'width: 300px');
    
-       $institucion = new Zend_Form_Element_Select('fk_institucion'); 
-       $institucion->setLabel('Institucion:') 
-                 ->setAttrib('style', 'width: 300px'); 
-       
-       $escuela = new Zend_Form_Element_Select('fk_escuela'); 
-       $escuela->setLabel('Escuela :')
-                 ->setAttrib('style', 'width: 300px')
-                 // ->setAttrib('onchange', $changeEscuela)
-                 ->setAttrib('onclick', $deleteAutores);
+        $institucion = new Zend_Form_Element_Select('fk_institucion'); 
+        $institucion->setLabel('Institucion:') 
+                  ->setAttrib('style', 'width: 300px'); 
+
+        $escuela = new Zend_Form_Element_Select('fk_escuela'); 
+        $escuela->setLabel('Escuela :')
+                ->setAttrib('style', 'width: 300px')
+                ->setAttrib('onchange', $changeEscuela . ';' . $changeLinea)
+                ->setAttrib('onclick', $deleteAutores . ';' . $deleteLineas);
 
        $fk_tiporecurso = new Zend_Form_Element_Select('fk_tiporecurso'); 
        $fk_tiporecurso->setLabel('Tipo Recurso:') 
@@ -147,14 +150,6 @@ class Forms_Bibliotecatesis extends Zend_Form {
             ->addFilter('StringTrim')
             ->setAttrib('size', 35)
             ->setAttrib('maxlength', 80);
-       
-       
-       $ubicacion = new Zend_Form_Element_Text('ubicacion');
-       $ubicacion->setLabel('Ubicacion:')
-            ->addFilter('StripTags')
-            ->addFilter('StringTrim')
-            ->setAttrib('size', 35)
-            ->setAttrib('maxlength', 80); 
        
        $observacion = new Zend_Form_Element_Text('observacion');
        $observacion->setLabel('Observacion:')
@@ -187,29 +182,29 @@ class Forms_Bibliotecatesis extends Zend_Form {
        $this->addElements(array($id,
                                 $cota,
                                 $fk_sede,
+                                $escuela, 
+                                $fk_lineainvestigacion,
+                                $fk_tema,
                                 $fk_periodo,
                                 $fecha,
-                                $serialrecurso,
-                                 $titulo,
-                                 $resumen,
-                                 $palabrasclaves,
-                                 $autor,
+                                $titulo,
+                                $resumen,
+                                $palabrasclaves,
+                                $autor,
                                 $agregar_autor,
                                 $jurado,
                                 $agregar_jurado,
                                 $tutor,
-                                 $escuela, 
-                                 $fk_tiporecurso,  
-                                 $institucion,
-                                 $calificacion,
-                                 $publicacion,
-                                 $ubicacion,
-                                 $pagina,
-                                 $observacion,
-                                 $boton_subir,
-                                 $archivo,
-                                 $archivoDiv
-                                ));
+                                $fk_tiporecurso,  
+                                $institucion,
+                                $calificacion,
+                                $publicacion,
+                                $pagina,
+                                $observacion,
+                                $boton_subir,
+                                $archivo,
+                                $archivoDiv
+        ));
 
     }
 

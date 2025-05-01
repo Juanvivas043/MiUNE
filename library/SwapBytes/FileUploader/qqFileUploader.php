@@ -108,25 +108,24 @@ class SwapBytes_FileUploader_qqFileUploader {
         }
         
     } 
-    
     function handleUploadTesis($uploadDirectory, $replaceOldFile = FALSE, $with_unique_id = false, $cota = null) {
         if (!is_writable($uploadDirectory)) {
             mkdir($uploadDirectory, 0777, true);
             if (!is_writable($uploadDirectory))
-                return array('error' => "Server error. Upload directory isn't writable.");
+                return array('error' => "Error del servidor. El directorio de subida no tiene permisos de escritura.");
         }
     
         if (!$this->file) {
-            return array('error' => 'No files were uploaded.');
+            return array('error' => 'No se subió ningún archivo.');
         }
     
         $size = $this->file->getSize();
         if ($size == 0) {
-            return array('error' => 'File is empty');
+            return array('error' => 'El archivo está vacío.');
         }
     
         if ($size > $this->sizeLimit) {
-            return array('error' => 'File is too large');
+            return array('error' => 'El archivo excede el tamaño máximo permitido.');
         }
     
         // Obtener información del archivo
@@ -148,7 +147,7 @@ class SwapBytes_FileUploader_qqFileUploader {
         // Verificar si la extensión es válida
         if ($this->allowedExtensions && !in_array($ext, $this->allowedExtensions)) {
             $these = implode(', ', $this->allowedExtensions);
-            return array('error' => 'File has an invalid extension, it should be one of '. $these . '.');
+            return array('error' => 'El archivo tiene una extensión no permitida. Debe ser uno de los siguientes: ' . $these . '.');
         }
     
         if (!$replaceOldFile) {
@@ -165,7 +164,7 @@ class SwapBytes_FileUploader_qqFileUploader {
                 'fileext' => $ext // También guardar la extensión aparte si es necesario
             );
         } else {
-            return array('error' => 'Could not save uploaded file.');
+            return array('error' => 'No se pudo guardar el archivo subido.');
         }
     }
     

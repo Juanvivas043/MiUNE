@@ -331,7 +331,7 @@ class Transactions_DatostesisestudianteController extends Zend_Controller_Action
                 $json[] = $this->SwapBytes_Jquery_Ui_Form->buttonShow('tesis', 'Guardar');
                 $json[] = $this->SwapBytes_Jquery_Ui_Form->buttonShow('tesis', 'Cancelar');
 
-                $json[] = $this->SwapBytes_Jquery_Ui_Form->addJscript('$(\"#guardar_tesis\").click(function(data){confirm_tesis(1)});');
+                $json[] = $this->SwapBytes_Jquery_Ui_Form->addJscript('$(\"#btnGuardar\").click(function(data){confirm_tesis(1)});');
                 $json[] = "$( '#cancelar_tesis' ).clone().appendTo( '#guardar_tesis-element' );$('#cancelar_tesis-element').remove();";
                 $this->SwapBytes_Crud_Form->setJson($json); 
             }
